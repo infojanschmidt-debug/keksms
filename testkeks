@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KeksHomepage – Individuelle Kekse, vollautomatisiert</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f9f9f9;
+            color: #222;
+        }
+
+        header {
+            background: #ffb347;
+            background: linear-gradient(90deg, #ffb347 0%, #ffcc33 100%);
+            padding: 20px;
+            text-align: center;
+            color: #000;
+            font-weight: bold;
+        }
+
+        nav {
+            background: #222;
+            padding: 15px;
+            text-align: center;
+        }
+
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: bold;
+        }
+
+        .hero {
+            padding: 60px 20px;
+            text-align: center;
+            background: url('https://images.unsplash.com/photo-1607083208763-27bc8c0d06b7') center/cover no-repeat;
+            color: #fff;
+        }
+
+        .hero h1 {
+            font-size: 42px;
+            font-weight: 900;
+            text-shadow: 1px 1px 8px #000;
+        }
+
+        .hero p {
+            font-size: 20px;
+            margin-top: 10px;
+            text-shadow: 1px 1px 6px #000;
+        }
+
+        .cta-button {
+            margin-top: 20px;
+            padding: 15px 30px;
+            font-size: 20px;
+            background: #ffcc33;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .section {
+            padding: 50px 20px;
+            text-align: center;
+        }
+
+        .products {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            padding: 30px 10px;
+        }
+
+        .product-card {
+            background: white;
+            width: 280px;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .product-card img {
+            width: 100%;
+            border-radius: 8px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+            background: #222;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>KeksHomepage – Dein automatisierter Keks-Shop</h1>
+</header>
+
+<nav>
+    <a href="#produkte">Produkte</a>
+    <a href="#konfigurator">Keks-Konfigurator</a>
+    <a href="#kontakt">Kontakt</a>
+</nav>
+
+<section class="hero">
+    <h1>Individuelle Kekse. Vollautomatisiert.</h1>
+    <p>Hier entsteht Deutschlands erster selbstbestückbarer Keks-Shop.</p>
+    <button class="cta-button">Jetzt Keks erstellen</button>
+</section>
+
+<section class="section" id="produkte">
+    <h2>Unsere Bestseller</h2>
+
+    <div class="products">
+
+        <div class="product-card">
+            <img src="https://images.unsplash.com/photo-1601004890684-d8cbf643f5f2" alt="Keks">
+            <h3>Classic Choco</h3>
+            <p>Knusprig, süß & voll automatisch bestellbar.</p>
+            <button class="cta-button">In den Warenkorb</button>
+        </div>
+
+        <div class="product-card">
+            <img src="https://images.unsplash.com/photo-1612197528725-df10a4f53f48" alt="Keks">
+            <h3>Nutty Power</h3>
+            <p>Individuell konfigurierbar mit Zutaten deiner Wahl.</p>
+            <button class="cta-button">In den Warenkorb</button>
+        </div>
+
+        <div class="product-card">
+            <img src="https://images.unsplash.com/photo-1601315488173-1a93f43c6c0e" alt="Keks">
+            <h3>Premium Mix</h3>
+            <p>Der Keks, der Marketing-Legenden schreibt.</p>
+            <button class="cta-button">In den Warenkorb</button>
+        </div>
+
+    </div>
+</section>
+
+<section class="section" id="konfigurator">
+    <h2>Keks-Konfigurator</h2>
+    <p>Wähle Zutaten, Größe, Verpackung & Branding – der Rest läuft automatisch.</p>
+    <button class="cta-button">Konfigurator starten</button>
+</section>
+
+<section class="section" id="kontakt">
+    <h2>Kontakt</h2>
+    <p>Fragen? Kooperationen? Automatisierungswünsche?</p>
+    <p><b>E-Mail:</b> info@kekshomepage.de</p>
+</section>
+
+<footer>
+    © 2025 KeksHomepage – Ein digitales Produkt von Michi & Team.
+</footer>
+
+</body>
+</html>

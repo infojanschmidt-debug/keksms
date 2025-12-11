@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <meta nameviewport="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KeksHomepage – Individuelle Kekse, vollautomatisiert</title>
 
     <style>
@@ -14,7 +14,6 @@
         }
 
         header {
-            background: #ffb347;
             background: linear-gradient(90deg, #ffb347 0%, #ffcc33 100%);
             padding: 20px;
             text-align: center;
@@ -35,6 +34,10 @@
             font-weight: bold;
         }
 
+        nav a:hover {
+            text-decoration: underline;
+        }
+
         .hero {
             padding: 60px 20px;
             text-align: center;
@@ -51,4 +54,472 @@
         .hero p {
             font-size: 20px;
             margin-top: 10px;
-            text-shad
+            text-shadow: 1px 1px 6px #000;
+        }
+
+        .cta-button {
+            margin-top: 20px;
+            padding: 12px 24px;
+            font-size: 18px;
+            background: #ffcc33;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .cta-button:hover {
+            filter: brightness(0.95);
+        }
+
+        .section {
+            padding: 50px 20px;
+            text-align: center;
+        }
+
+        .section h2 {
+            margin-bottom: 10px;
+        }
+
+        .section p {
+            margin-top: 0;
+        }
+
+        .products {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            padding: 30px 10px;
+        }
+
+        .product-card {
+            background: white;
+            width: 280px;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
+            text-align: left;
+        }
+
+        .product-card img {
+            width: 100%;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        .product-card h3 {
+            margin: 5px 0;
+        }
+
+        .price-tag {
+            font-weight: bold;
+            margin: 5px 0 10px 0;
+        }
+
+        .layout {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+            align-items: flex-start;
+        }
+
+        .config-card, .cart-card {
+            background: #fff;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0px 4px 10px rgba(0,0,0,0.08);
+            text-align: left;
+        }
+
+        .config-card h3, .cart-card h3 {
+            margin-top: 0;
+        }
+
+        .form-row {
+            margin-bottom: 12px;
+        }
+
+        .form-row label {
+            display: block;
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+
+        .form-row select,
+        .form-row input {
+            width: 100%;
+            padding: 8px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+
+        .config-price {
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .cart-list {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 10px 0;
+            max-height: 260px;
+            overflow-y: auto;
+        }
+
+        .cart-list li {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid #eee;
+            padding: 4px 0;
+            font-size: 14px;
+        }
+
+        .cart-summary {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        .cart-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .cart-button {
+            flex: 1;
+            padding: 8px;
+            font-size: 14px;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .cart-button.primary {
+            background: #ffcc33;
+            font-weight: bold;
+        }
+
+        .cart-button.secondary {
+            background: #eee;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+            background: #222;
+            color: #fff;
+        }
+
+        @media (max-width: 900px) {
+            .layout {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>KeksHomepage – Dein automatisierter Keks-Shop</h1>
+</header>
+
+<nav>
+    <a href="#produkte">Produkte</a>
+    <a href="#konfigurator">Keks-Konfigurator</a>
+    <a href="#warenkorb">Warenkorb</a>
+    <a href="#kontakt">Kontakt</a>
+</nav>
+
+<section class="hero">
+    <h1>Individuelle Kekse. Vollautomatisiert.</h1>
+    <p>Vom Standard-Keks bis zur gebrandeten Spezialedition – voll digital konfigurierbar.</p>
+    <button class="cta-button" onclick="scrollToKonfigurator()">Jetzt Keks konfigurieren</button>
+</section>
+
+<section class="section" id="produkte">
+    <h2>Unsere Bestseller</h2>
+    <p>Direkt in den Warenkorb oder als Basis für deine individuelle Keks-Strategie.</p>
+
+    <div class="products">
+
+        <div class="product-card">
+            <img src="https://images.unsplash.com/photo-1601004890684-d8cbf643f5f2" alt="Keks">
+            <h3>Classic Choco</h3>
+            <p>Der Klassiker für jede Kampagne – stabil, beliebt, kalkulierbar.</p>
+            <p class="price-tag">Preis: 4,90 € / Packung</p>
+            <button class="cta-button" onclick="addPresetProduct('Classic Choco', 4.9)">In den Warenkorb</button>
+        </div>
+
+        <div class="product-card">
+            <img src="https://images.unsplash.com/photo-1612197528725-df10a4f53f48" alt="Keks">
+            <h3>Nutty Power</h3>
+            <p>Mehr Crunch, mehr Wahrnehmung – perfekt für auffällige Aktionen.</p>
+            <p class="price-tag">Preis: 5,90 € / Packung</p>
+            <button class="cta-button" onclick="addPresetProduct('Nutty Power', 5.9)">In den Warenkorb</button>
+        </div>
+
+        <div class="product-card">
+            <img src="https://images.unsplash.com/photo-1601315488173-1a93f43c6c0e" alt="Keks">
+            <h3>Premium Mix</h3>
+            <p>High-End-Keks für Brand-Experience und VIP-Kampagnen.</p>
+            <p class="price-tag">Preis: 7,90 € / Packung</p>
+            <button class="cta-button" onclick="addPresetProduct('Premium Mix', 7.9)">In den Warenkorb</button>
+        </div>
+
+    </div>
+</section>
+
+<section class="section" id="konfigurator">
+    <h2>Keks-Konfigurator</h2>
+    <p>Baue dir deinen Wunsch-Keks – das System kalkuliert live den Preis.</p>
+
+    <div class="layout">
+        <!-- Konfigurator -->
+        <div class="config-card">
+            <h3>Deine Keks-Konfiguration</h3>
+
+            <div class="form-row">
+                <label for="teig">Teigbasis</label>
+                <select id="teig" onchange="updateConfigPrice()">
+                    <option value="classic" data-price="1.0">Classic Butterteig (+1,00 €)</option>
+                    <option value="choco" data-price="1.5">Schokoteig (+1,50 €)</option>
+                    <option value="vegan" data-price="1.8">Vegan Crunch (+1,80 €)</option>
+                </select>
+            </div>
+
+            <div class="form-row">
+                <label for="topping">Topping</label>
+                <select id="topping" onchange="updateConfigPrice()">
+                    <option value="none" data-price="0">Kein Topping (+0,00 €)</option>
+                    <option value="chocochips" data-price="0.5">Schoko-Chunks (+0,50 €)</option>
+                    <option value="nuts" data-price="0.7">Nuss-Mix (+0,70 €)</option>
+                    <option value="smarties" data-price="0.9">Bunte Dragees (+0,90 €)</option>
+                </select>
+            </div>
+
+            <div class="form-row">
+                <label for="size">Größe</label>
+                <select id="size" onchange="updateConfigPrice()">
+                    <option value="small" data-price="1.5">Small Box (ca. 10 Stück) (+1,50 €)</option>
+                    <option value="medium" data-price="3.0">Medium Box (ca. 25 Stück) (+3,00 €)</option>
+                    <option value="large" data-price="5.5">Large Box (ca. 50 Stück) (+5,50 €)</option>
+                </select>
+            </div>
+
+            <div class="form-row">
+                <label for="branding">Branding / Logo</label>
+                <select id="branding" onchange="updateConfigPrice()">
+                    <option value="none" data-price="0">Ohne Branding (+0,00 €)</option>
+                    <option value="sticker" data-price="1.0">Logo-Sticker auf der Box (+1,00 €)</option>
+                    <option value="fullprint" data-price="3.0">Fullprint Branding (+3,00 €)</option>
+                </select>
+            </div>
+
+            <div class="form-row">
+                <label for="packaging">Verpackung</label>
+                <select id="packaging" onchange="updateConfigPrice()">
+                    <option value="paper" data-price="0.5">Papierbox (+0,50 €)</option>
+                    <option value="tin" data-price="2.0">Metall-Dose (+2,00 €)</option>
+                </select>
+            </div>
+
+            <div class="form-row">
+                <label for="quantity">Menge (Anzahl Boxen)</label>
+                <input type="number" id="quantity" min="1" value="1" onchange="updateConfigPrice()">
+            </div>
+
+            <div class="config-price">
+                Aktueller Preis: <span id="config-price-value">0,00 €</span>
+            </div>
+
+            <button class="cta-button" style="margin-top: 15px;" onclick="addConfiguredProduct()">
+                Konfiguration in den Warenkorb legen
+            </button>
+        </div>
+
+        <!-- Warenkorb -->
+        <div class="cart-card" id="warenkorb">
+            <h3>Warenkorb</h3>
+            <ul class="cart-list" id="cart-list"></ul>
+            <div class="cart-summary">
+                Gesamtsumme: <span id="cart-total">0,00 €</span>
+            </div>
+            <div class="cart-actions">
+                <button class="cart-button secondary" onclick="clearCart()">Warenkorb leeren</button>
+                <button class="cart-button primary" onclick="sendOrderMail()">Bestellanfrage senden</button>
+            </div>
+            <p style="font-size: 12px; margin-top: 8px; color: #555;">
+                Hinweis: Dies ist eine Demo. Die Bestellanfrage wird als E-Mail-Vorlage geöffnet.
+            </p>
+        </div>
+    </div>
+</section>
+
+<section class="section" id="kontakt">
+    <h2>Kontakt</h2>
+    <p>Projektanfragen, White-Label-Lösungen oder große Stückzahlen?</p>
+    <p><b>E-Mail:</b> info@kekshomepage.de</p>
+</section>
+
+<footer>
+    © 2025 KeksHomepage – Ein digitales Produkt von Michi & Team.
+</footer>
+
+<script>
+    // Warenkorb Daten
+    const cart = [];
+
+    function formatPrice(value) {
+        return value.toFixed(2).replace('.', ',') + ' €';
+    }
+
+    function scrollToKonfigurator() {
+        const el = document.getElementById('konfigurator');
+        if (el) {
+            el.scrollIntoView({ behavior: 'smooth' });
+        }
+    }
+
+    function addPresetProduct(name, price) {
+        cart.push({
+            name,
+            price,
+            quantity: 1,
+            type: 'preset'
+        });
+        renderCart();
+    }
+
+    function updateConfigPrice() {
+        const teig = document.getElementById('teig');
+        const topping = document.getElementById('topping');
+        const size = document.getElementById('size');
+        const branding = document.getElementById('branding');
+        const packaging = document.getElementById('packaging');
+        const quantity = parseInt(document.getElementById('quantity').value) || 1;
+
+        const getPrice = (select) => parseFloat(select.options[select.selectedIndex].dataset.price || '0');
+
+        let basePrice =
+            getPrice(teig) +
+            getPrice(topping) +
+            getPrice(size) +
+            getPrice(branding) +
+            getPrice(packaging);
+
+        const total = basePrice * quantity;
+
+        document.getElementById('config-price-value').textContent = formatPrice(total);
+        return total;
+    }
+
+    function addConfiguredProduct() {
+        const teig = document.getElementById('teig');
+        const topping = document.getElementById('topping');
+        const size = document.getElementById('size');
+        const branding = document.getElementById('branding');
+        const packaging = document.getElementById('packaging');
+        const quantity = parseInt(document.getElementById('quantity').value) || 1;
+
+        const price = updateConfigPrice();
+
+        const name =
+            'Individueller Keks – ' +
+            teig.options[teig.selectedIndex].text + ', ' +
+            topping.options[topping.selectedIndex].text + ', ' +
+            size.options[size.selectedIndex].text + ', ' +
+            branding.options[branding.selectedIndex].text + ', ' +
+            packaging.options[packaging.selectedIndex].text;
+
+        cart.push({
+            name,
+            price,
+            quantity,
+            type: 'config'
+        });
+
+        renderCart();
+    }
+
+    function renderCart() {
+        const list = document.getElementById('cart-list');
+        const totalEl = document.getElementById('cart-total');
+
+        list.innerHTML = '';
+        let total = 0;
+
+        cart.forEach((item, index) => {
+            const li = document.createElement('li');
+
+            const left = document.createElement('span');
+            left.textContent = (item.quantity || 1) + '× ' + item.name;
+
+            const right = document.createElement('span');
+            right.textContent = formatPrice(item.price);
+
+            li.appendChild(left);
+            li.appendChild(right);
+
+            list.appendChild(li);
+
+            total += item.price;
+        });
+
+        totalEl.textContent = formatPrice(total);
+    }
+
+    function clearCart() {
+        cart.length = 0;
+        renderCart();
+    }
+
+    function sendOrderMail() {
+        if (cart.length === 0) {
+            alert('Dein Warenkorb ist leer.');
+            return;
+        }
+
+        let bodyLines = [];
+        bodyLines.push('Hallo KeksHomepage-Team,');
+        bodyLines.push('');
+        bodyLines.push('hiermit sende ich eine unverbindliche Bestellanfrage:');
+        bodyLines.push('');
+
+        let total = 0;
+        cart.forEach((item, index) => {
+            bodyLines.push(
+                (index + 1) + '. ' + (item.quantity || 1) + '× ' + item.name +
+                ' – ' + formatPrice(item.price)
+            );
+            total += item.price;
+        });
+
+        bodyLines.push('');
+        bodyLines.push('Gesamtsumme (indikativ): ' + formatPrice(total));
+        bodyLines.push('');
+        bodyLines.push('Bitte meldet euch mit einem konkreten Angebot.');
+        bodyLines.push('');
+        bodyLines.push('Name/Firma:');
+        bodyLines.push('Anschrift:');
+        bodyLines.push('Telefon:');
+        bodyLines.push('');
+        bodyLines.push('Beste Grüße');
+
+        const subject = encodeURIComponent('Keks-Bestellanfrage über KeksHomepage');
+        const body = encodeURIComponent(bodyLines.join('\n'));
+
+        window.location.href = 'mailto:info@kekshomepage.de?subject=' + subject + '&body=' + body;
+    }
+
+    // Initial Preis berechnen
+    updateConfigPrice();
+</script>
+
+</body>
+</html>

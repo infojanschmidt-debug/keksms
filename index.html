@@ -289,76 +289,76 @@ footer{
         </div>
       </div>
 
-      <!-- STEP 3 -->
-      <button id="payNow">Zahlung abschließen</button>
-<div class="panel" id="p3">
-        <p><b>Fertig 🍪</b><br>Klick auf Bezahlen und dein Keks geht auf Reise.</p>
-        <a class="btn" id="payBtn" target="_blank">Jetzt sicher bezahlen</a>
-      </div>
-    </div>
-  </div>
-</section>
-</main>
-
-<footer>
-  © OnlyKeks · Post die schmeckt
-</footer>
-
-<script>document.getElementById("payNow").addEventListener("click", () => {
-  window.open(STRIPE_PAYMENT_LINK, "_blank", "noopener");
-});
-
-/* =======================
+      <script>
 /*** CONFIG: NUR HIER STRIPE EINTRAGEN ***/
 const STRIPE_PAYMENT_LINK = "https://buy.stripe.com/aBcDeFgHiJkLmNoPqR";
+
 /* =======================
    FLOW LOGIC
 ======================= */
 const steps = document.querySelectorAll(".step");
-const panels = {1:p1,2:p2,3:p3};
+const panels = { 1: p1, 2: p2, 3: p3 };
 
 function go(n){
   Object.values(panels).forEach(p=>p.classList.remove("active"));
   panels[n].classList.add("active");
   steps.forEach(s=>s.classList.toggle("active", +s.dataset.step===n));
-  if(n===3) document.getElementById("payBtn").href = STRIPE_PAYMENT_LINK;
+
+  // Stripe-Link immer setzen, sobald Step 3 aktiv ist
+  if(n === 3){
+    const pay = document.getElementById("payBtn");
+    if (pay) pay.href = STRIPE_PAYMENT_LINK;
+  }
 }
+
 function scrollToFlow(){
   document.getElementById("flow").scrollIntoView({behavior:"smooth"});
 }
-document.querySelectorAll(".chip").forEach(c=>{
-  c.onclick=()=>msg.value=c.dataset.msg;
+
+document.querySelectorAll(".chip").forEach(ch=>{
+  ch.addEventListener("click", ()=>{ msg.value = ch.dataset.msg; });
 });
+
+// Optional: Klick auf "Jetzt sicher bezahlen" erzwingt Link (falls jemand direkt klickt)
+const payBtn = document.getElementById("payBtn");
+if(payBtn){
+  payBtn.addEventListener("click", () => {
+    payBtn.href = STRIPE_PAYMENT_LINK;
+  });
+}
 
 /* =======================
    COOKIE RAIN
 ======================= */
-const c=document.getElementById("cookieRain"),ctx=c.getContext("2d");
+const canvas = document.getElementById("cookieRain");
+const ctx = canvas.getContext("2d");
+
 function resize(){
-  c.width=innerWidth; c.height=innerHeight;
+  canvas.width = innerWidth;
+  canvas.height = innerHeight;
 }
-resize(); addEventListener("resize",resize);
-const cookies=[...Array(30)].map(()=>({
-  x:Math.random()*innerWidth,
-  y:Math.random()*innerHeight,
-  r:10+Math.random()*22,
-  v:0.6+Math.random()*1.4
+resize();
+addEventListener("resize", resize);
+
+const cookies = [...Array(30)].map(()=>({
+  x: Math.random()*innerWidth,
+  y: Math.random()*innerHeight,
+  r: 10 + Math.random()*22,
+  v: 0.6 + Math.random()*1.4
 }));
+
 function draw(){
-  ctx.clearRect(0,0,c.width,c.height);
+  ctx.clearRect(0,0,canvas.width,canvas.height);
   cookies.forEach(o=>{
-    o.y+=o.v; if(o.y>c.height)o.y=-50;
+    o.y += o.v;
+    if(o.y > canvas.height) o.y = -50;
     ctx.beginPath();
     ctx.arc(o.x,o.y,o.r,0,Math.PI*2);
-    ctx.fillStyle="#c48752";
+    ctx.fillStyle = "#c48752";
     ctx.fill();
   });
   requestAnimationFrame(draw);
 }
 draw();
 </script>
-</body>
-</html>
-
-
 

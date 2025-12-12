@@ -1,261 +1,794 @@
 <!doctype html>
 <html lang="de">
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>OnlyKeks – Post die schmeckt!</title>
-<meta name="description" content="Post die schmeckt! Verschicke Post, die schmeckt. Reply-Keks mit QR-Loop." />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>OnlyKeks – Post die schmeckt!</title>
+  <meta name="description" content="Post die schmeckt! Weil Post nicht schmeckt, verschicke Post die schmeckt. Reply-Keks in 3 Klicks." />
 
-<style>
-:root{
-  --caramel:#7A3E12;
-  --caramel-2:#C46B2A;
-  --cream:#F6EBDD;
-  --vanilla:#FFF6E7;
-  --ink:#140F0C;
-  --muted:#4E3B31;
-  --line:rgba(20,15,12,.12);
+  <style>
+    :root{
+      /* OnlyFans-ish: clean white + blau/cyan accents */
+      --bg: #ffffff;
+      --bg2:#f6fbff;
+      --ink:#0b1b2a;
+      --muted:#4b5b6b;
+      --line: rgba(11,27,42,.10);
 
-  --pop:#7CFF6B;
-  --pop-2:#7AA7FF;
+      --blue:#00aff0;         /* OF-ähnlich */
+      --blue2:#2b7cff;
+      --blueSoft: rgba(0,175,240,.12);
 
-  --radius:26px;
-  --shadow:0 20px 60px rgba(20,15,12,.18);
-}
+      /* OnlyKeks Warmth as secondary */
+      --caramel:#b56a2a;
+      --cream:#fff4e8;
 
-*{box-sizing:border-box}
-body{
-  margin:0;
-  font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;
-  background:
-    radial-gradient(900px 400px at 10% 0%, rgba(124,255,107,.15), transparent 60%),
-    radial-gradient(800px 400px at 90% 20%, rgba(122,167,255,.18), transparent 55%),
-    linear-gradient(180deg,var(--vanilla),var(--cream));
-  color:var(--ink);
-}
+      --radius: 18px;
+      --shadow: 0 18px 60px rgba(11,27,42,.12);
+      --shadow2: 0 10px 30px rgba(11,27,42,.08);
+    }
 
-.container{max-width:1180px;margin:auto;padding:0 18px}
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      color:var(--ink);
+      background:
+        radial-gradient(900px 500px at 15% 0%, var(--blueSoft), transparent 60%),
+        radial-gradient(800px 500px at 85% 25%, rgba(43,124,255,.10), transparent 55%),
+        linear-gradient(180deg, var(--bg), var(--bg2));
+      overflow-x:hidden;
+    }
+    a{color:inherit;text-decoration:none}
+    .container{max-width:1120px;margin:0 auto;padding:0 18px}
 
-/* NAV */
-.nav{
-  position:sticky;top:0;z-index:50;
-  backdrop-filter:blur(10px);
-  background:rgba(255,246,231,.8);
-  border-bottom:1px solid var(--line);
-}
-.nav-inner{
-  display:flex;justify-content:space-between;align-items:center;
-  padding:14px 0;gap:12px;
-}
-.brand{display:flex;gap:14px;align-items:center;text-decoration:none;color:inherit}
-.logo{
-  width:62px;height:62px;border-radius:20px;
-  background:linear-gradient(135deg,var(--caramel),var(--caramel-2));
-  position:relative;
-  box-shadow:0 18px 40px rgba(122,62,18,.35);
-}
-.logo:after{
-  content:"";
-  position:absolute;inset:14px;
-  border-radius:16px;
-  background:rgba(255,246,231,.65);
-}
-.brand b{font-size:20px;font-weight:900}
-.brand small{display:block;font-size:12px;color:var(--muted)}
+    /* Top progress */
+    .progress{
+      position:fixed;left:0;top:0;height:3px;width:0%;
+      background: linear-gradient(90deg,var(--blue),var(--blue2));
+      z-index:1000;
+    }
 
-.btn{
-  border-radius:999px;
-  padding:16px 22px;
-  font-weight:900;
-  font-size:16px;
-  cursor:pointer;
-  border:none;
-  display:inline-flex;align-items:center;gap:10px;
-  transition:.15s ease;
-}
-.btn.primary{
-  background:linear-gradient(135deg,var(--pop),var(--pop-2));
-  box-shadow:0 18px 40px rgba(124,255,107,.35);
-}
-.btn.primary:hover{transform:translateY(-2px)}
-.btn.ghost{
-  background:rgba(255,246,231,.9);
-  border:1px solid var(--line);
-}
+    /* Header (OF-like: minimal, white, crisp) */
+    header{
+      position:sticky;top:0;z-index:200;
+      background:rgba(255,255,255,.86);
+      backdrop-filter: blur(12px);
+      border-bottom:1px solid var(--line);
+    }
+    .nav{
+      display:flex;align-items:center;justify-content:space-between;
+      padding:14px 0;gap:12px;
+    }
+    .brand{display:flex;align-items:center;gap:12px}
+    .logo{
+      width:46px;height:46px;border-radius:14px;
+      background: linear-gradient(135deg, var(--blue), var(--blue2));
+      box-shadow: 0 12px 30px rgba(0,175,240,.20);
+      position:relative;
+    }
+    .logo:after{
+      content:"";
+      position:absolute;inset:12px;border-radius:12px;
+      background:rgba(255,255,255,.55);
+      border:1px solid rgba(255,255,255,.65);
+    }
+    .brand b{font-size:17px;font-weight:900;letter-spacing:-.2px}
+    .brand small{display:block;color:var(--muted);font-size:12px;margin-top:2px}
 
-/* HERO */
-.hero{padding:56px 0}
-.hero-grid{
-  display:grid;grid-template-columns:1.1fr .9fr;gap:22px;
-}
-@media(max-width:900px){.hero-grid{grid-template-columns:1fr}}
+    .nav-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:flex-end}
+    .btn{
+      border:0;cursor:pointer;border-radius:999px;
+      padding:12px 16px;font-weight:900;font-size:14px;
+      display:inline-flex;align-items:center;gap:10px;
+      transition: transform .12s ease, filter .12s ease, box-shadow .12s ease;
+    }
+    .btn:active{transform:translateY(1px)}
+    .btn.primary{
+      color:white;
+      background: linear-gradient(135deg, var(--blue), var(--blue2));
+      box-shadow: 0 14px 32px rgba(0,175,240,.22);
+    }
+    .btn.primary:hover{filter:brightness(1.03);transform:translateY(-1px)}
+    .btn.ghost{
+      background:white;border:1px solid var(--line);color:var(--ink);
+      box-shadow:none;
+    }
+    .pill{
+      font-size:12px;color:var(--muted);
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.7);
+      padding:9px 12px;border-radius:999px;
+    }
 
-.card{
-  background:rgba(255,246,231,.85);
-  border-radius:var(--radius);
-  border:1px solid var(--line);
-  box-shadow:var(--shadow);
-}
+    /* Hero */
+    .hero{padding:44px 0 20px}
+    .hero-grid{
+      display:grid;grid-template-columns: 1.2fr .8fr;gap:18px;align-items:stretch;
+    }
+    @media (max-width: 980px){.hero-grid{grid-template-columns:1fr}}
 
-.hero-copy{padding:28px}
-.kicker{
-  display:inline-flex;gap:10px;align-items:center;
-  padding:10px 16px;border-radius:999px;
-  background:linear-gradient(135deg,rgba(124,255,107,.25),rgba(255,246,231,.8));
-  font-size:13px;
-}
-.dot{
-  width:10px;height:10px;border-radius:50%;
-  background:var(--pop-2);
-  box-shadow:0 0 0 6px rgba(122,167,255,.25);
-}
+    .card{
+      background:rgba(255,255,255,.88);
+      border:1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .hero-copy{padding:24px}
+    .kicker{
+      display:inline-flex;align-items:center;gap:10px;
+      font-size:12px;color:var(--muted);
+      padding:9px 12px;border-radius:999px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.75);
+    }
+    .dot{
+      width:8px;height:8px;border-radius:999px;
+      background:var(--blue);
+      box-shadow:0 0 0 6px rgba(0,175,240,.14);
+    }
+    h1{
+      margin:14px 0 10px;
+      font-size:44px;line-height:1.02;letter-spacing:-1px;
+    }
+    @media (max-width:520px){h1{font-size:36px}}
+    .sub{
+      margin:0 0 16px;
+      color:var(--muted);line-height:1.55;font-size:16px;max-width:62ch;
+    }
+    .cta-row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:12px}
 
-h1{
-  font-size:46px;line-height:1.02;
-  margin:16px 0 10px;
-}
-.sub{
-  font-size:17px;color:var(--muted);max-width:58ch;
-}
-.social-proof{
-  margin-top:14px;
-  font-size:13px;color:var(--muted);
-}
-.cta-row{margin-top:18px;display:flex;gap:12px;flex-wrap:wrap}
+    .social{
+      margin-top:14px;
+      display:flex;gap:10px;flex-wrap:wrap;
+      color:var(--muted);font-size:12px;
+    }
+    .tag{
+      padding:8px 10px;border-radius:999px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.7);
+    }
 
-/* TEMPLATE CHIPS */
-.chips{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
-.chip{
-  padding:10px 14px;border-radius:999px;
-  background:rgba(255,246,231,.9);
-  border:1px solid var(--line);
-  font-size:13px;cursor:pointer;
-}
-.chip:hover{background:rgba(124,255,107,.25)}
+    /* Template chips (like OF categories, but for our funnel) */
+    .chips{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+    .chip{
+      font-size:13px;font-weight:800;color:var(--ink);
+      padding:10px 12px;border-radius:999px;
+      border:1px solid var(--line);
+      background:white;
+      cursor:pointer;
+      transition: transform .12s ease, background .12s ease;
+    }
+    .chip:hover{transform:translateY(-1px);background:rgba(0,175,240,.06)}
 
-/* PRODUCT HERO */
-.hero-product{
-  position:relative;padding:28px;
-  display:flex;align-items:center;justify-content:center;
-}
-.cookie{
-  width:280px;height:280px;border-radius:50%;
-  background:
-    radial-gradient(circle at 30% 30%, #e7b27a, var(--caramel));
-  box-shadow:0 25px 60px rgba(20,15,12,.35);
-  position:relative;
-  animation:float 4s ease-in-out infinite;
-}
-@keyframes float{
-  0%,100%{transform:translateY(0)}
-  50%{transform:translateY(-8px)}
-}
-.qr{
-  position:absolute;inset:60px;
-  background:
-    linear-gradient(90deg,#000 10%,transparent 10%),
-    linear-gradient(#000 10%,transparent 10%);
-  background-size:20px 20px;
-  border-radius:16px;
-  opacity:.85;
-}
-.stamp{
-  position:absolute;bottom:-14px;right:-14px;
-  background:var(--pop);
-  padding:14px 18px;
-  border-radius:16px;
-  font-weight:900;
-  transform:rotate(-12deg);
-  box-shadow:0 12px 30px rgba(0,0,0,.25);
-}
+    /* Right: OF-like "signup/login card" but it's our 3-click start */
+    .start-card{padding:18px}
+    .start-card h3{margin:4px 0 10px;font-size:16px;letter-spacing:-.2px}
+    .field{
+      border:1px solid var(--line);
+      background:white;
+      border-radius:14px;
+      padding:12px;
+      box-shadow: var(--shadow2);
+    }
+    label{display:block;font-size:12px;color:var(--muted);font-weight:900;margin-bottom:8px}
+    input, select{
+      width:100%;
+      border:1px solid rgba(11,27,42,.14);
+      background:white;
+      border-radius:12px;
+      padding:10px 10px;
+      font: inherit;
+      outline:none;
+    }
+    .start-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+    .mini-note{margin-top:10px;color:var(--muted);font-size:12px;line-height:1.45}
 
-/* SECTIONS */
-.section{padding:36px 0}
-.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-@media(max-width:900px){.grid3{grid-template-columns:1fr}}
-.mini{
-  padding:18px;border-radius:20px;
-  background:rgba(255,246,231,.85);
-  border:1px solid var(--line);
-}
+    /* Product visual: clean cookie card (less artsy, more OF-like) */
+    .cookie-visual{
+      margin-top:14px;
+      border:1px solid var(--line);
+      border-radius:16px;
+      background:
+        radial-gradient(500px 180px at 30% 10%, rgba(181,106,42,.14), transparent 60%),
+        linear-gradient(135deg, rgba(0,175,240,.08), rgba(255,255,255,.85));
+      padding:14px;
+      position:relative;
+      overflow:hidden;
+    }
+    .cookie-row{display:flex;gap:12px;align-items:center}
+    .cookie{
+      width:74px;height:74px;border-radius:50%;
+      background:
+        radial-gradient(circle at 30% 30%, #f3c89a, var(--caramel));
+      box-shadow:0 14px 34px rgba(11,27,42,.12);
+      position:relative;
+      flex:0 0 auto;
+      animation: float 4s ease-in-out infinite;
+    }
+    @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+    .qr{
+      width:74px;height:74px;border-radius:14px;
+      border:1px solid var(--line);
+      background:
+        linear-gradient(90deg,#0b1b2a 10%,transparent 10%),
+        linear-gradient(#0b1b2a 10%,transparent 10%);
+      background-size:14px 14px;
+      opacity:.72;
+      flex:0 0 auto;
+    }
+    .cookie-text b{display:block}
+    .cookie-text small{color:var(--muted)}
+    .stamp{
+      position:absolute;right:12px;top:12px;
+      padding:8px 10px;border-radius:999px;
+      background:linear-gradient(135deg,var(--blue),var(--blue2));
+      color:white;font-weight:900;font-size:12px;
+      box-shadow:0 12px 26px rgba(0,175,240,.20);
+    }
 
-/* FOOTER */
-footer{
-  padding:28px 0;color:var(--muted);
-  border-top:1px solid var(--line);
-}
-</style>
+    /* Sections */
+    .section{padding:20px 0}
+    .section h2{margin:0 0 10px;font-size:20px;letter-spacing:-.2px}
+    .section p{margin:0;color:var(--muted);line-height:1.55}
+    .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:14px}
+    @media(max-width:980px){.grid3{grid-template-columns:1fr}}
+    .mini{
+      padding:16px;border-radius:16px;border:1px solid var(--line);
+      background:rgba(255,255,255,.88);
+      box-shadow: var(--shadow2);
+      transition: transform .12s ease;
+    }
+    .mini:hover{transform:translateY(-2px)}
+    .mini b{display:block;margin-bottom:6px}
+    .mini ul{margin:10px 0 0;padding-left:18px;color:var(--muted)}
+    .mini li{margin:6px 0}
+
+    /* Modal (3 steps) */
+    .overlay{
+      position:fixed;inset:0;
+      background: rgba(11,27,42,.55);
+      display:none;align-items:center;justify-content:center;
+      padding:18px;z-index:999;
+    }
+    .overlay.open{display:flex}
+    .modal{
+      width:min(860px,100%);
+      border-radius:20px;
+      background:rgba(255,255,255,.96);
+      border:1px solid rgba(255,255,255,.45);
+      box-shadow: 0 30px 90px rgba(0,0,0,.35);
+      overflow:hidden;
+    }
+    .modal-head{
+      padding:14px 16px;
+      display:flex;align-items:center;justify-content:space-between;gap:10px;
+      border-bottom:1px solid var(--line);
+    }
+    .close{
+      border:1px solid var(--line);
+      background:white;
+      border-radius:999px;
+      padding:10px 12px;
+      cursor:pointer;font-weight:900;
+    }
+    .modal-body{padding:16px}
+    .steps{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+    .step{
+      font-size:12px;color:var(--muted);
+      border:1px solid var(--line);
+      background:white;
+      padding:8px 10px;border-radius:999px;
+    }
+    .step.active{
+      color:var(--ink);
+      border-color: rgba(0,175,240,.30);
+      box-shadow: 0 10px 30px rgba(11,27,42,.08);
+    }
+    textarea{
+      width:100%;
+      border:1px solid rgba(11,27,42,.14);
+      background:white;
+      border-radius:12px;
+      padding:10px 10px;
+      font: inherit;
+      outline:none;
+      min-height:96px;
+      resize:vertical;
+    }
+    .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    @media (max-width:780px){.form-grid{grid-template-columns:1fr}}
+    .summary{
+      border:1px dashed rgba(0,175,240,.35);
+      background:rgba(0,175,240,.06);
+      border-radius:14px;
+      padding:12px;
+      color:var(--muted);
+      font-size:13px;line-height:1.45;
+    }
+    .modal-actions{
+      display:flex;gap:10px;flex-wrap:wrap;justify-content:space-between;align-items:center;
+      margin-top:12px;padding-top:12px;border-top:1px solid var(--line)
+    }
+    .right{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end}
+    .hidden{display:none !important}
+
+    footer{
+      margin-top:22px;
+      padding:22px 0 34px;
+      border-top:1px solid var(--line);
+      background:rgba(255,255,255,.65);
+      color:var(--muted);
+      font-size:12px;
+    }
+  </style>
 </head>
 
 <body>
+  <div class="progress" id="progress"></div>
 
-<header class="nav">
-  <div class="container nav-inner">
-    <a class="brand" href="#">
-      <div class="logo"></div>
-      <div>
-        <b>OnlyKeks</b>
-        <small>Post die schmeckt!</small>
-      </div>
-    </a>
-    <button class="btn primary">Reply-Keks starten</button>
-  </div>
-</header>
+  <header>
+    <div class="container">
+      <div class="nav">
+        <a class="brand" href="#top">
+          <span class="logo" aria-hidden="true"></span>
+          <span>
+            <b>OnlyKeks</b>
+            <small>Post die schmeckt!</small>
+          </span>
+        </a>
 
-<main>
-<section class="hero">
-  <div class="container hero-grid">
-
-    <div class="card hero-copy">
-      <span class="kicker"><span class="dot"></span>Post die schmeckt!</span>
-      <h1>Weil Post nicht schmeckt,<br>verschicke Post die schmeckt.</h1>
-      <p class="sub">
-        Ein Keks. Eine Message. Ein QR-Reply.
-        Der Empfänger wird zum nächsten Absender.
-      </p>
-
-      <div class="chips">
-        <div class="chip">😈 Frech</div>
-        <div class="chip">❤️ Love</div>
-        <div class="chip">🔥 Motivation</div>
-        <div class="chip">💼 Boss-Mode</div>
-      </div>
-
-      <div class="cta-row">
-        <button class="btn primary">Reply-Keks starten</button>
-        <button class="btn ghost">Beispiele ansehen</button>
-      </div>
-
-      <div class="social-proof">
-        ⭐ 4,8/5 • 2.314 Replies • Viral Loop aktiv
+        <div class="nav-actions">
+          <span class="pill">MVP: Reply-Keks • 3 Klicks • Viral Loop</span>
+          <button class="btn ghost" id="btnExamples" type="button">Beispiele</button>
+          <button class="btn primary" id="btnStartTop" type="button">Reply-Keks starten</button>
+        </div>
       </div>
     </div>
+  </header>
 
-    <div class="card hero-product">
-      <div class="cookie">
-        <div class="qr"></div>
-        <div class="stamp">REPLY</div>
+  <main id="top">
+    <section class="hero">
+      <div class="container">
+        <div class="hero-grid">
+          <div class="card hero-copy">
+            <span class="kicker"><span class="dot"></span>Weil Post nicht schmeckt, verschicke Post die schmeckt.</span>
+            <h1>Eine Message, die man essen kann.</h1>
+            <p class="sub">
+              Du schickst einen Keks mit QR-Reply. Empfänger scannt → antwortet → wir machen den Reply-Keks → zurück.
+              Das ist kein Shop. Das ist ein Loop.
+            </p>
+
+            <div class="chips">
+              <button class="chip" data-plan="Quick" data-tpl="Frech" type="button">😈 Frech</button>
+              <button class="chip" data-plan="Custom" data-tpl="Love" type="button">❤️ Love</button>
+              <button class="chip" data-plan="Custom" data-tpl="Motivation" type="button">🔥 Motivation</button>
+              <button class="chip" data-plan="Premium" data-tpl="Boss" type="button">💼 Boss-Mode</button>
+            </div>
+
+            <div class="cta-row">
+              <button class="btn primary" id="btnStart" type="button">Reply-Keks starten</button>
+              <button class="btn ghost" id="btnHow" type="button">So funktioniert’s</button>
+            </div>
+
+            <div class="social">
+              <span class="tag">⭐ 4,8/5 (Beta)</span>
+              <span class="tag">📦 2.314 Replies (Demo)</span>
+              <span class="tag">🚀 TikTok/Reels-ready</span>
+            </div>
+          </div>
+
+          <div class="card start-card">
+            <h3>Starte in 10 Sekunden</h3>
+
+            <div class="field">
+              <label for="miniPlan">Paket</label>
+              <select id="miniPlan">
+                <option value="Quick">Quick</option>
+                <option value="Custom" selected>Custom</option>
+                <option value="Premium">Premium</option>
+              </select>
+            </div>
+
+            <div class="field" style="margin-top:10px">
+              <label for="miniTpl">Vorlage</label>
+              <select id="miniTpl">
+                <option value="Frech">Frech</option>
+                <option value="Love">Love</option>
+                <option value="Motivation">Motivation</option>
+                <option value="Boss">Boss-Mode</option>
+                <option value="Custom">Eigener Text</option>
+              </select>
+            </div>
+
+            <div class="start-actions">
+              <button class="btn primary" id="btnStartCard" type="button">Weiter</button>
+              <button class="btn ghost" id="btnSeeExamples2" type="button">Beispiele</button>
+            </div>
+
+            <div class="cookie-visual" aria-label="Produktvisual">
+              <span class="stamp">REPLY</span>
+              <div class="cookie-row">
+                <div class="cookie" aria-hidden="true"></div>
+                <div class="qr" aria-hidden="true"></div>
+                <div class="cookie-text">
+                  <b>Reply-Keks</b>
+                  <small>1 Keks + Karte + QR → Antwort in 3 Klicks</small>
+                </div>
+              </div>
+            </div>
+
+            <div class="mini-note">
+              Keine Accounts im MVP. Ziel: maximaler Abschluss, minimaler Frust.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="how">
+      <div class="container">
+        <h2>So funktioniert’s</h2>
+        <p>Weniger Shop, mehr „Reply-Loop“: Empfänger wird zum nächsten Sender.</p>
+
+        <div class="grid3">
+          <div class="mini">
+            <b>1) Trigger</b>
+            Keks + Karte landen im Briefkasten. Überraschung → Foto → Neugier.
+            <ul>
+              <li>Umschlag + Keks + QR</li>
+              <li>Mini-Story-URL</li>
+            </ul>
+          </div>
+
+          <div class="mini">
+            <b>2) Reply-Flow</b>
+            QR scan → Vorlage wählen → Text → Adresse → Zahlung.
+            <ul>
+              <li>3 Steps, fertig</li>
+              <li>Reply-Code personalisiert</li>
+            </ul>
+          </div>
+
+          <div class="mini">
+            <b>3) Viral Loop</b>
+            Jede Antwort erzeugt neue Empfänger. Jeder Empfänger ist Akquise.
+            <ul>
+              <li>Share-fähig</li>
+              <li>Perfekt für Reels</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="cta-row" style="margin-top:14px">
+          <button class="btn primary" id="btnStartHow" type="button">Reply-Keks starten</button>
+          <button class="btn ghost" id="btnScrollExamples" type="button">Beispiele</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="examples">
+      <div class="container">
+        <h2>Beispiele</h2>
+        <p>Templates, die Reply-Rate pushen (und Shares triggern).</p>
+
+        <div class="grid3">
+          <div class="mini">
+            <b>😈 Frech</b>
+            „Reply oder du bist feige.“
+            <div class="cta-row" style="margin-top:10px">
+              <button class="btn primary" data-plan="Quick" data-tpl="Frech" type="button">Nehm ich</button>
+              <button class="btn ghost" data-plan="Custom" data-tpl="Frech" type="button">Custom</button>
+            </div>
+          </div>
+
+          <div class="mini">
+            <b>❤️ Love</b>
+            „Ich denk an dich. Reply, wenn du lächelst.“
+            <div class="cta-row" style="margin-top:10px">
+              <button class="btn primary" data-plan="Custom" data-tpl="Love" type="button">Nehm ich</button>
+              <button class="btn ghost" data-plan="Premium" data-tpl="Love" type="button">Premium</button>
+            </div>
+          </div>
+
+          <div class="mini">
+            <b>💼 Boss-Mode</b>
+            „Kurzer Ping. Reply per QR – dann machen wir Deal.“
+            <div class="cta-row" style="margin-top:10px">
+              <button class="btn primary" data-plan="Custom" data-tpl="Boss" type="button">Nehm ich</button>
+              <button class="btn ghost" data-plan="Premium" data-tpl="Boss" type="button">Premium</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <b>OnlyKeks</b> • Post die schmeckt! • MVP-Demo (Checkout/Payments noch nicht angebunden)
+    </div>
+  </footer>
+
+  <!-- ORDER MODAL -->
+  <div class="overlay" id="overlay" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-label="Reply-Keks bestellen">
+      <div class="modal-head">
+        <b>Reply-Keks bestellen</b>
+        <button class="close" id="btnClose" type="button">Schließen</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="steps" aria-label="Schritte">
+          <span class="step active" id="s1">1) Vorlage</span>
+          <span class="step" id="s2">2) Text & Adresse</span>
+          <span class="step" id="s3">3) Zahlung</span>
+        </div>
+
+        <div id="step1">
+          <div class="form-grid">
+            <div class="field">
+              <label for="plan">Paket</label>
+              <select id="plan">
+                <option value="Quick">Quick</option>
+                <option value="Custom" selected>Custom</option>
+                <option value="Premium">Premium</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="template">Vorlage</label>
+              <select id="template">
+                <option value="Frech">Frech</option>
+                <option value="Love">Love</option>
+                <option value="Motivation">Motivation</option>
+                <option value="Boss">Boss-Mode</option>
+                <option value="Custom">Eigener Text</option>
+              </select>
+            </div>
+          </div>
+          <div class="summary" style="margin-top:12px" id="preview1"></div>
+        </div>
+
+        <div id="step2" class="hidden">
+          <div class="form-grid">
+            <div class="field" style="grid-column:1/-1">
+              <label for="message">Botschaft</label>
+              <textarea id="message" placeholder="Deine Message…"></textarea>
+            </div>
+            <div class="field">
+              <label for="toName">Empfänger (Name)</label>
+              <input id="toName" placeholder="z.B. Marlon" />
+            </div>
+            <div class="field">
+              <label for="toAddr">Empfänger (Adresse)</label>
+              <input id="toAddr" placeholder="Straße, Nr., PLZ, Ort" />
+            </div>
+            <div class="field">
+              <label for="fromName">Absender (Name)</label>
+              <input id="fromName" placeholder="z.B. Viktor" />
+            </div>
+            <div class="field">
+              <label for="replyCode">Reply-Code (auto)</label>
+              <input id="replyCode" readonly />
+            </div>
+          </div>
+          <div class="summary" style="margin-top:12px" id="preview2"></div>
+        </div>
+
+        <div id="step3" class="hidden">
+          <div class="summary" id="checkoutSummary"></div>
+          <div class="field" style="margin-top:12px">
+            <label for="payment">Zahlung (Demo)</label>
+            <select id="payment">
+              <option>Kreditkarte</option>
+              <option>PayPal</option>
+              <option>Klarna</option>
+              <option>Apple Pay / Google Pay</option>
+            </select>
+          </div>
+          <p style="margin-top:10px;color:var(--muted);font-size:12px;line-height:1.45">
+            Demo-UI. Später Stripe/PayPal anbinden + Webhook an Produktion/Versand.
+          </p>
+        </div>
+
+        <div class="modal-actions">
+          <button class="btn ghost" id="btnBack" type="button">Zurück</button>
+          <div class="right">
+            <button class="btn ghost" id="btnNext" type="button">Weiter</button>
+            <button class="btn primary hidden" id="btnPay" type="button">Zahlung abschließen</button>
+          </div>
+        </div>
       </div>
     </div>
-
   </div>
-</section>
 
-<section class="section">
-  <div class="container grid3">
-    <div class="mini"><b>1. Keks kommt an</b><br>Briefkasten → Überraschung → Foto.</div>
-    <div class="mini"><b>2. QR-Reply</b><br>Scan → Antwort → Bestellung.</div>
-    <div class="mini"><b>3. Loop</b><br>Reply wird neuer Keks.</div>
-  </div>
-</section>
-</main>
+  <script>
+    const $ = (id) => document.getElementById(id);
 
-<footer>
-  <div class="container">
-    <b>OnlyKeks</b><br>
-    Post die schmeckt. © MVP
-  </div>
-</footer>
+    const overlay = $("overlay");
+    const btnClose = $("btnClose");
 
+    const btnStartTop = $("btnStartTop");
+    const btnStart = $("btnStart");
+    const btnStartHow = $("btnStartHow");
+    const btnStartCard = $("btnStartCard");
+
+    const btnHow = $("btnHow");
+    const btnExamples = $("btnExamples");
+    const btnSeeExamples2 = $("btnSeeExamples2");
+    const btnScrollExamples = $("btnScrollExamples");
+
+    const miniPlan = $("miniPlan");
+    const miniTpl  = $("miniTpl");
+
+    const plan = $("plan");
+    const template = $("template");
+    const message = $("message");
+    const toName = $("toName");
+    const toAddr = $("toAddr");
+    const fromName = $("fromName");
+    const replyCode = $("replyCode");
+
+    const step1 = $("step1"), step2 = $("step2"), step3 = $("step3");
+    const s1 = $("s1"), s2 = $("s2"), s3 = $("s3");
+    const btnBack = $("btnBack"), btnNext = $("btnNext"), btnPay = $("btnPay");
+
+    const preview1 = $("preview1");
+    const preview2 = $("preview2");
+    const checkoutSummary = $("checkoutSummary");
+
+    const templates = {
+      "Frech": "Reply oder du bist feige.",
+      "Love": "Ich denk an dich. Reply, wenn du lächelst.",
+      "Motivation": "Du schaffst das. Reply – ich glaub an dich.",
+      "Boss": "Kurzer Ping. Reply per QR – dann machen wir Deal.",
+      "Custom": ""
+    };
+
+    function makeReplyCode(){
+      const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+      let out = "";
+      for (let i=0;i<8;i++) out += chars[Math.floor(Math.random()*chars.length)];
+      return out;
+    }
+
+    function priceFor(p){
+      if (p === "Quick") return 9.90;
+      if (p === "Custom") return 14.90;
+      return 29.90;
+    }
+
+    let currentStep = 1;
+
+    function openModal(prefPlan="Custom", prefTpl="Frech"){
+      overlay.classList.add("open");
+      overlay.setAttribute("aria-hidden","false");
+
+      plan.value = prefPlan;
+      template.value = prefTpl;
+
+      message.value = templates[prefTpl] ?? "";
+      replyCode.value = makeReplyCode();
+
+      currentStep = 1;
+      setStep(1);
+      updatePreviews();
+    }
+
+    function closeModal(){
+      overlay.classList.remove("open");
+      overlay.setAttribute("aria-hidden","true");
+    }
+
+    function setStep(n){
+      currentStep = n;
+      s1.classList.toggle("active", n===1);
+      s2.classList.toggle("active", n===2);
+      s3.classList.toggle("active", n===3);
+
+      step1.classList.toggle("hidden", n!==1);
+      step2.classList.toggle("hidden", n!==2);
+      step3.classList.toggle("hidden", n!==3);
+
+      btnBack.disabled = (n===1);
+      btnNext.classList.toggle("hidden", n===3);
+      btnPay.classList.toggle("hidden", n!==3);
+    }
+
+    function updatePreviews(){
+      if (template.value !== "Custom") message.value = templates[template.value] ?? "";
+
+      preview1.innerHTML =
+        `<b>Preview:</b> Paket <b>${plan.value}</b> • Vorlage <b>${template.value}</b> • „${(template.value==="Custom" ? (message.value||"…") : (templates[template.value]||"…"))}“`;
+
+      preview2.innerHTML =
+        `<b>Zusammenfassung:</b><br/>
+         Paket: <b>${plan.value}</b> (${priceFor(plan.value).toFixed(2)} €)<br/>
+         Message: „${(message.value||"…").replaceAll("<","&lt;").replaceAll(">","&gt;")}“<br/>
+         Empfänger: ${toName.value || "—"} • Adresse: ${toAddr.value || "—"}<br/>
+         Absender: ${fromName.value || "—"} • Reply-Code: <b>${replyCode.value}</b>`;
+    }
+
+    function buildCheckout(){
+      const p = priceFor(plan.value);
+      const ship = (plan.value === "Premium") ? 0 : 2.90;
+      const total = p + ship;
+
+      checkoutSummary.innerHTML =
+        `<b>Checkout</b><br/>
+         Paket: <b>${plan.value}</b> — ${p.toFixed(2)} €<br/>
+         Versand: ${ship.toFixed(2)} €<br/>
+         <b>Gesamt: ${total.toFixed(2)} €</b><br/><br/>
+         Reply-Code: <b>${replyCode.value}</b><br/>
+         Message: „${(message.value||"…").replaceAll("<","&lt;").replaceAll(">","&gt;")}“`;
+    }
+
+    // Nav scroll
+    btnHow.addEventListener("click", ()=>document.querySelector("#how").scrollIntoView({behavior:"smooth"}));
+    btnExamples.addEventListener("click", ()=>document.querySelector("#examples").scrollIntoView({behavior:"smooth"}));
+    btnSeeExamples2.addEventListener("click", ()=>document.querySelector("#examples").scrollIntoView({behavior:"smooth"}));
+    btnScrollExamples.addEventListener("click", ()=>document.querySelector("#examples").scrollIntoView({behavior:"smooth"}));
+
+    // CTAs
+    btnStartTop.addEventListener("click", ()=>openModal("Custom","Frech"));
+    btnStart.addEventListener("click", ()=>openModal("Custom","Frech"));
+    btnStartHow.addEventListener("click", ()=>openModal("Custom","Motivation"));
+
+    btnStartCard.addEventListener("click", ()=>{
+      openModal(miniPlan.value, miniTpl.value);
+    });
+
+    // Chips + example buttons
+    document.querySelectorAll("[data-plan][data-tpl]").forEach(btn=>{
+      btn.addEventListener("click", ()=>{
+        const p = btn.getAttribute("data-plan") || "Custom";
+        const t = btn.getAttribute("data-tpl") || "Frech";
+        openModal(p, t);
+      });
+    });
+
+    // Modal controls
+    btnClose.addEventListener("click", closeModal);
+    overlay.addEventListener("click", (e)=>{ if(e.target === overlay) closeModal(); });
+
+    btnBack.addEventListener("click", ()=>{
+      if (currentStep > 1) setStep(currentStep - 1);
+      updatePreviews();
+    });
+
+    btnNext.addEventListener("click", ()=>{
+      updatePreviews();
+      if (currentStep === 1){
+        replyCode.value = makeReplyCode();
+        setStep(2);
+      } else if (currentStep === 2){
+        if (!message.value.trim()){ message.focus(); alert("Bitte eine kurze Message eintippen."); return; }
+        if (!toAddr.value.trim()){ toAddr.focus(); alert("Adresse fehlt noch."); return; }
+        buildCheckout();
+        setStep(3);
+      }
+    });
+
+    btnPay.addEventListener("click", ()=>{
+      alert("Demo: Zahlung erfolgreich. Nächster Schritt: Stripe/PayPal + Webhook anbinden.");
+      closeModal();
+    });
+
+    [plan, template, message, toName, toAddr, fromName].forEach(el=>{
+      el.addEventListener("input", updatePreviews);
+      el.addEventListener("change", updatePreviews);
+    });
+
+    // Progress bar
+    const prog = $("progress");
+    window.addEventListener("scroll", ()=>{
+      const h = document.documentElement;
+      const max = (h.scrollHeight - h.clientHeight) || 1;
+      const pct = Math.min(100, Math.max(0, (h.scrollTop / max) * 100));
+      prog.style.width = pct.toFixed(2) + "%";
+    }, {passive:true});
+  </script>
 </body>
 </html>

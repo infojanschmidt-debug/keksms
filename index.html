@@ -8,22 +8,21 @@
 
   <style>
     :root{
-      /* OnlyFans-ish: clean white + blau/cyan accents */
-      --bg: #ffffff;
+      /* OnlyFans-ish: clean white + blue accents */
+      --bg:#ffffff;
       --bg2:#f6fbff;
       --ink:#0b1b2a;
       --muted:#4b5b6b;
       --line: rgba(11,27,42,.10);
 
-      --blue:#00aff0;         /* OF-ähnlich */
+      --blue:#00aff0;
       --blue2:#2b7cff;
       --blueSoft: rgba(0,175,240,.12);
 
-      /* OnlyKeks Warmth as secondary */
+      /* OnlyKeks warmth (secondary) */
       --caramel:#b56a2a;
-      --cream:#fff4e8;
 
-      --radius: 18px;
+      --radius:18px;
       --shadow: 0 18px 60px rgba(11,27,42,.12);
       --shadow2: 0 10px 30px rgba(11,27,42,.08);
     }
@@ -35,22 +34,22 @@
       font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
       color:var(--ink);
       background:
-        radial-gradient(900px 500px at 15% 0%, var(--blueSoft), transparent 60%),
-        radial-gradient(800px 500px at 85% 25%, rgba(43,124,255,.10), transparent 55%),
+        radial-gradient(900px 520px at 15% 0%, var(--blueSoft), transparent 60%),
+        radial-gradient(800px 520px at 85% 25%, rgba(43,124,255,.10), transparent 55%),
         linear-gradient(180deg, var(--bg), var(--bg2));
       overflow-x:hidden;
     }
     a{color:inherit;text-decoration:none}
     .container{max-width:1120px;margin:0 auto;padding:0 18px}
 
-    /* Top progress */
+    /* Progress */
     .progress{
       position:fixed;left:0;top:0;height:3px;width:0%;
       background: linear-gradient(90deg,var(--blue),var(--blue2));
       z-index:1000;
     }
 
-    /* Header (OF-like: minimal, white, crisp) */
+    /* Header: minimal nav (no distractions) */
     header{
       position:sticky;top:0;z-index:200;
       background:rgba(255,255,255,.86);
@@ -78,11 +77,18 @@
     .brand small{display:block;color:var(--muted);font-size:12px;margin-top:2px}
 
     .nav-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:flex-end}
+    .pill{
+      font-size:12px;color:var(--muted);
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.7);
+      padding:9px 12px;border-radius:999px;
+    }
     .btn{
       border:0;cursor:pointer;border-radius:999px;
       padding:12px 16px;font-weight:900;font-size:14px;
       display:inline-flex;align-items:center;gap:10px;
       transition: transform .12s ease, filter .12s ease, box-shadow .12s ease;
+      white-space:nowrap;
     }
     .btn:active{transform:translateY(1px)}
     .btn.primary{
@@ -95,17 +101,12 @@
       background:white;border:1px solid var(--line);color:var(--ink);
       box-shadow:none;
     }
-    .pill{
-      font-size:12px;color:var(--muted);
-      border:1px solid var(--line);
-      background:rgba(255,255,255,.7);
-      padding:9px 12px;border-radius:999px;
-    }
 
     /* Hero */
     .hero{padding:44px 0 20px}
     .hero-grid{
-      display:grid;grid-template-columns: 1.2fr .8fr;gap:18px;align-items:stretch;
+      display:grid;grid-template-columns: 1.2fr .8fr;
+      gap:18px;align-items:stretch;
     }
     @media (max-width: 980px){.hero-grid{grid-template-columns:1fr}}
 
@@ -140,6 +141,7 @@
     }
     .cta-row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:12px}
 
+    /* Social proof + trust signals */
     .social{
       margin-top:14px;
       display:flex;gap:10px;flex-wrap:wrap;
@@ -150,11 +152,21 @@
       border:1px solid var(--line);
       background:rgba(255,255,255,.7);
     }
+    .trust-row{
+      margin-top:10px;
+      display:flex;gap:10px;flex-wrap:wrap;
+      color:var(--muted);font-size:12px;
+    }
+    .trust{
+      padding:8px 10px;border-radius:999px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.7);
+    }
 
-    /* Template chips (like OF categories, but for our funnel) */
+    /* Template chips (push start) */
     .chips{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
     .chip{
-      font-size:13px;font-weight:800;color:var(--ink);
+      font-size:13px;font-weight:900;color:var(--ink);
       padding:10px 12px;border-radius:999px;
       border:1px solid var(--line);
       background:white;
@@ -163,7 +175,7 @@
     }
     .chip:hover{transform:translateY(-1px);background:rgba(0,175,240,.06)}
 
-    /* Right: OF-like "signup/login card" but it's our 3-click start */
+    /* Right card: “Start in 10 Sekunden” */
     .start-card{padding:18px}
     .start-card h3{margin:4px 0 10px;font-size:16px;letter-spacing:-.2px}
     .field{
@@ -186,13 +198,13 @@
     .start-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
     .mini-note{margin-top:10px;color:var(--muted);font-size:12px;line-height:1.45}
 
-    /* Product visual: clean cookie card (less artsy, more OF-like) */
+    /* Hero visual: product concept in 3 seconds */
     .cookie-visual{
       margin-top:14px;
       border:1px solid var(--line);
       border-radius:16px;
       background:
-        radial-gradient(500px 180px at 30% 10%, rgba(181,106,42,.14), transparent 60%),
+        radial-gradient(520px 180px at 30% 10%, rgba(181,106,42,.14), transparent 60%),
         linear-gradient(135deg, rgba(0,175,240,.08), rgba(255,255,255,.85));
       padding:14px;
       position:relative;
@@ -201,12 +213,11 @@
     .cookie-row{display:flex;gap:12px;align-items:center}
     .cookie{
       width:74px;height:74px;border-radius:50%;
-      background:
-        radial-gradient(circle at 30% 30%, #f3c89a, var(--caramel));
+      background: radial-gradient(circle at 30% 30%, #f3c89a, var(--caramel));
       box-shadow:0 14px 34px rgba(11,27,42,.12);
       position:relative;
-      flex:0 0 auto;
       animation: float 4s ease-in-out infinite;
+      flex:0 0 auto;
     }
     @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
     .qr{
@@ -229,7 +240,7 @@
       box-shadow:0 12px 26px rgba(0,175,240,.20);
     }
 
-    /* Sections */
+    /* Sections (tight, fast) */
     .section{padding:20px 0}
     .section h2{margin:0 0 10px;font-size:20px;letter-spacing:-.2px}
     .section p{margin:0;color:var(--muted);line-height:1.55}
@@ -246,7 +257,7 @@
     .mini ul{margin:10px 0 0;padding-left:18px;color:var(--muted)}
     .mini li{margin:6px 0}
 
-    /* Modal (3 steps) */
+    /* Modal: 3-step frictionless */
     .overlay{
       position:fixed;inset:0;
       background: rgba(11,27,42,.55);
@@ -341,7 +352,7 @@
         </a>
 
         <div class="nav-actions">
-          <span class="pill">MVP: Reply-Keks • 3 Klicks • Viral Loop</span>
+          <span class="pill">One page • One CTA • Reply-Loop</span>
           <button class="btn ghost" id="btnExamples" type="button">Beispiele</button>
           <button class="btn primary" id="btnStartTop" type="button">Reply-Keks starten</button>
         </div>
@@ -357,8 +368,8 @@
             <span class="kicker"><span class="dot"></span>Weil Post nicht schmeckt, verschicke Post die schmeckt.</span>
             <h1>Eine Message, die man essen kann.</h1>
             <p class="sub">
-              Du schickst einen Keks mit QR-Reply. Empfänger scannt → antwortet → wir machen den Reply-Keks → zurück.
-              Das ist kein Shop. Das ist ein Loop.
+              Du schickst 1 Keks mit QR-Reply. Empfänger scannt → antwortet → wir backen/packen den Reply-Keks → zurück.
+              Das ist kein Katalog. Das ist Conversion.
             </p>
 
             <div class="chips">
@@ -376,7 +387,13 @@
             <div class="social">
               <span class="tag">⭐ 4,8/5 (Beta)</span>
               <span class="tag">📦 2.314 Replies (Demo)</span>
-              <span class="tag">🚀 TikTok/Reels-ready</span>
+              <span class="tag">🚀 Reels-ready</span>
+            </div>
+
+            <div class="trust-row">
+              <span class="trust">🔒 Secure Checkout (später Stripe)</span>
+              <span class="trust">📬 Versand tracking-ready</span>
+              <span class="trust">✅ Kein Account im MVP</span>
             </div>
           </div>
 
@@ -421,7 +438,7 @@
             </div>
 
             <div class="mini-note">
-              Keine Accounts im MVP. Ziel: maximaler Abschluss, minimaler Frust.
+              Fokus: <b>ein CTA</b> (Start). Alles andere wird nach hinten geschoben.
             </div>
           </div>
         </div>
@@ -431,7 +448,7 @@
     <section class="section" id="how">
       <div class="container">
         <h2>So funktioniert’s</h2>
-        <p>Weniger Shop, mehr „Reply-Loop“: Empfänger wird zum nächsten Sender.</p>
+        <p>Einfacher Flow, keine Ablenkung. Empfänger wird zum nächsten Sender.</p>
 
         <div class="grid3">
           <div class="mini">
@@ -445,9 +462,9 @@
 
           <div class="mini">
             <b>2) Reply-Flow</b>
-            QR scan → Vorlage wählen → Text → Adresse → Zahlung.
+            QR scan → Vorlage → Text → Adresse → Zahlung.
             <ul>
-              <li>3 Steps, fertig</li>
+              <li>3 Steps</li>
               <li>Reply-Code personalisiert</li>
             </ul>
           </div>
@@ -457,7 +474,7 @@
             Jede Antwort erzeugt neue Empfänger. Jeder Empfänger ist Akquise.
             <ul>
               <li>Share-fähig</li>
-              <li>Perfekt für Reels</li>
+              <li>Reels-tauglich</li>
             </ul>
           </div>
         </div>
@@ -501,6 +518,10 @@
               <button class="btn ghost" data-plan="Premium" data-tpl="Boss" type="button">Premium</button>
             </div>
           </div>
+        </div>
+
+        <div class="cta-row" style="margin-top:14px">
+          <button class="btn primary" id="btnStartBottom" type="button">Reply-Keks starten</button>
         </div>
       </div>
     </section>
@@ -613,6 +634,7 @@
     const btnStartTop = $("btnStartTop");
     const btnStart = $("btnStart");
     const btnStartHow = $("btnStartHow");
+    const btnStartBottom = $("btnStartBottom");
     const btnStartCard = $("btnStartCard");
 
     const btnHow = $("btnHow");
@@ -725,16 +747,17 @@
          Message: „${(message.value||"…").replaceAll("<","&lt;").replaceAll(">","&gt;")}“`;
     }
 
-    // Nav scroll
+    // Scroll helpers (minimal, no nav clutter)
     btnHow.addEventListener("click", ()=>document.querySelector("#how").scrollIntoView({behavior:"smooth"}));
     btnExamples.addEventListener("click", ()=>document.querySelector("#examples").scrollIntoView({behavior:"smooth"}));
     btnSeeExamples2.addEventListener("click", ()=>document.querySelector("#examples").scrollIntoView({behavior:"smooth"}));
     btnScrollExamples.addEventListener("click", ()=>document.querySelector("#examples").scrollIntoView({behavior:"smooth"}));
 
-    // CTAs
+    // CTAs -> open modal
     btnStartTop.addEventListener("click", ()=>openModal("Custom","Frech"));
     btnStart.addEventListener("click", ()=>openModal("Custom","Frech"));
     btnStartHow.addEventListener("click", ()=>openModal("Custom","Motivation"));
+    btnStartBottom.addEventListener("click", ()=>openModal("Custom","Frech"));
 
     btnStartCard.addEventListener("click", ()=>{
       openModal(miniPlan.value, miniTpl.value);

@@ -1,3 +1,4 @@
+const STRIPE_PAYMENT_LINK = "https://buy.stripe.com/aBcDeFgHiJkLmNoPqR";
 <!doctype html>
 <html lang="de">
 <head>
@@ -289,7 +290,8 @@ footer{
       </div>
 
       <!-- STEP 3 -->
-      <div class="panel" id="p3">
+      <button id="payNow">Zahlung abschließen</button>
+<div class="panel" id="p3">
         <p><b>Fertig 🍪</b><br>Klick auf Bezahlen und dein Keks geht auf Reise.</p>
         <a class="btn" id="payBtn" target="_blank">Jetzt sicher bezahlen</a>
       </div>
@@ -302,7 +304,10 @@ footer{
   © OnlyKeks · Post die schmeckt
 </footer>
 
-<script>
+<script>document.getElementById("payNow").addEventListener("click", () => {
+  window.open(STRIPE_PAYMENT_LINK, "_blank", "noopener");
+});
+
 /* =======================
 /*** CONFIG: NUR HIER STRIPE EINTRAGEN ***/
 const STRIPE_PAYMENT_LINK = "https://buy.stripe.com/aBcDeFgHiJkLmNoPqR";
@@ -354,5 +359,6 @@ draw();
 </script>
 </body>
 </html>
+
 
 

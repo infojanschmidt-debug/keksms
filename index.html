@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>OnlyKeks – Post die schmeckt!</title>
+  <title>OnlyKeks – Post die schmeckt</title>
   <meta name="description" content="Post die schmeckt. Sende einen Keks mit Message & Reply-Loop. 3 Klicks, kein Account." />
 
   <style>
@@ -18,8 +18,10 @@
       --blue2:#2b7cff;
       --blueSoft: rgba(0,175,240,.12);
 
-      /* Dokufrau-warm (soft & sweet) */
+      /* Dokufrau-soft */
       --caramel:#b56a2a;
+      --cookie:#c48752;
+      --cookieLight:#f3d2b3;
       --cream:#fff4e8;
       --pinkSoft: rgba(255,105,180,.10);
 
@@ -44,7 +46,7 @@
     a{color:inherit;text-decoration:none}
     .container{max-width:1120px;margin:0 auto;padding:0 18px}
 
-    /* Cookie rain canvas (background layer) */
+    /* Background cookie rain */
     #cookieRain{
       position:fixed; inset:0;
       width:100%; height:100%;
@@ -52,8 +54,9 @@
       pointer-events:none;
       opacity:.08;
     }
+    main, header, footer{position:relative; z-index:1}
 
-    /* Header: Post-like simple + OF-like clean */
+    /* Header */
     header{
       position:sticky;top:0;z-index:50;
       background:rgba(255,255,255,.86);
@@ -66,10 +69,11 @@
     }
     .brand{display:flex;align-items:center;gap:12px}
     .logo{
-      width:46px;height:46px;border-radius:14px;
+      width:48px;height:48px;border-radius:16px;
       background: linear-gradient(135deg, var(--blue), var(--blue2));
       box-shadow: 0 12px 30px rgba(0,175,240,.20);
       position:relative;
+      flex:0 0 auto;
     }
     .logo:after{
       content:"";
@@ -77,7 +81,7 @@
       background:rgba(255,255,255,.55);
       border:1px solid rgba(255,255,255,.65);
     }
-    .brand b{font-size:17px;font-weight:900;letter-spacing:-.2px}
+    .brand b{font-size:18px;font-weight:900;letter-spacing:-.2px}
     .brand small{display:block;color:var(--muted);font-size:12px;margin-top:2px}
 
     .nav-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:flex-end}
@@ -107,9 +111,6 @@
       background:white;border:1px solid var(--line);color:var(--ink);
       box-shadow:none;
     }
-
-    /* Layout layer */
-    main{position:relative;z-index:1}
 
     /* Hero */
     .hero{padding:44px 0 18px}
@@ -151,84 +152,119 @@
       font-size:16px;
       max-width:62ch;
     }
+    .cta-row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:12px}
 
-    /* Trust utilities (Post-like) */
-    .utilities{
-      display:flex;gap:10px;flex-wrap:wrap;
+    /* Trust bar (Post-like) */
+    .trustbar{
       margin-top:12px;
+      font-size:13px;
       color:var(--muted);
-      font-size:12px;
-    }
-    .util{
-      padding:8px 10px;border-radius:999px;
+      padding:10px 12px;
+      border-radius:14px;
       border:1px solid var(--line);
-      background:rgba(255,255,255,.70);
+      background:rgba(255,255,255,.75);
     }
 
-    /* Social proof */
-    .social{
-      margin-top:12px;
-      display:flex;gap:10px;flex-wrap:wrap;
-      color:var(--muted);font-size:12px;
-    }
-    .tag{
-      padding:8px 10px;border-radius:999px;
-      border:1px solid var(--line);
-      background:rgba(255,255,255,.70);
-    }
-
-    /* Right card: “Start in 10 Sekunden” */
-    .start-card{padding:18px}
-    .start-card h3{margin:4px 0 10px;font-size:16px;letter-spacing:-.2px}
-    .cookie-visual{
-      margin-top:10px;
-      border:1px solid var(--line);
+    /* Hero Visual */
+    .visual-card{padding:18px; display:flex; align-items:center; justify-content:center}
+    .visual-wrap{
+      position:relative;
+      width:min(420px,100%);
+      padding:18px;
       border-radius:16px;
+      border:1px solid var(--line);
       background:
         radial-gradient(520px 180px at 30% 10%, rgba(181,106,42,.14), transparent 60%),
-        linear-gradient(135deg, rgba(0,175,240,.08), rgba(255,255,255,.85));
-      padding:14px; position:relative;
-      overflow:hidden;
+        linear-gradient(135deg, rgba(0,175,240,.08), rgba(255,255,255,.90));
+      box-shadow:var(--shadow2);
     }
     .stamp{
-      position:absolute;right:12px;top:12px;
+      position:absolute; right:14px; top:14px;
       padding:8px 10px;border-radius:999px;
       background:linear-gradient(135deg,var(--blue),var(--blue2));
       color:white;font-weight:900;font-size:12px;
       box-shadow:0 12px 26px rgba(0,175,240,.20);
+      transform:rotate(-8deg);
     }
-    .cookie-row{display:flex;gap:12px;align-items:center}
+    .visual-row{display:flex;gap:14px;align-items:center;justify-content:center;flex-wrap:wrap}
     .cookie{
-      width:74px;height:74px;border-radius:50%;
-      background: radial-gradient(circle at 30% 30%, #f3c89a, var(--caramel));
-      box-shadow:0 14px 34px rgba(11,27,42,.12);
+      width:110px;height:110px;border-radius:50%;
+      background: radial-gradient(circle at 30% 30%, var(--cookieLight), var(--cookie));
+      box-shadow:0 16px 40px rgba(11,27,42,.18);
       animation: float 4s ease-in-out infinite;
-      flex:0 0 auto;
+      position:relative;
+    }
+    .cookie:after{
+      content:"";
+      position:absolute; inset:18px;
+      border-radius:50%;
+      border:2px dotted rgba(11,27,42,.12);
     }
     @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+    .cardpaper{
+      width:150px;height:100px;
+      border-radius:14px;
+      background:#fff;
+      border:1px solid var(--line);
+      box-shadow:0 12px 24px rgba(11,27,42,.10);
+      position:relative;
+    }
+    .cardpaper:before{
+      content:"";
+      position:absolute; left:14px; right:14px; top:18px; height:10px;
+      border-radius:999px;
+      background:rgba(11,27,42,.08);
+    }
+    .cardpaper:after{
+      content:"";
+      position:absolute; left:14px; right:34px; top:44px; height:10px;
+      border-radius:999px;
+      background:rgba(11,27,42,.06);
+    }
     .qr{
-      width:74px;height:74px;border-radius:14px;
+      width:92px;height:92px;border-radius:14px;
       border:1px solid var(--line);
       background:
         linear-gradient(90deg,#0b1b2a 10%,transparent 10%),
         linear-gradient(#0b1b2a 10%,transparent 10%);
-      background-size:14px 14px;
-      opacity:.72;
-      flex:0 0 auto;
+      background-size:16px 16px;
+      opacity:.75;
+      box-shadow:0 12px 24px rgba(11,27,42,.10);
     }
-    .cookie-text b{display:block}
-    .cookie-text small{color:var(--muted)}
+    .visual-caption{
+      margin-top:12px;
+      color:var(--muted);
+      font-size:12px;
+      text-align:center;
+      line-height:1.45;
+    }
 
-    /* Flow section (Post-simple + OF-modern) */
-    .section{padding:18px 0}
-    .flow-wrap{
-      display:grid;grid-template-columns:1fr;
+    /* Benefits (quiet tiles) */
+    .benefits{padding:8px 0 18px}
+    .benefit-grid{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
       gap:12px;
     }
+    @media(max-width:980px){.benefit-grid{grid-template-columns:1fr 1fr}}
+    @media(max-width:560px){.benefit-grid{grid-template-columns:1fr}}
+    .benefit{
+      padding:14px;
+      border-radius:16px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.88);
+      box-shadow:var(--shadow2);
+      color:var(--muted);
+      font-size:14px;
+    }
+    .benefit b{display:block;color:var(--ink);margin-bottom:6px}
+
+    /* Flow section */
+    .section{padding:18px 0}
     .flow-card{padding:18px}
     .flow-head{
       display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;
-      margin-bottom:10px;
+      margin-bottom:12px;
     }
     .flow-head h2{margin:0;font-size:18px;letter-spacing:-.2px}
     .tiny-links{display:flex;gap:12px;flex-wrap:wrap;color:var(--muted);font-size:12px}
@@ -253,6 +289,7 @@
       color:var(--ink);
       border-color: rgba(0,175,240,.30);
       box-shadow: var(--shadow2);
+      background:rgba(0,175,240,.08);
     }
 
     /* Panels */
@@ -275,12 +312,13 @@
       border:1px solid rgba(11,27,42,.14);
       background:white;
       border-radius:12px;
-      padding:10px 10px;
+      padding:12px 12px;
       font: inherit;
       outline:none;
     }
-    textarea{min-height:110px;resize:vertical}
+    textarea{min-height:120px;resize:vertical}
 
+    /* Chips */
     .chips{display:flex;gap:10px;flex-wrap:wrap}
     .chip{
       font-size:13px;font-weight:900;color:var(--ink);
@@ -299,6 +337,7 @@
       padding:12px;
       color:var(--muted);
       font-size:13px;line-height:1.45;
+      flex:1 1 320px;
     }
 
     .actions{
@@ -307,7 +346,7 @@
     }
     .right{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end}
 
-    /* Footer trust (Post-style) */
+    /* Footer (Post trust) */
     footer{
       margin-top:22px;
       padding:22px 0 34px;
@@ -315,7 +354,6 @@
       background:rgba(255,255,255,.65);
       color:var(--muted);
       font-size:12px;
-      position:relative;z-index:1;
     }
     .footer-links{display:flex;gap:14px;flex-wrap:wrap}
     .footer-links a{border-bottom:1px dotted rgba(11,27,42,.28)}
@@ -332,13 +370,13 @@
           <span class="logo" aria-hidden="true"></span>
           <span>
             <b>OnlyKeks</b>
-            <small>Post die schmeckt!</small>
+            <small>Post die schmeckt</small>
           </span>
         </a>
 
         <div class="nav-actions">
           <span class="pill">One page · One CTA · Reply-Loop</span>
-          <a class="btn primary" href="#flow" id="ctaTop">Reply-Keks starten</a>
+          <a class="btn primary" href="#flow">Reply-Keks starten</a>
         </div>
       </div>
     </div>
@@ -347,71 +385,63 @@
   <main id="top">
     <section class="hero">
       <div class="container hero-grid">
-
         <div class="card hero-copy">
-          <span class="kicker"><span class="dot"></span>Weil Post nicht schmeckt, verschicke Post die schmeckt.</span>
-          <h1>Eine Message, die man essen kann.</h1>
+          <span class="kicker"><span class="dot"></span>Weil Post nicht schmeckt</span>
+          <h1>Eine Message,<br/>die man essen kann.</h1>
           <p class="sub">
-            Du schickst 1 Keks mit Message & QR-Reply. Empfänger scannt → antwortet → wir machen den Reply-Keks → zurück.
-            <b>Ein Loop statt ein Shop.</b>
+            Du schickst 1 Keks mit Botschaft & QR-Reply. Empfänger scannt → antwortet → wir machen den Reply-Keks → zurück.
           </p>
 
-          <div class="utilities">
-            <span class="util">📦 Versand 2–3 WT</span>
-            <span class="util">🔎 Trackbar</span>
-            <span class="util">🔒 Sicher zahlen</span>
-            <span class="util">⏳ Lange haltbar</span>
-          </div>
-
-          <div class="social">
-            <span class="tag">⭐ 4,8/5 (Beta)</span>
-            <span class="tag">💬 Reply-Rate: Template-Boost</span>
-            <span class="tag">📸 Share-fähig</span>
-          </div>
-
-          <div style="margin-top:14px">
+          <div class="cta-row">
             <a class="btn primary" href="#flow">Reply-Keks starten</a>
-            <a class="btn ghost" href="#faq" style="margin-left:8px">Kurz erklärt</a>
+            <a class="btn ghost" href="#flow" onclick="setTimeout(()=>document.querySelector('[data-step=&quot;1&quot;]')?.scrollIntoView({behavior:'smooth'}), 0)">So funktioniert’s</a>
+          </div>
+
+          <div class="trustbar">
+            📦 Versand 2–3 Werktage · 🔎 Trackbar · 🔒 Sicher zahlen · ⚠️ Allergene
           </div>
         </div>
 
-        <div class="card start-card">
-          <h3>In 10 Sekunden verstanden</h3>
-          <div class="cookie-visual">
+        <div class="card visual-card" aria-label="Produktvisual">
+          <div class="visual-wrap">
             <span class="stamp">REPLY</span>
-            <div class="cookie-row">
+            <div class="visual-row">
               <div class="cookie" aria-hidden="true"></div>
+              <div class="cardpaper" aria-hidden="true"></div>
               <div class="qr" aria-hidden="true"></div>
-              <div class="cookie-text">
-                <b>Reply-Keks</b>
-                <small>1 Keks + Karte + QR → Antwort</small>
-              </div>
+            </div>
+            <div class="visual-caption">
+              1 Keks + Karte + QR → Antwort in 3 Klicks.
             </div>
           </div>
-          <div style="margin-top:12px;color:var(--muted);font-size:12px;line-height:1.45">
-            Kein Account im MVP. Fokus: schnell starten, sauber liefern.
-          </div>
         </div>
-
       </div>
     </section>
 
-    <!-- FLOW -->
+    <section class="benefits">
+      <div class="container benefit-grid">
+        <div class="benefit"><b>Überraschungseffekt</b>Briefkasten-Moment, den man nicht ignoriert.</div>
+        <div class="benefit"><b>Antwort per QR</b>Scan → Text → Adresse → fertig.</div>
+        <div class="benefit"><b>Persönlich & essbar</b>Message mit Gefühl statt Papier.</div>
+        <div class="benefit"><b>Viral weiterleitbar</b>Empfänger wird zum nächsten Sender.</div>
+      </div>
+    </section>
+
     <section class="section" id="flow">
-      <div class="container flow-wrap">
+      <div class="container">
         <div class="card flow-card">
           <div class="flow-head">
             <h2>Reply-Flow</h2>
             <div class="tiny-links">
-              <a href="#faq">FAQ</a>
               <a href="#footer">Impressum</a>
+              <a href="#footer">Versand</a>
               <a href="#footer">Allergene</a>
             </div>
           </div>
 
           <div class="stepper" aria-label="Schritte">
-            <div class="step active" data-step="1">1) Vorlage</div>
-            <div class="step" data-step="2">2) Text & Adresse</div>
+            <div class="step active" data-step="1">1) Nachricht</div>
+            <div class="step" data-step="2">2) Adresse</div>
             <div class="step" data-step="3">3) Bezahlen</div>
           </div>
 
@@ -430,23 +460,23 @@
               </div>
 
               <div class="field">
-                <label>Templates (klickt sich schneller)</label>
+                <label>Templates</label>
                 <div class="chips">
-                  <button class="chip" data-msg="Reply oder du bist feige." type="button">😈 Frech</button>
-                  <button class="chip" data-msg="Ich denk an dich. Reply, wenn du lächelst." type="button">❤️ Love</button>
-                  <button class="chip" data-msg="Du schaffst das. Reply – ich glaub an dich." type="button">🔥 Motivation</button>
-                  <button class="chip" data-msg="Kurzer Ping. Reply per QR – dann machen wir Deal." type="button">💼 Boss-Mode</button>
+                  <button class="chip" data-msg="Reply oder du bist feige." type="button">Frech</button>
+                  <button class="chip" data-msg="Ich denk an dich. Reply, wenn du lächelst." type="button">Love</button>
+                  <button class="chip" data-msg="Du schaffst das. Reply – ich glaub an dich." type="button">Motivation</button>
+                  <button class="chip" data-msg="Kurzer Ping. Reply per QR – dann machen wir Deal." type="button">Business</button>
                 </div>
               </div>
             </div>
 
             <div class="field" style="margin-top:12px">
-              <label for="msg">Deine Botschaft</label>
-              <textarea id="msg" placeholder="Schreib kurz, knackig, fühlbar…"></textarea>
+              <label for="msg">Deine Nachricht</label>
+              <textarea id="msg" placeholder="Kurz, klar, fühlbar…"></textarea>
             </div>
 
             <div class="actions">
-              <div class="summary" id="sum1">Wähle Template oder tippe frei. Danach: Adresse rein, fertig.</div>
+              <div class="summary" id="sum1">Wähle ein Template oder schreibe frei. Dann weiter zur Adresse.</div>
               <div class="right">
                 <button class="btn primary" id="next1" type="button">Weiter</button>
               </div>
@@ -457,21 +487,21 @@
           <div class="panel" id="p2">
             <div class="grid2">
               <div class="field">
-                <label for="toName">Empfänger (Name)</label>
+                <label for="toName">Empfängername</label>
                 <input id="toName" placeholder="z.B. Marlon" />
               </div>
               <div class="field">
-                <label for="fromName">Absender (Name)</label>
+                <label for="fromName">Absendername</label>
                 <input id="fromName" placeholder="z.B. Viktor" />
               </div>
               <div class="field" style="grid-column:1/-1">
-                <label for="toAddr">Empfänger (Adresse)</label>
-                <input id="toAddr" placeholder="Straße, Nr., PLZ, Ort" />
+                <label for="toAddr">Straße & Hausnummer, PLZ Ort</label>
+                <input id="toAddr" placeholder="Musterstraße 12, 12345 Berlin" />
               </div>
             </div>
 
             <div class="actions">
-              <div class="summary" id="sum2">Check: Message + Adresse. Dann geht’s zum Bezahlen.</div>
+              <div class="summary" id="sum2">Adresse prüfen. Danach geht’s zum Checkout.</div>
               <div class="right">
                 <button class="btn ghost" id="back2" type="button">Zurück</button>
                 <button class="btn primary" id="next2" type="button">Weiter</button>
@@ -486,10 +516,8 @@
             </div>
 
             <div class="actions">
-              <div class="utilities">
-                <span class="util">🔒 Secure Checkout</span>
-                <span class="util">📬 Versand 2–3 WT</span>
-                <span class="util">🔎 Trackbar</span>
+              <div class="summary" style="max-width:520px">
+                📦 Versand 2–3 Werktage · 🔎 Trackbar · 🔒 Sicher zahlen · ⚠️ Allergene
               </div>
 
               <div class="right">
@@ -502,53 +530,6 @@
         </div>
       </div>
     </section>
-
-    <!-- FAQ -->
-    <section class="section" id="faq">
-      <div class="container">
-        <div class="card" style="padding:18px">
-          <div class="flow-head">
-            <h2>Kurz erklärt</h2>
-            <div class="tiny-links">
-              <a href="#flow">Zum Flow</a>
-              <a href="#footer">Versand</a>
-            </div>
-          </div>
-
-          <div class="grid2">
-            <div class="field">
-              <label>Was kommt an?</label>
-              <div style="color:var(--muted);font-size:13px;line-height:1.45">
-                Ein Keks + Karte + QR. Der QR öffnet den Reply-Flow.
-              </div>
-            </div>
-            <div class="field">
-              <label>Wie lange haltbar?</label>
-              <div style="color:var(--muted);font-size:13px;line-height:1.45">
-                Luftdicht verpackt: mehrere Monate (genaue Angaben später im Produktblatt).
-              </div>
-            </div>
-            <div class="field">
-              <label>Allergene?</label>
-              <div style="color:var(--muted);font-size:13px;line-height:1.45">
-                Enthält Gluten. (Finale Liste im Footer verlinkt.)
-              </div>
-            </div>
-            <div class="field">
-              <label>Warum OnlyKeks?</label>
-              <div style="color:var(--muted);font-size:13px;line-height:1.45">
-                Weil’s wirkt: Überraschung + QR-Reply = viraler Loop.
-              </div>
-            </div>
-          </div>
-
-          <div style="margin-top:12px">
-            <a class="btn primary" href="#flow">Reply-Keks starten</a>
-          </div>
-        </div>
-      </div>
-    </section>
-
   </main>
 
   <footer id="footer">
@@ -574,6 +555,7 @@
   const steps  = document.querySelectorAll(".step");
   const payBtn = document.getElementById("payBtn");
 
+  // Panels sicher holen
   const panels = {
     1: document.getElementById("p1"),
     2: document.getElementById("p2"),
@@ -586,21 +568,24 @@
 
     steps.forEach(s=>s.classList.toggle("active", +s.dataset.step === n));
 
+    // Stripe-Link setzen, sobald Step 3 aktiv ist
     if(n === 3 && payBtn){
       payBtn.href = STRIPE_PAYMENT_LINK;
     }
   }
 
+  // Step-Klicks
   steps.forEach(s=>{
     s.addEventListener("click", ()=> go(+s.dataset.step));
   });
 
+  // Chips -> Message
   const msg = document.getElementById("msg");
   document.querySelectorAll(".chip").forEach(ch=>{
     ch.addEventListener("click", ()=>{ if(msg) msg.value = ch.dataset.msg; });
   });
 
-  // Buttons (Weiter/Zurück)
+  // Buttons (Weiter/Zurück) + UI polish
   const next1 = document.getElementById("next1");
   const next2 = document.getElementById("next2");
   const back2 = document.getElementById("back2");
@@ -615,7 +600,11 @@
   const fromName = document.getElementById("fromName");
 
   function esc(s){
-    return String(s||"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;");
+    return String(s||"")
+      .replaceAll("&","&amp;")
+      .replaceAll("<","&lt;")
+      .replaceAll(">","&gt;")
+      .replaceAll('"',"&quot;");
   }
 
   function priceFor(p){
@@ -628,17 +617,24 @@
     const p = pack ? pack.value : "Custom";
     const price = priceFor(p);
     const m = msg ? msg.value.trim() : "";
-    sum1 && (sum1.innerHTML = `<b>Preview:</b> Paket <b>${esc(p)}</b> • <span style="color:var(--muted)">${price.toFixed(2)} €</span><br/>„${esc(m||"…")}“`);
+    sum1 && (sum1.innerHTML =
+      `<b>Preview:</b> Paket <b>${esc(p)}</b> · <span style="color:var(--muted)">${price.toFixed(2)} €</span><br/>„${esc(m||"…")}“`
+    );
 
     const tn = toName ? toName.value.trim() : "";
     const fn = fromName ? fromName.value.trim() : "";
     const ta = toAddr ? toAddr.value.trim() : "";
-    sum2 && (sum2.innerHTML = `<b>Check:</b> Empfänger <b>${esc(tn||"—")}</b> • Absender <b>${esc(fn||"—")}</b><br/>Adresse: ${esc(ta||"—")}`);
+    sum2 && (sum2.innerHTML =
+      `<b>Check:</b> Empfänger <b>${esc(tn||"—")}</b> · Absender <b>${esc(fn||"—")}</b><br/>Adresse: ${esc(ta||"—")}`
+    );
 
     const ship = (p === "Premium") ? 0 : 2.90;
     const total = price + ship;
     sum3 && (sum3.innerHTML =
-      `<b>Checkout:</b> Paket <b>${esc(p)}</b> — ${price.toFixed(2)} € • Versand ${ship.toFixed(2)} €<br/><b>Gesamt: ${total.toFixed(2)} €</b><br/><span style="color:var(--muted)">Message:</span> „${esc(m||"…")}“`);
+      `<b>Checkout:</b> Paket <b>${esc(p)}</b> — ${price.toFixed(2)} € · Versand ${ship.toFixed(2)} €<br/>
+       <b>Gesamt: ${total.toFixed(2)} €</b><br/>
+       <span style="color:var(--muted)">Nachricht:</span> „${esc(m||"…")}“`
+    );
   }
 
   next1 && next1.addEventListener("click", ()=>{
@@ -648,12 +644,14 @@
   });
 
   back2 && back2.addEventListener("click", ()=>{ updateSummaries(); go(1); });
+
   next2 && next2.addEventListener("click", ()=>{
     updateSummaries();
-    if(!msg?.value.trim()){ alert("Bitte eine kurze Message eintippen."); msg?.focus(); return; }
+    if(!msg?.value.trim()){ alert("Bitte eine kurze Nachricht eintippen."); msg?.focus(); return; }
     if(!toAddr?.value.trim()){ alert("Adresse fehlt noch."); toAddr?.focus(); return; }
     go(3);
   });
+
   back3 && back3.addEventListener("click", ()=>{ updateSummaries(); go(2); });
 
   [pack, msg, toName, fromName, toAddr].forEach(el=>{

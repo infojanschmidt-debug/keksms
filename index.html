@@ -1,80 +1,706 @@
-<script>
-/*** CONFIG: NUR HIER STRIPE EINTRAGEN ***/
-const STRIPE_PAYMENT_LINK = "https://buy.stripe.com/aBcDeFgHiJkLmNoPqR";
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>OnlyKeks – Post die schmeckt!</title>
+  <meta name="description" content="Post die schmeckt. Sende einen Keks mit Message & Reply-Loop. 3 Klicks, kein Account." />
 
-/* =======================
-   FLOW LOGIC (robust)
-======================= */
-const steps  = document.querySelectorAll(".step");
-const payBtn = document.getElementById("payBtn");
+  <style>
+    :root{
+      /* OnlyFans-clean */
+      --bg:#ffffff;
+      --bg2:#f6fbff;
+      --ink:#0b1b2a;
+      --muted:#4b5b6b;
+      --line: rgba(11,27,42,.10);
+      --blue:#00aff0;
+      --blue2:#2b7cff;
+      --blueSoft: rgba(0,175,240,.12);
 
-// Panels sicher holen (dein Fehler war: p1/p2/p3 sind evtl. nicht als Variablen da)
-const panels = {
-  1: document.getElementById("p1"),
-  2: document.getElementById("p2"),
-  3: document.getElementById("p3"),
-};
+      /* Dokufrau-warm (soft & sweet) */
+      --caramel:#b56a2a;
+      --cream:#fff4e8;
+      --pinkSoft: rgba(255,105,180,.10);
 
-function go(n){
-  Object.values(panels).forEach(p=> p && p.classList.remove("active"));
-  panels[n] && panels[n].classList.add("active");
+      --radius:18px;
+      --shadow: 0 18px 60px rgba(11,27,42,.12);
+      --shadow2: 0 10px 30px rgba(11,27,42,.08);
+    }
 
-  steps.forEach(s=>s.classList.toggle("active", +s.dataset.step === n));
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      color:var(--ink);
+      background:
+        radial-gradient(900px 520px at 15% 0%, var(--blueSoft), transparent 60%),
+        radial-gradient(800px 520px at 85% 25%, rgba(43,124,255,.10), transparent 55%),
+        radial-gradient(900px 520px at 55% 0%, var(--pinkSoft), transparent 60%),
+        linear-gradient(180deg, var(--bg), var(--bg2));
+      overflow-x:hidden;
+    }
+    a{color:inherit;text-decoration:none}
+    .container{max-width:1120px;margin:0 auto;padding:0 18px}
 
-  // Stripe-Link setzen, sobald Step 3 aktiv ist
-  if(n === 3 && payBtn){
-    payBtn.href = STRIPE_PAYMENT_LINK;
+    /* Cookie rain canvas (background layer) */
+    #cookieRain{
+      position:fixed; inset:0;
+      width:100%; height:100%;
+      z-index:0;
+      pointer-events:none;
+      opacity:.08;
+    }
+
+    /* Header: Post-like simple + OF-like clean */
+    header{
+      position:sticky;top:0;z-index:50;
+      background:rgba(255,255,255,.86);
+      backdrop-filter: blur(12px);
+      border-bottom:1px solid var(--line);
+    }
+    .nav{
+      display:flex;align-items:center;justify-content:space-between;
+      padding:14px 0;gap:12px;
+    }
+    .brand{display:flex;align-items:center;gap:12px}
+    .logo{
+      width:46px;height:46px;border-radius:14px;
+      background: linear-gradient(135deg, var(--blue), var(--blue2));
+      box-shadow: 0 12px 30px rgba(0,175,240,.20);
+      position:relative;
+    }
+    .logo:after{
+      content:"";
+      position:absolute;inset:12px;border-radius:12px;
+      background:rgba(255,255,255,.55);
+      border:1px solid rgba(255,255,255,.65);
+    }
+    .brand b{font-size:17px;font-weight:900;letter-spacing:-.2px}
+    .brand small{display:block;color:var(--muted);font-size:12px;margin-top:2px}
+
+    .nav-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:flex-end}
+    .pill{
+      font-size:12px;color:var(--muted);
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.7);
+      padding:9px 12px;border-radius:999px;
+      white-space:nowrap;
+    }
+
+    .btn{
+      border:0;cursor:pointer;border-radius:999px;
+      padding:12px 16px;font-weight:900;font-size:14px;
+      display:inline-flex;align-items:center;gap:10px;
+      transition: transform .12s ease, filter .12s ease, box-shadow .12s ease;
+      white-space:nowrap;
+    }
+    .btn:active{transform:translateY(1px)}
+    .btn.primary{
+      color:white;
+      background: linear-gradient(135deg, var(--blue), var(--blue2));
+      box-shadow: 0 14px 32px rgba(0,175,240,.22);
+    }
+    .btn.primary:hover{filter:brightness(1.03);transform:translateY(-1px)}
+    .btn.ghost{
+      background:white;border:1px solid var(--line);color:var(--ink);
+      box-shadow:none;
+    }
+
+    /* Layout layer */
+    main{position:relative;z-index:1}
+
+    /* Hero */
+    .hero{padding:44px 0 18px}
+    .hero-grid{
+      display:grid;grid-template-columns: 1.15fr .85fr;
+      gap:18px;align-items:stretch;
+    }
+    @media(max-width:980px){.hero-grid{grid-template-columns:1fr}}
+
+    .card{
+      background:rgba(255,255,255,.90);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      overflow:hidden;
+    }
+    .hero-copy{padding:24px}
+    .kicker{
+      display:inline-flex;align-items:center;gap:10px;
+      font-size:12px;color:var(--muted);
+      padding:9px 12px;border-radius:999px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.75);
+    }
+    .dot{
+      width:8px;height:8px;border-radius:999px;
+      background:var(--blue);
+      box-shadow:0 0 0 6px rgba(0,175,240,.14);
+    }
+    h1{
+      margin:14px 0 10px;
+      font-size:44px;line-height:1.02;letter-spacing:-1px;
+    }
+    @media(max-width:520px){h1{font-size:36px}}
+    .sub{
+      margin:0 0 14px;
+      color:var(--muted);
+      line-height:1.55;
+      font-size:16px;
+      max-width:62ch;
+    }
+
+    /* Trust utilities (Post-like) */
+    .utilities{
+      display:flex;gap:10px;flex-wrap:wrap;
+      margin-top:12px;
+      color:var(--muted);
+      font-size:12px;
+    }
+    .util{
+      padding:8px 10px;border-radius:999px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.70);
+    }
+
+    /* Social proof */
+    .social{
+      margin-top:12px;
+      display:flex;gap:10px;flex-wrap:wrap;
+      color:var(--muted);font-size:12px;
+    }
+    .tag{
+      padding:8px 10px;border-radius:999px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.70);
+    }
+
+    /* Right card: “Start in 10 Sekunden” */
+    .start-card{padding:18px}
+    .start-card h3{margin:4px 0 10px;font-size:16px;letter-spacing:-.2px}
+    .cookie-visual{
+      margin-top:10px;
+      border:1px solid var(--line);
+      border-radius:16px;
+      background:
+        radial-gradient(520px 180px at 30% 10%, rgba(181,106,42,.14), transparent 60%),
+        linear-gradient(135deg, rgba(0,175,240,.08), rgba(255,255,255,.85));
+      padding:14px; position:relative;
+      overflow:hidden;
+    }
+    .stamp{
+      position:absolute;right:12px;top:12px;
+      padding:8px 10px;border-radius:999px;
+      background:linear-gradient(135deg,var(--blue),var(--blue2));
+      color:white;font-weight:900;font-size:12px;
+      box-shadow:0 12px 26px rgba(0,175,240,.20);
+    }
+    .cookie-row{display:flex;gap:12px;align-items:center}
+    .cookie{
+      width:74px;height:74px;border-radius:50%;
+      background: radial-gradient(circle at 30% 30%, #f3c89a, var(--caramel));
+      box-shadow:0 14px 34px rgba(11,27,42,.12);
+      animation: float 4s ease-in-out infinite;
+      flex:0 0 auto;
+    }
+    @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+    .qr{
+      width:74px;height:74px;border-radius:14px;
+      border:1px solid var(--line);
+      background:
+        linear-gradient(90deg,#0b1b2a 10%,transparent 10%),
+        linear-gradient(#0b1b2a 10%,transparent 10%);
+      background-size:14px 14px;
+      opacity:.72;
+      flex:0 0 auto;
+    }
+    .cookie-text b{display:block}
+    .cookie-text small{color:var(--muted)}
+
+    /* Flow section (Post-simple + OF-modern) */
+    .section{padding:18px 0}
+    .flow-wrap{
+      display:grid;grid-template-columns:1fr;
+      gap:12px;
+    }
+    .flow-card{padding:18px}
+    .flow-head{
+      display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;
+      margin-bottom:10px;
+    }
+    .flow-head h2{margin:0;font-size:18px;letter-spacing:-.2px}
+    .tiny-links{display:flex;gap:12px;flex-wrap:wrap;color:var(--muted);font-size:12px}
+    .tiny-links a{border-bottom:1px dotted rgba(11,27,42,.28)}
+    .divider{height:1px;background:var(--line);margin:12px 0}
+
+    /* Stepper */
+    .stepper{display:flex;gap:10px;flex-wrap:wrap}
+    .step{
+      padding:10px 12px;border-radius:999px;
+      border:1px solid var(--line);
+      background:white;
+      color:var(--muted);
+      font-weight:900;
+      font-size:12px;
+      cursor:pointer;
+      transition: transform .12s ease, background .12s ease;
+      user-select:none;
+    }
+    .step:hover{transform:translateY(-1px);background:rgba(0,175,240,.06)}
+    .step.active{
+      color:var(--ink);
+      border-color: rgba(0,175,240,.30);
+      box-shadow: var(--shadow2);
+    }
+
+    /* Panels */
+    .panel{display:none}
+    .panel.active{display:block}
+
+    .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    @media(max-width:900px){.grid2{grid-template-columns:1fr}}
+
+    .field{
+      border:1px solid var(--line);
+      background:white;
+      border-radius:14px;
+      padding:12px;
+      box-shadow: var(--shadow2);
+    }
+    label{display:block;font-size:12px;color:var(--muted);font-weight:900;margin-bottom:8px}
+    input, textarea, select{
+      width:100%;
+      border:1px solid rgba(11,27,42,.14);
+      background:white;
+      border-radius:12px;
+      padding:10px 10px;
+      font: inherit;
+      outline:none;
+    }
+    textarea{min-height:110px;resize:vertical}
+
+    .chips{display:flex;gap:10px;flex-wrap:wrap}
+    .chip{
+      font-size:13px;font-weight:900;color:var(--ink);
+      padding:10px 12px;border-radius:999px;
+      border:1px solid var(--line);
+      background:white;
+      cursor:pointer;
+      transition: transform .12s ease, background .12s ease;
+    }
+    .chip:hover{transform:translateY(-1px);background:rgba(255,105,180,.08)}
+
+    .summary{
+      border:1px dashed rgba(0,175,240,.35);
+      background:rgba(0,175,240,.06);
+      border-radius:14px;
+      padding:12px;
+      color:var(--muted);
+      font-size:13px;line-height:1.45;
+    }
+
+    .actions{
+      display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;
+      margin-top:12px;
+    }
+    .right{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end}
+
+    /* Footer trust (Post-style) */
+    footer{
+      margin-top:22px;
+      padding:22px 0 34px;
+      border-top:1px solid var(--line);
+      background:rgba(255,255,255,.65);
+      color:var(--muted);
+      font-size:12px;
+      position:relative;z-index:1;
+    }
+    .footer-links{display:flex;gap:14px;flex-wrap:wrap}
+    .footer-links a{border-bottom:1px dotted rgba(11,27,42,.28)}
+  </style>
+</head>
+
+<body>
+  <canvas id="cookieRain"></canvas>
+
+  <header>
+    <div class="container">
+      <div class="nav">
+        <a class="brand" href="#top" aria-label="OnlyKeks Start">
+          <span class="logo" aria-hidden="true"></span>
+          <span>
+            <b>OnlyKeks</b>
+            <small>Post die schmeckt!</small>
+          </span>
+        </a>
+
+        <div class="nav-actions">
+          <span class="pill">One page · One CTA · Reply-Loop</span>
+          <a class="btn primary" href="#flow" id="ctaTop">Reply-Keks starten</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="container hero-grid">
+
+        <div class="card hero-copy">
+          <span class="kicker"><span class="dot"></span>Weil Post nicht schmeckt, verschicke Post die schmeckt.</span>
+          <h1>Eine Message, die man essen kann.</h1>
+          <p class="sub">
+            Du schickst 1 Keks mit Message & QR-Reply. Empfänger scannt → antwortet → wir machen den Reply-Keks → zurück.
+            <b>Ein Loop statt ein Shop.</b>
+          </p>
+
+          <div class="utilities">
+            <span class="util">📦 Versand 2–3 WT</span>
+            <span class="util">🔎 Trackbar</span>
+            <span class="util">🔒 Sicher zahlen</span>
+            <span class="util">⏳ Lange haltbar</span>
+          </div>
+
+          <div class="social">
+            <span class="tag">⭐ 4,8/5 (Beta)</span>
+            <span class="tag">💬 Reply-Rate: Template-Boost</span>
+            <span class="tag">📸 Share-fähig</span>
+          </div>
+
+          <div style="margin-top:14px">
+            <a class="btn primary" href="#flow">Reply-Keks starten</a>
+            <a class="btn ghost" href="#faq" style="margin-left:8px">Kurz erklärt</a>
+          </div>
+        </div>
+
+        <div class="card start-card">
+          <h3>In 10 Sekunden verstanden</h3>
+          <div class="cookie-visual">
+            <span class="stamp">REPLY</span>
+            <div class="cookie-row">
+              <div class="cookie" aria-hidden="true"></div>
+              <div class="qr" aria-hidden="true"></div>
+              <div class="cookie-text">
+                <b>Reply-Keks</b>
+                <small>1 Keks + Karte + QR → Antwort</small>
+              </div>
+            </div>
+          </div>
+          <div style="margin-top:12px;color:var(--muted);font-size:12px;line-height:1.45">
+            Kein Account im MVP. Fokus: schnell starten, sauber liefern.
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- FLOW -->
+    <section class="section" id="flow">
+      <div class="container flow-wrap">
+        <div class="card flow-card">
+          <div class="flow-head">
+            <h2>Reply-Flow</h2>
+            <div class="tiny-links">
+              <a href="#faq">FAQ</a>
+              <a href="#footer">Impressum</a>
+              <a href="#footer">Allergene</a>
+            </div>
+          </div>
+
+          <div class="stepper" aria-label="Schritte">
+            <div class="step active" data-step="1">1) Vorlage</div>
+            <div class="step" data-step="2">2) Text & Adresse</div>
+            <div class="step" data-step="3">3) Bezahlen</div>
+          </div>
+
+          <div class="divider"></div>
+
+          <!-- Panel 1 -->
+          <div class="panel active" id="p1">
+            <div class="grid2">
+              <div class="field">
+                <label for="pack">Paket</label>
+                <select id="pack">
+                  <option value="Quick">Quick</option>
+                  <option value="Custom" selected>Custom</option>
+                  <option value="Premium">Premium</option>
+                </select>
+              </div>
+
+              <div class="field">
+                <label>Templates (klickt sich schneller)</label>
+                <div class="chips">
+                  <button class="chip" data-msg="Reply oder du bist feige." type="button">😈 Frech</button>
+                  <button class="chip" data-msg="Ich denk an dich. Reply, wenn du lächelst." type="button">❤️ Love</button>
+                  <button class="chip" data-msg="Du schaffst das. Reply – ich glaub an dich." type="button">🔥 Motivation</button>
+                  <button class="chip" data-msg="Kurzer Ping. Reply per QR – dann machen wir Deal." type="button">💼 Boss-Mode</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="field" style="margin-top:12px">
+              <label for="msg">Deine Botschaft</label>
+              <textarea id="msg" placeholder="Schreib kurz, knackig, fühlbar…"></textarea>
+            </div>
+
+            <div class="actions">
+              <div class="summary" id="sum1">Wähle Template oder tippe frei. Danach: Adresse rein, fertig.</div>
+              <div class="right">
+                <button class="btn primary" id="next1" type="button">Weiter</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Panel 2 -->
+          <div class="panel" id="p2">
+            <div class="grid2">
+              <div class="field">
+                <label for="toName">Empfänger (Name)</label>
+                <input id="toName" placeholder="z.B. Marlon" />
+              </div>
+              <div class="field">
+                <label for="fromName">Absender (Name)</label>
+                <input id="fromName" placeholder="z.B. Viktor" />
+              </div>
+              <div class="field" style="grid-column:1/-1">
+                <label for="toAddr">Empfänger (Adresse)</label>
+                <input id="toAddr" placeholder="Straße, Nr., PLZ, Ort" />
+              </div>
+            </div>
+
+            <div class="actions">
+              <div class="summary" id="sum2">Check: Message + Adresse. Dann geht’s zum Bezahlen.</div>
+              <div class="right">
+                <button class="btn ghost" id="back2" type="button">Zurück</button>
+                <button class="btn primary" id="next2" type="button">Weiter</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Panel 3 -->
+          <div class="panel" id="p3">
+            <div class="summary" id="sum3">
+              Fast fertig. Klick auf „Jetzt bezahlen“, dann geht’s zum sicheren Checkout.
+            </div>
+
+            <div class="actions">
+              <div class="utilities">
+                <span class="util">🔒 Secure Checkout</span>
+                <span class="util">📬 Versand 2–3 WT</span>
+                <span class="util">🔎 Trackbar</span>
+              </div>
+
+              <div class="right">
+                <button class="btn ghost" id="back3" type="button">Zurück</button>
+                <a class="btn primary" id="payBtn" href="#" target="_blank" rel="noopener">Jetzt bezahlen</a>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="section" id="faq">
+      <div class="container">
+        <div class="card" style="padding:18px">
+          <div class="flow-head">
+            <h2>Kurz erklärt</h2>
+            <div class="tiny-links">
+              <a href="#flow">Zum Flow</a>
+              <a href="#footer">Versand</a>
+            </div>
+          </div>
+
+          <div class="grid2">
+            <div class="field">
+              <label>Was kommt an?</label>
+              <div style="color:var(--muted);font-size:13px;line-height:1.45">
+                Ein Keks + Karte + QR. Der QR öffnet den Reply-Flow.
+              </div>
+            </div>
+            <div class="field">
+              <label>Wie lange haltbar?</label>
+              <div style="color:var(--muted);font-size:13px;line-height:1.45">
+                Luftdicht verpackt: mehrere Monate (genaue Angaben später im Produktblatt).
+              </div>
+            </div>
+            <div class="field">
+              <label>Allergene?</label>
+              <div style="color:var(--muted);font-size:13px;line-height:1.45">
+                Enthält Gluten. (Finale Liste im Footer verlinkt.)
+              </div>
+            </div>
+            <div class="field">
+              <label>Warum OnlyKeks?</label>
+              <div style="color:var(--muted);font-size:13px;line-height:1.45">
+                Weil’s wirkt: Überraschung + QR-Reply = viraler Loop.
+              </div>
+            </div>
+          </div>
+
+          <div style="margin-top:12px">
+            <a class="btn primary" href="#flow">Reply-Keks starten</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer id="footer">
+    <div class="container">
+      <div class="footer-links">
+        <a href="#">Impressum</a>
+        <a href="#">Datenschutz</a>
+        <a href="#">AGB</a>
+        <a href="#">Versand</a>
+        <a href="#">Allergene</a>
+      </div>
+      <div style="margin-top:8px">© OnlyKeks · Post die schmeckt</div>
+    </div>
+  </footer>
+
+  <script>
+  /*** CONFIG: NUR HIER STRIPE EINTRAGEN ***/
+  const STRIPE_PAYMENT_LINK = "https://buy.stripe.com/aBcDeFgHiJkLmNoPqR";
+
+  /* =======================
+     FLOW LOGIC (robust)
+  ======================= */
+  const steps  = document.querySelectorAll(".step");
+  const payBtn = document.getElementById("payBtn");
+
+  const panels = {
+    1: document.getElementById("p1"),
+    2: document.getElementById("p2"),
+    3: document.getElementById("p3"),
+  };
+
+  function go(n){
+    Object.values(panels).forEach(p=> p && p.classList.remove("active"));
+    panels[n] && panels[n].classList.add("active");
+
+    steps.forEach(s=>s.classList.toggle("active", +s.dataset.step === n));
+
+    if(n === 3 && payBtn){
+      payBtn.href = STRIPE_PAYMENT_LINK;
+    }
   }
-}
 
-// Step-Klicks (falls du die Steps anklickbar willst)
-steps.forEach(s=>{
-  s.addEventListener("click", ()=> go(+s.dataset.step));
-});
+  steps.forEach(s=>{
+    s.addEventListener("click", ()=> go(+s.dataset.step));
+  });
 
-// Chips (nur wenn msg existiert)
-const msg = document.getElementById("msg");
-document.querySelectorAll(".chip").forEach(ch=>{
-  ch.addEventListener("click", ()=>{ if(msg) msg.value = ch.dataset.msg; });
-});
+  const msg = document.getElementById("msg");
+  document.querySelectorAll(".chip").forEach(ch=>{
+    ch.addEventListener("click", ()=>{ if(msg) msg.value = ch.dataset.msg; });
+  });
 
-// Init: starte auf Step 1 und setze Stripe-Link vorsorglich (falls direkt sichtbar)
-go(1);
-if(payBtn) payBtn.href = STRIPE_PAYMENT_LINK;
+  // Buttons (Weiter/Zurück)
+  const next1 = document.getElementById("next1");
+  const next2 = document.getElementById("next2");
+  const back2 = document.getElementById("back2");
+  const back3 = document.getElementById("back3");
 
-/* =======================
-   COOKIE RAIN (läuft unabhängig)
-======================= */
-const c = document.getElementById("cookieRain");
-if(c){
-  const ctx = c.getContext("2d");
+  const toAddr = document.getElementById("toAddr");
+  const sum1 = document.getElementById("sum1");
+  const sum2 = document.getElementById("sum2");
+  const sum3 = document.getElementById("sum3");
+  const pack = document.getElementById("pack");
+  const toName = document.getElementById("toName");
+  const fromName = document.getElementById("fromName");
 
-  function resize(){
-    c.width = innerWidth;
-    c.height = innerHeight;
+  function esc(s){
+    return String(s||"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;");
   }
-  resize();
-  addEventListener("resize", resize);
 
-  const cookies = [...Array(30)].map(() => ({
-    x: Math.random()*innerWidth,
-    y: Math.random()*innerHeight,
-    r: 10 + Math.random()*22,
-    v: 0.6 + Math.random()*1.4
-  }));
-
-  function draw(){
-    ctx.clearRect(0,0,c.width,c.height);
-    cookies.forEach(o=>{
-      o.y += o.v;
-      if(o.y > c.height) o.y = -50;
-      ctx.beginPath();
-      ctx.arc(o.x,o.y,o.r,0,Math.PI*2);
-      ctx.fillStyle = "#c48752";
-      ctx.fill();
-    });
-    requestAnimationFrame(draw);
+  function priceFor(p){
+    if(p === "Quick") return 9.90;
+    if(p === "Custom") return 14.90;
+    return 29.90;
   }
-  draw();
-}
-</script>
+
+  function updateSummaries(){
+    const p = pack ? pack.value : "Custom";
+    const price = priceFor(p);
+    const m = msg ? msg.value.trim() : "";
+    sum1 && (sum1.innerHTML = `<b>Preview:</b> Paket <b>${esc(p)}</b> • <span style="color:var(--muted)">${price.toFixed(2)} €</span><br/>„${esc(m||"…")}“`);
+
+    const tn = toName ? toName.value.trim() : "";
+    const fn = fromName ? fromName.value.trim() : "";
+    const ta = toAddr ? toAddr.value.trim() : "";
+    sum2 && (sum2.innerHTML = `<b>Check:</b> Empfänger <b>${esc(tn||"—")}</b> • Absender <b>${esc(fn||"—")}</b><br/>Adresse: ${esc(ta||"—")}`);
+
+    const ship = (p === "Premium") ? 0 : 2.90;
+    const total = price + ship;
+    sum3 && (sum3.innerHTML =
+      `<b>Checkout:</b> Paket <b>${esc(p)}</b> — ${price.toFixed(2)} € • Versand ${ship.toFixed(2)} €<br/><b>Gesamt: ${total.toFixed(2)} €</b><br/><span style="color:var(--muted)">Message:</span> „${esc(m||"…")}“`);
+  }
+
+  next1 && next1.addEventListener("click", ()=>{
+    updateSummaries();
+    go(2);
+    document.getElementById("toName")?.focus();
+  });
+
+  back2 && back2.addEventListener("click", ()=>{ updateSummaries(); go(1); });
+  next2 && next2.addEventListener("click", ()=>{
+    updateSummaries();
+    if(!msg?.value.trim()){ alert("Bitte eine kurze Message eintippen."); msg?.focus(); return; }
+    if(!toAddr?.value.trim()){ alert("Adresse fehlt noch."); toAddr?.focus(); return; }
+    go(3);
+  });
+  back3 && back3.addEventListener("click", ()=>{ updateSummaries(); go(2); });
+
+  [pack, msg, toName, fromName, toAddr].forEach(el=>{
+    el && el.addEventListener("input", updateSummaries);
+    el && el.addEventListener("change", updateSummaries);
+  });
+
+  // Init
+  go(1);
+  if(payBtn) payBtn.href = STRIPE_PAYMENT_LINK;
+  updateSummaries();
+
+  /* =======================
+     COOKIE RAIN (läuft unabhängig)
+  ======================= */
+  const c = document.getElementById("cookieRain");
+  if(c){
+    const ctx = c.getContext("2d");
+
+    function resize(){
+      c.width = innerWidth;
+      c.height = innerHeight;
+    }
+    resize();
+    addEventListener("resize", resize);
+
+    const cookies = [...Array(30)].map(() => ({
+      x: Math.random()*innerWidth,
+      y: Math.random()*innerHeight,
+      r: 10 + Math.random()*22,
+      v: 0.6 + Math.random()*1.4
+    }));
+
+    function draw(){
+      ctx.clearRect(0,0,c.width,c.height);
+      cookies.forEach(o=>{
+        o.y += o.v;
+        if(o.y > c.height) o.y = -50;
+        ctx.beginPath();
+        ctx.arc(o.x,o.y,o.r,0,Math.PI*2);
+        ctx.fillStyle = "#c48752";
+        ctx.fill();
+      });
+      requestAnimationFrame(draw);
+    }
+    draw();
+  }
+  </script>
+</body>
+</html>

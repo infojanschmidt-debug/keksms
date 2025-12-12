@@ -4,30 +4,24 @@
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>OnlyKeks – Post die schmeckt!</title>
-<meta name="description" content="Post die schmeckt. Sende einen Keks mit Message & Reply-Loop. 3 Klicks, kein Account."/>
+<meta name="description" content="Post die schmeckt. Ein Keks mit Message & Reply-QR."/>
 
 <style>
+/* =======================
+   DESIGN SYSTEM – KEKSIG
+======================= */
 :root{
-  /* Cookie-first Palette */
-  --bg:#fffaf2;            /* vanilla */
-  --bg2:#fff2df;           /* warm vanilla */
-  --ink:#2a1b12;           /* cocoa ink */
-  --muted:#6b5142;         /* milk-choco text */
-  --line:rgba(42,27,18,.10);
-
-  --vanilla:#fff7ea;
-  --cookie:#b67a47;        /* cookie brown */
-  --cookie2:#8a552f;       /* darker cookie */
-  --chip:#3a2216;          /* choc chips */
-  --cream:#fff1dd;
-
-  --accent:#ff6aa2;        /* strawberry neon */
-  --accent2:#7cf7c7;       /* mint neon */
-  --accentSoft:rgba(255,106,162,.14);
-
-  --radius:18px;
-  --shadow:0 18px 60px rgba(42,27,18,.14);
-  --shadow2:0 10px 30px rgba(42,27,18,.10);
+  --vanilla:#fff6ea;
+  --vanilla2:#fff0dc;
+  --cookie:#c48752;
+  --cookie2:#8a552f;
+  --chip:#3a2216;
+  --ink:#2a1b12;
+  --muted:#6b5142;
+  --pink:#ff6aa2;
+  --mint:#7cf7c7;
+  --radius:20px;
+  --shadow:0 20px 60px rgba(42,27,18,.18);
 }
 
 *{box-sizing:border-box}
@@ -36,668 +30,329 @@ body{
   font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;
   color:var(--ink);
   background:
-    radial-gradient(900px 520px at 15% 0%, var(--accentSoft), transparent 60%),
-    radial-gradient(800px 520px at 85% 25%, rgba(124,247,199,.16), transparent 55%),
-    linear-gradient(180deg,var(--bg),var(--bg2));
+    radial-gradient(900px 520px at 10% 0%, rgba(255,106,162,.18), transparent 60%),
+    radial-gradient(900px 520px at 90% 30%, rgba(124,247,199,.22), transparent 60%),
+    linear-gradient(180deg,var(--vanilla),var(--vanilla2));
+  overflow-x:hidden;
 }
-a{color:inherit;text-decoration:none}
-.container{max-width:1120px;margin:auto;padding:0 18px}
 
-/* Header */
-header{
-  position:sticky;top:0;z-index:50;
-  background:rgba(255,250,242,.88);
-  backdrop-filter:blur(10px);
-  border-bottom:1px solid var(--line);
+a{text-decoration:none;color:inherit}
+
+/* =======================
+   COOKIE RAIN
+======================= */
+#cookieRain{
+  position:fixed;
+  inset:0;
+  z-index:0;
+  pointer-events:none;
+  opacity:.55;
 }
-.nav{display:flex;align-items:center;justify-content:space-between;padding:14px 0}
+
+/* =======================
+   LAYOUT
+======================= */
+header, main, footer{position:relative;z-index:2}
+.container{max-width:1100px;margin:auto;padding:0 20px}
+
+header{
+  position:sticky;top:0;
+  backdrop-filter:blur(10px);
+  background:rgba(255,246,234,.85);
+  border-bottom:1px solid rgba(42,27,18,.1);
+}
+.nav{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 0;
+}
 .brand{display:flex;gap:12px;align-items:center}
 .logo{
-  width:46px;height:46px;border-radius:14px;
+  width:44px;height:44px;border-radius:14px;
   background:
-    radial-gradient(circle at 30% 30%, rgba(255,255,255,.45), transparent 35%),
-    radial-gradient(circle at 70% 35%, rgba(58,34,22,.25) 0 18%, transparent 19%),
-    radial-gradient(circle at 45% 70%, rgba(58,34,22,.22) 0 14%, transparent 15%),
+    radial-gradient(circle at 30% 30%, #ffd9b3, var(--cookie)),
     linear-gradient(135deg,var(--cookie),var(--cookie2));
-  box-shadow:0 12px 30px rgba(182,122,71,.22);
-  position:relative;
-}
-.logo:after{
-  content:"";
-  position:absolute; inset:11px;
-  border-radius:12px;
-  background:
-    radial-gradient(circle at 30% 35%, rgba(58,34,22,.35) 0 16%, transparent 17%),
-    radial-gradient(circle at 65% 50%, rgba(58,34,22,.28) 0 12%, transparent 13%),
-    radial-gradient(circle at 45% 70%, rgba(58,34,22,.25) 0 10%, transparent 11%),
-    linear-gradient(135deg, rgba(255,255,255,.55), rgba(255,255,255,.22));
+  box-shadow:0 12px 30px rgba(0,0,0,.2);
 }
 .brand b{font-weight:900}
 .brand small{display:block;font-size:12px;color:var(--muted)}
 
 .btn{
-  border:0;border-radius:999px;padding:12px 18px;font-weight:900;cursor:pointer;
-  background:linear-gradient(135deg,var(--accent),rgba(124,247,199,.9));
+  border:0;
+  border-radius:999px;
+  padding:12px 18px;
+  font-weight:900;
+  cursor:pointer;
+  background:linear-gradient(135deg,var(--pink),var(--mint));
   color:#2a1b12;
-  box-shadow:0 14px 32px rgba(255,106,162,.18);
-}
-.btn:hover{filter:saturate(1.05)}
-.btn.ghost{
-  background:rgba(255,255,255,.85);
-  color:var(--ink);
-  border:1px solid var(--line);
-  box-shadow:none;
+  box-shadow:0 14px 34px rgba(255,106,162,.35);
 }
 
-/* Hero */
-.hero{padding:44px 0 16px}
-.hero-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:18px}
-@media(max-width:900px){.hero-grid{grid-template-columns:1fr}}
+/* =======================
+   HERO
+======================= */
+.hero{padding:50px 0 30px}
+.heroGrid{
+  display:grid;
+  grid-template-columns:1.2fr .8fr;
+  gap:20px;
+}
+@media(max-width:900px){
+  .heroGrid{grid-template-columns:1fr}
+}
 
 .card{
-  background:rgba(255,255,255,.88);
-  border:1px solid var(--line);
+  background:rgba(255,255,255,.9);
   border-radius:var(--radius);
   box-shadow:var(--shadow);
-}
-.hero-copy{padding:24px}
-
-.kicker{
-  display:inline-flex;gap:8px;align-items:center;font-size:12px;color:var(--muted);
-  padding:8px 12px;border-radius:999px;border:1px solid var(--line);
-  background:rgba(255,255,255,.92);
-}
-.dot{
-  width:8px;height:8px;border-radius:50%;
-  background:var(--accent2);
-  box-shadow:0 0 0 6px rgba(124,247,199,.18);
+  padding:26px;
 }
 
-h1{margin:12px 0 8px;font-size:44px;line-height:1.05;letter-spacing:-1px}
-@media(max-width:520px){h1{font-size:36px}}
-.sub{color:var(--muted);max-width:62ch}
-.cta-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
-
-/* Trust chips */
-.utilities{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
-.util{
-  font-size:12px;color:var(--muted);
-  border:1px solid var(--line);
-  background:rgba(255,255,255,.92);
-  padding:8px 10px;border-radius:999px
+h1{
+  font-size:44px;
+  line-height:1.05;
+  margin:10px 0;
 }
+.sub{color:var(--muted);max-width:60ch}
 
-/* Right: Product concept */
-.start-card{padding:18px}
-.start-card h3{margin:4px 0 10px;font-size:16px}
-
-.cookie-visual{
-  margin-top:10px;border:1px solid var(--line);border-radius:16px;
-  background:
-    radial-gradient(520px 180px at 30% 10%, rgba(182,122,71,.18), transparent 60%),
-    radial-gradient(420px 240px at 85% 40%, rgba(255,106,162,.12), transparent 62%),
-    linear-gradient(135deg, rgba(255,255,255,.92), rgba(255,241,221,.85));
-  padding:14px; position:relative;
+.cookiePreview{
+  display:flex;gap:14px;align-items:center;
+  margin-top:14px;
 }
-.stamp{
-  position:absolute;right:12px;top:12px;
-  background:linear-gradient(135deg,var(--accent),rgba(124,247,199,.9));
-  color:#2a1b12;font-weight:900;font-size:12px;padding:8px 10px;border-radius:999px;
-  box-shadow:0 12px 30px rgba(255,106,162,.16);
-}
-.cookie-row{display:flex;gap:12px;align-items:center}
-
-/* Cookie with choc chips */
 .cookie{
-  width:72px;height:72px;border-radius:50%;
+  width:78px;height:78px;border-radius:50%;
   background:
-    radial-gradient(circle at 30% 30%, #ffd9b3, var(--cookie) 55%, var(--cookie2) 100%);
-  box-shadow:0 14px 34px rgba(42,27,18,.14);
+    radial-gradient(circle at 30% 30%, #ffd9b3, var(--cookie) 55%, var(--cookie2));
   position:relative;
+  box-shadow:0 14px 30px rgba(0,0,0,.25);
 }
 .cookie:before{
-  /* chips layer */
   content:"";
   position:absolute;inset:0;border-radius:50%;
   background:
-    radial-gradient(circle at 28% 32%, rgba(58,34,22,.95) 0 8%, transparent 9%),
-    radial-gradient(circle at 63% 28%, rgba(58,34,22,.9) 0 7%, transparent 8%),
-    radial-gradient(circle at 70% 55%, rgba(58,34,22,.9) 0 6.5%, transparent 7.5%),
-    radial-gradient(circle at 40% 62%, rgba(58,34,22,.9) 0 7%, transparent 8%),
-    radial-gradient(circle at 52% 42%, rgba(58,34,22,.85) 0 6%, transparent 7%),
-    radial-gradient(circle at 30% 70%, rgba(58,34,22,.85) 0 6%, transparent 7%);
-  opacity:.95;
-  mix-blend-mode:multiply;
+    radial-gradient(circle at 30% 35%, var(--chip) 0 7%, transparent 8%),
+    radial-gradient(circle at 60% 40%, var(--chip) 0 6%, transparent 7%),
+    radial-gradient(circle at 50% 65%, var(--chip) 0 7%, transparent 8%),
+    radial-gradient(circle at 35% 70%, var(--chip) 0 6%, transparent 7%);
 }
+
 .qr{
-  width:72px;height:72px;border-radius:14px;border:1px solid var(--line);
+  width:78px;height:78px;border-radius:16px;
   background:
-    linear-gradient(90deg,var(--ink) 10%,transparent 10%),
-    linear-gradient(var(--ink) 10%,transparent 10%);
+    linear-gradient(90deg,#000 10%,transparent 10%),
+    linear-gradient(#000 10%,transparent 10%);
   background-size:14px 14px;
-  opacity:.62;
+  opacity:.6;
 }
 
-/* Sections */
-.section{padding:20px 0}
-.section h2{margin:0 0 8px}
-.faq{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
-@media(max-width:900px){.faq{grid-template-columns:1fr}}
-.faq .item{
-  padding:14px;border:1px solid var(--line);
-  border-radius:14px;background:rgba(255,255,255,.92);box-shadow:var(--shadow2)
-}
-.faq b{display:block;margin-bottom:6px}
-
-/* FLOW */
-.flow{padding:10px 0 26px}
-.flowShell{
-  border:1px solid var(--line);
-  border-radius: calc(var(--radius) + 4px);
-  overflow:hidden;
-  background:rgba(255,255,255,.88);
+/* =======================
+   FLOW
+======================= */
+.flow{padding:20px 0 40px}
+.flowBox{
+  background:rgba(255,255,255,.92);
+  border-radius:24px;
   box-shadow:var(--shadow);
-}
-.flowTop{
-  padding:14px 14px 10px;
-  display:flex;align-items:center;justify-content:space-between;gap:12px;
-  border-bottom:1px solid var(--line);
-  background: linear-gradient(180deg, rgba(255,241,221,.75), rgba(255,255,255,.85));
-}
-.steps{display:flex;gap:8px;flex-wrap:wrap}
-.stepBtn{
-  padding:10px 12px;border-radius:999px;
-  border:1px solid var(--line);
-  background:rgba(255,255,255,.92);
-  color:var(--muted);
-  cursor:pointer;
-  font-weight:900;
-  font-size:12px;
-}
-.stepBtn.active{
-  color:#2a1b12;
-  border-color: transparent;
-  background: linear-gradient(135deg, rgba(255,106,162,.95), rgba(124,247,199,.92));
-}
-.priceBox{
-  padding:10px 12px;border-radius:999px;
-  border:1px solid var(--line);
-  background:rgba(255,255,255,.92);
-  color:var(--muted);
-  font-weight:900;
-  font-size:12px;
+  padding:22px;
 }
 
-.flowBody{padding:14px}
+.steps{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.step{
+  padding:8px 12px;border-radius:999px;
+  border:1px solid rgba(42,27,18,.12);
+  font-size:12px;font-weight:900;
+  cursor:pointer;
+  background:#fff;
+}
+.step.active{
+  background:linear-gradient(135deg,var(--pink),var(--mint));
+  border:none;
+}
+
 .panel{display:none}
 .panel.active{display:block}
 
-label{display:block;color:var(--muted);font-size:12px;font-weight:800;margin:10px 0 8px}
-input, textarea, select{
+label{font-size:12px;font-weight:900;color:var(--muted);display:block;margin:10px 0 6px}
+textarea,input{
   width:100%;
-  padding:12px 12px;
+  padding:14px;
   border-radius:14px;
-  border:1px solid var(--line);
-  background:rgba(255,250,242,.9);
-  color:var(--ink);
-  outline:none;
+  border:1px solid rgba(42,27,18,.15);
 }
-textarea{resize:none;min-height:110px}
 
-.chips{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
 .chip{
-  padding:9px 12px;border-radius:999px;
-  border:1px solid var(--line);
-  background:rgba(255,255,255,.92);
-  color:var(--ink);
+  padding:8px 12px;border-radius:999px;
+  border:1px solid rgba(42,27,18,.15);
+  background:#fff;
   cursor:pointer;
   font-size:12px;
   font-weight:900;
 }
-.chip:hover{filter:saturate(1.05)}
-.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-@media(max-width:720px){.row{grid-template-columns:1fr}}
 
-.toggles{display:grid;gap:10px}
-.toggle{
-  display:flex;justify-content:space-between;align-items:center;gap:14px;
-  padding:12px 12px;border-radius:14px;
-  border:1px solid var(--line);
-  background:rgba(255,255,255,.92);
+.footerRow{
+  display:flex;justify-content:space-between;
+  margin-top:14px;gap:10px;flex-wrap:wrap;
 }
-.toggle small{color:var(--muted);display:block;margin-top:2px;font-weight:700}
-.switch{
-  width:52px;height:30px;border-radius:999px;
-  border:1px solid var(--line);
-  background: rgba(182,122,71,.12);
-  position:relative; cursor:pointer; flex:0 0 auto;
-}
-.knob{
-  width:24px;height:24px;border-radius:50%;
-  background: #fff;
-  position:absolute; top:2px; left:2px;
-  transition: transform .15s ease;
-  box-shadow: 0 8px 20px rgba(42,27,18,.10);
-}
-.switch.on{
-  background: rgba(124,247,199,.30);
-  border-color: rgba(124,247,199,.55);
-}
-.switch.on .knob{transform: translateX(22px)}
 
-.hr{height:1px;background:var(--line);margin:14px 0}
-.footerRow{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-top:12px}
-
-.sum{
-  padding:12px;border-radius:14px;border:1px solid var(--line);
-  background:rgba(255,255,255,.92);
-  color:var(--muted);
-  line-height:1.45;
-}
-.sum strong{color:var(--ink)}
-.note{color:var(--muted);font-size:12px;line-height:1.45;margin-top:10px;font-weight:700}
-
-/* Footer */
+/* =======================
+   FOOTER
+======================= */
 footer{
-  margin-top:24px;padding:22px 0;border-top:1px solid var(--line);
-  background:rgba(255,255,255,.72);color:var(--muted);font-size:12px
+  padding:24px 0;
+  font-size:12px;
+  color:var(--muted);
+  text-align:center;
 }
-.footer-links{display:flex;gap:14px;flex-wrap:wrap}
 </style>
 </head>
 
 <body>
+
+<canvas id="cookieRain"></canvas>
+
 <header>
   <div class="container nav">
     <div class="brand">
-      <span class="logo"></span>
-      <span><b>OnlyKeks</b><small>Post die schmeckt!</small></span>
+      <div class="logo"></div>
+      <div><b>OnlyKeks</b><small>Post die schmeckt!</small></div>
     </div>
-    <button class="btn" id="ctaTop">Reply-Keks starten</button>
+    <button class="btn" onclick="scrollToFlow()">Jetzt starten</button>
   </div>
 </header>
 
 <main>
 <section class="hero">
-  <div class="container hero-grid">
-    <div class="card hero-copy">
-      <span class="kicker"><span class="dot"></span>Weil Post nicht schmeckt</span>
-      <h1>Eine Message, die man essen kann.</h1>
+  <div class="container heroGrid">
+    <div class="card">
+      <h1>Eine Message,<br>die man essen kann 🍪</h1>
       <p class="sub">
-        Du schickst einen Keks mit Message & QR-Reply. Der Empfänger antwortet – wir machen daraus den nächsten Keks.
-        <b>Ein Loop statt ein Shop.</b>
+        Du schickst einen echten Keks mit Message & QR-Reply.
+        Der Empfänger antwortet – wir machen daraus den nächsten Keks.
       </p>
-      <div class="cta-row">
-        <button class="btn" id="ctaHero">Reply-Keks starten</button>
-        <button class="btn ghost" onclick="document.getElementById('faq').scrollIntoView({behavior:'smooth'})">
-          So funktioniert’s
-        </button>
+      <div class="cookiePreview">
+        <div class="cookie"></div>
+        <div class="qr"></div>
+        <div><b>Reply-Keks</b><br><small>Keks + Karte + QR</small></div>
       </div>
-      <div class="utilities">
-        <span class="util">📦 Versand 2–3 WT</span>
-        <span class="util">🔎 Trackbar</span>
-        <span class="util">🔒 Sicher zahlen</span>
-        <span class="util">⏳ Lange haltbar</span>
+      <div style="margin-top:16px">
+        <button class="btn" onclick="scrollToFlow()">Reply-Keks starten</button>
       </div>
     </div>
 
-    <div class="card start-card">
-      <h3>In 10 Sekunden starten</h3>
-      <div class="cookie-visual">
-        <span class="stamp">REPLY</span>
-        <div class="cookie-row">
-          <div class="cookie" aria-label="Keks"></div>
-          <div class="qr" aria-label="QR"></div>
-          <div>
-            <b>Reply-Keks</b><br/>
-            <small>1 Keks + Karte + QR → Antwort</small>
-          </div>
-        </div>
-      </div>
-      <div class="cta-row" style="margin-top:12px">
-        <button class="btn" id="ctaCard">Starten</button>
-      </div>
+    <div class="card">
+      <b>Warum das knallt:</b>
+      <ul>
+        <li>📮 Echter Briefkasten-Moment</li>
+        <li>🍪 Keks statt Papier</li>
+        <li>🔁 Antwort-Loop</li>
+        <li>⚡ In unter 30 Sekunden</li>
+      </ul>
     </div>
   </div>
 </section>
 
-<!-- FLOW (kombiniert + echt) -->
 <section class="flow" id="flow">
   <div class="container">
-    <h2>Reply-Flow (5 Steps, GitHub-MVP)</h2>
-    <p class="sub" style="margin:0 0 12px">
-      Message → Veredeln → Extras → Adresse → Bezahlen. Kein Account.
-    </p>
-
-    <div class="flowShell">
-      <div class="flowTop">
-        <div class="steps">
-          <button class="stepBtn active" data-step="1">1 Message</button>
-          <button class="stepBtn" data-step="2">2 Veredeln</button>
-          <button class="stepBtn" data-step="3">3 Extras</button>
-          <button class="stepBtn" data-step="4">4 Adresse</button>
-          <button class="stepBtn" data-step="5">5 Bezahlen</button>
-        </div>
-        <div class="priceBox">Gesamt: <span id="total">9,90</span> €</div>
+    <div class="flowBox">
+      <div class="steps">
+        <div class="step active" data-step="1">1 Message</div>
+        <div class="step" data-step="2">2 Adresse</div>
+        <div class="step" data-step="3">3 Bezahlen</div>
       </div>
 
-      <div class="flowBody">
-        <!-- STEP 1 -->
-        <div class="panel active" id="s1">
-          <label>Vorlagen (antippen)</label>
-          <div class="chips">
-            <div class="chip" data-msg="Danke. 🍪">Danke</div>
-            <div class="chip" data-msg="Vermiss dich. ❤️">Vermiss dich</div>
-            <div class="chip" data-msg="Beweg dein Arsch. 😄">Beweg dein Arsch</div>
-            <div class="chip" data-msg="Geh arbeiten. 💼">Geh arbeiten</div>
-            <div class="chip" data-msg="Party heute? 🎉">Party heute?</div>
-          </div>
-
-          <label>Deine Nachricht (max. 140 Zeichen)</label>
-          <textarea id="msg" maxlength="140" placeholder="Schreib was Kurzes, das knallt…"></textarea>
-
-          <div class="footerRow">
-            <div></div>
-            <button class="btn" id="to2">Weiter: Veredeln</button>
-          </div>
+      <!-- STEP 1 -->
+      <div class="panel active" id="p1">
+        <label>Vorlagen</label>
+        <div class="chips">
+          <div class="chip" data-msg="Vermiss dich ❤️">Vermiss dich</div>
+          <div class="chip" data-msg="Beweg dein Arsch 😄">Beweg dein Arsch</div>
+          <div class="chip" data-msg="Danke 🍪">Danke</div>
         </div>
-
-        <!-- STEP 2 -->
-        <div class="panel" id="s2">
-          <label>Keks veredeln (max. 4, easy)</label>
-          <div class="toggles">
-            <div class="toggle">
-              <div><b>Schleife</b><small>Sieht direkt nach Geschenk aus.</small></div>
-              <div class="switch" data-opt="bow"><div class="knob"></div></div>
-            </div>
-            <div class="toggle">
-              <div><b>Herzchen</b><small>Mehr „awww“.</small></div>
-              <div class="switch" data-opt="hearts"><div class="knob"></div></div>
-            </div>
-            <div class="toggle">
-              <div><b>Blümchen</b><small>Deko-Chichi, aber classy.</small></div>
-              <div class="switch" data-opt="flowers"><div class="knob"></div></div>
-            </div>
-            <div class="toggle">
-              <div><b>Gold-Stempel</b><small>Sticker-Look in Story/Preview.</small></div>
-              <div class="switch" data-opt="stamp"><div class="knob"></div></div>
-            </div>
-          </div>
-
-          <div class="footerRow">
-            <button class="btn ghost" id="back1">Zurück</button>
-            <button class="btn" id="to3">Weiter: Extras</button>
-          </div>
-        </div>
-
-        <!-- STEP 3 -->
-        <div class="panel" id="s3">
-          <label>Extras (optional)</label>
-          <div class="toggles">
-            <div class="toggle">
-              <div><b>+ 1 Extra-Keks</b><small>Mehr Liebe. (+4,90€)</small></div>
-              <div class="switch" data-opt="extraCookie"><div class="knob"></div></div>
-            </div>
-            <div class="toggle">
-              <div><b>Geschenkbox</b><small>Sieht premium aus. (+6,90€)</small></div>
-              <div class="switch" data-opt="giftBox"><div class="knob"></div></div>
-            </div>
-            <div class="toggle">
-              <div><b>Antwort-Keks aktivieren</b><small>Empfänger kann easy zurückschicken. (+2,90€)</small></div>
-              <div class="switch" data-opt="reply"><div class="knob"></div></div>
-            </div>
-          </div>
-
-          <div class="footerRow">
-            <button class="btn ghost" id="back2">Zurück</button>
-            <button class="btn" id="to4">Weiter: Adresse</button>
-          </div>
-        </div>
-
-        <!-- STEP 4 -->
-        <div class="panel" id="s4">
-          <div class="row">
-            <div>
-              <label>Empfänger Name</label>
-              <input id="name" placeholder="Vorname Nachname"/>
-            </div>
-            <div>
-              <label>E-Mail (Bestätigung)</label>
-              <input id="email" placeholder="name@mail.de"/>
-            </div>
-          </div>
-
-          <label>Straße + Nr.</label>
-          <input id="street" placeholder="Musterstraße 12"/>
-
-          <div class="row">
-            <div>
-              <label>PLZ</label>
-              <input id="zip" placeholder="12345"/>
-            </div>
-            <div>
-              <label>Ort</label>
-              <input id="city" placeholder="Berlin"/>
-            </div>
-          </div>
-
-          <div class="footerRow">
-            <button class="btn ghost" id="back3">Zurück</button>
-            <button class="btn" id="to5">Weiter: Bezahlen</button>
-          </div>
-        </div>
-
-        <!-- STEP 5 -->
-        <div class="panel" id="s5">
-          <div class="sum">
-            <div><strong>Nachricht:</strong> <span id="sumMsg"></span></div>
-            <div><strong>Empfänger:</strong> <span id="sumName"></span></div>
-            <div><strong>Adresse:</strong> <span id="sumAddr"></span></div>
-            <div><strong>Extras:</strong> <span id="sumExtras"></span></div>
-            <div><strong>Gesamt:</strong> <span id="sumTotal"></span> €</div>
-          </div>
-
-          <p class="note">
-            GitHub-Pages-MVP: Vor dem Bezahlen speichern wir eine Bestell-ID im Browser (localStorage),
-            damit ihr Bestellungen manuell matchen könnt. Upgrade später: Stripe Checkout + Webhook.
-          </p>
-
-          <div class="footerRow">
-            <button class="btn ghost" id="back4">Zurück</button>
-            <a class="btn" id="payBtn" href="#" target="_blank" rel="noopener">Jetzt sicher bezahlen</a>
-          </div>
-
-          <p class="note"><b>Bestell-ID:</b> <span id="orderId"></span></p>
+        <label>Deine Nachricht</label>
+        <textarea id="msg" maxlength="140"></textarea>
+        <div class="footerRow">
+          <div></div>
+          <button class="btn" onclick="go(2)">Weiter</button>
         </div>
       </div>
-    </div>
-  </div>
-</section>
 
-<section class="section" id="faq">
-  <div class="container">
-    <h2>Kurze Antworten</h2>
-    <div class="faq">
-      <div class="item"><b>Was kommt an?</b> Ein Keks, eine Karte, ein QR-Code für die Antwort.</div>
-      <div class="item"><b>Wie läuft der Reply?</b> QR scannen → Text → Adresse → fertig.</div>
-      <div class="item"><b>Wie lange haltbar?</b> Mehrere Monate (luftdicht verpackt).</div>
-      <div class="item"><b>Allergene?</b> Gluten enthalten. Details im Footer.</div>
-    </div>
-    <div class="cta-row" style="margin-top:14px">
-      <button class="btn" id="ctaBottom">Reply-Keks starten</button>
+      <!-- STEP 2 -->
+      <div class="panel" id="p2">
+        <label>Name</label>
+        <input id="name"/>
+        <label>Adresse</label>
+        <input id="addr"/>
+        <div class="footerRow">
+          <button class="btn" onclick="go(1)">Zurück</button>
+          <button class="btn" onclick="go(3)">Weiter</button>
+        </div>
+      </div>
+
+      <!-- STEP 3 -->
+      <div class="panel" id="p3">
+        <p><b>Fertig 🍪</b><br>Klick auf Bezahlen und dein Keks geht auf Reise.</p>
+        <a class="btn" id="payBtn" target="_blank">Jetzt sicher bezahlen</a>
+      </div>
     </div>
   </div>
 </section>
 </main>
 
 <footer>
-  <div class="container">
-    <div class="footer-links">
-      <a href="#">Impressum</a>
-      <a href="#">Datenschutz</a>
-      <a href="#">AGB</a>
-      <a href="#">Versand</a>
-      <a href="#">Allergene</a>
-    </div>
-    <div style="margin-top:8px">© OnlyKeks · Post die schmeckt</div>
-  </div>
+  © OnlyKeks · Post die schmeckt
 </footer>
 
 <script>
-/*** CONFIG ***/
-const STRIPE_PAYMENT_LINK = "https://buy.stripe.com/const STRIPE_PAYMENT_LINK = "https://buy.stripe.com/aBcDeFgHiJkLmNoPqR";"; // <- HIER EINTRAGEN
+/* =======================
+   CONFIG
+======================= */
+const STRIPE_PAYMENT_LINK = "https://buy.stripe.com/aBcDeFgHiJkLmNoPqR";
 
-const PRICES = {
-  base: 9.90,
-  extraCookie: 4.90,
-  giftBox: 6.90,
-  reply: 2.90,
-  bow: 0, hearts: 0, flowers: 0, stamp: 0
-};
+/* =======================
+   FLOW LOGIC
+======================= */
+const steps = document.querySelectorAll(".step");
+const panels = {1:p1,2:p2,3:p3};
 
-const state = {
-  msg: "",
-  name: "",
-  email: "",
-  street: "",
-  zip: "",
-  city: "",
-  opts: {
-    bow:false, hearts:false, flowers:false, stamp:false,
-    extraCookie:false, giftBox:false, reply:false
-  }
-};
-
-const panels = {
-  1: document.getElementById("s1"),
-  2: document.getElementById("s2"),
-  3: document.getElementById("s3"),
-  4: document.getElementById("s4"),
-  5: document.getElementById("s5"),
-};
-const stepBtns = Array.from(document.querySelectorAll(".stepBtn"));
-
-function showStep(n){
+function go(n){
   Object.values(panels).forEach(p=>p.classList.remove("active"));
   panels[n].classList.add("active");
-  stepBtns.forEach(b=>b.classList.toggle("active", +b.dataset.step === n));
+  steps.forEach(s=>s.classList.toggle("active", +s.dataset.step===n));
+  if(n===3) document.getElementById("payBtn").href = STRIPE_PAYMENT_LINK;
 }
-
-function euro(n){ return n.toFixed(2).replace(".", ","); }
-
-function calcTotal(){
-  let t = PRICES.base;
-  for (const [k,v] of Object.entries(state.opts)){
-    if(v) t += (PRICES[k] || 0);
-  }
-  return t;
+function scrollToFlow(){
+  document.getElementById("flow").scrollIntoView({behavior:"smooth"});
 }
+document.querySelectorAll(".chip").forEach(c=>{
+  c.onclick=()=>msg.value=c.dataset.msg;
+});
 
-function updateTotal(){
-  const t = calcTotal();
-  document.getElementById("total").textContent = euro(t);
-  document.getElementById("sumTotal").textContent = euro(t);
-  return t;
+/* =======================
+   COOKIE RAIN
+======================= */
+const c=document.getElementById("cookieRain"),ctx=c.getContext("2d");
+function resize(){
+  c.width=innerWidth; c.height=innerHeight;
 }
-
-/*** Bindings ***/
-document.querySelectorAll(".chip").forEach(ch=>{
-  ch.addEventListener("click", ()=>{
-    document.getElementById("msg").value = ch.dataset.msg;
-    state.msg = ch.dataset.msg;
+resize(); addEventListener("resize",resize);
+const cookies=[...Array(30)].map(()=>({
+  x:Math.random()*innerWidth,
+  y:Math.random()*innerHeight,
+  r:10+Math.random()*22,
+  v:0.6+Math.random()*1.4
+}));
+function draw(){
+  ctx.clearRect(0,0,c.width,c.height);
+  cookies.forEach(o=>{
+    o.y+=o.v; if(o.y>c.height)o.y=-50;
+    ctx.beginPath();
+    ctx.arc(o.x,o.y,o.r,0,Math.PI*2);
+    ctx.fillStyle="#c48752";
+    ctx.fill();
   });
-});
-
-document.querySelectorAll(".switch").forEach(sw=>{
-  sw.addEventListener("click", ()=>{
-    const key = sw.dataset.opt;
-    state.opts[key] = !state.opts[key];
-    sw.classList.toggle("on", state.opts[key]);
-    updateTotal();
-  });
-});
-
-// Inputs
-const msgEl = document.getElementById("msg");
-msgEl.addEventListener("input", e => state.msg = e.target.value.trim());
-
-["name","email","street","zip","city"].forEach(id=>{
-  const el = document.getElementById(id);
-  el.addEventListener("input", e => state[id] = e.target.value.trim());
-});
-
-// Navigation buttons
-document.getElementById("to2").onclick = ()=> {
-  if(!state.msg || state.msg.length < 2) return alert("Bitte eine kurze Nachricht eintragen.");
-  showStep(2);
-};
-document.getElementById("to3").onclick = ()=> showStep(3);
-document.getElementById("to4").onclick = ()=> showStep(4);
-
-document.getElementById("to5").onclick = ()=> {
-  if(!state.name || !state.street || !state.zip || !state.city) return alert("Bitte Adresse vollständig eintragen.");
-
-  // Summary
-  document.getElementById("sumMsg").textContent = state.msg || "—";
-  document.getElementById("sumName").textContent = state.name || "—";
-  document.getElementById("sumAddr").textContent = `${state.street}, ${state.zip} ${state.city}`;
-
-  const extras = [];
-  if(state.opts.extraCookie) extras.push("+1 Extra-Keks");
-  if(state.opts.giftBox) extras.push("Geschenkbox");
-  if(state.opts.reply) extras.push("Antwort-Keks");
-  document.getElementById("sumExtras").textContent = extras.length ? extras.join(", ") : "—";
-
-  const orderId = "OK-" + Math.random().toString(36).slice(2, 8).toUpperCase();
-  document.getElementById("orderId").textContent = orderId;
-
-  // Persist (GitHub MVP)
-  const payload = {
-    orderId,
-    createdAt: new Date().toISOString(),
-    ...state,
-    total: calcTotal()
-  };
-  localStorage.setItem("onlykeks_order", JSON.stringify(payload));
-
-  // Stripe Payment Link with prefilled_email where possible
-  try{
-    const url = new URL(STRIPE_PAYMENT_LINK);
-    if(state.email) url.searchParams.set("prefilled_email", state.email);
-    document.getElementById("payBtn").href = url.toString();
-  } catch(e){
-    document.getElementById("payBtn").href = STRIPE_PAYMENT_LINK;
-  }
-
-  updateTotal();
-  showStep(5);
-};
-
-document.getElementById("back1").onclick = ()=> showStep(1);
-document.getElementById("back2").onclick = ()=> showStep(2);
-document.getElementById("back3").onclick = ()=> showStep(3);
-document.getElementById("back4").onclick = ()=> showStep(4);
-
-// Step buttons (guarded)
-stepBtns.forEach(b=>{
-  b.addEventListener("click", ()=>{
-    const n = +b.dataset.step;
-    if(n >= 2 && (!state.msg || state.msg.length < 2)) return;
-    if(n >= 5 && (!state.name || !state.street || !state.zip || !state.city)) return;
-    showStep(n);
-  });
-});
-
-/*** CTAs -> scroll to flow ***/
-["ctaTop","ctaHero","ctaCard","ctaBottom"].forEach(id=>{
-  document.getElementById(id).addEventListener("click",()=>{
-    document.getElementById("flow").scrollIntoView({behavior:"smooth"});
-  });
-});
-
-// Init
-updateTotal();
-showStep(1);
+  requestAnimationFrame(draw);
+}
+draw();
 </script>
 </body>
 </html>

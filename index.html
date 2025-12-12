@@ -1,938 +1,261 @@
 <!doctype html>
 <html lang="de">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>OnlyKeks — Post, die schmeckt</title>
-  <meta name="description" content="OnlyKeks: Die essbare Botschaft. Post, die schmeckt. In 3 Klicks vom QR zum Reply-Keks." />
-  <style>
-    :root{
-      /* Farbglitte: warmes Karamellbraun, cremiges Weiche, Vanilleweiß */
-      --caramel:#8B5A2B;
-      --caramel-2:#A86B34;
-      --cream:#F2E6D8;
-      --vanilla:#FFF7E6;
-      --ink:#1A1411;
-      --muted:#4A3A33;
-      --line: rgba(26,20,17,.12);
-      --shadow: 0 18px 60px rgba(26,20,17,.16);
-      --radius: 22px;
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0;
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji","Segoe UI Emoji";
-      color:var(--ink);
-      background:
-        radial-gradient(1200px 600px at 20% 10%, rgba(168,107,52,.22), transparent 60%),
-        radial-gradient(900px 500px at 80% 30%, rgba(139,90,43,.18), transparent 55%),
-        linear-gradient(180deg, var(--vanilla), var(--cream));
-      overflow-x:hidden;
-    }
-    a{color:inherit}
-    .container{max-width:1120px;margin:0 auto;padding:0 18px}
-    .nav{
-      position:sticky;top:0;z-index:50;
-      backdrop-filter: blur(10px);
-      background: rgba(255,247,230,.72);
-      border-bottom:1px solid var(--line);
-    }
-    .nav-inner{
-      display:flex;align-items:center;justify-content:space-between;
-      padding:14px 0;
-      gap:12px;
-    }
-    .brand{
-      display:flex;align-items:center;gap:12px;
-      text-decoration:none;
-    }
-    .logo{
-      width:40px;height:40px;border-radius:14px;
-      background: linear-gradient(135deg, var(--caramel), var(--caramel-2));
-      box-shadow: 0 10px 25px rgba(139,90,43,.22);
-      position:relative;
-    }
-    .logo:after{
-      content:"";
-      position:absolute;inset:10px;
-      border-radius:12px;
-      background: rgba(255,247,230,.55);
-      border:1px solid rgba(255,247,230,.75);
-    }
-    .brand b{font-size:16px;letter-spacing:.2px}
-    .brand small{display:block;color:var(--muted);margin-top:2px}
-    .nav-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:flex-end}
-    .pill{
-      border:1px solid var(--line);
-      background: rgba(255,247,230,.7);
-      padding:10px 12px;border-radius:999px;
-      font-size:13px;color:var(--muted);
-    }
-    .btn{
-      border:0;cursor:pointer;
-      border-radius:999px;
-      padding:11px 14px;
-      font-weight:700;
-      letter-spacing:.2px;
-      transition: transform .12s ease, filter .12s ease, box-shadow .12s ease;
-      display:inline-flex;align-items:center;gap:10px;
-      box-shadow: 0 10px 24px rgba(26,20,17,.10);
-    }
-    .btn:active{transform: translateY(1px)}
-    .btn.primary{
-      color: var(--vanilla);
-      background: linear-gradient(135deg, var(--caramel), var(--caramel-2));
-    }
-    .btn.ghost{
-      background: rgba(255,247,230,.72);
-      border:1px solid var(--line);
-      color: var(--ink);
-      box-shadow:none;
-    }
-    .hero{
-      padding:48px 0 28px;
-    }
-    .hero-grid{
-      display:grid;
-      grid-template-columns: 1.15fr .85fr;
-      gap:18px;
-      align-items:stretch;
-    }
-    @media (max-width: 980px){
-      .hero-grid{grid-template-columns:1fr}
-      .nav-actions{justify-content:flex-start}
-    }
-    .card{
-      border:1px solid var(--line);
-      border-radius: var(--radius);
-      background: rgba(255,247,230,.78);
-      box-shadow: var(--shadow);
-      overflow:hidden;
-    }
-    .hero-copy{
-      padding:24px;
-      position:relative;
-    }
-    .kicker{
-      display:inline-flex;align-items:center;gap:10px;
-      font-size:13px;color:var(--muted);
-      border:1px solid var(--line);
-      background: rgba(255,247,230,.72);
-      padding:8px 12px;border-radius:999px;
-    }
-    .dot{
-      width:8px;height:8px;border-radius:99px;
-      background: var(--caramel-2);
-      box-shadow: 0 0 0 6px rgba(168,107,52,.16);
-    }
-    h1{
-      margin:14px 0 10px;
-      font-size: 44px;
-      line-height: 1.02;
-      letter-spacing: -1.2px;
-    }
-    @media (max-width:520px){h1{font-size:38px}}
-    .sub{
-      font-size:16px;line-height:1.5;color:var(--muted);
-      max-width:60ch;
-      margin:0 0 18px;
-    }
-    .cta-row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-    .meta{
-      display:flex;gap:12px;flex-wrap:wrap;margin-top:16px;color:var(--muted);font-size:13px
-    }
-    .meta span{
-      padding:8px 10px;border:1px solid var(--line);
-      border-radius:999px;background: rgba(255,247,230,.7);
-    }
-    .hero-media{
-      position:relative;
-      display:flex;flex-direction:column;
-    }
-    .media-top{
-      padding:14px 14px 0;
-      display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:space-between
-    }
-    .badge{
-      font-size:12px;color:var(--muted);
-      padding:8px 10px;border-radius:999px;
-      border:1px solid var(--line);
-      background: rgba(255,247,230,.72);
-    }
-    .video{
-      margin:14px;
-      border-radius: 18px;
-      border: 1px solid var(--line);
-      background:
-        radial-gradient(800px 240px at 10% 10%, rgba(168,107,52,.22), transparent 65%),
-        linear-gradient(135deg, rgba(139,90,43,.20), rgba(255,247,230,.55));
-      height: 320px;
-      position:relative;
-      overflow:hidden;
-      display:flex;align-items:center;justify-content:center;
-    }
-    .play{
-      width:82px;height:82px;border-radius:999px;
-      background: rgba(255,247,230,.8);
-      border:1px solid var(--line);
-      display:grid;place-items:center;
-      box-shadow: 0 16px 40px rgba(26,20,17,.18);
-      cursor:pointer;
-      transition: transform .12s ease, filter .12s ease;
-    }
-    .play:hover{filter: brightness(1.02);transform: translateY(-1px)}
-    .play svg{transform: translateX(2px)}
-    .video small{
-      position:absolute;bottom:14px;left:14px;right:14px;
-      color: var(--muted);font-size:12px;
-      background: rgba(255,247,230,.72);
-      border:1px solid var(--line);
-      padding:10px 12px;border-radius: 14px;
-    }
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>OnlyKeks – Post die schmeckt!</title>
+<meta name="description" content="Post die schmeckt! Verschicke Post, die schmeckt. Reply-Keks mit QR-Loop." />
 
-    .section{padding:24px 0}
-    .section h2{
-      font-size:22px;margin:0 0 10px;letter-spacing:-.2px
-    }
-    .section p{margin:0;color:var(--muted);line-height:1.55}
-    .grid-3{
-      display:grid;grid-template-columns:repeat(3,1fr);
-      gap:12px;margin-top:14px;
-    }
-    @media (max-width: 980px){.grid-3{grid-template-columns:1fr}}
-    .mini{
-      padding:16px;border-radius:18px;
-      border:1px solid var(--line);
-      background: rgba(255,247,230,.72);
-      box-shadow: 0 10px 30px rgba(26,20,17,.08);
-    }
-    .mini b{display:block;margin-bottom:6px}
-    .mini .icon{
-      width:34px;height:34px;border-radius:12px;
-      background: linear-gradient(135deg, rgba(139,90,43,.22), rgba(168,107,52,.20));
-      border:1px solid var(--line);
-      display:grid;place-items:center;margin-bottom:10px;
-    }
-    .mini ul{margin:10px 0 0;padding-left:18px;color:var(--muted)}
-    .mini li{margin:6px 0}
+<style>
+:root{
+  --caramel:#7A3E12;
+  --caramel-2:#C46B2A;
+  --cream:#F6EBDD;
+  --vanilla:#FFF6E7;
+  --ink:#140F0C;
+  --muted:#4E3B31;
+  --line:rgba(20,15,12,.12);
 
-    .tiers{
-      display:grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap:12px;margin-top:14px;
-    }
-    @media (max-width: 980px){.tiers{grid-template-columns:1fr}}
-    .tier{
-      padding:18px;border-radius:18px;
-      border:1px solid var(--line);
-      background: rgba(255,247,230,.78);
-      box-shadow: 0 14px 40px rgba(26,20,17,.10);
-      position:relative;
-      overflow:hidden;
-    }
-    .tier.highlight{
-      background: linear-gradient(180deg, rgba(255,247,230,.90), rgba(242,230,216,.85));
-      border-color: rgba(139,90,43,.26);
-    }
-    .tier h3{margin:6px 0 6px}
-    .price{
-      font-size:28px;font-weight:900;letter-spacing:-.6px;margin:10px 0 6px
-    }
-    .tier small{color:var(--muted)}
-    .tier .list{margin:12px 0 0;padding-left:18px;color:var(--muted)}
-    .tier .list li{margin:7px 0}
-    .tier .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
-    .ribbon{
-      position:absolute;top:14px;right:-40px;
-      transform: rotate(25deg);
-      background: linear-gradient(135deg, var(--caramel), var(--caramel-2));
-      color: var(--vanilla);
-      font-weight:800;font-size:12px;
-      padding:8px 54px;
-      box-shadow: 0 10px 25px rgba(26,20,17,.18);
-    }
+  --pop:#7CFF6B;
+  --pop-2:#7AA7FF;
 
-    .faq{margin-top:14px}
-    details{
-      border:1px solid var(--line);
-      border-radius:16px;
-      background: rgba(255,247,230,.72);
-      padding:14px 14px;
-      box-shadow: 0 10px 30px rgba(26,20,17,.07);
-    }
-    details + details{margin-top:10px}
-    summary{cursor:pointer;font-weight:800}
-    details p{margin-top:10px}
+  --radius:26px;
+  --shadow:0 20px 60px rgba(20,15,12,.18);
+}
 
-    footer{
-      padding:24px 0 38px;
-      color: var(--muted);
-      border-top:1px solid var(--line);
-      background: rgba(255,247,230,.55);
-      margin-top:24px;
-    }
-    .footer-grid{
-      display:grid;grid-template-columns:1.2fr .8fr;gap:12px;
-      align-items:start;
-    }
-    @media (max-width:980px){.footer-grid{grid-template-columns:1fr}}
-    .fine{font-size:12px;line-height:1.45;color:rgba(74,58,51,.85)}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;
+  background:
+    radial-gradient(900px 400px at 10% 0%, rgba(124,255,107,.15), transparent 60%),
+    radial-gradient(800px 400px at 90% 20%, rgba(122,167,255,.18), transparent 55%),
+    linear-gradient(180deg,var(--vanilla),var(--cream));
+  color:var(--ink);
+}
 
-    /* Modal */
-    .overlay{
-      position:fixed;inset:0;
-      background: rgba(26,20,17,.52);
-      display:none;align-items:center;justify-content:center;
-      padding:18px;z-index:100;
-    }
-    .overlay.open{display:flex}
-    .modal{
-      width:min(860px, 100%);
-      border-radius: 22px;
-      border:1px solid rgba(255,247,230,.35);
-      background: rgba(255,247,230,.92);
-      box-shadow: 0 30px 90px rgba(0,0,0,.35);
-      overflow:hidden;
-    }
-    .modal-head{
-      padding:14px 16px;
-      display:flex;align-items:center;justify-content:space-between;gap:10px;
-      border-bottom:1px solid var(--line);
-      background: rgba(255,247,230,.88);
-    }
-    .modal-head b{letter-spacing:-.2px}
-    .close{
-      border:1px solid var(--line);
-      background: rgba(255,247,230,.8);
-      border-radius:999px;
-      padding:10px 12px;
-      cursor:pointer;font-weight:800;
-    }
-    .modal-body{padding:16px}
-    .steps{
-      display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px;
-    }
-    .step{
-      font-size:12px;color:var(--muted);
-      border:1px solid var(--line);
-      background: rgba(255,247,230,.72);
-      padding:8px 10px;border-radius:999px;
-    }
-    .step.active{
-      color:var(--ink);
-      border-color: rgba(139,90,43,.28);
-      box-shadow: 0 10px 30px rgba(26,20,17,.08);
-    }
-    .form-grid{
-      display:grid;grid-template-columns:1fr 1fr;gap:12px;
-    }
-    @media (max-width:780px){.form-grid{grid-template-columns:1fr}}
-    .field{
-      border:1px solid var(--line);
-      background: rgba(255,247,230,.72);
-      border-radius:16px;
-      padding:12px;
-    }
-    label{display:block;font-size:12px;color:var(--muted);font-weight:800;margin-bottom:8px}
-    input, textarea, select{
-      width:100%;
-      border:1px solid rgba(26,20,17,.14);
-      background: rgba(255,255,255,.65);
-      border-radius:12px;
-      padding:10px 10px;
-      font: inherit;
-      outline:none;
-    }
-    textarea{min-height:96px;resize:vertical}
-    .modal-actions{
-      display:flex;gap:10px;flex-wrap:wrap;justify-content:space-between;align-items:center;
-      margin-top:12px;padding-top:12px;border-top:1px solid var(--line)
-    }
-    .right{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end}
-    .summary{
-      border:1px dashed rgba(139,90,43,.32);
-      background: rgba(255,247,230,.72);
-      border-radius:16px;padding:12px;color:var(--muted);
-      font-size:13px;line-height:1.45;
-    }
-    .hidden{display:none !important}
+.container{max-width:1180px;margin:auto;padding:0 18px}
 
-    /* Scroll story indicator */
-    .progress{
-      position:fixed;left:0;top:0;height:3px;width:0%;
-      background: linear-gradient(90deg, var(--caramel), var(--caramel-2));
-      z-index:60;
-    }
-  </style>
+/* NAV */
+.nav{
+  position:sticky;top:0;z-index:50;
+  backdrop-filter:blur(10px);
+  background:rgba(255,246,231,.8);
+  border-bottom:1px solid var(--line);
+}
+.nav-inner{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:14px 0;gap:12px;
+}
+.brand{display:flex;gap:14px;align-items:center;text-decoration:none;color:inherit}
+.logo{
+  width:62px;height:62px;border-radius:20px;
+  background:linear-gradient(135deg,var(--caramel),var(--caramel-2));
+  position:relative;
+  box-shadow:0 18px 40px rgba(122,62,18,.35);
+}
+.logo:after{
+  content:"";
+  position:absolute;inset:14px;
+  border-radius:16px;
+  background:rgba(255,246,231,.65);
+}
+.brand b{font-size:20px;font-weight:900}
+.brand small{display:block;font-size:12px;color:var(--muted)}
+
+.btn{
+  border-radius:999px;
+  padding:16px 22px;
+  font-weight:900;
+  font-size:16px;
+  cursor:pointer;
+  border:none;
+  display:inline-flex;align-items:center;gap:10px;
+  transition:.15s ease;
+}
+.btn.primary{
+  background:linear-gradient(135deg,var(--pop),var(--pop-2));
+  box-shadow:0 18px 40px rgba(124,255,107,.35);
+}
+.btn.primary:hover{transform:translateY(-2px)}
+.btn.ghost{
+  background:rgba(255,246,231,.9);
+  border:1px solid var(--line);
+}
+
+/* HERO */
+.hero{padding:56px 0}
+.hero-grid{
+  display:grid;grid-template-columns:1.1fr .9fr;gap:22px;
+}
+@media(max-width:900px){.hero-grid{grid-template-columns:1fr}}
+
+.card{
+  background:rgba(255,246,231,.85);
+  border-radius:var(--radius);
+  border:1px solid var(--line);
+  box-shadow:var(--shadow);
+}
+
+.hero-copy{padding:28px}
+.kicker{
+  display:inline-flex;gap:10px;align-items:center;
+  padding:10px 16px;border-radius:999px;
+  background:linear-gradient(135deg,rgba(124,255,107,.25),rgba(255,246,231,.8));
+  font-size:13px;
+}
+.dot{
+  width:10px;height:10px;border-radius:50%;
+  background:var(--pop-2);
+  box-shadow:0 0 0 6px rgba(122,167,255,.25);
+}
+
+h1{
+  font-size:46px;line-height:1.02;
+  margin:16px 0 10px;
+}
+.sub{
+  font-size:17px;color:var(--muted);max-width:58ch;
+}
+.social-proof{
+  margin-top:14px;
+  font-size:13px;color:var(--muted);
+}
+.cta-row{margin-top:18px;display:flex;gap:12px;flex-wrap:wrap}
+
+/* TEMPLATE CHIPS */
+.chips{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+.chip{
+  padding:10px 14px;border-radius:999px;
+  background:rgba(255,246,231,.9);
+  border:1px solid var(--line);
+  font-size:13px;cursor:pointer;
+}
+.chip:hover{background:rgba(124,255,107,.25)}
+
+/* PRODUCT HERO */
+.hero-product{
+  position:relative;padding:28px;
+  display:flex;align-items:center;justify-content:center;
+}
+.cookie{
+  width:280px;height:280px;border-radius:50%;
+  background:
+    radial-gradient(circle at 30% 30%, #e7b27a, var(--caramel));
+  box-shadow:0 25px 60px rgba(20,15,12,.35);
+  position:relative;
+  animation:float 4s ease-in-out infinite;
+}
+@keyframes float{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-8px)}
+}
+.qr{
+  position:absolute;inset:60px;
+  background:
+    linear-gradient(90deg,#000 10%,transparent 10%),
+    linear-gradient(#000 10%,transparent 10%);
+  background-size:20px 20px;
+  border-radius:16px;
+  opacity:.85;
+}
+.stamp{
+  position:absolute;bottom:-14px;right:-14px;
+  background:var(--pop);
+  padding:14px 18px;
+  border-radius:16px;
+  font-weight:900;
+  transform:rotate(-12deg);
+  box-shadow:0 12px 30px rgba(0,0,0,.25);
+}
+
+/* SECTIONS */
+.section{padding:36px 0}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+@media(max-width:900px){.grid3{grid-template-columns:1fr}}
+.mini{
+  padding:18px;border-radius:20px;
+  background:rgba(255,246,231,.85);
+  border:1px solid var(--line);
+}
+
+/* FOOTER */
+footer{
+  padding:28px 0;color:var(--muted);
+  border-top:1px solid var(--line);
+}
+</style>
 </head>
 
 <body>
-  <div class="progress" id="progress"></div>
 
-  <header class="nav">
-    <div class="container">
-      <div class="nav-inner">
-        <a class="brand" href="#top">
-          <span class="logo" aria-hidden="true"></span>
-          <span>
-            <b>OnlyKeks</b>
-            <small>Post, die schmeckt.</small>
-          </span>
-        </a>
-
-        <div class="nav-actions">
-          <span class="pill">MVP: Reply-Keks • 3 Klicks • viral Loop</span>
-          <button class="btn ghost" id="btnHow" type="button">So funktioniert’s</button>
-          <button class="btn primary" id="btnOrderTop" type="button">Jetzt Reply-Keks schicken</button>
-        </div>
+<header class="nav">
+  <div class="container nav-inner">
+    <a class="brand" href="#">
+      <div class="logo"></div>
+      <div>
+        <b>OnlyKeks</b>
+        <small>Post die schmeckt!</small>
       </div>
-    </div>
-  </header>
-
-  <main id="top">
-    <section class="hero">
-      <div class="container">
-        <div class="hero-grid">
-          <div class="card hero-copy">
-            <span class="kicker"><span class="dot"></span>Essbare Botschaft • wie Lebkuchenherz, nur 2025</span>
-            <h1>OnlyKeks.<br/>Post, die schmeckt.</h1>
-            <p class="sub">
-              Du schickst nicht nur Kekse. Du schickst <b>eine Message</b>.
-              Mit QR-Reply-Flow: Empfänger scannt → antwortet → wir backen/packen → Versand.
-              Schnell, frech, sharebar.
-            </p>
-
-            <div class="cta-row">
-              <button class="btn primary" id="btnOrder" type="button">Reply-Keks starten</button>
-              <button class="btn ghost" id="btnStory" type="button">Scroll-Story ansehen</button>
-            </div>
-
-            <div class="meta">
-              <span>✅ Personalisierung</span>
-              <span>✅ QR-Reply-Code</span>
-              <span>✅ B2C & B2B</span>
-              <span>✅ TikTok/Reels-fähig</span>
-            </div>
-          </div>
-
-          <div class="card hero-media">
-            <div class="media-top">
-              <span class="badge">Video/Animation-Slot (Platzhalter)</span>
-              <span class="badge">Palette: Karamell • Creme • Vanille</span>
-            </div>
-
-            <div class="video" id="videoMock" role="button" tabindex="0" aria-label="Video abspielen (Platzhalter)">
-              <div class="play" title="Play">
-                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                  <path d="M9 7.5V16.5L17 12L9 7.5Z" fill="currentColor"></path>
-                </svg>
-              </div>
-              <small>
-                Hier kommt später dein Hero-Video rein (Hand, Keks, Stempel/Print, QR scan, „Reply-Keks“ wird bestellt).
-              </small>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="story">
-      <div class="container">
-        <div class="card" style="padding:22px">
-          <h2>Scroll-Story: von „Keks im Briefkasten“ zum viralen Loop</h2>
-          <p>
-            1 Keks im Umschlag + Karte + QR. Empfänger scannt → schreibt Antwort → wir machen den Reply-Keks → zurück.
-            Jeder Kontakt wird zur nächsten Bestellung. Das ist kein Snack – das ist Growth.
-          </p>
-
-          <div class="grid-3">
-            <div class="mini">
-              <div class="icon">1</div>
-              <b>Trigger</b>
-              <p>„Post, die schmeckt“ landet physisch. Überraschung + Foto-Moment.</p>
-              <ul>
-                <li>Umschlag + Keks + Karte</li>
-                <li>QR führt zur Story-URL</li>
-              </ul>
-            </div>
-
-            <div class="mini">
-              <div class="icon">2</div>
-              <b>Reply-Flow</b>
-              <p>Frictionless: Vorlage wählen → Text → Adresse → Zahlung.</p>
-              <ul>
-                <li>Quick / Custom / Premium</li>
-                <li>Personalisierter Reply-Code</li>
-              </ul>
-            </div>
-
-            <div class="mini">
-              <div class="icon">3</div>
-              <b>Viral Loop</b>
-              <p>Jede Antwort erzeugt neue Empfänger. Der Keks trägt die Marke weiter.</p>
-              <ul>
-                <li>Mini-Story-Share-Link</li>
-                <li>Optional Foto-Upload</li>
-              </ul>
-            </div>
-          </div>
-
-          <div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap">
-            <button class="btn primary" id="btnOrderStory" type="button">Reply-Keks jetzt starten</button>
-            <a class="btn ghost" href="#tiers" style="text-decoration:none">Pakete ansehen</a>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="how">
-      <div class="container">
-        <div class="card" style="padding:22px">
-          <h2>So funktioniert’s (MVP-klar, keine Spielereien)</h2>
-          <p>Wir optimieren auf Geschwindigkeit und Abschluss: 3 Klicks, fertig.</p>
-
-          <div class="grid-3">
-            <div class="mini">
-              <div class="icon">🧩</div>
-              <b>1) Vorlage wählen</b>
-              <p>Frech, süß, motivierend – Templates mit hoher Reply-Rate.</p>
-            </div>
-            <div class="mini">
-              <div class="icon">✍️</div>
-              <b>2) Botschaft tippen</b>
-              <p>Quick (kurz), Custom (frei), Premium (Box + Extras).</p>
-            </div>
-            <div class="mini">
-              <div class="icon">🚚</div>
-              <b>3) Adresse + Zahlung</b>
-              <p>Checkout schlank. Produktion/Versand automatisiert.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="tiers">
-      <div class="container">
-        <div class="card" style="padding:22px">
-          <h2>Pakete (MVP-ready)</h2>
-          <p>Erst Loop über Reply-Keks. Danach Skalierung (B2B/White-Label).</p>
-
-          <div class="tiers">
-            <div class="tier">
-              <h3>Quick</h3>
-              <div class="price">ab 9,90 €</div>
-              <small>Vorlage + 20 Zeichen. Ultra schnell.</small>
-              <ul class="list">
-                <li>1 Keks + Karte + QR</li>
-                <li>20 Zeichen Message</li>
-                <li>Standard Versand</li>
-              </ul>
-              <div class="actions">
-                <button class="btn primary" type="button" data-plan="Quick">Quick wählen</button>
-                <button class="btn ghost" type="button" data-plan="Quick" data-prefill="frech">Frech-Vorlage</button>
-              </div>
-            </div>
-
-            <div class="tier highlight">
-              <div class="ribbon">BEST LOOP</div>
-              <h3>Custom</h3>
-              <div class="price">ab 14,90 €</div>
-              <small>Freie Message + optional Emoji-Style.</small>
-              <ul class="list">
-                <li>1–3 Kekse</li>
-                <li>Freitext</li>
-                <li>Reply-Code personalisiert</li>
-              </ul>
-              <div class="actions">
-                <button class="btn primary" type="button" data-plan="Custom">Custom wählen</button>
-                <button class="btn ghost" type="button" data-plan="Custom" data-prefill="motivation">Motivations-Vorlage</button>
-              </div>
-            </div>
-
-            <div class="tier">
-              <h3>Premium</h3>
-              <div class="price">ab 29,90 €</div>
-              <small>Box + mehrere Kekse + Wow-Unboxing.</small>
-              <ul class="list">
-                <li>Geschenkbox</li>
-                <li>Mehrere Kekse</li>
-                <li>Premium Story-URL</li>
-              </ul>
-              <div class="actions">
-                <button class="btn primary" type="button" data-plan="Premium">Premium wählen</button>
-                <button class="btn ghost" type="button" data-plan="Premium" data-prefill="party">Party-Vorlage</button>
-              </div>
-            </div>
-          </div>
-
-          <div class="summary" style="margin-top:14px">
-            <b>Provokante Trigger-Vorlagen (für Viralität):</b><br/>
-            „Beweg dein Arsch.“ • „Geh arbeiten.“ • „Du schaffst das.“ • „Komm klar.“ • „Reply oder du bist feige.“
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="faq">
-      <div class="container">
-        <div class="card" style="padding:22px">
-          <h2>FAQ</h2>
-          <p>Kurz & klar.</p>
-
-          <div class="faq">
-            <details>
-              <summary>Ist „OnlyKeks“ adult?</summary>
-              <p>
-                Nein. Der Name ist augenzwinkernde Anlehnung. Inhalt bleibt snackig, frech, aber safe.
-              </p>
-            </details>
-
-            <details>
-              <summary>Wie wird der Reply-Flow „frictionless“?</summary>
-              <p>
-                3-Step Modal: Vorlage → Text/Adresse → Zahlung. Alles ohne Account-Zwang im MVP.
-              </p>
-            </details>
-
-            <details>
-              <summary>Was ist der wichtigste MVP-Hebel?</summary>
-              <p>
-                Der Empfänger wird zum nächsten Sender. Jede Lieferung ist Akquise. Loop statt Ads-Burn.
-              </p>
-            </details>
-          </div>
-
-          <div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap">
-            <button class="btn primary" id="btnOrderFaq" type="button">Jetzt starten</button>
-            <a class="btn ghost" href="#top" style="text-decoration:none">Nach oben</a>
-          </div>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <footer>
-    <div class="container">
-      <div class="footer-grid">
-        <div>
-          <b>OnlyKeks</b><br/>
-          <div class="fine">
-            Claim: <b>Post, die schmeckt.</b><br/>
-            MVP-Fokus: Reply-Keks Loop (Empfänger → Sender).<br/>
-            Nächste Ausbaustufe: digitale Kekse (Token), B2B-Bundles, White-Label.
-          </div>
-        </div>
-        <div class="fine">
-          <b>Rechtliches/Platzhalter</b><br/>
-          Dieses Template ist Frontend-Demo. Checkout/Payments/Produktion sind noch nicht angebunden.
-        </div>
-      </div>
-    </div>
-  </footer>
-
-  <!-- ORDER MODAL (3 Klicks) -->
-  <div class="overlay" id="overlay" aria-hidden="true">
-    <div class="modal" role="dialog" aria-modal="true" aria-label="Reply-Keks bestellen">
-      <div class="modal-head">
-        <b>Reply-Keks bestellen</b>
-        <button class="close" id="btnClose" type="button">Schließen</button>
-      </div>
-      <div class="modal-body">
-        <div class="steps" aria-label="Schritte">
-          <span class="step active" id="s1">1) Vorlage</span>
-          <span class="step" id="s2">2) Text & Adresse</span>
-          <span class="step" id="s3">3) Zahlung</span>
-        </div>
-
-        <!-- STEP 1 -->
-        <div id="step1">
-          <div class="form-grid">
-            <div class="field">
-              <label for="plan">Paket</label>
-              <select id="plan">
-                <option value="Quick">Quick</option>
-                <option value="Custom" selected>Custom</option>
-                <option value="Premium">Premium</option>
-              </select>
-            </div>
-            <div class="field">
-              <label for="template">Vorlage</label>
-              <select id="template">
-                <option value="Frech">Frech</option>
-                <option value="Motivation">Motivation</option>
-                <option value="Party">Party</option>
-                <option value="Romantisch">Romantisch</option>
-                <option value="Business">Business</option>
-                <option value="Custom">Eigener Text</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="summary" style="margin-top:12px" id="preview1">
-            <b>Preview:</b> Custom • Frech • „Beweg dein Arsch.“ (editierbar im nächsten Schritt)
-          </div>
-        </div>
-
-        <!-- STEP 2 -->
-        <div id="step2" class="hidden">
-          <div class="form-grid">
-            <div class="field" style="grid-column:1/-1">
-              <label for="message">Botschaft</label>
-              <textarea id="message" placeholder="Deine Message…"></textarea>
-            </div>
-
-            <div class="field">
-              <label for="toName">Empfänger (Name)</label>
-              <input id="toName" placeholder="z.B. Marlon" />
-            </div>
-            <div class="field">
-              <label for="toAddr">Empfänger (Adresse)</label>
-              <input id="toAddr" placeholder="Straße, Nr., PLZ, Ort" />
-            </div>
-
-            <div class="field">
-              <label for="fromName">Absender (Name)</label>
-              <input id="fromName" placeholder="z.B. Viktor" />
-            </div>
-            <div class="field">
-              <label for="replyCode">Reply-Code (auto)</label>
-              <input id="replyCode" readonly />
-            </div>
-          </div>
-
-          <div class="summary" style="margin-top:12px" id="preview2"></div>
-        </div>
-
-        <!-- STEP 3 -->
-        <div id="step3" class="hidden">
-          <div class="summary" id="checkoutSummary"></div>
-          <div class="field" style="margin-top:12px">
-            <label for="payment">Zahlung (Demo)</label>
-            <select id="payment">
-              <option>Kreditkarte</option>
-              <option>PayPal</option>
-              <option>Klarna</option>
-              <option>Apple Pay / Google Pay</option>
-            </select>
-          </div>
-          <p class="fine" style="margin-top:10px">
-            Hinweis: Das ist ein Frontend-Mock. Hier würdest du später Stripe/PayPal etc. anbinden.
-          </p>
-        </div>
-
-        <div class="modal-actions">
-          <button class="btn ghost" id="btnBack" type="button">Zurück</button>
-          <div class="right">
-            <button class="btn ghost" id="btnNext" type="button">Weiter</button>
-            <button class="btn primary hidden" id="btnPay" type="button">Zahlung abschließen</button>
-          </div>
-        </div>
-      </div>
-    </div>
+    </a>
+    <button class="btn primary">Reply-Keks starten</button>
   </div>
+</header>
 
-  <script>
-    // Utilities
-    const $ = (id) => document.getElementById(id);
+<main>
+<section class="hero">
+  <div class="container hero-grid">
 
-    const overlay = $("overlay");
-    const btnClose = $("btnClose");
-    const btnOrderTop = $("btnOrderTop");
-    const btnOrder = $("btnOrder");
-    const btnOrderStory = $("btnOrderStory");
-    const btnOrderFaq = $("btnOrderFaq");
-    const btnHow = $("btnHow");
-    const btnStory = $("btnStory");
+    <div class="card hero-copy">
+      <span class="kicker"><span class="dot"></span>Post die schmeckt!</span>
+      <h1>Weil Post nicht schmeckt,<br>verschicke Post die schmeckt.</h1>
+      <p class="sub">
+        Ein Keks. Eine Message. Ein QR-Reply.
+        Der Empfänger wird zum nächsten Absender.
+      </p>
 
-    const plan = $("plan");
-    const template = $("template");
-    const message = $("message");
-    const toName = $("toName");
-    const toAddr = $("toAddr");
-    const fromName = $("fromName");
-    const replyCode = $("replyCode");
+      <div class="chips">
+        <div class="chip">😈 Frech</div>
+        <div class="chip">❤️ Love</div>
+        <div class="chip">🔥 Motivation</div>
+        <div class="chip">💼 Boss-Mode</div>
+      </div>
 
-    const step1 = $("step1"), step2 = $("step2"), step3 = $("step3");
-    const s1 = $("s1"), s2 = $("s2"), s3 = $("s3");
-    const btnBack = $("btnBack"), btnNext = $("btnNext"), btnPay = $("btnPay");
+      <div class="cta-row">
+        <button class="btn primary">Reply-Keks starten</button>
+        <button class="btn ghost">Beispiele ansehen</button>
+      </div>
 
-    const preview1 = $("preview1");
-    const preview2 = $("preview2");
-    const checkoutSummary = $("checkoutSummary");
+      <div class="social-proof">
+        ⭐ 4,8/5 • 2.314 Replies • Viral Loop aktiv
+      </div>
+    </div>
 
-    const templates = {
-      "Frech": "Beweg dein Arsch.",
-      "Motivation": "Du schaffst das. Reply, ich glaub an dich.",
-      "Party": "Heute eskalieren wir. Reply wenn du dabei bist.",
-      "Romantisch": "Ich denk an dich. Reply, wenn du lächelst.",
-      "Business": "Kurzer Ping: Lass uns sprechen. Reply via QR.",
-      "Custom": ""
-    };
+    <div class="card hero-product">
+      <div class="cookie">
+        <div class="qr"></div>
+        <div class="stamp">REPLY</div>
+      </div>
+    </div>
 
-    function makeReplyCode(){
-      const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
-      let out = "";
-      for (let i=0;i<8;i++) out += chars[Math.floor(Math.random()*chars.length)];
-      return out;
-    }
+  </div>
+</section>
 
-    function priceFor(p){
-      if (p === "Quick") return 9.90;
-      if (p === "Custom") return 14.90;
-      return 29.90;
-    }
+<section class="section">
+  <div class="container grid3">
+    <div class="mini"><b>1. Keks kommt an</b><br>Briefkasten → Überraschung → Foto.</div>
+    <div class="mini"><b>2. QR-Reply</b><br>Scan → Antwort → Bestellung.</div>
+    <div class="mini"><b>3. Loop</b><br>Reply wird neuer Keks.</div>
+  </div>
+</section>
+</main>
 
-    let currentStep = 1;
+<footer>
+  <div class="container">
+    <b>OnlyKeks</b><br>
+    Post die schmeckt. © MVP
+  </div>
+</footer>
 
-    function openModal(prefPlan="Custom", prefTpl="Frech"){
-      overlay.classList.add("open");
-      overlay.setAttribute("aria-hidden","false");
-
-      plan.value = prefPlan;
-      template.value = prefTpl;
-      const tplText = templates[prefTpl] ?? "";
-      preview1.innerHTML = `<b>Preview:</b> ${plan.value} • ${template.value} • „${tplText || "…" }“`;
-
-      // reset
-      currentStep = 1;
-      step1.classList.remove("hidden");
-      step2.classList.add("hidden");
-      step3.classList.add("hidden");
-      btnPay.classList.add("hidden");
-      btnNext.classList.remove("hidden");
-      btnBack.disabled = true;
-
-      // prefill message for step2 later
-      message.value = tplText;
-      replyCode.value = makeReplyCode();
-      preview2.innerHTML = "";
-      checkoutSummary.innerHTML = "";
-    }
-
-    function closeModal(){
-      overlay.classList.remove("open");
-      overlay.setAttribute("aria-hidden","true");
-    }
-
-    function setStep(n){
-      currentStep = n;
-      s1.classList.toggle("active", n===1);
-      s2.classList.toggle("active", n===2);
-      s3.classList.toggle("active", n===3);
-
-      step1.classList.toggle("hidden", n!==1);
-      step2.classList.toggle("hidden", n!==2);
-      step3.classList.toggle("hidden", n!==3);
-
-      btnBack.disabled = (n===1);
-      btnNext.classList.toggle("hidden", n===3);
-      btnPay.classList.toggle("hidden", n!==3);
-    }
-
-    function updatePreviews(){
-      const tplText = templates[template.value] ?? "";
-      if (template.value !== "Custom") message.value = tplText;
-
-      preview1.innerHTML =
-        `<b>Preview:</b> ${plan.value} • ${template.value} • „${(template.value==="Custom" ? (message.value||"…") : tplText) || "…"}“`;
-
-      preview2.innerHTML =
-        `<b>Zusammenfassung:</b><br/>
-         Paket: <b>${plan.value}</b> (${priceFor(plan.value).toFixed(2)} €) • Vorlage: <b>${template.value}</b><br/>
-         Message: „${(message.value||"…").replaceAll("<","&lt;").replaceAll(">","&gt;")}“<br/>
-         Empfänger: ${toName.value || "—"} • Adresse: ${toAddr.value || "—"}<br/>
-         Absender: ${fromName.value || "—"} • Reply-Code: <b>${replyCode.value}</b>`;
-    }
-
-    function buildCheckout(){
-      const p = priceFor(plan.value);
-      const ship = (plan.value === "Premium") ? 0 : 2.90;
-      const total = p + ship;
-
-      checkoutSummary.innerHTML =
-        `<b>Checkout</b><br/>
-         Paket: <b>${plan.value}</b> — ${p.toFixed(2)} €<br/>
-         Versand: ${ship.toFixed(2)} €<br/>
-         <b>Gesamt: ${total.toFixed(2)} €</b><br/><br/>
-         Reply-Code: <b>${replyCode.value}</b><br/>
-         Message: „${(message.value||"…").replaceAll("<","&lt;").replaceAll(">","&gt;")}“`;
-    }
-
-    // Buttons
-    btnOrderTop.addEventListener("click", ()=>openModal("Custom","Frech"));
-    btnOrder.addEventListener("click", ()=>openModal("Custom","Frech"));
-    btnOrderStory.addEventListener("click", ()=>openModal("Custom","Motivation"));
-    btnOrderFaq.addEventListener("click", ()=>openModal("Quick","Frech"));
-
-    btnHow.addEventListener("click", ()=>document.querySelector("#how").scrollIntoView({behavior:"smooth"}));
-    btnStory.addEventListener("click", ()=>document.querySelector("#story").scrollIntoView({behavior:"smooth"}));
-
-    btnClose.addEventListener("click", closeModal);
-    overlay.addEventListener("click", (e)=>{ if(e.target === overlay) closeModal(); });
-
-    // Tier buttons -> open with plan + prefill
-    document.querySelectorAll("[data-plan]").forEach(btn=>{
-      btn.addEventListener("click", ()=>{
-        const p = btn.getAttribute("data-plan") || "Custom";
-        const pre = btn.getAttribute("data-prefill");
-        let tpl = "Frech";
-        if (pre === "motivation") tpl = "Motivation";
-        if (pre === "party") tpl = "Party";
-        openModal(p, tpl);
-      });
-    });
-
-    // Step nav
-    btnBack.addEventListener("click", ()=>{
-      if (currentStep > 1) setStep(currentStep - 1);
-      updatePreviews();
-    });
-
-    btnNext.addEventListener("click", ()=>{
-      updatePreviews();
-      if (currentStep === 1){
-        // always create fresh reply code at step transition
-        replyCode.value = makeReplyCode();
-        setStep(2);
-      } else if (currentStep === 2){
-        // basic validation (minimal friction)
-        if (!message.value.trim()){
-          message.focus();
-          alert("Bitte eine kurze Message eintippen.");
-          return;
-        }
-        if (!toAddr.value.trim()){
-          toAddr.focus();
-          alert("Adresse fehlt noch.");
-          return;
-        }
-        buildCheckout();
-        setStep(3);
-      }
-    });
-
-    btnPay.addEventListener("click", ()=>{
-      // mock success
-      alert("Demo: Zahlung erfolgreich. Nächster Schritt: Backend/Payment anbinden.");
-      closeModal();
-    });
-
-    // Live updates
-    [plan, template, message, toName, toAddr, fromName].forEach(el=>{
-      el.addEventListener("input", updatePreviews);
-      el.addEventListener("change", updatePreviews);
-    });
-
-    // Scroll progress
-    const prog = $("progress");
-    window.addEventListener("scroll", ()=>{
-      const h = document.documentElement;
-      const max = (h.scrollHeight - h.clientHeight) || 1;
-      const pct = Math.min(100, Math.max(0, (h.scrollTop / max) * 100));
-      prog.style.width = pct.toFixed(2) + "%";
-    }, {passive:true});
-  </script>
 </body>
 </html>

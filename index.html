@@ -3,58 +3,78 @@
 const STRIPE_PAYMENT_LINK = "https://buy.stripe.com/aBcDeFgHiJkLmNoPqR";
 
 /* =======================
-   FLOW LOGIC
+   FLOW LOGIC (robust)
 ======================= */
-const panels = { 1: p1, 2: p2, 3: p3 };
 const steps  = document.querySelectorAll(".step");
+const payBtn = document.getElementById("payBtn");
+
+// Panels sicher holen (dein Fehler war: p1/p2/p3 sind evtl. nicht als Variablen da)
+const panels = {
+  1: document.getElementById("p1"),
+  2: document.getElementById("p2"),
+  3: document.getElementById("p3"),
+};
 
 function go(n){
-  Object.values(panels).forEach(p=>p.classList.remove("active"));
-  panels[n].classList.add("active");
-  steps.forEach(s=>s.classList.toggle("active", +s.dataset.step===n));
+  Object.values(panels).forEach(p=> p && p.classList.remove("active"));
+  panels[n] && panels[n].classList.add("active");
 
-  // 👉 HIER wird Stripe fest eingebunden
-  if(n === 3){
-    const payBtn = document.getElementById("payBtn");
+  steps.forEach(s=>s.classList.toggle("active", +s.dataset.step === n));
+
+  // Stripe-Link setzen, sobald Step 3 aktiv ist
+  if(n === 3 && payBtn){
     payBtn.href = STRIPE_PAYMENT_LINK;
   }
 }
 
-document.querySelectorAll(".chip").forEach(ch=>{
-  ch.addEventListener("click", ()=>{ msg.value = ch.dataset.msg; });
+// Step-Klicks (falls du die Steps anklickbar willst)
+steps.forEach(s=>{
+  s.addEventListener("click", ()=> go(+s.dataset.step));
 });
+
+// Chips (nur wenn msg existiert)
+const msg = document.getElementById("msg");
+document.querySelectorAll(".chip").forEach(ch=>{
+  ch.addEventListener("click", ()=>{ if(msg) msg.value = ch.dataset.msg; });
+});
+
+// Init: starte auf Step 1 und setze Stripe-Link vorsorglich (falls direkt sichtbar)
+go(1);
+if(payBtn) payBtn.href = STRIPE_PAYMENT_LINK;
 
 /* =======================
    COOKIE RAIN (läuft unabhängig)
 ======================= */
 const c = document.getElementById("cookieRain");
-const ctx = c.getContext("2d");
+if(c){
+  const ctx = c.getContext("2d");
 
-function resize(){
-  c.width = innerWidth;
-  c.height = innerHeight;
+  function resize(){
+    c.width = innerWidth;
+    c.height = innerHeight;
+  }
+  resize();
+  addEventListener("resize", resize);
+
+  const cookies = [...Array(30)].map(() => ({
+    x: Math.random()*innerWidth,
+    y: Math.random()*innerHeight,
+    r: 10 + Math.random()*22,
+    v: 0.6 + Math.random()*1.4
+  }));
+
+  function draw(){
+    ctx.clearRect(0,0,c.width,c.height);
+    cookies.forEach(o=>{
+      o.y += o.v;
+      if(o.y > c.height) o.y = -50;
+      ctx.beginPath();
+      ctx.arc(o.x,o.y,o.r,0,Math.PI*2);
+      ctx.fillStyle = "#c48752";
+      ctx.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+  draw();
 }
-resize();
-addEventListener("resize", resize);
-
-const cookies = [...Array(30)].map(()=>({
-  x: Math.random()*innerWidth,
-  y: Math.random()*innerHeight,
-  r: 10 + Math.random()*22,
-  v: 0.6 + Math.random()*1.4
-}));
-
-function draw(){
-  ctx.clearRect(0,0,c.width,c.height);
-  cookies.forEach(o=>{
-    o.y += o.v;
-    if(o.y > c.height) o.y = -50;
-    ctx.beginPath();
-    ctx.arc(o.x,o.y,o.r,0,Math.PI*2);
-    ctx.fillStyle = "#c48752";
-    ctx.fill();
-  });
-  requestAnimationFrame(draw);
-}
-draw();
 </script>

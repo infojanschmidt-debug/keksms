@@ -1,341 +1,38 @@
-const STRIPE_PAYMENT_LINK = "https://buy.stripe.com/aBcDeFgHiJkLmNoPqR";
-<!doctype html>
-<html lang="de">
-<head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>OnlyKeks – Post die schmeckt!</title>
-<meta name="description" content="Post die schmeckt. Ein Keks mit Message & Reply-QR."/>
-
-<style>
-/* =======================
-   DESIGN SYSTEM – KEKSIG
-======================= */
-:root{
-  --vanilla:#fff6ea;
-  --vanilla2:#fff0dc;
-  --cookie:#c48752;
-  --cookie2:#8a552f;
-  --chip:#3a2216;
-  --ink:#2a1b12;
-  --muted:#6b5142;
-  --pink:#ff6aa2;
-  --mint:#7cf7c7;
-  --radius:20px;
-  --shadow:0 20px 60px rgba(42,27,18,.18);
-}
-
-*{box-sizing:border-box}
-body{
-  margin:0;
-  font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;
-  color:var(--ink);
-  background:
-    radial-gradient(900px 520px at 10% 0%, rgba(255,106,162,.18), transparent 60%),
-    radial-gradient(900px 520px at 90% 30%, rgba(124,247,199,.22), transparent 60%),
-    linear-gradient(180deg,var(--vanilla),var(--vanilla2));
-  overflow-x:hidden;
-}
-
-a{text-decoration:none;color:inherit}
-
-/* =======================
-   COOKIE RAIN
-======================= */
-#cookieRain{
-  position:fixed;
-  inset:0;
-  z-index:0;
-  pointer-events:none;
-  opacity:.55;
-}
-
-/* =======================
-   LAYOUT
-======================= */
-header, main, footer{position:relative;z-index:2}
-.container{max-width:1100px;margin:auto;padding:0 20px}
-
-header{
-  position:sticky;top:0;
-  backdrop-filter:blur(10px);
-  background:rgba(255,246,234,.85);
-  border-bottom:1px solid rgba(42,27,18,.1);
-}
-.nav{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:14px 0;
-}
-.brand{display:flex;gap:12px;align-items:center}
-.logo{
-  width:44px;height:44px;border-radius:14px;
-  background:
-    radial-gradient(circle at 30% 30%, #ffd9b3, var(--cookie)),
-    linear-gradient(135deg,var(--cookie),var(--cookie2));
-  box-shadow:0 12px 30px rgba(0,0,0,.2);
-}
-.brand b{font-weight:900}
-.brand small{display:block;font-size:12px;color:var(--muted)}
-
-.btn{
-  border:0;
-  border-radius:999px;
-  padding:12px 18px;
-  font-weight:900;
-  cursor:pointer;
-  background:linear-gradient(135deg,var(--pink),var(--mint));
-  color:#2a1b12;
-  box-shadow:0 14px 34px rgba(255,106,162,.35);
-}
-
-/* =======================
-   HERO
-======================= */
-.hero{padding:50px 0 30px}
-.heroGrid{
-  display:grid;
-  grid-template-columns:1.2fr .8fr;
-  gap:20px;
-}
-@media(max-width:900px){
-  .heroGrid{grid-template-columns:1fr}
-}
-
-.card{
-  background:rgba(255,255,255,.9);
-  border-radius:var(--radius);
-  box-shadow:var(--shadow);
-  padding:26px;
-}
-
-h1{
-  font-size:44px;
-  line-height:1.05;
-  margin:10px 0;
-}
-.sub{color:var(--muted);max-width:60ch}
-
-.cookiePreview{
-  display:flex;gap:14px;align-items:center;
-  margin-top:14px;
-}
-.cookie{
-  width:78px;height:78px;border-radius:50%;
-  background:
-    radial-gradient(circle at 30% 30%, #ffd9b3, var(--cookie) 55%, var(--cookie2));
-  position:relative;
-  box-shadow:0 14px 30px rgba(0,0,0,.25);
-}
-.cookie:before{
-  content:"";
-  position:absolute;inset:0;border-radius:50%;
-  background:
-    radial-gradient(circle at 30% 35%, var(--chip) 0 7%, transparent 8%),
-    radial-gradient(circle at 60% 40%, var(--chip) 0 6%, transparent 7%),
-    radial-gradient(circle at 50% 65%, var(--chip) 0 7%, transparent 8%),
-    radial-gradient(circle at 35% 70%, var(--chip) 0 6%, transparent 7%);
-}
-
-.qr{
-  width:78px;height:78px;border-radius:16px;
-  background:
-    linear-gradient(90deg,#000 10%,transparent 10%),
-    linear-gradient(#000 10%,transparent 10%);
-  background-size:14px 14px;
-  opacity:.6;
-}
-
-/* =======================
-   FLOW
-======================= */
-.flow{padding:20px 0 40px}
-.flowBox{
-  background:rgba(255,255,255,.92);
-  border-radius:24px;
-  box-shadow:var(--shadow);
-  padding:22px;
-}
-
-.steps{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
-.step{
-  padding:8px 12px;border-radius:999px;
-  border:1px solid rgba(42,27,18,.12);
-  font-size:12px;font-weight:900;
-  cursor:pointer;
-  background:#fff;
-}
-.step.active{
-  background:linear-gradient(135deg,var(--pink),var(--mint));
-  border:none;
-}
-
-.panel{display:none}
-.panel.active{display:block}
-
-label{font-size:12px;font-weight:900;color:var(--muted);display:block;margin:10px 0 6px}
-textarea,input{
-  width:100%;
-  padding:14px;
-  border-radius:14px;
-  border:1px solid rgba(42,27,18,.15);
-}
-
-.chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
-.chip{
-  padding:8px 12px;border-radius:999px;
-  border:1px solid rgba(42,27,18,.15);
-  background:#fff;
-  cursor:pointer;
-  font-size:12px;
-  font-weight:900;
-}
-
-.footerRow{
-  display:flex;justify-content:space-between;
-  margin-top:14px;gap:10px;flex-wrap:wrap;
-}
-
-/* =======================
-   FOOTER
-======================= */
-footer{
-  padding:24px 0;
-  font-size:12px;
-  color:var(--muted);
-  text-align:center;
-}
-</style>
-</head>
-
-<body>
-
-<canvas id="cookieRain"></canvas>
-
-<header>
-  <div class="container nav">
-    <div class="brand">
-      <div class="logo"></div>
-      <div><b>OnlyKeks</b><small>Post die schmeckt!</small></div>
-    </div>
-    <button class="btn" onclick="scrollToFlow()">Jetzt starten</button>
-  </div>
-</header>
-
-<main>
-<section class="hero">
-  <div class="container heroGrid">
-    <div class="card">
-      <h1>Eine Message,<br>die man essen kann 🍪</h1>
-      <p class="sub">
-        Du schickst einen echten Keks mit Message & QR-Reply.
-        Der Empfänger antwortet – wir machen daraus den nächsten Keks.
-      </p>
-      <div class="cookiePreview">
-        <div class="cookie"></div>
-        <div class="qr"></div>
-        <div><b>Reply-Keks</b><br><small>Keks + Karte + QR</small></div>
-      </div>
-      <div style="margin-top:16px">
-        <button class="btn" onclick="scrollToFlow()">Reply-Keks starten</button>
-      </div>
-    </div>
-
-    <div class="card">
-      <b>Warum das knallt:</b>
-      <ul>
-        <li>📮 Echter Briefkasten-Moment</li>
-        <li>🍪 Keks statt Papier</li>
-        <li>🔁 Antwort-Loop</li>
-        <li>⚡ In unter 30 Sekunden</li>
-      </ul>
-    </div>
-  </div>
-</section>
-
-<section class="flow" id="flow">
-  <div class="container">
-    <div class="flowBox">
-      <div class="steps">
-        <div class="step active" data-step="1">1 Message</div>
-        <div class="step" data-step="2">2 Adresse</div>
-        <div class="step" data-step="3">3 Bezahlen</div>
-      </div>
-
-      <!-- STEP 1 -->
-      <div class="panel active" id="p1">
-        <label>Vorlagen</label>
-        <div class="chips">
-          <div class="chip" data-msg="Vermiss dich ❤️">Vermiss dich</div>
-          <div class="chip" data-msg="Beweg dein Arsch 😄">Beweg dein Arsch</div>
-          <div class="chip" data-msg="Danke 🍪">Danke</div>
-        </div>
-        <label>Deine Nachricht</label>
-        <textarea id="msg" maxlength="140"></textarea>
-        <div class="footerRow">
-          <div></div>
-          <button class="btn" onclick="go(2)">Weiter</button>
-        </div>
-      </div>
-
-      <!-- STEP 2 -->
-      <div class="panel" id="p2">
-        <label>Name</label>
-        <input id="name"/>
-        <label>Adresse</label>
-        <input id="addr"/>
-        <div class="footerRow">
-          <button class="btn" onclick="go(1)">Zurück</button>
-          <button class="btn" onclick="go(3)">Weiter</button>
-        </div>
-      </div>
-
-      <script>
+<script>
 /*** CONFIG: NUR HIER STRIPE EINTRAGEN ***/
 const STRIPE_PAYMENT_LINK = "https://buy.stripe.com/aBcDeFgHiJkLmNoPqR";
 
 /* =======================
    FLOW LOGIC
 ======================= */
-const steps = document.querySelectorAll(".step");
 const panels = { 1: p1, 2: p2, 3: p3 };
+const steps  = document.querySelectorAll(".step");
 
 function go(n){
   Object.values(panels).forEach(p=>p.classList.remove("active"));
   panels[n].classList.add("active");
   steps.forEach(s=>s.classList.toggle("active", +s.dataset.step===n));
 
-  // Stripe-Link immer setzen, sobald Step 3 aktiv ist
+  // 👉 HIER wird Stripe fest eingebunden
   if(n === 3){
-    const pay = document.getElementById("payBtn");
-    if (pay) pay.href = STRIPE_PAYMENT_LINK;
+    const payBtn = document.getElementById("payBtn");
+    payBtn.href = STRIPE_PAYMENT_LINK;
   }
-}
-
-function scrollToFlow(){
-  document.getElementById("flow").scrollIntoView({behavior:"smooth"});
 }
 
 document.querySelectorAll(".chip").forEach(ch=>{
   ch.addEventListener("click", ()=>{ msg.value = ch.dataset.msg; });
 });
 
-// Optional: Klick auf "Jetzt sicher bezahlen" erzwingt Link (falls jemand direkt klickt)
-const payBtn = document.getElementById("payBtn");
-if(payBtn){
-  payBtn.addEventListener("click", () => {
-    payBtn.href = STRIPE_PAYMENT_LINK;
-  });
-}
-
 /* =======================
-   COOKIE RAIN
+   COOKIE RAIN (läuft unabhängig)
 ======================= */
-const canvas = document.getElementById("cookieRain");
-const ctx = canvas.getContext("2d");
+const c = document.getElementById("cookieRain");
+const ctx = c.getContext("2d");
 
 function resize(){
-  canvas.width = innerWidth;
-  canvas.height = innerHeight;
+  c.width = innerWidth;
+  c.height = innerHeight;
 }
 resize();
 addEventListener("resize", resize);
@@ -348,10 +45,10 @@ const cookies = [...Array(30)].map(()=>({
 }));
 
 function draw(){
-  ctx.clearRect(0,0,canvas.width,canvas.height);
+  ctx.clearRect(0,0,c.width,c.height);
   cookies.forEach(o=>{
     o.y += o.v;
-    if(o.y > canvas.height) o.y = -50;
+    if(o.y > c.height) o.y = -50;
     ctx.beginPath();
     ctx.arc(o.x,o.y,o.r,0,Math.PI*2);
     ctx.fillStyle = "#c48752";
@@ -361,4 +58,3 @@ function draw(){
 }
 draw();
 </script>
-

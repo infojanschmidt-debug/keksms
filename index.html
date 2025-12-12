@@ -1,650 +1,703 @@
 <!doctype html>
 <html lang="de">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>OnlyKeks – Post, die schmeckt</title>
-  <meta name="description" content="Post, die man essen kann. Ein Keks. Eine Nachricht. Eine echte Überraschung." />
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>OnlyKeks – Post die schmeckt!</title>
+<meta name="description" content="Post die schmeckt. Sende einen Keks mit Message & Reply-Loop. 3 Klicks, kein Account."/>
 
-  <style>
-    :root{
-      --bg:#070707;
-      --panel:#101010;
-      --panel2:#0c0c0c;
-      --border:#1e1e1e;
-      --fg:#ffffff;
-      --muted:#b6b6b6;
-      --accent:#6cff9a;
-      --accent2:#ff5cff;
-      --shadow: 0 18px 60px rgba(0,0,0,.55);
-      --r:22px;
-      --max:1100px;
-    }
-    *{box-sizing:border-box;margin:0;padding:0}
-    html{scroll-behavior:smooth}
-    body{
-      background: radial-gradient(1200px 700px at 20% -10%, rgba(108,255,154,.10), transparent 60%),
-                  radial-gradient(900px 600px at 90% 10%, rgba(255,92,255,.10), transparent 55%),
-                  var(--bg);
-      color:var(--fg);
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      overflow-x:hidden;
-    }
-    a{color:inherit;text-decoration:none}
-    .wrap{max-width:var(--max);margin:0 auto;padding:24px}
-    .pill{
-      display:inline-flex;gap:10px;align-items:center;
-      padding:10px 14px;border-radius:999px;
-      border:1px solid var(--border);
-      background: rgba(16,16,16,.7);
-      backdrop-filter: blur(8px);
-      color:var(--muted);
-      font-size:.92rem;
-    }
-    .topbar{display:flex;justify-content:space-between;align-items:center;gap:14px;padding-top:8px}
-    .logo{
-      display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:.2px
-    }
-    .dot{
-      width:12px;height:12px;border-radius:50%;
-      background: linear-gradient(135deg,var(--accent),var(--accent2));
-      box-shadow: 0 0 18px rgba(108,255,154,.25), 0 0 22px rgba(255,92,255,.18);
-    }
-    .btn{
-      display:inline-flex;align-items:center;justify-content:center;gap:10px;
-      padding:14px 18px;border-radius:999px;
-      border:1px solid var(--border);
-      background: rgba(16,16,16,.75);
-      color:var(--fg); font-weight:750;
-      cursor:pointer;
-      transition: transform .15s ease, border-color .15s ease, background .15s ease;
-      user-select:none;
-    }
-    .btn:hover{transform: translateY(-1px); border-color: rgba(108,255,154,.35)}
-    .btn.primary{
-      background: linear-gradient(135deg, rgba(108,255,154,.95), rgba(255,92,255,.35));
-      color:#000;
-      border-color: transparent;
-      box-shadow: 0 18px 60px rgba(108,255,154,.12);
-    }
-    .btn.small{padding:10px 12px;font-size:.92rem}
-    .hero{
-      padding:18px 0 24px;
-      min-height: calc(100svh - 70px);
-      display:grid;align-items:center;
-    }
-    .heroGrid{
-      display:grid;gap:26px;
-      grid-template-columns: 1.15fr .85fr;
-      align-items:center;
-    }
-    @media (max-width: 980px){
-      .heroGrid{grid-template-columns: 1fr; }
-    }
-    h1{
-      font-size: clamp(2.2rem, 4.8vw, 4rem);
-      line-height:1.02;
-      letter-spacing:-.02em;
-      margin: 14px 0 10px;
-    }
-    .sub{color:var(--muted);font-size: clamp(1.05rem, 1.6vw, 1.22rem);line-height:1.45;max-width: 52ch}
-    .ctaRow{display:flex;gap:12px;flex-wrap:wrap;margin-top:18px}
-    .miniProof{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
-    .badge{
-      display:inline-flex;gap:10px;align-items:center;
-      padding:10px 12px;border-radius:999px;
-      border:1px solid var(--border);
-      background: rgba(16,16,16,.55);
-      color:var(--muted);
-      font-size:.9rem;
-    }
+<style>
+:root{
+  /* Cookie-first Palette */
+  --bg:#fffaf2;            /* vanilla */
+  --bg2:#fff2df;           /* warm vanilla */
+  --ink:#2a1b12;           /* cocoa ink */
+  --muted:#6b5142;         /* milk-choco text */
+  --line:rgba(42,27,18,.10);
 
-    .videoCard{
-      border:1px solid var(--border);
-      background: linear-gradient(180deg, rgba(16,16,16,.75), rgba(10,10,10,.65));
-      border-radius: var(--r);
-      overflow:hidden;
-      box-shadow: var(--shadow);
-      position:relative;
-      aspect-ratio: 16/10;
-    }
-    .videoCard::after{
-      content:"";
-      position:absolute;inset:-2px;
-      background: radial-gradient(600px 200px at 30% 0%, rgba(108,255,154,.18), transparent 65%),
-                  radial-gradient(500px 240px at 80% 10%, rgba(255,92,255,.14), transparent 70%);
-      pointer-events:none;
-      mix-blend-mode: screen;
-    }
-    video{
-      width:100%;height:100%;
-      object-fit:cover;display:block;
-      opacity:.95;
-    }
-    .fallback{
-      position:absolute;inset:0;
-      background: radial-gradient(900px 420px at 20% 20%, rgba(108,255,154,.20), transparent 55%),
-                  radial-gradient(700px 340px at 80% 30%, rgba(255,92,255,.16), transparent 60%),
-                  linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,0));
-      display:flex;align-items:flex-end;justify-content:center;
-      padding:14px;
-      color:rgba(255,255,255,.8);
-      font-weight:700;
-      letter-spacing:.2px;
-    }
+  --vanilla:#fff7ea;
+  --cookie:#b67a47;        /* cookie brown */
+  --cookie2:#8a552f;       /* darker cookie */
+  --chip:#3a2216;          /* choc chips */
+  --cream:#fff1dd;
 
-    .section{padding: 40px 0}
-    .sectionTitle{
-      font-size: clamp(1.35rem, 2.2vw, 2rem);
-      margin-bottom: 10px;
-      letter-spacing:-.01em;
-    }
-    .sectionSub{color:var(--muted);margin-bottom:18px;max-width: 70ch;line-height:1.45}
-    .cards3{
-      display:grid;gap:16px;
-      grid-template-columns: repeat(3,1fr);
-    }
-    @media (max-width: 980px){ .cards3{grid-template-columns:1fr} }
-    .card{
-      border:1px solid var(--border);
-      background: rgba(16,16,16,.55);
-      border-radius: var(--r);
-      padding:16px;
-      box-shadow: 0 10px 40px rgba(0,0,0,.35);
-    }
-    .card h3{font-size:1.05rem;margin-bottom:8px}
-    .card p{color:var(--muted);line-height:1.45;font-size:.98rem}
+  --accent:#ff6aa2;        /* strawberry neon */
+  --accent2:#7cf7c7;       /* mint neon */
+  --accentSoft:rgba(255,106,162,.14);
 
-    /* FLOW */
-    .flowShell{
-      border:1px solid var(--border);
-      background: rgba(10,10,10,.55);
-      border-radius: calc(var(--r) + 6px);
-      overflow:hidden;
-      box-shadow: var(--shadow);
-    }
-    .flowTop{
-      padding:18px 18px 12px;
-      display:flex;align-items:center;justify-content:space-between;gap:14px;
-      border-bottom:1px solid var(--border);
-      background: linear-gradient(180deg, rgba(16,16,16,.75), rgba(12,12,12,.55));
-    }
-    .steps{
-      display:flex;gap:8px;flex-wrap:wrap;
-    }
-    .stepBtn{
-      padding:10px 12px;border-radius:999px;
-      border:1px solid var(--border);
-      background: rgba(16,16,16,.55);
-      color:var(--muted);
-      cursor:pointer;
-      font-weight:750;
-    }
-    .stepBtn.active{
-      color:#000;
-      border-color: transparent;
-      background: linear-gradient(135deg, rgba(108,255,154,.95), rgba(255,92,255,.35));
-    }
-    .flowBody{padding:18px}
-    .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-    @media (max-width: 720px){ .row{grid-template-columns:1fr} }
-    label{display:block;color:var(--muted);font-size:.95rem;margin:10px 0 8px}
-    input, textarea, select{
-      width:100%;
-      padding:12px 12px;
-      border-radius: 16px;
-      border:1px solid var(--border);
-      background: rgba(16,16,16,.7);
-      color: var(--fg);
-      outline:none;
-    }
-    textarea{resize:none;min-height: 110px}
-    .chips{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px}
-    .chip{
-      padding:9px 12px;border-radius:999px;
-      border:1px solid var(--border);
-      background: rgba(16,16,16,.55);
-      color: var(--fg);
-      cursor:pointer;
-      font-size:.92rem;
-      transition: transform .12s ease, border-color .12s ease;
-      user-select:none;
-    }
-    .chip:hover{transform: translateY(-1px); border-color: rgba(255,255,255,.22)}
-    .toggles{display:grid;gap:10px}
-    .toggle{
-      display:flex;justify-content:space-between;align-items:center;gap:14px;
-      padding:12px 14px;border-radius: 18px;
-      border:1px solid var(--border);
-      background: rgba(16,16,16,.55);
-    }
-    .toggle small{color:var(--muted);display:block;margin-top:3px}
-    .switch{
-      width:52px;height:30px;border-radius:999px;
-      border:1px solid var(--border);
-      background: rgba(0,0,0,.35);
-      position:relative; cursor:pointer; flex:0 0 auto;
-    }
-    .knob{
-      width:24px;height:24px;border-radius:50%;
-      background:#fff; position:absolute; top:2px; left:2px;
-      transition: transform .15s ease;
-    }
-    .switch.on{
-      background: rgba(108,255,154,.25);
-      border-color: rgba(108,255,154,.35);
-    }
-    .switch.on .knob{transform: translateX(22px)}
-    .footerRow{
-      display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;
-      margin-top:16px;
-    }
-    .priceBox{
-      padding:10px 12px;border-radius:999px;
-      border:1px solid var(--border);
-      background: rgba(16,16,16,.55);
-      color:var(--muted);
-      font-weight:800;
-    }
-    .sum{
-      border:1px solid var(--border);
-      background: rgba(16,16,16,.55);
-      border-radius: var(--r);
-      padding:14px;
-      color: var(--muted);
-      line-height:1.5;
-    }
-    .sum strong{color:var(--fg)}
-    .note{color:var(--muted);font-size:.93rem;line-height:1.45;margin-top:10px}
-    .hr{height:1px;background:var(--border);margin:18px 0}
-    .legal{color:var(--muted);font-size:.9rem;padding: 26px 0 42px}
-  </style>
+  --radius:18px;
+  --shadow:0 18px 60px rgba(42,27,18,.14);
+  --shadow2:0 10px 30px rgba(42,27,18,.10);
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;
+  color:var(--ink);
+  background:
+    radial-gradient(900px 520px at 15% 0%, var(--accentSoft), transparent 60%),
+    radial-gradient(800px 520px at 85% 25%, rgba(124,247,199,.16), transparent 55%),
+    linear-gradient(180deg,var(--bg),var(--bg2));
+}
+a{color:inherit;text-decoration:none}
+.container{max-width:1120px;margin:auto;padding:0 18px}
+
+/* Header */
+header{
+  position:sticky;top:0;z-index:50;
+  background:rgba(255,250,242,.88);
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line);
+}
+.nav{display:flex;align-items:center;justify-content:space-between;padding:14px 0}
+.brand{display:flex;gap:12px;align-items:center}
+.logo{
+  width:46px;height:46px;border-radius:14px;
+  background:
+    radial-gradient(circle at 30% 30%, rgba(255,255,255,.45), transparent 35%),
+    radial-gradient(circle at 70% 35%, rgba(58,34,22,.25) 0 18%, transparent 19%),
+    radial-gradient(circle at 45% 70%, rgba(58,34,22,.22) 0 14%, transparent 15%),
+    linear-gradient(135deg,var(--cookie),var(--cookie2));
+  box-shadow:0 12px 30px rgba(182,122,71,.22);
+  position:relative;
+}
+.logo:after{
+  content:"";
+  position:absolute; inset:11px;
+  border-radius:12px;
+  background:
+    radial-gradient(circle at 30% 35%, rgba(58,34,22,.35) 0 16%, transparent 17%),
+    radial-gradient(circle at 65% 50%, rgba(58,34,22,.28) 0 12%, transparent 13%),
+    radial-gradient(circle at 45% 70%, rgba(58,34,22,.25) 0 10%, transparent 11%),
+    linear-gradient(135deg, rgba(255,255,255,.55), rgba(255,255,255,.22));
+}
+.brand b{font-weight:900}
+.brand small{display:block;font-size:12px;color:var(--muted)}
+
+.btn{
+  border:0;border-radius:999px;padding:12px 18px;font-weight:900;cursor:pointer;
+  background:linear-gradient(135deg,var(--accent),rgba(124,247,199,.9));
+  color:#2a1b12;
+  box-shadow:0 14px 32px rgba(255,106,162,.18);
+}
+.btn:hover{filter:saturate(1.05)}
+.btn.ghost{
+  background:rgba(255,255,255,.85);
+  color:var(--ink);
+  border:1px solid var(--line);
+  box-shadow:none;
+}
+
+/* Hero */
+.hero{padding:44px 0 16px}
+.hero-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:18px}
+@media(max-width:900px){.hero-grid{grid-template-columns:1fr}}
+
+.card{
+  background:rgba(255,255,255,.88);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+}
+.hero-copy{padding:24px}
+
+.kicker{
+  display:inline-flex;gap:8px;align-items:center;font-size:12px;color:var(--muted);
+  padding:8px 12px;border-radius:999px;border:1px solid var(--line);
+  background:rgba(255,255,255,.92);
+}
+.dot{
+  width:8px;height:8px;border-radius:50%;
+  background:var(--accent2);
+  box-shadow:0 0 0 6px rgba(124,247,199,.18);
+}
+
+h1{margin:12px 0 8px;font-size:44px;line-height:1.05;letter-spacing:-1px}
+@media(max-width:520px){h1{font-size:36px}}
+.sub{color:var(--muted);max-width:62ch}
+.cta-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+
+/* Trust chips */
+.utilities{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+.util{
+  font-size:12px;color:var(--muted);
+  border:1px solid var(--line);
+  background:rgba(255,255,255,.92);
+  padding:8px 10px;border-radius:999px
+}
+
+/* Right: Product concept */
+.start-card{padding:18px}
+.start-card h3{margin:4px 0 10px;font-size:16px}
+
+.cookie-visual{
+  margin-top:10px;border:1px solid var(--line);border-radius:16px;
+  background:
+    radial-gradient(520px 180px at 30% 10%, rgba(182,122,71,.18), transparent 60%),
+    radial-gradient(420px 240px at 85% 40%, rgba(255,106,162,.12), transparent 62%),
+    linear-gradient(135deg, rgba(255,255,255,.92), rgba(255,241,221,.85));
+  padding:14px; position:relative;
+}
+.stamp{
+  position:absolute;right:12px;top:12px;
+  background:linear-gradient(135deg,var(--accent),rgba(124,247,199,.9));
+  color:#2a1b12;font-weight:900;font-size:12px;padding:8px 10px;border-radius:999px;
+  box-shadow:0 12px 30px rgba(255,106,162,.16);
+}
+.cookie-row{display:flex;gap:12px;align-items:center}
+
+/* Cookie with choc chips */
+.cookie{
+  width:72px;height:72px;border-radius:50%;
+  background:
+    radial-gradient(circle at 30% 30%, #ffd9b3, var(--cookie) 55%, var(--cookie2) 100%);
+  box-shadow:0 14px 34px rgba(42,27,18,.14);
+  position:relative;
+}
+.cookie:before{
+  /* chips layer */
+  content:"";
+  position:absolute;inset:0;border-radius:50%;
+  background:
+    radial-gradient(circle at 28% 32%, rgba(58,34,22,.95) 0 8%, transparent 9%),
+    radial-gradient(circle at 63% 28%, rgba(58,34,22,.9) 0 7%, transparent 8%),
+    radial-gradient(circle at 70% 55%, rgba(58,34,22,.9) 0 6.5%, transparent 7.5%),
+    radial-gradient(circle at 40% 62%, rgba(58,34,22,.9) 0 7%, transparent 8%),
+    radial-gradient(circle at 52% 42%, rgba(58,34,22,.85) 0 6%, transparent 7%),
+    radial-gradient(circle at 30% 70%, rgba(58,34,22,.85) 0 6%, transparent 7%);
+  opacity:.95;
+  mix-blend-mode:multiply;
+}
+.qr{
+  width:72px;height:72px;border-radius:14px;border:1px solid var(--line);
+  background:
+    linear-gradient(90deg,var(--ink) 10%,transparent 10%),
+    linear-gradient(var(--ink) 10%,transparent 10%);
+  background-size:14px 14px;
+  opacity:.62;
+}
+
+/* Sections */
+.section{padding:20px 0}
+.section h2{margin:0 0 8px}
+.faq{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+@media(max-width:900px){.faq{grid-template-columns:1fr}}
+.faq .item{
+  padding:14px;border:1px solid var(--line);
+  border-radius:14px;background:rgba(255,255,255,.92);box-shadow:var(--shadow2)
+}
+.faq b{display:block;margin-bottom:6px}
+
+/* FLOW */
+.flow{padding:10px 0 26px}
+.flowShell{
+  border:1px solid var(--line);
+  border-radius: calc(var(--radius) + 4px);
+  overflow:hidden;
+  background:rgba(255,255,255,.88);
+  box-shadow:var(--shadow);
+}
+.flowTop{
+  padding:14px 14px 10px;
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  border-bottom:1px solid var(--line);
+  background: linear-gradient(180deg, rgba(255,241,221,.75), rgba(255,255,255,.85));
+}
+.steps{display:flex;gap:8px;flex-wrap:wrap}
+.stepBtn{
+  padding:10px 12px;border-radius:999px;
+  border:1px solid var(--line);
+  background:rgba(255,255,255,.92);
+  color:var(--muted);
+  cursor:pointer;
+  font-weight:900;
+  font-size:12px;
+}
+.stepBtn.active{
+  color:#2a1b12;
+  border-color: transparent;
+  background: linear-gradient(135deg, rgba(255,106,162,.95), rgba(124,247,199,.92));
+}
+.priceBox{
+  padding:10px 12px;border-radius:999px;
+  border:1px solid var(--line);
+  background:rgba(255,255,255,.92);
+  color:var(--muted);
+  font-weight:900;
+  font-size:12px;
+}
+
+.flowBody{padding:14px}
+.panel{display:none}
+.panel.active{display:block}
+
+label{display:block;color:var(--muted);font-size:12px;font-weight:800;margin:10px 0 8px}
+input, textarea, select{
+  width:100%;
+  padding:12px 12px;
+  border-radius:14px;
+  border:1px solid var(--line);
+  background:rgba(255,250,242,.9);
+  color:var(--ink);
+  outline:none;
+}
+textarea{resize:none;min-height:110px}
+
+.chips{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+.chip{
+  padding:9px 12px;border-radius:999px;
+  border:1px solid var(--line);
+  background:rgba(255,255,255,.92);
+  color:var(--ink);
+  cursor:pointer;
+  font-size:12px;
+  font-weight:900;
+}
+.chip:hover{filter:saturate(1.05)}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:720px){.row{grid-template-columns:1fr}}
+
+.toggles{display:grid;gap:10px}
+.toggle{
+  display:flex;justify-content:space-between;align-items:center;gap:14px;
+  padding:12px 12px;border-radius:14px;
+  border:1px solid var(--line);
+  background:rgba(255,255,255,.92);
+}
+.toggle small{color:var(--muted);display:block;margin-top:2px;font-weight:700}
+.switch{
+  width:52px;height:30px;border-radius:999px;
+  border:1px solid var(--line);
+  background: rgba(182,122,71,.12);
+  position:relative; cursor:pointer; flex:0 0 auto;
+}
+.knob{
+  width:24px;height:24px;border-radius:50%;
+  background: #fff;
+  position:absolute; top:2px; left:2px;
+  transition: transform .15s ease;
+  box-shadow: 0 8px 20px rgba(42,27,18,.10);
+}
+.switch.on{
+  background: rgba(124,247,199,.30);
+  border-color: rgba(124,247,199,.55);
+}
+.switch.on .knob{transform: translateX(22px)}
+
+.hr{height:1px;background:var(--line);margin:14px 0}
+.footerRow{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-top:12px}
+
+.sum{
+  padding:12px;border-radius:14px;border:1px solid var(--line);
+  background:rgba(255,255,255,.92);
+  color:var(--muted);
+  line-height:1.45;
+}
+.sum strong{color:var(--ink)}
+.note{color:var(--muted);font-size:12px;line-height:1.45;margin-top:10px;font-weight:700}
+
+/* Footer */
+footer{
+  margin-top:24px;padding:22px 0;border-top:1px solid var(--line);
+  background:rgba(255,255,255,.72);color:var(--muted);font-size:12px
+}
+.footer-links{display:flex;gap:14px;flex-wrap:wrap}
+</style>
 </head>
 
 <body>
-  <div class="wrap">
-    <div class="topbar">
-      <div class="logo"><span class="dot"></span> OnlyKeks</div>
-      <div style="display:flex; gap:10px; align-items:center;">
-        <span class="pill">✨ 1 Minute · super süß</span>
-        <a class="btn small" href="#flow">Keks gestalten</a>
+<header>
+  <div class="container nav">
+    <div class="brand">
+      <span class="logo"></span>
+      <span><b>OnlyKeks</b><small>Post die schmeckt!</small></span>
+    </div>
+    <button class="btn" id="ctaTop">Reply-Keks starten</button>
+  </div>
+</header>
+
+<main>
+<section class="hero">
+  <div class="container hero-grid">
+    <div class="card hero-copy">
+      <span class="kicker"><span class="dot"></span>Weil Post nicht schmeckt</span>
+      <h1>Eine Message, die man essen kann.</h1>
+      <p class="sub">
+        Du schickst einen Keks mit Message & QR-Reply. Der Empfänger antwortet – wir machen daraus den nächsten Keks.
+        <b>Ein Loop statt ein Shop.</b>
+      </p>
+      <div class="cta-row">
+        <button class="btn" id="ctaHero">Reply-Keks starten</button>
+        <button class="btn ghost" onclick="document.getElementById('faq').scrollIntoView({behavior:'smooth'})">
+          So funktioniert’s
+        </button>
+      </div>
+      <div class="utilities">
+        <span class="util">📦 Versand 2–3 WT</span>
+        <span class="util">🔎 Trackbar</span>
+        <span class="util">🔒 Sicher zahlen</span>
+        <span class="util">⏳ Lange haltbar</span>
       </div>
     </div>
 
-    <!-- HERO -->
-    <section class="hero">
-      <div class="heroGrid">
-        <div>
-          <span class="pill">Post die schmeckt · Reply-Keks ready</span>
-          <h1>Post, die man essen kann.</h1>
-          <p class="sub">Ein Keks. Eine Nachricht. Eine echte Überraschung. Optional kann der Empfänger direkt mit einem Keks zurückantworten.</p>
-
-          <div class="ctaRow">
-            <a class="btn primary" href="#flow">Jetzt verschicken</a>
-            <a class="btn" href="#how">So funktioniert’s</a>
+    <div class="card start-card">
+      <h3>In 10 Sekunden starten</h3>
+      <div class="cookie-visual">
+        <span class="stamp">REPLY</span>
+        <div class="cookie-row">
+          <div class="cookie" aria-label="Keks"></div>
+          <div class="qr" aria-label="QR"></div>
+          <div>
+            <b>Reply-Keks</b><br/>
+            <small>1 Keks + Karte + QR → Antwort</small>
           </div>
-
-          <div class="miniProof">
-            <span class="badge">🍪 Echter Keks</span>
-            <span class="badge">✍️ Persönlich</span>
-            <span class="badge">🚀 Schnell verschickt</span>
-            <span class="badge">🔒 Sicher bezahlt</span>
-          </div>
-        </div>
-
-        <div class="videoCard">
-          <video autoplay loop muted playsinline preload="metadata" onerror="this.remove()">
-            <source src="assets/hero-loop.mp4" type="video/mp4">
-          </video>
-          <div class="fallback">Hero-Loop Video (assets/hero-loop.mp4)</div>
         </div>
       </div>
-    </section>
-
-    <!-- HOW / SCROLL STORY -->
-    <section id="how" class="section">
-      <h2 class="sectionTitle">So funktioniert’s (ohne Denken)</h2>
-      <p class="sectionSub">Scroll = Gefühl + Handling. Keine Textwüste. Drei Micro-Loops, fertig.</p>
-
-      <div class="cards3">
-        <div class="card">
-          <div class="videoCard" style="aspect-ratio: 16/9; margin-bottom:12px;">
-            <video autoplay loop muted playsinline preload="metadata" onerror="this.remove()">
-              <source src="assets/loop-pack.mp4" type="video/mp4">
-            </video>
-            <div class="fallback">Loop A (assets/loop-pack.mp4)</div>
-          </div>
-          <h3>Echter Keks im Umschlag</h3>
-          <p>Packen, zu, fertig. Sieht direkt nach Geschenk aus.</p>
-        </div>
-
-        <div class="card">
-          <div class="videoCard" style="aspect-ratio: 16/9; margin-bottom:12px;">
-            <video autoplay loop muted playsinline preload="metadata" onerror="this.remove()">
-              <source src="assets/loop-qr.mp4" type="video/mp4">
-            </video>
-            <div class="fallback">Loop B (assets/loop-qr.mp4)</div>
-          </div>
-          <h3>Persönliche Karte mit QR</h3>
-          <p>Deine Worte drauf. QR macht’s interaktiv.</p>
-        </div>
-
-        <div class="card">
-          <div class="videoCard" style="aspect-ratio: 16/9; margin-bottom:12px;">
-            <video autoplay loop muted playsinline preload="metadata" onerror="this.remove()">
-              <source src="assets/loop-scan.mp4" type="video/mp4">
-            </video>
-            <div class="fallback">Loop C (assets/loop-scan.mp4)</div>
-          </div>
-          <h3>Antwort direkt möglich</h3>
-          <p>Empfänger scannt → kann easy einen Reply-Keks zurückschicken.</p>
-        </div>
+      <div class="cta-row" style="margin-top:12px">
+        <button class="btn" id="ctaCard">Starten</button>
       </div>
-    </section>
-
-    <!-- EMOTION -->
-    <section class="section">
-      <h2 class="sectionTitle">Mehr als Post. Ein Moment.</h2>
-      <p class="sectionSub">Öffnen → Lächeln → „ey wie süß“ → teilen. Das ist das Produkt.</p>
-      <div class="videoCard" style="aspect-ratio: 16/8;">
-        <video autoplay loop muted playsinline preload="metadata" onerror="this.remove()">
-          <source src="assets/emotion-loop.mp4" type="video/mp4">
-        </video>
-        <div class="fallback">Emotion-Loop (optional: assets/emotion-loop.mp4)</div>
-      </div>
-    </section>
-
-    <!-- FLOW -->
-    <section id="flow" class="section">
-      <h2 class="sectionTitle">Nachricht schreiben → Adresse → Bezahlen</h2>
-      <p class="sectionSub">3 Steps. Kein Account. Kein Warenkorb-Gebimmel. Fertig.</p>
-
-      <div class="flowShell">
-        <div class="flowTop">
-          <div class="steps">
-            <button class="stepBtn active" data-step="1">1 Message</button>
-            <button class="stepBtn" data-step="2">2 Adresse</button>
-            <button class="stepBtn" data-step="3">3 Bezahlen</button>
-          </div>
-          <div class="priceBox">Gesamt: <span id="total">9,90</span> €</div>
-        </div>
-
-        <div class="flowBody">
-          <!-- STEP 1 -->
-          <div class="panel" id="s1">
-            <label>Schnell-Vorlagen (antippen)</label>
-            <div class="chips">
-              <div class="chip" data-msg="Danke. 🍪">Danke</div>
-              <div class="chip" data-msg="Liebe per Post. ❤️">Liebe per Post</div>
-              <div class="chip" data-msg="Lächeln! ✨">Lächeln</div>
-              <div class="chip" data-msg="Beweg dein Arsch. 😄">Beweg dein Arsch</div>
-              <div class="chip" data-msg="Geh arbeiten. 💼">Geh arbeiten</div>
-              <div class="chip" data-msg="Party heute? 🎉">Party heute?</div>
-            </div>
-
-            <label>Deine Nachricht (max. 140 Zeichen)</label>
-            <textarea id="msg" maxlength="140" placeholder="Schreib was Kurzes, das knallt…"></textarea>
-
-            <div class="hr"></div>
-
-            <label>Mach ihn noch süßer (max. 4, easy)</label>
-            <div class="toggles">
-              <div class="toggle">
-                <div><strong>Schleife</strong><small>Sieht direkt nach Geschenk aus.</small></div>
-                <div class="switch" data-opt="bow"><div class="knob"></div></div>
-              </div>
-              <div class="toggle">
-                <div><strong>Herzchen</strong><small>Für extra „awww“.</small></div>
-                <div class="switch" data-opt="hearts"><div class="knob"></div></div>
-              </div>
-              <div class="toggle">
-                <div><strong>Blümchen</strong><small>Deko-Chichi, aber classy.</small></div>
-                <div class="switch" data-opt="flowers"><div class="knob"></div></div>
-              </div>
-              <div class="toggle">
-                <div><strong>Gold-Stempel</strong><small>Sticker-Look in der Vorschau/Story.</small></div>
-                <div class="switch" data-opt="stamp"><div class="knob"></div></div>
-              </div>
-            </div>
-
-            <div class="footerRow">
-              <div></div>
-              <button class="btn primary" id="to2">Weiter: Adresse</button>
-            </div>
-          </div>
-
-          <!-- STEP 2 -->
-          <div class="panel" id="s2" style="display:none;">
-            <div class="row">
-              <div>
-                <label>Empfänger Name</label>
-                <input id="name" placeholder="Vorname Nachname" />
-              </div>
-              <div>
-                <label>E-Mail (Bestätigung)</label>
-                <input id="email" placeholder="name@mail.de" />
-              </div>
-            </div>
-
-            <label>Straße + Nr.</label>
-            <input id="street" placeholder="Musterstraße 12" />
-
-            <div class="row">
-              <div>
-                <label>PLZ</label>
-                <input id="zip" placeholder="12345" />
-              </div>
-              <div>
-                <label>Ort</label>
-                <input id="city" placeholder="Berlin" />
-              </div>
-            </div>
-
-            <div class="hr"></div>
-
-            <label>Extras (optional)</label>
-            <div class="toggles">
-              <div class="toggle">
-                <div><strong>+ 1 Extra-Keks</strong><small>Mehr Liebe, mehr Freude. (+4,90€)</small></div>
-                <div class="switch" data-opt="extraCookie"><div class="knob"></div></div>
-              </div>
-              <div class="toggle">
-                <div><strong>Geschenkbox</strong><small>Sieht direkt premium aus. (+6,90€)</small></div>
-                <div class="switch" data-opt="giftBox"><div class="knob"></div></div>
-              </div>
-              <div class="toggle">
-                <div><strong>Antwort-Keks aktivieren</strong><small>Empfänger kann easy zurückschicken. (+2,90€)</small></div>
-                <div class="switch" data-opt="reply"><div class="knob"></div></div>
-              </div>
-            </div>
-
-            <div class="footerRow">
-              <button class="btn" id="back1">Zurück</button>
-              <button class="btn primary" id="to3">Weiter: Bezahlen</button>
-            </div>
-          </div>
-
-          <!-- STEP 3 -->
-          <div class="panel" id="s3" style="display:none;">
-            <div class="sum">
-              <div><strong>Nachricht:</strong> <span id="sumMsg"></span></div>
-              <div><strong>Empfänger:</strong> <span id="sumName"></span></div>
-              <div><strong>Adresse:</strong> <span id="sumAddr"></span></div>
-              <div><strong>Extras:</strong> <span id="sumExtras"></span></div>
-              <div><strong>Gesamt:</strong> <span id="sumTotal"></span> €</div>
-            </div>
-
-            <p class="note">
-              GitHub-Pages-MVP: Zahlung läuft über Stripe Payment Link. Damit wir deine Nachricht/Adresse sauber dem Kauf zuordnen können,
-              speichern wir vor dem Bezahlen eine Bestell-ID im Browser. (Upgrade später: Stripe Checkout + Webhook.)
-            </p>
-
-            <div class="footerRow">
-              <button class="btn" id="back2">Zurück</button>
-              <a class="btn primary" id="payBtn" href="#" target="_blank" rel="noopener">Jetzt sicher bezahlen</a>
-            </div>
-
-            <p class="note" style="margin-top:12px;">
-              Nach Zahlung: Screenshot/Bestellnummer + Bestell-ID an euer Fulfillment (oder später automatisch).
-              <br><strong>Bestell-ID:</strong> <span id="orderId"></span>
-            </p>
-          </div>
-
-        </div>
-      </div>
-    </section>
-
-    <div class="legal">
-      © OnlyKeks · Post, die schmeckt · <span style="opacity:.7">Datenschutz · Impressum · Kontakt</span>
     </div>
   </div>
+</section>
 
-  <script>
-    // TODO: Stripe Payment Link eintragen
-    const STRIPE_PAYMENT_LINK = "https://buy.stripe.com/XXXXXXXXXXXX";
+<!-- FLOW (kombiniert + echt) -->
+<section class="flow" id="flow">
+  <div class="container">
+    <h2>Reply-Flow (5 Steps, GitHub-MVP)</h2>
+    <p class="sub" style="margin:0 0 12px">
+      Message → Veredeln → Extras → Adresse → Bezahlen. Kein Account.
+    </p>
 
-    // Base price + options
-    const PRICES = {
-      base: 9.90,
-      extraCookie: 4.90,
-      giftBox: 6.90,
-      reply: 2.90,
-      // Deko: aktuell 0€ (digital / Vorschau)
-      bow: 0, hearts: 0, flowers: 0, stamp: 0
-    };
+    <div class="flowShell">
+      <div class="flowTop">
+        <div class="steps">
+          <button class="stepBtn active" data-step="1">1 Message</button>
+          <button class="stepBtn" data-step="2">2 Veredeln</button>
+          <button class="stepBtn" data-step="3">3 Extras</button>
+          <button class="stepBtn" data-step="4">4 Adresse</button>
+          <button class="stepBtn" data-step="5">5 Bezahlen</button>
+        </div>
+        <div class="priceBox">Gesamt: <span id="total">9,90</span> €</div>
+      </div>
 
-    const state = {
-      msg: "",
-      name: "",
-      email: "",
-      street: "",
-      zip: "",
-      city: "",
-      opts: {
-        bow:false, hearts:false, flowers:false, stamp:false,
-        extraCookie:false, giftBox:false, reply:false
-      }
-    };
+      <div class="flowBody">
+        <!-- STEP 1 -->
+        <div class="panel active" id="s1">
+          <label>Vorlagen (antippen)</label>
+          <div class="chips">
+            <div class="chip" data-msg="Danke. 🍪">Danke</div>
+            <div class="chip" data-msg="Vermiss dich. ❤️">Vermiss dich</div>
+            <div class="chip" data-msg="Beweg dein Arsch. 😄">Beweg dein Arsch</div>
+            <div class="chip" data-msg="Geh arbeiten. 💼">Geh arbeiten</div>
+            <div class="chip" data-msg="Party heute? 🎉">Party heute?</div>
+          </div>
 
-    const panels = {1: document.getElementById("s1"), 2: document.getElementById("s2"), 3: document.getElementById("s3")};
-    const stepBtns = Array.from(document.querySelectorAll(".stepBtn"));
+          <label>Deine Nachricht (max. 140 Zeichen)</label>
+          <textarea id="msg" maxlength="140" placeholder="Schreib was Kurzes, das knallt…"></textarea>
 
-    function showStep(n){
-      Object.values(panels).forEach(p => p.style.display = "none");
-      panels[n].style.display = "block";
-      stepBtns.forEach(b => b.classList.toggle("active", +b.dataset.step === n));
-    }
+          <div class="footerRow">
+            <div></div>
+            <button class="btn" id="to2">Weiter: Veredeln</button>
+          </div>
+        </div>
 
-    // Chips → message
-    document.querySelectorAll(".chip").forEach(ch => {
-      ch.addEventListener("click", () => {
-        document.getElementById("msg").value = ch.dataset.msg;
-        document.getElementById("msg").dispatchEvent(new Event("input"));
-      });
-    });
+        <!-- STEP 2 -->
+        <div class="panel" id="s2">
+          <label>Keks veredeln (max. 4, easy)</label>
+          <div class="toggles">
+            <div class="toggle">
+              <div><b>Schleife</b><small>Sieht direkt nach Geschenk aus.</small></div>
+              <div class="switch" data-opt="bow"><div class="knob"></div></div>
+            </div>
+            <div class="toggle">
+              <div><b>Herzchen</b><small>Mehr „awww“.</small></div>
+              <div class="switch" data-opt="hearts"><div class="knob"></div></div>
+            </div>
+            <div class="toggle">
+              <div><b>Blümchen</b><small>Deko-Chichi, aber classy.</small></div>
+              <div class="switch" data-opt="flowers"><div class="knob"></div></div>
+            </div>
+            <div class="toggle">
+              <div><b>Gold-Stempel</b><small>Sticker-Look in Story/Preview.</small></div>
+              <div class="switch" data-opt="stamp"><div class="knob"></div></div>
+            </div>
+          </div>
 
-    // Switches
-    document.querySelectorAll(".switch").forEach(sw => {
-      sw.addEventListener("click", () => {
-        const key = sw.dataset.opt;
-        state.opts[key] = !state.opts[key];
-        sw.classList.toggle("on", state.opts[key]);
-        updateTotal();
-      });
-    });
+          <div class="footerRow">
+            <button class="btn ghost" id="back1">Zurück</button>
+            <button class="btn" id="to3">Weiter: Extras</button>
+          </div>
+        </div>
 
-    function euro(n){
-      return n.toFixed(2).replace(".", ",");
-    }
+        <!-- STEP 3 -->
+        <div class="panel" id="s3">
+          <label>Extras (optional)</label>
+          <div class="toggles">
+            <div class="toggle">
+              <div><b>+ 1 Extra-Keks</b><small>Mehr Liebe. (+4,90€)</small></div>
+              <div class="switch" data-opt="extraCookie"><div class="knob"></div></div>
+            </div>
+            <div class="toggle">
+              <div><b>Geschenkbox</b><small>Sieht premium aus. (+6,90€)</small></div>
+              <div class="switch" data-opt="giftBox"><div class="knob"></div></div>
+            </div>
+            <div class="toggle">
+              <div><b>Antwort-Keks aktivieren</b><small>Empfänger kann easy zurückschicken. (+2,90€)</small></div>
+              <div class="switch" data-opt="reply"><div class="knob"></div></div>
+            </div>
+          </div>
 
-    function calcTotal(){
-      let t = PRICES.base;
-      for(const [k,v] of Object.entries(state.opts)){
-        if(v) t += (PRICES[k] || 0);
-      }
-      return t;
-    }
+          <div class="footerRow">
+            <button class="btn ghost" id="back2">Zurück</button>
+            <button class="btn" id="to4">Weiter: Adresse</button>
+          </div>
+        </div>
 
-    function updateTotal(){
-      const t = calcTotal();
-      document.getElementById("total").textContent = euro(t);
-      document.getElementById("sumTotal").textContent = euro(t);
-      return t;
-    }
+        <!-- STEP 4 -->
+        <div class="panel" id="s4">
+          <div class="row">
+            <div>
+              <label>Empfänger Name</label>
+              <input id="name" placeholder="Vorname Nachname"/>
+            </div>
+            <div>
+              <label>E-Mail (Bestätigung)</label>
+              <input id="email" placeholder="name@mail.de"/>
+            </div>
+          </div>
 
-    // Inputs binding
-    const msgEl = document.getElementById("msg");
-    msgEl.addEventListener("input", e => state.msg = e.target.value.trim());
+          <label>Straße + Nr.</label>
+          <input id="street" placeholder="Musterstraße 12"/>
 
-    ["name","email","street","zip","city"].forEach(id=>{
-      const el = document.getElementById(id);
-      el.addEventListener("input", e => state[id] = e.target.value.trim());
-    });
+          <div class="row">
+            <div>
+              <label>PLZ</label>
+              <input id="zip" placeholder="12345"/>
+            </div>
+            <div>
+              <label>Ort</label>
+              <input id="city" placeholder="Berlin"/>
+            </div>
+          </div>
 
-    // Buttons
-    document.getElementById("to2").addEventListener("click", ()=>{
-      if(!state.msg || state.msg.length < 2) return alert("Bitte eine kurze Nachricht eintragen.");
-      showStep(2);
-    });
+          <div class="footerRow">
+            <button class="btn ghost" id="back3">Zurück</button>
+            <button class="btn" id="to5">Weiter: Bezahlen</button>
+          </div>
+        </div>
 
-    document.getElementById("back1").addEventListener("click", ()=>showStep(1));
-    document.getElementById("back2").addEventListener("click", ()=>showStep(2));
+        <!-- STEP 5 -->
+        <div class="panel" id="s5">
+          <div class="sum">
+            <div><strong>Nachricht:</strong> <span id="sumMsg"></span></div>
+            <div><strong>Empfänger:</strong> <span id="sumName"></span></div>
+            <div><strong>Adresse:</strong> <span id="sumAddr"></span></div>
+            <div><strong>Extras:</strong> <span id="sumExtras"></span></div>
+            <div><strong>Gesamt:</strong> <span id="sumTotal"></span> €</div>
+          </div>
 
-    document.getElementById("to3").addEventListener("click", ()=>{
-      // Validate address
-      if(!state.name || !state.street || !state.zip || !state.city) {
-        return alert("Bitte Adresse vollständig ausfüllen.");
-      }
+          <p class="note">
+            GitHub-Pages-MVP: Vor dem Bezahlen speichern wir eine Bestell-ID im Browser (localStorage),
+            damit ihr Bestellungen manuell matchen könnt. Upgrade später: Stripe Checkout + Webhook.
+          </p>
 
-      // Summary
-      document.getElementById("sumMsg").textContent = state.msg;
-      document.getElementById("sumName").textContent = state.name;
-      document.getElementById("sumAddr").textContent = `${state.street}, ${state.zip} ${state.city}`;
+          <div class="footerRow">
+            <button class="btn ghost" id="back4">Zurück</button>
+            <a class="btn" id="payBtn" href="#" target="_blank" rel="noopener">Jetzt sicher bezahlen</a>
+          </div>
 
-      const extras = [];
-      if(state.opts.extraCookie) extras.push("+1 Extra-Keks");
-      if(state.opts.giftBox) extras.push("Geschenkbox");
-      if(state.opts.reply) extras.push("Antwort-Keks");
-      document.getElementById("sumExtras").textContent = extras.length ? extras.join(", ") : "—";
+          <p class="note"><b>Bestell-ID:</b> <span id="orderId"></span></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-      const orderId = "OK-" + Math.random().toString(36).slice(2, 8).toUpperCase();
-      document.getElementById("orderId").textContent = orderId;
+<section class="section" id="faq">
+  <div class="container">
+    <h2>Kurze Antworten</h2>
+    <div class="faq">
+      <div class="item"><b>Was kommt an?</b> Ein Keks, eine Karte, ein QR-Code für die Antwort.</div>
+      <div class="item"><b>Wie läuft der Reply?</b> QR scannen → Text → Adresse → fertig.</div>
+      <div class="item"><b>Wie lange haltbar?</b> Mehrere Monate (luftdicht verpackt).</div>
+      <div class="item"><b>Allergene?</b> Gluten enthalten. Details im Footer.</div>
+    </div>
+    <div class="cta-row" style="margin-top:14px">
+      <button class="btn" id="ctaBottom">Reply-Keks starten</button>
+    </div>
+  </div>
+</section>
+</main>
 
-      const payload = {
-        orderId,
-        createdAt: new Date().toISOString(),
-        ...state,
-        total: calcTotal()
-      };
-      localStorage.setItem("onlykeks_order", JSON.stringify(payload));
+<footer>
+  <div class="container">
+    <div class="footer-links">
+      <a href="#">Impressum</a>
+      <a href="#">Datenschutz</a>
+      <a href="#">AGB</a>
+      <a href="#">Versand</a>
+      <a href="#">Allergene</a>
+    </div>
+    <div style="margin-top:8px">© OnlyKeks · Post die schmeckt</div>
+  </div>
+</footer>
 
-      // Stripe link (MVP). Prefill email where possible.
-      try{
-        const url = new URL(STRIPE_PAYMENT_LINK);
-        if(state.email) url.searchParams.set("prefilled_email", state.email);
-        // Optional: show orderId in success flow later (only works with Checkout Session, not Payment Link)
-        document.getElementById("payBtn").href = url.toString();
-      } catch (e){
-        document.getElementById("payBtn").href = STRIPE_PAYMENT_LINK;
-      }
+<script>
+/*** CONFIG ***/
+const STRIPE_PAYMENT_LINK = "https://buy.stripe.com/const STRIPE_PAYMENT_LINK = "https://buy.stripe.com/aBcDeFgHiJkLmNoPqR";"; // <- HIER EINTRAGEN
 
-      updateTotal();
-      showStep(3);
-    });
+const PRICES = {
+  base: 9.90,
+  extraCookie: 4.90,
+  giftBox: 6.90,
+  reply: 2.90,
+  bow: 0, hearts: 0, flowers: 0, stamp: 0
+};
 
-    // Step tab clicking (guarded)
-    stepBtns.forEach(b=>{
-      b.addEventListener("click", ()=>{
-        const n = +b.dataset.step;
-        if(n === 2 && (!state.msg || state.msg.length < 2)) return;
-        if(n === 3 && (!state.name || !state.street || !state.zip || !state.city)) return;
-        showStep(n);
-      });
-    });
+const state = {
+  msg: "",
+  name: "",
+  email: "",
+  street: "",
+  zip: "",
+  city: "",
+  opts: {
+    bow:false, hearts:false, flowers:false, stamp:false,
+    extraCookie:false, giftBox:false, reply:false
+  }
+};
 
-    // Init
+const panels = {
+  1: document.getElementById("s1"),
+  2: document.getElementById("s2"),
+  3: document.getElementById("s3"),
+  4: document.getElementById("s4"),
+  5: document.getElementById("s5"),
+};
+const stepBtns = Array.from(document.querySelectorAll(".stepBtn"));
+
+function showStep(n){
+  Object.values(panels).forEach(p=>p.classList.remove("active"));
+  panels[n].classList.add("active");
+  stepBtns.forEach(b=>b.classList.toggle("active", +b.dataset.step === n));
+}
+
+function euro(n){ return n.toFixed(2).replace(".", ","); }
+
+function calcTotal(){
+  let t = PRICES.base;
+  for (const [k,v] of Object.entries(state.opts)){
+    if(v) t += (PRICES[k] || 0);
+  }
+  return t;
+}
+
+function updateTotal(){
+  const t = calcTotal();
+  document.getElementById("total").textContent = euro(t);
+  document.getElementById("sumTotal").textContent = euro(t);
+  return t;
+}
+
+/*** Bindings ***/
+document.querySelectorAll(".chip").forEach(ch=>{
+  ch.addEventListener("click", ()=>{
+    document.getElementById("msg").value = ch.dataset.msg;
+    state.msg = ch.dataset.msg;
+  });
+});
+
+document.querySelectorAll(".switch").forEach(sw=>{
+  sw.addEventListener("click", ()=>{
+    const key = sw.dataset.opt;
+    state.opts[key] = !state.opts[key];
+    sw.classList.toggle("on", state.opts[key]);
     updateTotal();
-    showStep(1);
-  </script>
+  });
+});
+
+// Inputs
+const msgEl = document.getElementById("msg");
+msgEl.addEventListener("input", e => state.msg = e.target.value.trim());
+
+["name","email","street","zip","city"].forEach(id=>{
+  const el = document.getElementById(id);
+  el.addEventListener("input", e => state[id] = e.target.value.trim());
+});
+
+// Navigation buttons
+document.getElementById("to2").onclick = ()=> {
+  if(!state.msg || state.msg.length < 2) return alert("Bitte eine kurze Nachricht eintragen.");
+  showStep(2);
+};
+document.getElementById("to3").onclick = ()=> showStep(3);
+document.getElementById("to4").onclick = ()=> showStep(4);
+
+document.getElementById("to5").onclick = ()=> {
+  if(!state.name || !state.street || !state.zip || !state.city) return alert("Bitte Adresse vollständig eintragen.");
+
+  // Summary
+  document.getElementById("sumMsg").textContent = state.msg || "—";
+  document.getElementById("sumName").textContent = state.name || "—";
+  document.getElementById("sumAddr").textContent = `${state.street}, ${state.zip} ${state.city}`;
+
+  const extras = [];
+  if(state.opts.extraCookie) extras.push("+1 Extra-Keks");
+  if(state.opts.giftBox) extras.push("Geschenkbox");
+  if(state.opts.reply) extras.push("Antwort-Keks");
+  document.getElementById("sumExtras").textContent = extras.length ? extras.join(", ") : "—";
+
+  const orderId = "OK-" + Math.random().toString(36).slice(2, 8).toUpperCase();
+  document.getElementById("orderId").textContent = orderId;
+
+  // Persist (GitHub MVP)
+  const payload = {
+    orderId,
+    createdAt: new Date().toISOString(),
+    ...state,
+    total: calcTotal()
+  };
+  localStorage.setItem("onlykeks_order", JSON.stringify(payload));
+
+  // Stripe Payment Link with prefilled_email where possible
+  try{
+    const url = new URL(STRIPE_PAYMENT_LINK);
+    if(state.email) url.searchParams.set("prefilled_email", state.email);
+    document.getElementById("payBtn").href = url.toString();
+  } catch(e){
+    document.getElementById("payBtn").href = STRIPE_PAYMENT_LINK;
+  }
+
+  updateTotal();
+  showStep(5);
+};
+
+document.getElementById("back1").onclick = ()=> showStep(1);
+document.getElementById("back2").onclick = ()=> showStep(2);
+document.getElementById("back3").onclick = ()=> showStep(3);
+document.getElementById("back4").onclick = ()=> showStep(4);
+
+// Step buttons (guarded)
+stepBtns.forEach(b=>{
+  b.addEventListener("click", ()=>{
+    const n = +b.dataset.step;
+    if(n >= 2 && (!state.msg || state.msg.length < 2)) return;
+    if(n >= 5 && (!state.name || !state.street || !state.zip || !state.city)) return;
+    showStep(n);
+  });
+});
+
+/*** CTAs -> scroll to flow ***/
+["ctaTop","ctaHero","ctaCard","ctaBottom"].forEach(id=>{
+  document.getElementById(id).addEventListener("click",()=>{
+    document.getElementById("flow").scrollIntoView({behavior:"smooth"});
+  });
+});
+
+// Init
+updateTotal();
+showStep(1);
+</script>
 </body>
 </html>

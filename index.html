@@ -580,10 +580,147 @@
 
     /* utility */
     .sr{ position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden; }
+
+    /* ===== Cookie Rain (background) ===== */
+    #cookieRain{
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+    .cookie{
+      position: absolute;
+      top: -12vh;
+      width: var(--sz, 42px);
+      height: var(--sz, 42px);
+      border-radius: 999px;
+      opacity: var(--op, .18);
+      filter: blur(var(--bl, 0px));
+      transform: translate3d(0,0,0) rotate(var(--rot, 0deg));
+      animation: fall var(--dur, 10s) linear var(--delay, 0s) infinite;
+      will-change: transform;
+      background:
+        radial-gradient(18px 18px at 30% 28%, rgba(255,255,255,.55), transparent 60%),
+        radial-gradient(22px 22px at 72% 60%, rgba(255,255,255,.25), transparent 60%),
+        linear-gradient(180deg, #e9c1a0, #c48752);
+      box-shadow: 0 18px 50px rgba(196,135,82,.18);
+      border: 1px solid rgba(11,27,42,.08);
+    }
+    .cookie::after{
+      content:"";
+      position:absolute;
+      inset: 18% 18%;
+      border-radius: 999px;
+      background:
+        radial-gradient(3px 3px at 20% 25%, rgba(60,35,25,.55), transparent 60%),
+        radial-gradient(3px 3px at 60% 20%, rgba(60,35,25,.55), transparent 60%),
+        radial-gradient(3px 3px at 75% 45%, rgba(60,35,25,.55), transparent 60%),
+        radial-gradient(3px 3px at 40% 55%, rgba(60,35,25,.55), transparent 60%),
+        radial-gradient(3px 3px at 25% 70%, rgba(60,35,25,.55), transparent 60%),
+        radial-gradient(3px 3px at 70% 75%, rgba(60,35,25,.55), transparent 60%);
+      opacity: .9;
+    }
+    .cookie.dark{
+      background:
+        radial-gradient(18px 18px at 30% 28%, rgba(255,255,255,.35), transparent 60%),
+        radial-gradient(22px 22px at 72% 60%, rgba(255,255,255,.18), transparent 60%),
+        linear-gradient(180deg, #b07a60, #7a4436);
+    }
+    @keyframes fall{
+      0%   { transform: translate3d(0, -12vh, 0) rotate(var(--rot, 0deg)); }
+      100% { transform: translate3d(var(--drift, 0px), 112vh, 0) rotate(calc(var(--rot, 0deg) + var(--spin, 360deg))); }
+    }
+    @media (prefers-reduced-motion: reduce){
+      #cookieRain{ display:none; }
+    }
+
+    /* ===== Cookie Consent (pretty, not annoying) ===== */
+    #cookieConsent{
+      position: fixed;
+      left: 16px; right: 16px; bottom: 16px;
+      z-index: 9999;
+      display:none;
+    }
+    .cookieBox{
+      max-width: 980px;
+      margin: 0 auto;
+      border-radius: 20px;
+      border: 1px solid rgba(11,27,42,.10);
+      background: rgba(255,255,255,.86);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 18px 70px rgba(11,27,42,.18);
+      padding: 14px;
+      display:flex;
+      align-items:flex-start;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .cookieTxt{
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+    .cookieTxt b{ color: var(--ink); }
+    .cookieActions{
+      display:flex; gap: 8px; flex-wrap:wrap; align-items:center;
+    }
+    .cookieLink{
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      color: var(--muted);
+      font-weight: 800;
+      font-size: 12px;
+    }
+    @media (max-width: 720px){
+      .cookieBox{ flex-direction: column; }
+      .cookieActions{ width: 100%; }
+      .cookieActions .btn{ flex: 1 1 auto; }
+    }
+    @media (max-width: 640px){
+      .cookieTxt{ font-size: 12px; line-height: 1.35; }
+    }
+
+    /* Mini overlay before redirect */
+    #payOverlay{
+      position: fixed;
+      inset: 0;
+      z-index: 9998;
+      display:none;
+      background: rgba(255,255,255,.55);
+      backdrop-filter: blur(6px);
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+    }
+    #payOverlay .box{
+      width: min(520px, 92vw);
+      border-radius: 22px;
+      border: 1px solid rgba(11,27,42,.10);
+      background: rgba(255,255,255,.88);
+      box-shadow: 0 18px 70px rgba(11,27,42,.18);
+      padding: 16px;
+      display:flex;
+      gap: 12px;
+      align-items:center;
+      justify-content: space-between;
+    }
+    #payOverlay .msg{
+      font-weight: 900;
+      color: var(--ink);
+    }
+    #payOverlay .sub{
+      margin: 4px 0 0;
+      font-size: 13px;
+      color: var(--muted);
+    }
   </style>
 </head>
 
 <body>
+  <!-- Cookie Rain -->
+  <div id="cookieRain" aria-hidden="true"></div>
+
   <div class="clouds" aria-hidden="true">
     <div class="cloud c1"></div>
     <div class="cloud c2"></div>
@@ -741,8 +878,8 @@
                 <div class="field">
                   <label>Keks-Farbe</label>
                   <div class="swatches" id="swatches">
-                    <div class="sw active" data-color="classic" title="Classic" style="background: linear-gradient(180deg, var(--cookie2), var(--cookie));"></div>
-                    <div class="sw" data-color="vanilla" title="Vanille" style="background: linear-gradient(180deg, #fff2d9, #ffd8ad);"></div>
+                    <div class="sw" data-color="classic" title="Classic" style="background: linear-gradient(180deg, var(--cookie2), var(--cookie));"></div>
+                    <div class="sw active" data-color="vanilla" title="Vanille" style="background: linear-gradient(180deg, #fff2d9, #ffd8ad);"></div>
                     <div class="sw" data-color="pink" title="Rosé" style="background: linear-gradient(180deg, #ffd1e8, #ff93c8);"></div>
                     <div class="sw" data-color="choco" title="Schoko" style="background: linear-gradient(180deg, #a06a55, #6f3f33);"></div>
                   </div>
@@ -753,7 +890,7 @@
                   <label for="stampSel">Stempel</label>
                   <select id="stampSel">
                     <option value="none">Kein Stempel</option>
-                    <option value="♡">Herz ♡</option>
+                    <option value="♡" selected>Herz ♡</option>
                     <option value="★">Stern ★</option>
                     <option value="☺">Smile ☺</option>
                     <option value="✿">Blume ✿</option>
@@ -807,9 +944,9 @@
             <!-- PANEL 3 -->
             <div class="panel" id="p3" role="tabpanel">
               <div class="field">
-                <label for="addr">Versandadresse</label>
-                <input id="addr" placeholder="Straße & Hausnr., PLZ Ort" />
-                <div class="note">Neutral & sauber: keine Warn-Optik hier.</div>
+                <label for="addr">Wohin soll der Keks reisen?</label>
+                <input id="addr" placeholder="Straße & Hausnr., PLZ Ort" autocomplete="street-address" />
+                <div class="note">Wie auf dem Briefkasten. Kurz reicht völlig.</div>
               </div>
 
               <div style="margin-top:12px; display:flex; gap:10px; flex-wrap:wrap;">
@@ -826,14 +963,14 @@
           <!-- RIGHT: Sticky Summary -->
           <aside class="summary" aria-label="Zusammenfassung">
             <div class="keksPreview" id="keksPreview" aria-label="Keks Vorschau">
-              <div class="stamp" id="stamp">♡</div>
+              <div class="stamp on" id="stamp">♡</div>
             </div>
 
             <div class="sumGrid">
               <div class="sumRow"><span>Produkt</span><b>Reply-Keks</b></div>
               <div class="sumRow"><span>Menge</span><b id="sumQty">1</b></div>
               <div class="sumRow"><span>Bundle</span><b id="sumBundle">–</b></div>
-              <div class="sumRow"><span>Stempel</span><b id="sumStamp">–</b></div>
+              <div class="sumRow"><span>Stempel</span><b id="sumStamp">♡</b></div>
               <div class="sumRow"><span>Extras</span><b id="sumExtras">–</b></div>
 
               <div style="display:flex; align-items:baseline; justify-content:space-between; gap:10px; margin-top:4px;">
@@ -854,13 +991,36 @@
       <div class="footerGrid">
         <span>© <span id="y"></span> OnlyKeks</span>
         <a href="#0">Impressum</a>
-        <a href="#0">Datenschutz</a>
+        <a href="privacy.html">Wie wir mit Daten umgehen</a>
         <a href="#0">AGB</a>
         <a href="#0">Versand</a>
         <a href="#0">Allergene & Zutaten</a>
       </div>
     </footer>
   </main>
+
+  <!-- Pay overlay (300ms delight) -->
+  <div id="payOverlay" aria-hidden="true">
+    <div class="box">
+      <div>
+        <div class="msg">Dein Keks wird vorbereitet 🍪</div>
+        <p class="sub">Einen Moment – dann geht’s sicher zur Zahlung.</p>
+      </div>
+      <span class="pill"><span class="dot"></span> Sicher</span>
+    </div>
+  </div>
+
+  <!-- Cookie Consent (NOT inside script) -->
+  <div id="cookieConsent" aria-label="Cookie Hinweis">
+    <div class="cookieBox">
+      <div class="cookieTxt" id="cookieText"></div>
+      <div class="cookieActions">
+        <button class="btn btn-ghost" id="ccNecessary">Nur das Nötigste</button>
+        <button class="btn btn-primary" id="ccAll">Alles klar 🍪</button>
+        <a class="cookieLink" href="privacy.html">Wie wir mit Daten umgehen</a>
+      </div>
+    </div>
+  </div>
 
   <script>
     /*** CONFIG: NUR HIER STRIPE EINTRAGEN ***/
@@ -871,6 +1031,29 @@
     const GIFT_WRAP = 2.50;
     const BUNDLE_QTY = 3;
     const BUNDLE_DISCOUNT = 0.25; // 25%
+
+    /* ===== Cookie Copy Experiment ===== */
+    const COOKIE_VARIANT = "A"; // "A" default, "B" später testen
+
+    const COOKIE_COPY = {
+      A: `
+        <b>Cookies?</b><br>
+        Nur damit dein Keks hübsch aussieht und sicher bei der richtigen Person ankommt.<br><br>
+        <b>Notwendig:</b> Speichert deinen Keks-Entwurf, während du ihn gestaltest.<br>
+        <b>Optional:</b> Hilft uns zu verstehen, welche Kekse wirklich Freude machen –
+        damit wir noch bessere verschicken können.<br><br>
+        <small><b>Deine Daten bleiben bei uns.</b> Wir verkaufen nichts weiter. Punkt.</small>
+      `,
+      B: `
+        <b>Auch hier ein paar Cookies 🍪</b><br>
+        Die essbaren sind besser – die digitalen brauchen wir nur fürs Drumherum.<br><br>
+        <b>Notwendig:</b> Damit dein Keks-Design nicht verloren geht.<br>
+        <b>Optional:</b> Damit wir sehen, welche Kekse gut ankommen –
+        und welche eher nicht nochmal gebacken werden.<br><br>
+        <small>Unsere Cookies sind zum Essen da. Die digitalen nur, damit alles läuft.<br>
+        <b>Wir verkaufen keine Daten.</b> Versprochen.</small>
+      `
+    };
 
     // Year
     document.getElementById("y").textContent = new Date().getFullYear();
@@ -922,7 +1105,7 @@
     }));
     quickFill.addEventListener("click", () => {
       const t = templates[Math.floor(Math.random() * templates.length)];
-      msg.value = t.dataset.tpl || "Hab an dich gedacht ♡";
+      msg.value = t.dataset.tpl || "Danke, dass du da bist. ♡";
       msg.dispatchEvent(new Event("input"));
     });
 
@@ -963,9 +1146,12 @@
     const sumTotal = document.getElementById("sumTotal");
     const sumNote = document.getElementById("sumNote");
 
+    // Defaults = schön
+    const DEFAULT_MESSAGE = "Danke, dass du da bist. ♡";
+
     const state = {
-      color: "classic",
-      stamp: "none",
+      color: "vanilla",
+      stamp: "♡",
       qty: 1,
       giftWrap: false,
       futureFun: false
@@ -1026,7 +1212,7 @@
     swatches.forEach(s => s.addEventListener("click", () => {
       swatches.forEach(x => x.classList.remove("active"));
       s.classList.add("active");
-      state.color = s.dataset.color || "classic";
+      state.color = s.dataset.color || "vanilla";
       paintCookie();
       updateSummary();
     }));
@@ -1062,6 +1248,18 @@
     giftWrap.addEventListener("keydown", (e)=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); toggleCheck(giftWrap,"giftWrap"); }});
     futureFun.addEventListener("keydown", (e)=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); toggleCheck(futureFun,"futureFun"); }});
 
+    // Pay overlay (300ms) before redirect
+    const payOverlay = document.getElementById("payOverlay");
+    payBtn.addEventListener("click", (e) => {
+      // Let link exist but show overlay briefly
+      e.preventDefault();
+      payOverlay.style.display = "flex";
+      setTimeout(() => {
+        window.open(STRIPE_PAYMENT_LINK, "_blank", "noopener");
+        payOverlay.style.display = "none";
+      }, 320);
+    });
+
     // Scroll reveal (fade-up)
     const io = new IntersectionObserver((entries)=>{
       entries.forEach(en=>{
@@ -1073,11 +1271,97 @@
     }, { threshold: 0.12 });
     document.querySelectorAll(".reveal").forEach(el => io.observe(el));
 
-    // Init
+    /* ===== Cookie Consent + A/B Copy ===== */
+    function renderCookieCopy(){
+      const el = document.getElementById("cookieText");
+      if(!el) return;
+      el.innerHTML = COOKIE_COPY[COOKIE_VARIANT] || COOKIE_COPY.A;
+    }
+
+    (function consent(){
+      const KEY = "ok_consent_v1";
+      const box = document.getElementById("cookieConsent");
+      const allBtn = document.getElementById("ccAll");
+      const necBtn = document.getElementById("ccNecessary");
+
+      function get(){ try{ return JSON.parse(localStorage.getItem(KEY)); } catch(e){ return null; } }
+      function set(v){ localStorage.setItem(KEY, JSON.stringify(v)); }
+
+      function loadOptional(){
+        // Optional scripts erst nach Consent level "all"
+        // Beispiel:
+        // const s = document.createElement("script");
+        // s.src = "https://...analytics.js";
+        // document.head.appendChild(s);
+      }
+
+      renderCookieCopy();
+
+      const cur = get();
+      if(!cur){
+        box.style.display = "block";
+      } else {
+        if(cur.level === "all") loadOptional();
+      }
+
+      allBtn.addEventListener("click", () => {
+        set({ level:"all", ts: Date.now() });
+        box.style.display = "none";
+        loadOptional();
+      });
+
+      necBtn.addEventListener("click", () => {
+        set({ level:"necessary", ts: Date.now() });
+        box.style.display = "none";
+      });
+    })();
+
+    /* ===== Cookie Rain generator ===== */
+    (function cookieRain(){
+      const host = document.getElementById("cookieRain");
+      if(!host) return;
+
+      const reduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if(reduced) return;
+
+      const isMobile = matchMedia("(max-width: 720px)").matches;
+      const COUNT = isMobile ? 18 : 34;
+
+      function rnd(min, max){ return Math.random() * (max - min) + min; }
+
+      for(let i=0;i<COUNT;i++){
+        const el = document.createElement("div");
+        el.className = "cookie" + (Math.random() < 0.30 ? " dark" : "");
+
+        const sz = rnd(isMobile ? 18 : 22, isMobile ? 46 : 64);
+        const op = rnd(0.10, 0.22);
+        const dur = rnd(10, 20);
+        const delay = rnd(0, 10);
+        const rot = rnd(0, 360);
+        const drift = rnd(-120, 120);
+        const spin = rnd(260, 720);
+        const blur = rnd(0, 0.7);
+
+        el.style.left = rnd(0, 100) + "vw";
+        el.style.setProperty("--sz", sz + "px");
+        el.style.setProperty("--op", op);
+        el.style.setProperty("--dur", dur + "s");
+        el.style.setProperty("--delay", (-delay) + "s");
+        el.style.setProperty("--rot", rot + "deg");
+        el.style.setProperty("--drift", drift + "px");
+        el.style.setProperty("--spin", spin + "deg");
+        el.style.setProperty("--bl", blur + "px");
+
+        host.appendChild(el);
+      }
+    })();
+
+    // Init (defaults)
+    msg.value = DEFAULT_MESSAGE;
+    count.textContent = String(msg.value.length);
     paintCookie();
     updateSummary();
     setPanel("p1");
-    payBtn.href = STRIPE_PAYMENT_LINK;
   </script>
 </body>
 </html>

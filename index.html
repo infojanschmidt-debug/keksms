@@ -15,7 +15,6 @@
   <meta property="og:description" content="Schicke süße Botschaften mit direkter QR-Antwort. Reply-Keks in 3 Klicks." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://infojanschmidt-debug.github.io/keksms/" />
-  <!-- TODO: ersetze durch echte OG Grafik -->
   <meta property="og:image" content="https://infojanschmidt-debug.github.io/keksms/assets/og.jpg" />
 
   <meta name="twitter:card" content="summary_large_image" />
@@ -61,10 +60,17 @@
       --shadow2: 0 10px 30px rgba(11,27,42,.08);
 
       --danger:#d24a5c; /* calmer red */
+
+      /* =======================
+         DEKOFRAU-MOUSE (Cursor)
+         1) Cookie-Cursor als Data-URI
+      ======================= */
+      --cursor-cookie: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 64 64'%3E%3Ccircle cx='28' cy='28' r='18' fill='%23c48752'/%3E%3Ccircle cx='22' cy='22' r='3' fill='%230b1b2a' opacity='.35'/%3E%3Ccircle cx='34' cy='20' r='2.8' fill='%230b1b2a' opacity='.30'/%3E%3Ccircle cx='20' cy='34' r='2.6' fill='%230b1b2a' opacity='.30'/%3E%3Ccircle cx='34' cy='34' r='2.3' fill='%230b1b2a' opacity='.28'/%3E%3C/svg%3E") 12 12, auto;
     }
 
     *{box-sizing:border-box}
     html,body{height:100%}
+
     body{
       margin:0;
       font-family: Poppins, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
@@ -75,9 +81,23 @@
         radial-gradient(900px 520px at 55% 0%, var(--pinkSoft), transparent 60%),
         linear-gradient(180deg, var(--bg), var(--bg2));
       overflow-x:hidden;
+
+      /* Dekofrau Cursor default */
+      cursor: var(--cursor-cookie);
     }
+
     a{color:inherit;text-decoration:none}
     .container{max-width:1120px;margin:0 auto;padding:0 18px}
+
+    /* Klickbare Sachen bekommen den Cookie-Hand-Pointer */
+    a, button, .btn, .step, .chip, summary, input[type="submit"], [role="button"]{
+      cursor: var(--cursor-cookie);
+    }
+
+    /* Textfelder bleiben “normal” lesbar */
+    input, textarea, select{
+      cursor: text;
+    }
 
     /* Focus */
     :focus-visible{outline:3px solid rgba(0,175,240,.55); outline-offset:3px;}
@@ -134,7 +154,7 @@
 
     /* Buttons */
     .btn{
-      border:0;cursor:pointer;border-radius:999px;
+      border:0;border-radius:999px;
       padding:14px 18px;
       min-height:48px; /* touch target */
       font-weight:900;font-size:14px;
@@ -360,7 +380,6 @@
       color:var(--muted);
       font-weight:900;
       font-size:12px;
-      cursor:pointer;
       transition: transform .12s ease, background .12s ease, box-shadow .12s ease;
       user-select:none;
       min-height:44px;
@@ -407,7 +426,6 @@
       padding:10px 12px;border-radius:999px;
       border:1px solid var(--line);
       background:white;
-      cursor:pointer;
       transition: transform .12s ease, background .12s ease;
       min-height:44px;
     }
@@ -489,6 +507,52 @@
       #cookieRain{ display:none; }
       *{ scroll-behavior:auto !important; }
     }
+
+    /* =======================
+       DEKOFRAU-MOUSE (Cursor + Hovers)
+       2) Soft-Hover: minimal lift + glow (nur wenn Motion erlaubt)
+    ======================= */
+    @media (prefers-reduced-motion: no-preference){
+      .card, .benefit, .faq-item, .field, .visual-wrap{
+        transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+      }
+
+      .card:hover, .benefit:hover, .faq-item:hover, .field:hover, .visual-wrap:hover{
+        transform: translateY(-2px);
+        box-shadow: 0 18px 60px rgba(11,27,42,.14);
+        border-color: rgba(0,175,240,.22);
+      }
+
+      .btn.primary{
+        position: relative;
+        overflow: hidden;
+      }
+
+      /* kleiner “shine” beim Hover */
+      .btn.primary::after{
+        content:"";
+        position:absolute; inset:-40%;
+        background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.55), transparent 55%);
+        transform: translateX(-20%) translateY(-10%);
+        opacity: 0;
+        transition: opacity .18s ease;
+        pointer-events:none;
+      }
+      .btn.primary:hover::after{ opacity: .55; }
+
+      .chip:hover, .step:hover{
+        transform: translateY(-1px);
+      }
+    }
+
+    /* 3) Optional: Mini-Cookie-Dots als Deko */
+    .trustbar b::after{
+      content:" 🍪";
+      opacity:.9;
+    }
+    .benefit b::before{
+      content:"🍪 ";
+    }
   </style>
 </head>
 
@@ -563,10 +627,7 @@
           <div class="visual-wrap">
             <span class="stamp">REPLY</span>
 
-            <!-- WICHTIG:
-              Ich kann deinen ChatGPT-Share-Link nicht direkt als Bildquelle nutzen.
-              Lege das Bild lokal ab und setze HERO_IMAGE_URL unten (z.B. /assets/hero.jpg).
-            -->
+            <!-- Bild lokal ablegen: /assets/hero.jpg -->
             <img
               id="heroImg"
               class="hero-img"
@@ -795,7 +856,6 @@
 
   // Analytics (nur nach Consent laden!)
   const GA_ID = "G-XXXXXXXXXX"; // TODO: ersetzen
-  const OG_IMAGE_FALLBACK = "assets/og.jpg"; // optional
 
   /* =======================
      A/B HERO (simple)
@@ -1073,7 +1133,6 @@
 
   function loadGA(){
     if(!GA_ID || GA_ID === "G-XXXXXXXXXX") return;
-
     if(document.getElementById("gaScript")) return;
 
     const s1 = document.createElement("script");
@@ -1145,7 +1204,6 @@
       c.style.width  = `${innerWidth}px`;
       c.style.height = `${innerHeight}px`;
 
-      // reset, sonst stapelt sich scale
       ctx.setTransform(1,0,0,1,0,0);
       ctx.scale(dpr, dpr);
     }

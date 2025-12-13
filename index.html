@@ -8,6 +8,7 @@
 
   <style>
     :root{
+      /* OnlyFans-clean */
       --bg:#ffffff;
       --bg2:#f6fbff;
       --ink:#0b1b2a;
@@ -17,6 +18,7 @@
       --blue2:#2b7cff;
       --blueSoft: rgba(0,175,240,.12);
 
+      /* Dekofrau-soft */
       --cookie:#c48752;
       --cookieLight:#f3d2b3;
       --pinkSoft: rgba(255,105,180,.10);
@@ -42,6 +44,7 @@
     a{color:inherit;text-decoration:none}
     .container{max-width:1120px;margin:0 auto;padding:0 18px}
 
+    /* Background cookie rain */
     #cookieRain{
       position:fixed; inset:0;
       width:100%; height:100%;
@@ -51,6 +54,7 @@
     }
     main, header, footer{position:relative; z-index:1}
 
+    /* Header */
     header{
       position:sticky;top:0;z-index:50;
       background:rgba(255,255,255,.86);
@@ -67,6 +71,7 @@
       background: linear-gradient(135deg, var(--blue), var(--blue2));
       box-shadow: 0 12px 30px rgba(0,175,240,.20);
       position:relative;
+      flex:0 0 auto;
     }
     .logo:after{
       content:"";
@@ -74,172 +79,851 @@
       background:rgba(255,255,255,.55);
       border:1px solid rgba(255,255,255,.65);
     }
-    .brand b{font-size:18px;font-weight:900}
-    .brand small{display:block;color:var(--muted);font-size:12px}
+    .brand b{font-size:18px;font-weight:900;letter-spacing:-.2px}
+    .brand small{display:block;color:var(--muted);font-size:12px;margin-top:2px}
 
+    .nav-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:flex-end}
     .pill{
       font-size:12px;color:var(--muted);
       border:1px solid var(--line);
-      padding:9px 12px;border-radius:999px;
       background:rgba(255,255,255,.7);
+      padding:9px 12px;border-radius:999px;
+      white-space:nowrap;
     }
 
     .btn{
       border:0;cursor:pointer;border-radius:999px;
       padding:13px 18px;font-weight:900;font-size:14px;
-      display:inline-flex;align-items:center;
+      display:inline-flex;align-items:center;gap:10px;
+      transition: transform .12s ease, filter .12s ease, box-shadow .12s ease;
+      white-space:nowrap;
     }
+    .btn:active{transform:translateY(1px)}
     .btn.primary{
-      color:#fff;
+      color:white;
       background: linear-gradient(135deg, var(--blue), var(--blue2));
       box-shadow: 0 14px 32px rgba(0,175,240,.22);
     }
+    .btn.primary:hover{filter:brightness(1.03);transform:translateY(-1px)}
     .btn.ghost{
-      background:#fff;border:1px solid var(--line);
+      background:white;border:1px solid var(--line);color:var(--ink);
+      box-shadow:none;
     }
 
-    .hero{padding:44px 0}
+    /* Hero */
+    .hero{padding:44px 0 18px}
     .hero-grid{
-      display:grid;
-      grid-template-columns: 1.05fr .95fr;
-      gap:18px;
+      display:grid;grid-template-columns: 1.05fr .95fr;
+      gap:18px;align-items:stretch;
     }
     @media(max-width:980px){.hero-grid{grid-template-columns:1fr}}
+    @media(max-width:520px){
+      .hero{padding:28px 0 10px}
+      h1{font-size:32px}
+      .cta-row{gap:8px}
+      .trustbar{padding:12px}
+      .visual-wrap{padding:14px}
+    }
 
     .card{
       background:rgba(255,255,255,.92);
       border:1px solid var(--line);
       border-radius:var(--radius);
       box-shadow:var(--shadow);
+      overflow:hidden;
     }
     .hero-copy{padding:24px}
-    h1{font-size:44px;margin:12px 0}
-    .sub{color:var(--muted);max-width:60ch}
+    .kicker{
+      display:inline-flex;align-items:center;gap:10px;
+      font-size:12px;color:var(--muted);
+      padding:9px 12px;border-radius:999px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.80);
+    }
+    .dot{
+      width:8px;height:8px;border-radius:999px;
+      background:var(--blue);
+      box-shadow:0 0 0 6px rgba(0,175,240,.14);
+    }
+    h1{
+      margin:14px 0 10px;
+      font-size:44px;line-height:1.02;letter-spacing:-1px;
+    }
+    .sub{
+      margin:0 0 12px;
+      color:var(--muted);
+      line-height:1.55;
+      font-size:16px;
+      max-width:62ch;
+    }
+    .cta-row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:12px}
 
+    /* Social proof */
+    .social{
+      margin-top:12px;
+      display:flex;gap:10px;flex-wrap:wrap;
+      color:var(--muted);font-size:12px;
+    }
+    .tag{
+      padding:8px 10px;border-radius:999px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.75);
+    }
+
+    /* Trust bar */
     .trustbar{
-      margin-top:14px;
-      padding:12px;
+      margin-top:12px;
+      padding:12px 14px;
       border-radius:16px;
       border:1px solid rgba(0,175,240,.22);
-      background:rgba(255,255,255,.9);
-      display:flex;gap:12px;flex-wrap:wrap;
-      font-size:13px;color:var(--muted);
+      background:
+        linear-gradient(135deg, rgba(0,175,240,.10), rgba(43,124,255,.06)),
+        rgba(255,255,255,.85);
+      box-shadow: var(--shadow2);
+      display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;
+    }
+    .trustbar b{font-size:12px;letter-spacing:.2px}
+    .trustitems{display:flex;gap:12px;flex-wrap:wrap;color:var(--muted);font-size:13px}
+    .trustitems span{white-space:nowrap}
+
+    /* Hero Visual */
+    .visual-card{
+      padding:18px;
+      display:flex;align-items:center;justify-content:center;
+      background:
+        radial-gradient(520px 220px at 30% 10%, rgba(196,135,82,.18), transparent 62%),
+        linear-gradient(135deg, rgba(0,175,240,.10), rgba(255,255,255,.95));
+    }
+    .visual-wrap{
+      position:relative;
+      width:min(520px,100%);
+      padding:18px 18px 14px;
+      border-radius:20px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.72);
+      box-shadow:var(--shadow);
+    }
+    .stamp{
+      position:absolute; right:14px; top:14px;
+      padding:8px 10px;border-radius:999px;
+      background:linear-gradient(135deg,var(--blue),var(--blue2));
+      color:white;font-weight:900;font-size:12px;
+      box-shadow:0 12px 26px rgba(0,175,240,.20);
+      transform:rotate(-8deg);
+    }
+    .visual-row{
+      display:grid;
+      grid-template-columns: 1.2fr .9fr;
+      gap:14px;
+      align-items:center;
+    }
+    @media(max-width:560px){.visual-row{grid-template-columns:1fr}}
+    .visual-left{
+      display:flex;align-items:center;justify-content:center;
+      padding:10px;
+      border-radius:18px;
+      border:1px solid rgba(11,27,42,.08);
+      background:rgba(255,255,255,.80);
+      min-height:180px;
+      position:relative;
+      overflow:hidden;
+    }
+    .cookie{
+      width:150px;height:150px;border-radius:50%;
+      background: radial-gradient(circle at 30% 30%, var(--cookieLight), var(--cookie));
+      box-shadow:0 18px 48px rgba(11,27,42,.22);
+      animation: float 4s ease-in-out infinite;
+      position:relative;
+    }
+    .cookie:after{
+      content:"";
+      position:absolute; inset:22px;
+      border-radius:50%;
+      border:2px dotted rgba(11,27,42,.14);
+    }
+    @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+    .visual-right{display:grid;gap:10px;}
+    .cardpaper{
+      height:92px;
+      border-radius:16px;
+      background:#fff;
+      border:1px solid var(--line);
+      box-shadow:0 12px 24px rgba(11,27,42,.10);
+      position:relative;
+      overflow:hidden;
+    }
+    .cardpaper:before{
+      content:"";
+      position:absolute; left:14px; right:14px; top:18px; height:10px;
+      border-radius:999px; background:rgba(11,27,42,.08);
+    }
+    .cardpaper:after{
+      content:"";
+      position:absolute; left:14px; right:34px; top:44px; height:10px;
+      border-radius:999px; background:rgba(11,27,42,.06);
+    }
+    .qr{
+      height:92px;
+      border-radius:16px;
+      border:1px solid var(--line);
+      background:
+        linear-gradient(90deg,#0b1b2a 10%,transparent 10%),
+        linear-gradient(#0b1b2a 10%,transparent 10%);
+      background-size:16px 16px;
+      opacity:.75;
+      box-shadow:0 12px 24px rgba(11,27,42,.10);
+    }
+    .visual-caption{
+      margin-top:10px;
+      color:var(--muted);
+      font-size:12px;
+      text-align:center;
+      line-height:1.45;
     }
 
+    /* Benefits */
+    .benefits{padding:8px 0 18px}
+    .benefit-grid{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:12px;
+    }
+    @media(max-width:980px){.benefit-grid{grid-template-columns:1fr 1fr}}
+    @media(max-width:560px){.benefit-grid{grid-template-columns:1fr}}
+    .benefit{
+      padding:14px;
+      border-radius:16px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.88);
+      box-shadow:var(--shadow2);
+      color:var(--muted);
+      font-size:14px;
+    }
+    .benefit b{display:block;color:var(--ink);margin-bottom:6px}
+
+    /* Flow section */
+    .section{padding:18px 0}
+    .flow-card{padding:18px}
+    .flow-head{
+      display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;
+      margin-bottom:12px;
+    }
+    .flow-head h2{margin:0;font-size:18px;letter-spacing:-.2px}
+    .tiny-links{display:flex;gap:12px;flex-wrap:wrap;color:var(--muted);font-size:12px}
+    .tiny-links a{border-bottom:1px dotted rgba(11,27,42,.28)}
+    .divider{height:1px;background:var(--line);margin:12px 0}
+
+    /* Stepper */
     .stepper{display:flex;gap:10px;flex-wrap:wrap}
     .step{
-      padding:10px 14px;border-radius:999px;
+      padding:10px 12px;border-radius:999px;
       border:1px solid var(--line);
-      background:#fff;
-      font-weight:900;font-size:12px;
+      background:white;
+      color:var(--muted);
+      font-weight:900;
+      font-size:12px;
       cursor:pointer;
+      transition: transform .12s ease, background .12s ease, box-shadow .12s ease;
+      user-select:none;
     }
+    .step:hover{transform:translateY(-1px);background:rgba(0,175,240,.06)}
     .step.active{
-      background:rgba(0,175,240,.12);
-      border-color:rgba(0,175,240,.35);
+      color:var(--ink);
+      border-color: rgba(0,175,240,.35);
+      box-shadow: var(--shadow2);
+      background:rgba(0,175,240,.10);
     }
 
+    /* Panels */
     .panel{display:none}
     .panel.active{display:block}
 
+    .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    @media(max-width:900px){.grid2{grid-template-columns:1fr}}
+
     .field{
       border:1px solid var(--line);
+      background:white;
       border-radius:14px;
       padding:12px;
-      background:#fff;
-      margin-bottom:12px;
+      box-shadow: var(--shadow2);
     }
-    label{font-size:12px;font-weight:900;color:var(--muted)}
-    input,textarea,select{
+    label{display:block;font-size:12px;color:var(--muted);font-weight:900;margin-bottom:8px}
+    input, textarea, select{
       width:100%;
-      border-radius:12px;
       border:1px solid rgba(11,27,42,.14);
+      background:white;
+      border-radius:12px;
+      padding:12px 12px;
+      font: inherit;
+      outline:none;
+    }
+    textarea{min-height:120px;resize:vertical}
+
+    /* Chips */
+    .chips{display:flex;gap:10px;flex-wrap:wrap}
+    .chip{
+      font-size:13px;font-weight:900;color:var(--ink);
+      padding:10px 12px;border-radius:999px;
+      border:1px solid var(--line);
+      background:white;
+      cursor:pointer;
+      transition: transform .12s ease, background .12s ease;
+    }
+    .chip:hover{transform:translateY(-1px);background:rgba(255,105,180,.08)}
+
+    .summary{
+      border:1px dashed rgba(0,175,240,.35);
+      background:rgba(0,175,240,.06);
+      border-radius:14px;
       padding:12px;
-      margin-top:6px;
+      color:var(--muted);
+      font-size:13px;line-height:1.45;
+      flex:1 1 320px;
     }
 
+    .actions{
+      display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;
+      margin-top:12px;
+    }
+    .right{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end}
+
+    .hint{font-size:12px;color:var(--muted);margin-top:4px}
+    .err{font-size:12px;color:#b00020;margin-top:4px}
+
+    /* FAQ */
+    .faq-card{padding:18px}
+    .faq-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    @media(max-width:900px){.faq-grid{grid-template-columns:1fr}}
+    .faq-item{padding:14px;border-radius:16px;border:1px solid var(--line);background:rgba(255,255,255,.90);box-shadow:var(--shadow2)}
+    .faq-item b{display:block;margin-bottom:6px}
+
+    /* Footer */
     footer{
-      margin-top:40px;
-      padding:22px 0;
+      margin-top:22px;
+      padding:22px 0 34px;
       border-top:1px solid var(--line);
-      font-size:12px;color:var(--muted);
+      background:rgba(255,255,255,.65);
+      color:var(--muted);
+      font-size:12px;
+    }
+    .footer-links{display:flex;gap:14px;flex-wrap:wrap}
+    .footer-links a{border-bottom:1px dotted rgba(11,27,42,.28)}
+
+    @media (prefers-reduced-motion: reduce){
+      #cookieRain{ display:none; }
+      *{ scroll-behavior:auto !important; }
     }
   </style>
 </head>
 
 <body>
-<canvas id="cookieRain"></canvas>
+  <canvas id="cookieRain"></canvas>
 
-<header>
-  <div class="container nav">
-    <a class="brand" href="#top">
-      <span class="logo"></span>
-      <span><b>OnlyKeks</b><small>Post die schmeckt</small></span>
-    </a>
-    <span class="pill">One page · One CTA · Reply-Loop</span>
-  </div>
-</header>
-
-<main id="top">
-  <section class="hero">
-    <div class="container hero-grid">
-      <div class="card hero-copy">
-        <h1>Eine Message,<br>die man essen kann.</h1>
-        <p class="sub">
-          Du schickst 1 Keks mit Botschaft & QR-Reply.  
-          Empfänger scannt → antwortet → Reply-Keks kommt zurück.
-        </p>
-
-        <div class="trustbar">
-          📦 Versand 2–3 Tage · 🔒 Sicher zahlen · 🔎 Trackbar · ⚠️ Allergene
-        </div>
-      </div>
-
-      <div class="card hero-copy">
-        Produktvisual (Keks · Karte · QR)
-      </div>
-    </div>
-  </section>
-
-  <section class="container">
-    <div class="card hero-copy">
-      <div class="stepper" role="tablist">
-        <button class="step active" data-step="1">1) Nachricht</button>
-        <button class="step" data-step="2">2) Adresse</button>
-        <button class="step" data-step="3">3) Bezahlen</button>
-      </div>
-
-      <div class="panel active" id="p1">
-        <div class="field">
-          <label>Deine Nachricht</label>
-          <textarea placeholder="Kurz, ehrlich, fühlbar…"></textarea>
-        </div>
-      </div>
-
-      <div class="panel" id="p2">
-        <div class="field">
-          <label>Empfängername</label>
-          <input placeholder="z.B. Marlon">
-        </div>
-        <div class="field">
-          <label>Absendername</label>
-          <input placeholder="z.B. Dein Name">
-        </div>
-      </div>
-
-      <div class="panel" id="p3">
-        <a class="btn primary" href="https://buy.stripe.com/aBcDeFgHiJkLmNoPqR" target="_blank">
-          Jetzt bezahlen
+  <header>
+    <div class="container">
+      <div class="nav">
+        <a class="brand" href="#top" aria-label="OnlyKeks Start">
+          <span class="logo" aria-hidden="true"></span>
+          <span>
+            <b>OnlyKeks</b>
+            <small>Post die schmeckt</small>
+          </span>
         </a>
+
+        <div class="nav-actions">
+          <span class="pill">One page · One CTA · Reply-Loop</span>
+          <a class="btn primary" href="#flow">Reply-Keks starten</a>
+        </div>
       </div>
     </div>
-  </section>
-</main>
+  </header>
 
-<footer>
-  <div class="container">
-    © OnlyKeks · Post die schmeckt
-  </div>
-</footer>
+  <main id="top">
+    <section class="hero">
+      <div class="container hero-grid">
+        <div class="card hero-copy">
+          <span class="kicker"><span class="dot"></span>Weil Post nicht schmeckt</span>
+          <h1>Eine Message,<br/>die man essen kann.</h1>
+          <p class="sub">
+            Du schickst 1 Keks mit Botschaft & QR-Reply. Empfänger scannt → antwortet → wir machen den Reply-Keks → zurück.
+          </p>
+
+          <div class="cta-row">
+            <a class="btn primary" href="#flow">Reply-Keks starten</a>
+            <a class="btn ghost" href="#faq">Kurz erklärt</a>
+          </div>
+
+          <div class="trustbar" role="note" aria-label="Versand & Sicherheit">
+            <b>STANDARD</b>
+            <div class="trustitems">
+              <span>📦 Versand 2–3 Werktage</span>
+              <span>🔎 Trackbar</span>
+              <span>🔒 Sicher zahlen</span>
+              <span>⚠️ Allergene</span>
+            </div>
+          </div>
+
+          <div class="social" aria-label="Status">
+            <span class="tag">Pilot / Early Access</span>
+            <span class="tag">Kein Account im MVP</span>
+            <span class="tag">Checkout über Stripe</span>
+          </div>
+        </div>
+
+        <div class="card visual-card" aria-label="Produktvisual">
+          <div class="visual-wrap">
+            <span class="stamp">REPLY</span>
+
+            <div class="visual-row">
+              <div class="visual-left">
+                <div class="cookie" role="img" aria-label="Keks" aria-hidden="false"></div>
+              </div>
+
+              <div class="visual-right">
+                <div class="cardpaper" role="img" aria-label="Karte" aria-hidden="false"></div>
+                <div class="qr" role="img" aria-label="QR-Code" aria-hidden="false"></div>
+              </div>
+            </div>
+
+            <div class="visual-caption">
+              Produktanker: Keks + Karte + QR. Antwort in 3 Klicks.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="benefits">
+      <div class="container benefit-grid">
+        <div class="benefit"><b>Überraschungseffekt</b>Briefkasten-Moment, den man wahrnimmt.</div>
+        <div class="benefit"><b>Antwort per QR</b>Scan → Text → Adresse → fertig.</div>
+        <div class="benefit"><b>Persönlich & essbar</b>Message mit Gefühl statt Papier.</div>
+        <div class="benefit"><b>Viral weiterleitbar</b>Empfänger kann direkt zurücksenden.</div>
+      </div>
+    </section>
+
+    <section class="section" id="flow">
+      <div class="container">
+        <div class="card flow-card">
+          <div class="flow-head">
+            <h2>Reply-Flow</h2>
+            <div class="tiny-links">
+              <a href="#footer">Impressum</a>
+              <a href="#footer">Versand</a>
+              <a href="#footer">Allergene</a>
+            </div>
+          </div>
+
+          <div class="stepper" role="tablist" aria-label="Schritte">
+            <button type="button" class="step active" id="step1" data-step="1" aria-controls="p1" aria-label="Schritt 1: Nachricht">1) Nachricht</button>
+            <button type="button" class="step" id="step2" data-step="2" aria-controls="p2" aria-label="Schritt 2: Adresse">2) Adresse</button>
+            <button type="button" class="step" id="step3" data-step="3" aria-controls="p3" aria-label="Schritt 3: Bezahlen">3) Bezahlen</button>
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="panel active" id="p1" role="tabpanel" aria-labelledby="step1">
+            <div class="grid2">
+              <div class="field">
+                <label for="pack">Paket</label>
+                <select id="pack">
+                  <option value="Quick">Quick</option>
+                  <option value="Custom" selected>Custom</option>
+                  <option value="Premium">Premium</option>
+                </select>
+              </div>
+
+              <div class="field">
+                <label>Templates</label>
+                <div class="chips">
+                  <button class="chip" data-msg="Reply oder du bist feige." type="button" aria-label="Template Frech auswählen">Frech</button>
+                  <button class="chip" data-msg="Ich denk an dich. Reply, wenn du lächelst." type="button" aria-label="Template Love auswählen">Love</button>
+                  <button class="chip" data-msg="Du schaffst das. Reply – ich glaub an dich." type="button" aria-label="Template Motivation auswählen">Motivation</button>
+                  <button class="chip" data-msg="Kurzer Ping. Reply per QR – dann machen wir Deal." type="button" aria-label="Template Business auswählen">Business</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="field" style="margin-top:12px">
+              <label for="msg">Deine Nachricht</label>
+              <textarea id="msg"
+                        aria-describedby="msgHint msgErr"
+                        aria-invalid="false"
+                        maxlength="500"
+                        placeholder="Kurz, klar, fühlbar…"></textarea>
+              <div id="msgHint" class="hint">Kurz & klar. Max. 500 Zeichen.</div>
+              <div id="msgErr" class="err" role="alert" aria-live="polite"></div>
+            </div>
+
+            <div class="actions">
+              <div class="summary" id="sum1">Template wählen oder frei tippen. Dann weiter zur Adresse.</div>
+              <div class="right">
+                <button class="btn primary" id="next1" type="button">Weiter</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel" id="p2" role="tabpanel" aria-labelledby="step2" hidden>
+            <div class="grid2">
+              <div class="field">
+                <label for="toName">Empfängername</label>
+                <input id="toName" placeholder="z.B. Marlon" autocomplete="given-name" />
+              </div>
+              <div class="field">
+                <label for="fromName">Absendername</label>
+                <input id="fromName" placeholder="z.B. Schmidti" autocomplete="name" />
+              </div>
+              <div class="field" style="grid-column:1/-1">
+                <label for="toAddr">Straße & Hausnummer, PLZ Ort</label>
+                <input id="toAddr"
+                       placeholder="Musterstraße 12, 12345 Berlin"
+                       autocomplete="street-address"
+                       inputmode="text"
+                       aria-describedby="toAddrHint toAddrErr"
+                       aria-invalid="false" />
+                <div id="toAddrHint" class="hint">Beispiel: Musterstraße 12, 12345 Berlin</div>
+                <div id="toAddrErr" class="err" role="alert" aria-live="polite"></div>
+              </div>
+            </div>
+
+            <div class="actions">
+              <div class="summary" id="sum2">Adresse prüfen. Danach geht’s zum Checkout.</div>
+              <div class="right">
+                <button class="btn ghost" id="back2" type="button">Zurück</button>
+                <button class="btn primary" id="next2" type="button">Weiter</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel" id="p3" role="tabpanel" aria-labelledby="step3" hidden>
+            <div class="summary" id="sum3">
+              Fast fertig. Klick auf „Jetzt bezahlen“, dann geht’s zum sicheren Checkout.
+            </div>
+
+            <div class="actions">
+              <div class="summary" style="max-width:520px">
+                📦 Versand 2–3 Werktage · 🔎 Trackbar · 🔒 Sicher zahlen · ⚠️ Allergene
+              </div>
+
+              <div class="right">
+                <button class="btn ghost" id="back3" type="button">Zurück</button>
+                <a class="btn primary" id="payBtn" href="#" target="_blank" rel="noopener">Jetzt bezahlen</a>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="faq">
+      <div class="container">
+        <div class="card faq-card">
+          <div class="flow-head">
+            <h2>Kurz erklärt</h2>
+            <div class="tiny-links">
+              <a href="#flow">Zum Flow</a>
+              <a href="#footer">Versand</a>
+            </div>
+          </div>
+
+          <div class="faq-grid">
+            <div class="faq-item">
+              <b>Was kommt an?</b>
+              Ein Keks, eine Karte und ein QR-Code für die Antwort.
+            </div>
+            <div class="faq-item">
+              <b>Wie funktioniert der Reply?</b>
+              Der Empfänger scannt den QR-Code und kann direkt antworten.
+            </div>
+            <div class="faq-item">
+              <b>Wie lange ist das haltbar?</b>
+              Luftdicht verpackt mehrere Monate (Details im Produktblatt).
+            </div>
+            <div class="faq-item">
+              <b>Allergene?</b>
+              Enthält Gluten. Weitere Angaben unter „Allergene“ im Footer.
+            </div>
+          </div>
+
+          <div style="margin-top:12px">
+            <a class="btn primary" href="#flow">Reply-Keks starten</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer id="footer">
+    <div class="container">
+      <div class="footer-links">
+        <a href="#">Impressum</a>
+        <a href="#">Datenschutz</a>
+        <a href="#">AGB</a>
+        <a href="#">Versand</a>
+        <a href="#">Allergene</a>
+      </div>
+      <div style="margin-top:8px">© OnlyKeks · Post die schmeckt</div>
+    </div>
+  </footer>
+
+  <script>
+  /*** CONFIG: NUR HIER STRIPE EINTRAGEN ***/
+  const STRIPE_PAYMENT_LINK = "https://buy.stripe.com/aBcDeFgHiJkLmNoPqR";
+
+  /* =======================
+     FLOW LOGIC (robust)
+  ======================= */
+  const steps  = document.querySelectorAll(".step");
+  const payBtn = document.getElementById("payBtn");
+
+  const panels = {
+    1: document.getElementById("p1"),
+    2: document.getElementById("p2"),
+    3: document.getElementById("p3"),
+  };
+
+  steps.forEach(s=>{
+    s.setAttribute("role","tab");
+    s.setAttribute("aria-selected","false");
+  });
+
+  function go(n){
+    Object.entries(panels).forEach(([k,p])=>{
+      if(!p) return;
+      const on = (+k === n);
+      p.classList.toggle("active", on);
+      p.toggleAttribute("hidden", !on);
+    });
+
+    steps.forEach(s=>{
+      const active = (+s.dataset.step === n);
+      s.classList.toggle("active", active);
+      s.setAttribute("aria-selected", active ? "true":"false");
+      s.setAttribute("tabindex", active ? "0":"-1");
+    });
+
+    if(n === 3 && payBtn){
+      payBtn.href = STRIPE_PAYMENT_LINK;
+    }
+  }
+
+  steps.forEach(s=>{
+    s.addEventListener("click", () => {
+      const step = +s.dataset.step;
+      if (step === 3 && (!validateMessage() || !validateAddressDE())) return;
+      go(step);
+    });
+  });
+
+  const stepper = document.querySelector(".stepper");
+  stepper?.addEventListener("keydown", (e) => {
+    const active = document.activeElement;
+    if (!active || active.tagName !== "BUTTON" || !active.classList.contains("step")) return;
+
+    const all = Array.from(steps);
+    const idx = all.indexOf(active);
+
+    if (e.key === "ArrowRight" || e.key === "ArrowLeft") e.preventDefault();
+
+    if (e.key === "ArrowRight") {
+      const next = all[(idx + 1) % all.length];
+      const step = +next.dataset.step;
+      if (step === 3 && (!validateMessage() || !validateAddressDE())) return;
+      next.focus();
+      go(step);
+    } else if (e.key === "ArrowLeft") {
+      const prev = all[(idx - 1 + all.length) % all.length];
+      prev.focus();
+      go(+prev.dataset.step);
+    } else if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      const step = +active.dataset.step;
+      if (step === 3 && (!validateMessage() || !validateAddressDE())) return;
+      go(step);
+    }
+  });
+
+  const msg = document.getElementById("msg");
+  document.querySelectorAll(".chip").forEach(ch=>{
+    ch.addEventListener("click", ()=>{
+      if(msg) msg.value = ch.dataset.msg;
+      updateSummaries();
+    });
+  });
+
+  const next1 = document.getElementById("next1");
+  const next2 = document.getElementById("next2");
+  const back2 = document.getElementById("back2");
+  const back3 = document.getElementById("back3");
+
+  const toAddr = document.getElementById("toAddr");
+  const sum1 = document.getElementById("sum1");
+  const sum2 = document.getElementById("sum2");
+  const sum3 = document.getElementById("sum3");
+  const pack = document.getElementById("pack");
+  const toName = document.getElementById("toName");
+  const fromName = document.getElementById("fromName");
+
+  function esc(s){
+    return String(s||"")
+      .replaceAll("&","&amp;")
+      .replaceAll("<","&lt;")
+      .replaceAll(">","&gt;")
+      .replaceAll('"',"&quot;");
+  }
+
+  function priceFor(p){
+    if(p === "Quick") return 9.90;
+    if(p === "Custom") return 14.90;
+    return 29.90;
+  }
+
+  function updateSummaries(){
+    const p = pack ? pack.value : "Custom";
+    const price = priceFor(p);
+    const m = msg ? msg.value.trim() : "";
+    sum1 && (sum1.innerHTML =
+      `<b>Preview:</b> Paket <b>${esc(p)}</b> · <span style="color:var(--muted)">${price.toFixed(2)} €</span><br/>„${esc(m||"…")}“`
+    );
+
+    const tn = toName ? toName.value.trim() : "";
+    const fn = fromName ? fromName.value.trim() : "";
+    const ta = toAddr ? toAddr.value.trim() : "";
+    sum2 && (sum2.innerHTML =
+      `<b>Check:</b> Empfänger <b>${esc(tn||"—")}</b> · Absender <b>${esc(fn||"—")}</b><br/>Adresse: ${esc(ta||"—")}`
+    );
+
+    const ship = (p === "Premium") ? 0 : 2.90;
+    const total = price + ship;
+    sum3 && (sum3.innerHTML =
+      `<b>Checkout:</b> Paket <b>${esc(p)}</b> — ${price.toFixed(2)} € · Versand ${ship.toFixed(2)} €<br/>
+       <b>Gesamt: ${total.toFixed(2)} €</b><br/>
+       <span style="color:var(--muted)">Nachricht:</span> „${esc(m||"…")}“`
+    );
+  }
+
+  function debounce(fn, wait=120){
+    let t;
+    return (...args)=>{
+      clearTimeout(t);
+      t = setTimeout(()=>fn(...args), wait);
+    };
+  }
+  const updateSummariesDebounced = debounce(updateSummaries, 120);
+
+  function validateMessage(){
+    const v = (msg?.value || "").trim();
+    const err = document.getElementById("msgErr");
+    if (!v || v.length < 3){
+      msg?.setAttribute("aria-invalid","true");
+      err && (err.textContent = "Bitte eine kurze Nachricht (mind. 3 Zeichen).");
+      msg?.focus();
+      return false;
+    }
+    msg?.setAttribute("aria-invalid","false");
+    err && (err.textContent = "");
+    return true;
+  }
+
+  function validateAddressDE(){
+    const v = (toAddr?.value || "").trim();
+    const err = document.getElementById("toAddrErr");
+
+    const re = /.+\s+\d+.*[, ]\s*\d{5}\s+.+/;
+    if (!re.test(v)){
+      toAddr?.setAttribute("aria-invalid","true");
+      err && (err.textContent = "Adresse unvollständig. Beispiel: Musterstraße 12, 12345 Berlin");
+      toAddr?.focus();
+      return false;
+    }
+    toAddr?.setAttribute("aria-invalid","false");
+    err && (err.textContent = "");
+    return true;
+  }
+
+  next1 && next1.addEventListener("click", ()=>{
+    updateSummaries();
+    go(2);
+    document.getElementById("toName")?.focus();
+  });
+
+  back2 && back2.addEventListener("click", ()=>{ updateSummaries(); go(1); });
+
+  next2 && next2.addEventListener("click", ()=>{
+    updateSummaries();
+    const ok = validateMessage() && validateAddressDE();
+    if(!ok) return;
+    go(3);
+  });
+
+  back3 && back3.addEventListener("click", ()=>{ updateSummaries(); go(2); });
+
+  [pack, msg, toName, fromName, toAddr].forEach(el=>{
+    el && el.addEventListener("input", updateSummariesDebounced);
+    el && el.addEventListener("change", updateSummariesDebounced);
+  });
+
+  msg?.addEventListener("blur", validateMessage);
+  toAddr?.addEventListener("blur", validateAddressDE);
+
+  go(1);
+  if(payBtn) payBtn.href = STRIPE_PAYMENT_LINK;
+  updateSummaries();
+
+  /* =======================
+     COOKIE RAIN (DPR-scharf)
+  ======================= */
+  const reduce = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
+  const c = document.getElementById("cookieRain");
+  if(c && !reduce){
+    const ctx = c.getContext("2d");
+
+    function resize(){
+      const dpr = window.devicePixelRatio || 1;
+
+      c.width  = Math.floor(innerWidth  * dpr);
+      c.height = Math.floor(innerHeight * dpr);
+
+      c.style.width  = `${innerWidth}px`;
+      c.style.height = `${innerHeight}px`;
+
+      ctx.setTransform(1,0,0,1,0,0);
+      ctx.scale(dpr, dpr);
+    }
+    resize();
+    addEventListener("resize", resize);
+
+    const cookies = [...Array(30)].map(() => ({
+      x: Math.random()*innerWidth,
+      y: Math.random()*innerHeight,
+      r: 10 + Math.random()*22,
+      v: 0.6 + Math.random()*1.4
+    }));
+
+    let last = 0;
+    const FPS = 30;
+    const frameInterval = 1000 / FPS;
+
+    function draw(ts){
+      if (document.hidden) { requestAnimationFrame(draw); return; }
+      if (ts - last < frameInterval) { requestAnimationFrame(draw); return; }
+      last = ts;
+
+      ctx.clearRect(0, 0, innerWidth, innerHeight);
+      cookies.forEach(o=>{
+        o.y += o.v;
+        if(o.y > innerHeight) o.y = -50;
+        ctx.beginPath();
+        ctx.arc(o.x,o.y,o.r,0,Math.PI*2);
+        ctx.fillStyle = "#c48752";
+        ctx.fill();
+      });
+      requestAnimationFrame(draw);
+    }
+    requestAnimationFrame(draw);
+  }
+  </script>
 </body>
 </html>

@@ -5,8 +5,6 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>OnlyKeks – Post, die schmeckt</title>
   <meta name="description" content="Schicke süße Botschaften mit direkter QR-Antwort. Reply-Keks ohne Account – in wenigen Klicks." />
-
-  <!-- SEO / Social -->
   <link rel="canonical" href="https://infojanschmidt-debug.github.io/keksms/" />
   <meta name="robots" content="index,follow" />
   <meta name="theme-color" content="#ff4fa3" />
@@ -16,660 +14,374 @@
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://infojanschmidt-debug.github.io/keksms/" />
   <meta property="og:image" content="https://infojanschmidt-debug.github.io/keksms/assets/img/1000149739.jpg" />
-  <meta property="og:image:alt" content="Hände halten einen Keks, QR wird gescannt" />
 
   <style>
     :root{
-      /* OnlyFans-clean base */
-      --bg:#ffffff;
+      --bg:#fff;
       --ink:#0b1b2a;
-      --muted:#4b5b6b;
+      --muted:#5b6a79;
       --line: rgba(11,27,42,.10);
 
-      /* Deko-Chichi palette */
-      --sky1:#ffe6f2;
-      --sky2:#ffd3ea;
-      --sky3:#fff4ea;
       --pink:#ff4fa3;
-      --pink2:#ff7cc5;
-      --pinkSoft: rgba(255,79,163,.14);
-      --pinkSoft2: rgba(255,124,197,.12);
+      --pinkSoft: rgba(255,79,163,.10);
 
-      --card: rgba(255,255,255,.80);
-      --card2: rgba(255,255,255,.65);
-      --shadow: 0 18px 50px rgba(11,27,42,.10);
-      --shadow2: 0 10px 30px rgba(11,27,42,.08);
-      --radius: 22px;
-
-      --max: 1100px;
+      --shadow: 0 10px 25px rgba(11,27,42,.06);
+      --radius: 16px;
+      --max: 1040px;
     }
 
     *{box-sizing:border-box}
     html,body{height:100%}
     body{
       margin:0;
-      color:var(--ink);
-      background:
-        radial-gradient(900px 600px at 20% 10%, rgba(255,79,163,.16), transparent 60%),
-        radial-gradient(900px 600px at 90% 20%, rgba(255,124,197,.14), transparent 55%),
-        linear-gradient(180deg, var(--sky1), var(--sky2) 45%, var(--sky3));
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      background: var(--bg);
+      color: var(--ink);
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
       overflow-x:hidden;
     }
-
     a{color:inherit}
     .wrap{max-width:var(--max); margin:0 auto; padding:0 18px}
+    .muted{color:var(--muted)}
+    .hr{height:1px;background:var(--line);border:0;margin:18px 0}
+
+    /* Gate: Seite erst sichtbar wenn Intro done */
+    html:not(.appReady) body > *:not(#intro) { visibility: hidden; }
+
+    /* Intro Overlay */
+    .intro{
+      position:fixed; inset:0; z-index:9999;
+      background:#000;
+      display:grid; place-items:center;
+    }
+    .introVid{width:100%;height:100%;object-fit:cover}
+    .introSkip{
+      position:absolute; right:14px; top:14px;
+      border:1px solid rgba(255,255,255,.25);
+      background: rgba(0,0,0,.35);
+      color:#fff;
+      padding:10px 14px;
+      border-radius:999px;
+      font-weight:800;
+      backdrop-filter: blur(10px);
+      cursor:pointer;
+    }
+    .intro.hide{opacity:0; pointer-events:none; transition: opacity .22s ease}
 
     /* Topbar */
     .topbar{
       position:sticky; top:0; z-index:50;
-      backdrop-filter: blur(14px);
-      background: rgba(255,255,255,.72);
+      background: rgba(255,255,255,.92);
       border-bottom:1px solid var(--line);
+      backdrop-filter: blur(14px);
     }
     .topbar .inner{
+      height:64px;
       display:flex; align-items:center; justify-content:space-between;
-      height:70px;
-      gap:14px;
+      gap:12px;
     }
     .brand{
-      display:flex; align-items:center; gap:12px;
+      display:flex; align-items:center; gap:10px;
       text-decoration:none;
-      min-width: 180px;
+      min-width: 170px;
     }
-    .brandMark{
-      width:46px; height:46px; flex:0 0 auto; /* BIGGER */
-      filter: drop-shadow(0 10px 18px rgba(11,27,42,.10));
-    }
-    .brandText{
-      display:flex; flex-direction:column; line-height:1.05;
-    }
-    .brandText strong{font-size:18px; letter-spacing:.2px}
-    .brandText span{font-size:12.5px; color:var(--muted)}
-    nav{
-      display:flex; gap:14px; align-items:center;
-    }
+    .mark{width:44px;height:44px; filter: drop-shadow(0 8px 14px rgba(11,27,42,.10));}
+    .brand strong{display:block; font-size:16px; line-height:1}
+    .brand span{display:block; font-size:12.5px; color:var(--muted); margin-top:2px}
+    nav{display:flex; gap:10px; align-items:center}
     nav a{
       text-decoration:none;
       font-size:13.5px;
       color:var(--muted);
       padding:10px 10px;
-      border-radius:12px;
-      transition:.15s ease;
+      border-radius:999px;
     }
-    nav a:hover{background: rgba(255,79,163,.10); color:var(--ink)}
-    .topCta{
-      display:flex; gap:10px; align-items:center;
-    }
+    nav a:hover{background: rgba(255,79,163,.08); color:var(--ink)}
     .btn{
-      border:0;
-      border-radius: 999px;
+      border:1px solid var(--line);
+      background:#fff;
+      border-radius:999px;
       padding:12px 16px;
-      font-weight:700;
+      font-weight:900;
       cursor:pointer;
       text-decoration:none;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
+      display:inline-flex; align-items:center; justify-content:center;
       gap:10px;
-      transition: transform .12s ease, box-shadow .12s ease, background .12s ease;
-      box-shadow: var(--shadow2);
+      box-shadow: var(--shadow);
+      transition:.12s ease;
       user-select:none;
     }
     .btn:active{transform: translateY(1px)}
     .btnPrimary{
-      background: linear-gradient(135deg, var(--pink), var(--pink2));
+      background: linear-gradient(135deg, var(--pink), #ff7cc5);
+      border-color: rgba(255,79,163,.20);
       color:#fff;
     }
-    .btnPrimary:hover{box-shadow: 0 14px 40px rgba(255,79,163,.22)}
-    .btnGhost{
-      background: rgba(255,255,255,.85);
-      border:1px solid var(--line);
-      color:var(--ink);
-    }
-    .btnGhost:hover{background: rgba(255,255,255,.98)}
-    .hideSm{display:inline-flex}
-    @media (max-width: 760px){
+    .btnGhost{background:#fff}
+    .btnGhost:hover{background: rgba(0,0,0,.02)}
+    @media (max-width: 820px){
       nav{display:none}
-      .hideSm{display:none}
-      .topbar .inner{height:66px}
-      .brandText strong{font-size:16px}
     }
 
-    /* Hero */
+    /* Layout */
     .hero{
-      padding: 26px 0 10px;
-      position:relative;
+      padding: 18px 0 6px;
     }
     .heroGrid{
       display:grid;
-      grid-template-columns: 1.08fr .92fr;
-      gap: 20px;
-      align-items:stretch;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 18px;
+      align-items:start;
     }
     @media (max-width: 920px){
       .heroGrid{grid-template-columns:1fr; gap:14px}
     }
 
-    .heroCard{
-      background: var(--card);
+    .panel{
       border:1px solid var(--line);
       border-radius: var(--radius);
       box-shadow: var(--shadow);
-      padding: 22px;
-      position:relative;
-      overflow:hidden;
+      background:#fff;
+      padding: 16px;
     }
-
     .kicker{
       display:inline-flex; gap:8px; align-items:center;
-      background: rgba(255,79,163,.10);
-      border:1px solid rgba(255,79,163,.18);
       padding:8px 12px;
       border-radius:999px;
-      font-weight:700;
+      border:1px solid rgba(255,79,163,.18);
+      background: rgba(255,79,163,.06);
+      font-weight:900;
       font-size:12.5px;
     }
-    .kicker svg{width:16px; height:16px}
-
     h1{
-      margin:14px 0 10px;
-      font-size: 42px;
+      margin:12px 0 10px;
+      font-size:38px;
       line-height:1.05;
       letter-spacing:-.6px;
     }
-    @media (max-width: 520px){
-      h1{font-size:34px}
-    }
+    @media (max-width: 520px){ h1{font-size:32px} }
+
     .sub{
-      margin:0 0 16px;
-      color: var(--muted);
-      font-size: 16px;
-      line-height:1.5;
-      max-width: 52ch;
+      margin:0 0 14px;
+      color:var(--muted);
+      line-height:1.55;
+      font-size:15.5px;
+      max-width: 58ch;
     }
 
-    .miniFlow{
-      display:flex; flex-wrap:wrap; gap:10px;
-      margin: 12px 0 18px;
-    }
+    .chips{display:flex; flex-wrap:wrap; gap:10px; margin: 10px 0 14px}
     .chip{
       border:1px solid var(--line);
-      background: rgba(255,255,255,.75);
+      background:#fff;
       padding:10px 12px;
-      border-radius: 999px;
-      font-size: 13px;
+      border-radius:999px;
+      font-size:13px;
       cursor:pointer;
-      transition:.12s ease;
-      user-select:none;
+      box-shadow: none;
     }
-    .chip:hover{transform: translateY(-1px); background: rgba(255,255,255,.95)}
+    .chip:hover{background: rgba(0,0,0,.02)}
 
-    .trustbar{
-      display:grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap:10px;
-      margin-top: 14px;
-    }
-    .trustItem{
-      background: rgba(255,255,255,.70);
-      border:1px solid var(--line);
-      border-radius: 16px;
-      padding: 10px 10px;
-      display:flex; gap:10px; align-items:center;
-      min-height: 54px;
-    }
-    .trustItem svg{width:18px; height:18px; opacity:.9}
-    .trustItem b{font-size:12.5px}
-    .trustItem span{display:block; font-size:11.5px; color:var(--muted); margin-top:2px}
-    @media (max-width: 920px){
-      .trustbar{grid-template-columns: repeat(2, 1fr)}
-    }
+    .heroActions{display:flex; gap:10px; flex-wrap:wrap; margin-top: 10px}
 
-    /* Hero media */
-    .heroMedia{
-      background: linear-gradient(180deg, rgba(255,255,255,.75), rgba(255,255,255,.55));
+    /* Media */
+    .media{
       border:1px solid var(--line);
       border-radius: var(--radius);
       box-shadow: var(--shadow);
-      position:relative;
       overflow:hidden;
+      background:#fff;
       min-height: 360px;
-    }
-    .mediaInner{
-      position:absolute; inset:0;
-      display:flex; align-items:center; justify-content:center;
-      padding: 14px;
-    }
-    .mediaFrame{
-      width:100%; height:100%;
-      border-radius: calc(var(--radius) - 8px);
-      overflow:hidden;
       position:relative;
-      background: rgba(255,255,255,.6);
-      border:1px solid rgba(11,27,42,.08);
     }
-    .mediaFrame img, .mediaFrame video{
-      width:100%; height:100%;
-      object-fit:cover;
-      display:block;
-    }
-    .mediaBadge{
-      position:absolute; left:14px; top:14px;
-      background: rgba(255,255,255,.82);
+    .media img, .media video{width:100%; height:100%; object-fit:cover; display:block}
+    .badge{
+      position:absolute; left:12px; top:12px;
+      background: rgba(255,255,255,.92);
       border:1px solid var(--line);
-      border-radius: 999px;
-      padding: 8px 10px;
-      display:flex; gap:8px; align-items:center;
-      font-weight:800;
+      border-radius:999px;
+      padding:8px 10px;
+      font-weight:900;
       font-size:12.5px;
-      box-shadow: var(--shadow2);
-    }
-    .mediaBadge svg{width:16px; height:16px}
-    .mediaNote{
-      position:absolute; right:14px; bottom:14px;
-      background: rgba(255,255,255,.82);
-      border:1px solid var(--line);
-      border-radius: 16px;
-      padding: 10px 12px;
-      font-size:12px;
-      color:var(--muted);
-      box-shadow: var(--shadow2);
-      max-width: 240px;
     }
 
-    /* Story strip */
-    .strip{
-      margin: 18px 0 8px;
-      display:grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap:12px;
-    }
-    .strip .shot{
-      border-radius: 18px;
-      overflow:hidden;
-      border:1px solid var(--line);
-      background: rgba(255,255,255,.65);
-      box-shadow: var(--shadow2);
-      min-height: 140px;
-      position:relative;
-    }
-    .strip img{
-      width:100%; height:100%;
-      object-fit:cover;
-      display:block;
-    }
-    .shot span{
-      position:absolute; left:10px; bottom:10px;
-      background: rgba(255,255,255,.82);
-      border:1px solid var(--line);
-      padding:6px 10px;
-      border-radius: 999px;
-      font-size:12px;
-      color:var(--muted);
-      font-weight:700;
-    }
-    @media (max-width: 920px){
-      .strip{grid-template-columns:1fr; }
-      .strip .shot{min-height: 170px;}
-    }
-
-    /* Main sections */
-    .section{padding: 16px 0}
-    .grid2{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 14px;
-    }
+    /* Sections */
+    .section{padding: 10px 0}
+    .grid2{display:grid; grid-template-columns:1fr 1fr; gap:14px}
     @media (max-width: 920px){ .grid2{grid-template-columns:1fr} }
-
-    .card{
-      background: var(--card2);
-      border:1px solid var(--line);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow2);
-      padding: 18px;
-    }
-    .card h2{margin:0 0 10px; font-size:20px}
-    .bullets{margin:0; padding-left: 18px; color:var(--muted); line-height:1.5}
-    .bullets li{margin:8px 0}
+    h2{margin:0 0 8px; font-size:18px}
+    ul{margin:10px 0 0; padding-left: 18px; color:var(--muted); line-height:1.55}
+    li{margin:8px 0}
 
     /* Flow */
-    .flow{
-      background: rgba(255,255,255,.60);
-      border:1px solid var(--line);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      overflow:hidden;
-    }
     .flowHead{
-      padding: 18px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-      border-bottom:1px solid var(--line);
-      background: rgba(255,255,255,.72);
+      display:flex; align-items:center; justify-content:space-between;
+      gap:10px;
+      margin-bottom: 10px;
     }
-    .flowHead h2{margin:0; font-size:20px}
-    .steps{
-      display:flex; gap:8px; flex-wrap:wrap;
-      justify-content:flex-end;
-    }
+    .steps{display:flex; gap:8px; align-items:center; flex-wrap:wrap}
     .step{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      width:32px; height:32px;
-      border-radius: 999px;
+      width:30px; height:30px;
+      display:grid; place-items:center;
+      border-radius:999px;
       border:1px solid var(--line);
-      background: rgba(255,255,255,.75);
       color:var(--muted);
       font-weight:900;
       font-size:13px;
     }
     .step.active{
-      background: linear-gradient(135deg, var(--pink), var(--pink2));
-      border-color: rgba(255,79,163,.3);
-      color:#fff;
-      box-shadow: 0 10px 25px rgba(255,79,163,.20);
+      background: rgba(255,79,163,.10);
+      border-color: rgba(255,79,163,.25);
+      color: var(--ink);
     }
-
-    .panel{display:none; padding: 18px}
-    .panel.active{display:block}
-
-    .row{display:grid; grid-template-columns: 1fr 1fr; gap:12px}
-    @media (max-width: 760px){ .row{grid-template-columns:1fr} }
 
     label.lbl{
       display:block;
-      font-weight:800;
+      font-weight:900;
       font-size:12.5px;
       margin: 10px 0 6px;
-      color: var(--ink);
     }
     input, textarea, select{
       width:100%;
-      border-radius: 16px;
       border:1px solid var(--line);
+      border-radius: 14px;
       padding: 12px 12px;
       font-size: 14.5px;
-      background: rgba(255,255,255,.86);
+      background:#fff;
       outline:none;
-      transition:.12s ease;
     }
     textarea{min-height: 110px; resize: vertical}
     input:focus, textarea:focus, select:focus{
       border-color: rgba(255,79,163,.35);
       box-shadow: 0 0 0 4px rgba(255,79,163,.10);
-      background: rgba(255,255,255,.98);
     }
-
-    .helper{
-      font-size:12.5px;
-      color:var(--muted);
-      margin-top: 6px;
-      line-height:1.45;
-    }
+    .helper{font-size:12.5px; color:var(--muted); margin-top:6px; line-height:1.45}
+    .row{display:grid; grid-template-columns:1fr 1fr; gap:12px}
+    @media (max-width: 760px){ .row{grid-template-columns:1fr} }
 
     .actions{
-      display:flex;
-      gap:10px;
-      align-items:center;
-      justify-content:space-between;
+      display:flex; justify-content:space-between; align-items:center;
+      gap:10px; flex-wrap:wrap;
       margin-top: 14px;
-      flex-wrap:wrap;
     }
-    .actions .left, .actions .right{display:flex; gap:10px; align-items:center; flex-wrap:wrap}
 
-    .priceBox{
-      background: rgba(255,255,255,.78);
+    /* Pack tiles: simpler */
+    .packTiles{display:grid; gap:10px; margin-top:10px}
+    .tile{
       border:1px solid var(--line);
-      border-radius: 18px;
-      padding: 12px 12px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      width:100%;
-      max-width: 420px;
-    }
-    .priceBox b{font-size:14px}
-    .priceBox span{font-size:12px; color:var(--muted)}
-
-    /* Pack tiles */
-    .pack-tiles{
-      display:grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap:10px;
-      margin-top: 10px;
-    }
-    @media (max-width: 760px){ .pack-tiles{grid-template-columns:1fr} }
-    .pack-tile{
-      text-align:left;
-      padding: 12px;
-      border-radius: 18px;
-      border:1px solid var(--line);
-      background: rgba(255,255,255,.78);
+      border-radius: 14px;
+      background:#fff;
+      padding:12px;
       cursor:pointer;
-      transition:.12s ease;
-      box-shadow: var(--shadow2);
     }
-    .pack-tile:hover{transform: translateY(-1px)}
-    .pack-tile.active{
+    .tile.active{
       border-color: rgba(255,79,163,.35);
-      box-shadow: 0 16px 40px rgba(255,79,163,.12);
-      background: rgba(255,255,255,.92);
+      background: rgba(255,79,163,.05);
     }
-    .pack-tile .tTop{
-      display:flex; align-items:center; justify-content:space-between; gap:10px;
-      margin-bottom: 6px;
-    }
-    .pack-tile .tTop b{font-size:14px}
+    .tileTop{display:flex; justify-content:space-between; align-items:center; gap:10px}
     .pill{
-      font-size:11px;
-      font-weight:900;
-      border-radius:999px;
+      font-size:11px; font-weight:900;
       padding:6px 8px;
+      border-radius:999px;
       border:1px solid rgba(255,79,163,.18);
-      background: rgba(255,79,163,.08);
+      background: rgba(255,79,163,.06);
       color: var(--ink);
       white-space:nowrap;
     }
-    .pack-tile p{
-      margin:0;
-      color:var(--muted);
-      font-size:12.5px;
-      line-height:1.45;
-    }
+    .tile p{margin:8px 0 0; color:var(--muted); font-size:12.8px; line-height:1.45}
 
-    /* Extras toggles */
-    .toggles{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap:10px;
-      margin-top: 10px;
+    .priceLine{
+      display:flex; justify-content:space-between; align-items:center; gap:10px;
+      border-top:1px solid var(--line);
+      padding-top: 12px;
+      margin-top: 12px;
+      color: var(--muted);
+      font-size:13px;
     }
-    @media (max-width: 760px){ .toggles{grid-template-columns:1fr} }
-    .toggle{
-      display:flex; align-items:flex-start; gap:10px;
-      padding: 12px;
-      border-radius: 18px;
-      border:1px solid var(--line);
-      background: rgba(255,255,255,.78);
-      cursor:pointer;
-      user-select:none;
-      transition:.12s ease;
-    }
-    .toggle input{width:auto; margin-top: 3px}
-    .toggle b{font-size:13.5px}
-    .toggle span{display:block; font-size:12px; color:var(--muted); margin-top:3px}
-    .toggle.on{
-      border-color: rgba(255,79,163,.35);
-      box-shadow: 0 16px 40px rgba(255,79,163,.10);
-      background: rgba(255,255,255,.92);
-    }
+    .priceLine b{color:var(--ink)}
 
     /* FAQ */
     details{
       border:1px solid var(--line);
-      background: rgba(255,255,255,.72);
-      border-radius: 18px;
-      padding: 12px 12px;
-      box-shadow: var(--shadow2);
+      border-radius: 14px;
+      padding: 12px;
+      background:#fff;
     }
     details + details{margin-top:10px}
-    summary{
-      cursor:pointer;
-      font-weight:900;
-    }
-    details p{
-      margin:10px 0 0;
-      color:var(--muted);
-      line-height:1.5;
-      font-size: 13.5px;
-    }
+    summary{cursor:pointer; font-weight:900}
+    details p{margin:10px 0 0; color:var(--muted); line-height:1.55; font-size:13.5px}
 
     /* Footer */
     footer{
-      margin-top: 18px;
-      padding: 18px 0 30px;
       border-top:1px solid var(--line);
-      background: rgba(255,255,255,.55);
+      padding: 18px 0 26px;
+      margin-top: 16px;
+      background:#fff;
     }
-    .footGrid{
-      display:grid;
-      grid-template-columns: 1.2fr .8fr;
-      gap: 14px;
-    }
+    .footGrid{display:grid; grid-template-columns: 1.2fr .8fr; gap:14px}
     @media (max-width: 920px){ .footGrid{grid-template-columns:1fr} }
-    .footLinks{
-      display:flex; flex-wrap:wrap; gap:10px;
-    }
+    .footLinks{display:flex; gap:10px; flex-wrap:wrap}
     .footLinks a{
-      font-size: 13px;
-      color: var(--muted);
       text-decoration:none;
-      padding:8px 10px;
-      border-radius: 999px;
+      font-size:13px;
+      color:var(--muted);
+      padding:10px 12px;
       border:1px solid var(--line);
-      background: rgba(255,255,255,.70);
+      border-radius:999px;
+      background:#fff;
     }
-    .footLinks a:hover{background: rgba(255,255,255,.95); color: var(--ink)}
-    .small{font-size:12.5px; color:var(--muted); line-height:1.45}
+    .footLinks a:hover{background: rgba(0,0,0,.02); color:var(--ink)}
 
-    /* Legal sections */
-    .legal{
-      scroll-margin-top: 84px;
-    }
-    .legal h3{margin:0 0 10px; font-size:18px}
-    .legal .small{margin:0}
-
-    /* Cookie consent */
+    /* Consent */
     .consent{
-      position:fixed;
-      left: 14px; right: 14px; bottom: 14px;
-      z-index: 99;
-      display:none;
+      position:fixed; left:14px; right:14px; bottom:14px;
+      z-index:90; display:none;
     }
     .consent.show{display:block}
     .consentCard{
-      max-width: 980px;
-      margin: 0 auto;
-      background: rgba(255,255,255,.85);
+      max-width: 980px; margin:0 auto;
       border:1px solid var(--line);
-      border-radius: 22px;
-      box-shadow: 0 22px 60px rgba(11,27,42,.16);
-      padding: 14px;
-      display:flex;
-      align-items:flex-start;
-      justify-content:space-between;
-      gap:12px;
-      backdrop-filter: blur(16px);
+      border-radius: 16px;
+      background: rgba(255,255,255,.95);
+      box-shadow: var(--shadow);
+      padding: 12px;
+      display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap;
+      backdrop-filter: blur(12px);
     }
-    .consentText b{display:block; margin-bottom:4px}
-    .consentText p{margin:0; color:var(--muted); font-size:13px; line-height:1.4}
-    .consentBtns{display:flex; gap:10px; align-items:center; flex-wrap:wrap; justify-content:flex-end}
-    .btnSmall{padding:10px 12px; font-weight:900; font-size:13px}
-    @media (max-width: 760px){
-      .consentCard{flex-direction:column; align-items:stretch}
-      .consentBtns{justify-content:flex-start}
-    }
-
-    /* First-load animation: crumbs + bite */
-    .crumbLayer{
-      position:absolute; inset:0;
-      pointer-events:none;
-      overflow:hidden;
-    }
-    .crumb{
-      position:absolute;
-      width:8px; height:8px;
-      border-radius: 999px;
-      opacity:.9;
-      filter: blur(.1px);
-      animation: fall 900ms ease-in forwards;
-    }
-    @keyframes fall{
-      0%{transform: translateY(-40px) rotate(0deg); opacity:0}
-      15%{opacity:1}
-      100%{transform: translateY(260px) rotate(220deg); opacity:0}
-    }
-    .cookieBite{
-      position:absolute;
-      right:-50px;
-      top:-40px;
-      width: 180px;
-      height: 180px;
-      opacity:0;
-      transform: rotate(10deg) scale(.9);
-      transition: opacity .35s ease, transform .35s ease;
-      pointer-events:none;
-    }
-    .cookieBite.show{
-      opacity:.92;
-      transform: rotate(-6deg) scale(1);
-    }
-
-    /* Reduce motion */
-    @media (prefers-reduced-motion: reduce){
-      .crumb{animation:none}
-      .cookieBite{transition:none}
-    }
+    .consentCard b{display:block; margin-bottom:4px}
+    .consentCard p{margin:0; color:var(--muted); font-size:13px; line-height:1.45}
+    .btnSmall{padding:10px 12px; font-size:13px}
   </style>
 </head>
 
 <body>
+  <!-- INTRO OVERLAY -->
+  <div id="intro" class="intro" aria-hidden="false">
+    <video id="introVid" class="introVid" autoplay muted playsinline preload="auto">
+      <source src="assets/video/intro.mp4" type="video/mp4">
+    </video>
+    <button id="skipIntro" class="introSkip" type="button">Skip</button>
+  </div>
+
   <!-- TOPBAR -->
   <header class="topbar">
     <div class="wrap">
       <div class="inner">
         <a class="brand" href="#top" aria-label="OnlyKeks Start">
-          <!-- COOL COOKIE LOGO (SVG) -->
-          <svg class="brandMark" viewBox="0 0 64 64" role="img" aria-label="OnlyKeks Cookie Logo">
+          <svg class="mark" viewBox="0 0 64 64" role="img" aria-label="OnlyKeks Cookie Logo">
             <defs>
               <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
                 <stop offset="0" stop-color="#ff4fa3"/>
                 <stop offset="1" stop-color="#ff7cc5"/>
               </linearGradient>
-              <filter id="s" x="-30%" y="-30%" width="160%" height="160%">
-                <feDropShadow dx="0" dy="10" stdDeviation="8" flood-color="rgba(11,27,42,.18)"/>
-              </filter>
             </defs>
-            <circle cx="32" cy="32" r="22" fill="rgba(255,255,255,.9)" />
-            <path filter="url(#s)" d="M32 8c-9.4 0-17.6 5.6-21 13.7-2 4.7-2 10 0 14.7C14.4 44.4 22.6 50 32 50c11 0 20.4-7.7 22.6-18.1.8-3.7.4-7.5-1.2-10.9C49.6 13 41.4 8 32 8Z" fill="#f4c9a2" stroke="rgba(11,27,42,.12)" stroke-width="1.2"/>
-            <!-- bite -->
+            <path d="M32 8c-9.4 0-17.6 5.6-21 13.7-2 4.7-2 10 0 14.7C14.4 44.4 22.6 50 32 50c11 0 20.4-7.7 22.6-18.1.8-3.7.4-7.5-1.2-10.9C49.6 13 41.4 8 32 8Z" fill="#f4c9a2" stroke="rgba(11,27,42,.12)" stroke-width="1.2"/>
             <circle cx="49" cy="18" r="7.2" fill="rgba(255,255,255,.96)"/>
             <circle cx="53.8" cy="22.6" r="5.3" fill="rgba(255,255,255,.96)"/>
-            <!-- sprinkles -->
             <circle cx="24" cy="24" r="2.4" fill="url(#g1)"/>
             <circle cx="37" cy="26.5" r="2.2" fill="rgba(11,27,42,.28)"/>
             <circle cx="28.5" cy="36" r="2.1" fill="rgba(255,79,163,.65)"/>
             <circle cx="40.5" cy="37.5" r="2.6" fill="rgba(11,27,42,.22)"/>
-            <circle cx="20.5" cy="32" r="1.9" fill="rgba(255,124,197,.75)"/>
           </svg>
-
-          <div class="brandText">
+          <div>
             <strong>OnlyKeks</strong>
             <span>Post, die schmeckt</span>
           </div>
@@ -679,16 +391,9 @@
           <a href="#how">So läuft’s</a>
           <a href="#flow">Reply-Flow</a>
           <a href="#faq">FAQ</a>
-          <a href="#versand">Versand</a>
         </nav>
 
-        <div class="topCta">
-          <a class="btn btnGhost hideSm" href="#flow">Keks gestalten</a>
-          <a class="btn btnPrimary" href="#flow" aria-label="Jetzt starten">
-            <span>Jetzt starten</span>
-            <span aria-hidden="true">→</span>
-          </a>
-        </div>
+        <a class="btn btnPrimary" href="#flow">Jetzt starten →</a>
       </div>
     </div>
   </header>
@@ -698,134 +403,41 @@
     <section class="hero">
       <div class="wrap">
         <div class="heroGrid">
-          <div class="heroCard">
-            <div class="crumbLayer" id="crumbLayer"></div>
-
-            <div class="kicker">
-              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path d="M4 12c0-4.4 3.6-8 8-8s8 3.6 8 8-3.6 8-8 8-8-3.6-8-8Z" stroke="currentColor" stroke-width="2" opacity=".9"/>
-                <path d="M8 12h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                <path d="M12 8v8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-              </svg>
-              Kein Account · QR-Reply · echtes Post-Feeling
-            </div>
+          <div class="panel">
+            <div class="kicker">Kein Account · QR-Reply · echtes Post-Feeling</div>
 
             <h1>Schicke süße Botschaften – und hol dir ’ne QR-Antwort zurück.</h1>
             <p class="sub">
-              Du schickst einen Keks mit Message + QR-Code. Empfänger*in scannt, antwortet – wir backen den Reply-Keks und schicken ihn zurück. Einfach, emotional, kein Tech-Gefrickel.
+              Du schickst einen Keks mit Message + QR-Code. Empfänger*in scannt, antwortet – wir backen den Reply-Keks und schicken ihn zurück.
             </p>
 
-            <div class="miniFlow" aria-label="Vorlagen">
+            <div class="chips" aria-label="Vorlagen">
               <button class="chip" type="button" data-msg="Ich denk an dich. 🍪">Ich denk an dich</button>
               <button class="chip" type="button" data-msg="Beweg dein Arsch – du packst das! ✨">Motivation</button>
               <button class="chip" type="button" data-msg="Happy Birthday! 🎉">Geburtstag</button>
               <button class="chip" type="button" data-msg="Vermiss dich. 💗">Vermissen</button>
             </div>
 
-            <div class="actions">
-              <div class="left">
-                <a class="btn btnPrimary" href="#flow">Keks jetzt gestalten →</a>
-                <a class="btn btnGhost" href="#how">Erst kurz checken</a>
-              </div>
-
-              <div class="right">
-                <div class="priceBox" aria-label="Hinweis">
-                  <div>
-                    <b>Reply-Loop</b><br/>
-                    <span>Empfänger*in antwortet in Sekunden · wir kümmern uns um den Rest</span>
-                  </div>
-                  <div style="font-weight:900">🍪</div>
-                </div>
-              </div>
+            <div class="heroActions">
+              <a class="btn btnPrimary" href="#flow">Keks gestalten →</a>
+              <a class="btn btnGhost" href="#how">Erst kurz checken</a>
             </div>
 
-            <!-- "Bite" overlay for first-load -->
-            <svg class="cookieBite" id="cookieBite" viewBox="0 0 240 240" aria-hidden="true">
-              <defs>
-                <linearGradient id="cb" x1="0" y1="0" x2="1" y2="1">
-                  <stop offset="0" stop-color="#f6d2b5"/>
-                  <stop offset="1" stop-color="#e9b88e"/>
-                </linearGradient>
-              </defs>
-              <path d="M120 30c-49.7 0-90 40.3-90 90s40.3 90 90 90 90-40.3 90-90-40.3-90-90-90Z" fill="url(#cb)" stroke="rgba(11,27,42,.10)" stroke-width="2"/>
-              <!-- bite -->
-              <circle cx="188" cy="62" r="28" fill="rgba(255,255,255,.92)"/>
-              <circle cx="210" cy="84" r="20" fill="rgba(255,255,255,.92)"/>
-              <!-- chips -->
-              <circle cx="88" cy="96" r="10" fill="rgba(11,27,42,.25)"/>
-              <circle cx="132" cy="82" r="8" fill="rgba(255,79,163,.55)"/>
-              <circle cx="104" cy="150" r="9" fill="rgba(11,27,42,.22)"/>
-              <circle cx="150" cy="150" r="11" fill="rgba(255,124,197,.65)"/>
-            </svg>
+            <hr class="hr" />
 
-            <div class="trustbar" aria-label="Trust Bar">
-              <div class="trustItem">
-                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                  <path d="M3 12l2-2 4 4L19 4l2 2L9 18 3 12Z" fill="currentColor" opacity=".85"/>
-                </svg>
-                <div><b>Ohne Account</b><span>Empfänger*in scannt & antwortet</span></div>
-              </div>
-              <div class="trustItem">
-                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                  <path d="M12 2l8 4v6c0 5-3.4 9.7-8 10-4.6-.3-8-5-8-10V6l8-4Z" stroke="currentColor" stroke-width="2" opacity=".9"/>
-                  <path d="M9 12l2 2 4-5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                </svg>
-                <div><b>Sauber bezahlt</b><span>Stripe Payment Link</span></div>
-              </div>
-              <div class="trustItem">
-                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                  <path d="M3 7h18v10H3V7Z" stroke="currentColor" stroke-width="2" opacity=".9"/>
-                  <path d="M3 7l9 6 9-6" stroke="currentColor" stroke-width="2" opacity=".9"/>
-                </svg>
-                <div><b>Briefkasten-Mood</b><span>Wie früher – nur smarter</span></div>
-              </div>
-              <div class="trustItem">
-                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                  <path d="M12 2c3.9 3 6 6.2 6 9.5A6 6 0 1 1 6 11.5C6 8.2 8.1 5 12 2Z" stroke="currentColor" stroke-width="2" opacity=".9"/>
-                </svg>
-                <div><b>Allergene klar</b><span>Transparenz in den Infos</span></div>
-              </div>
+            <div class="muted" style="font-size:13.5px; line-height:1.45;">
+              <b style="color:var(--ink)">Reply-Loop:</b> Empfänger*in antwortet in Sekunden – wir kümmern uns um den Rest.
             </div>
           </div>
 
-          <aside class="heroMedia" aria-label="Hero Media">
-            <div class="mediaInner">
-              <div class="mediaFrame">
-                <!-- Video optional (falls vorhanden), sonst zeigt Poster/Bild -->
-                <video id="heroVideo" autoplay muted playsinline loop preload="metadata" poster="assets/img/1000149739.jpg" aria-label="Kurzes Hero Video">
-                  <source src="assets/img/grok_video_2025-12-13-20-49-35.mp4" type="video/mp4"/>
-                </video>
-                <!-- Backup image (JS blendet ggf. Video aus) -->
-                <img id="heroImg" src="assets/img/1000149739.jpg" alt="Jemand hält einen Keks, scannt den QR-Code und lächelt" loading="eager" decoding="async" />
-              </div>
-              <div class="mediaBadge">
-                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                  <path d="M6 9l6-6 6 6v12a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V9Z" stroke="currentColor" stroke-width="2"/>
-                  <path d="M9 22v-8h6v8" stroke="currentColor" stroke-width="2"/>
-                </svg>
-                Geschenk-Mood · Pastell · Echt
-              </div>
-              <div class="mediaNote">
-                Tipp: Wenn Video nicht lädt, wird automatisch das Foto genutzt.
-              </div>
-            </div>
+          <aside class="media" aria-label="Hero Media">
+            <span class="badge">Geschenk-Mood · Echt</span>
+
+            <video id="heroVideo" autoplay muted playsinline loop preload="metadata" poster="assets/img/1000149739.jpg" style="display:none">
+              <source src="assets/img/grok_video_2025-12-13-20-49-35.mp4" type="video/mp4"/>
+            </video>
+            <img id="heroImg" src="assets/img/1000149739.jpg" alt="Jemand hält einen Keks, scannt den QR-Code und lächelt" loading="eager" decoding="async"/>
           </aside>
-        </div>
-
-        <!-- Story strip -->
-        <div class="strip" aria-label="Story Bilder">
-          <div class="shot">
-            <img src="assets/img/1000149740.jpg" alt="Keks mit Karte in der Hand" loading="lazy" decoding="async"/>
-            <span>1) Keks + Message</span>
-          </div>
-          <div class="shot">
-            <img src="assets/img/1000149741.jpg" alt="QR wird gescannt" loading="lazy" decoding="async"/>
-            <span>2) QR scannen</span>
-          </div>
-          <div class="shot">
-            <img src="assets/img/1000149742.jpg" alt="Reply kommt zurück" loading="lazy" decoding="async"/>
-            <span>3) Reply-Keks zurück</span>
-          </div>
         </div>
       </div>
     </section>
@@ -834,22 +446,21 @@
     <section class="section" id="how">
       <div class="wrap">
         <div class="grid2">
-          <div class="card">
+          <div class="panel">
             <h2>So läuft’s</h2>
-            <ul class="bullets">
-              <li><b>Du schreibst</b> eine kurze Message und wählst ein Paket.</li>
-              <li><b>Wir verschicken</b> den Keks + QR-Karte an die Person.</li>
-              <li><b>Empfänger*in scannt</b> den QR-Code und antwortet ohne Account.</li>
-              <li><b>Wir backen den Reply-Keks</b> und schicken ihn zu dir zurück.</li>
+            <ul>
+              <li><b>Du schreibst</b> eine Message und wählst ein Paket.</li>
+              <li><b>Wir verschicken</b> Keks + QR-Karte.</li>
+              <li><b>Scan → Antwort</b> (ohne Account).</li>
+              <li><b>Reply-Keks</b> kommt zu dir zurück.</li>
             </ul>
           </div>
-          <div class="card">
+          <div class="panel">
             <h2>Warum das zieht</h2>
-            <ul class="bullets">
-              <li>Emotionaler als ’ne WhatsApp – aber genauso schnell.</li>
-              <li>Der QR-Reply macht’s spielerisch: <b>Reply-Loop</b> statt Einweg-Post.</li>
+            <ul>
+              <li>Emotionaler als Chat, aber genauso schnell.</li>
               <li>Minimaler Flow: kein Shop-Chaos, kein Konto-Theater.</li>
-              <li>Design: deko-soft, clean, vertrauenswürdig.</li>
+              <li>Clean & vertrauenswürdig (Stripe), klarer Footer.</li>
             </ul>
           </div>
         </div>
@@ -859,9 +470,9 @@
     <!-- FLOW -->
     <section class="section" id="flow">
       <div class="wrap">
-        <div class="flow">
+        <div class="panel">
           <div class="flowHead">
-            <h2>Reply-Flow</h2>
+            <h2 style="margin:0">Reply-Flow</h2>
             <div class="steps" aria-label="Schritte">
               <div class="step active" data-step="1">1</div>
               <div class="step" data-step="2">2</div>
@@ -871,8 +482,8 @@
             </div>
           </div>
 
-          <!-- PANEL 1 -->
-          <div class="panel active" id="p1">
+          <!-- Step 1 -->
+          <div class="flowPanel" id="p1">
             <label class="lbl" for="msg">Deine Message</label>
             <textarea id="msg" maxlength="500" placeholder="Schreib was Süßes… (max. 500 Zeichen)"></textarea>
             <div class="helper" id="count">0 / 500</div>
@@ -884,87 +495,72 @@
               <option value="Premium">Premium</option>
             </select>
 
-            <div class="pack-tiles" id="packTiles" role="radiogroup" aria-label="Paket wählen">
-              <button class="pack-tile" type="button" data-pack="Quick" role="radio" aria-checked="false">
-                <div class="tTop"><b>Quick</b><span class="pill">simpel & sweet</span></div>
-                <p>Eine klare Message, klassisch verpackt. Perfekt für “einfach mal so”.</p>
-              </button>
-              <button class="pack-tile" type="button" data-pack="Custom" role="radio" aria-checked="true">
-                <div class="tTop"><b>Custom</b><span class="pill">mehr Deko</span></div>
-                <p>Mehr “wow”: Deko-Finish (z. B. Sprinkles/Sticker-Look) und nicerer Auftritt.</p>
-              </button>
-              <button class="pack-tile" type="button" data-pack="Premium" role="radio" aria-checked="false">
-                <div class="tTop"><b>Premium</b><span class="pill">Box-Vibe</span></div>
-                <p>Edle Box, maximaler Geschenk-Moment. Wenn’s richtig knallen soll.</p>
-              </button>
+            <div class="packTiles" id="packTiles" role="radiogroup" aria-label="Paket wählen">
+              <div class="tile" role="radio" aria-checked="false" data-pack="Quick">
+                <div class="tileTop"><b>Quick</b><span class="pill">simpel & sweet</span></div>
+                <p>Eine klare Message, klassisch verpackt.</p>
+              </div>
+              <div class="tile" role="radio" aria-checked="true" data-pack="Custom">
+                <div class="tileTop"><b>Custom</b><span class="pill">mehr Deko</span></div>
+                <p>Mehr “wow”: Deko-Finish und nicerer Auftritt.</p>
+              </div>
+              <div class="tile" role="radio" aria-checked="false" data-pack="Premium">
+                <div class="tileTop"><b>Premium</b><span class="pill">Box-Vibe</span></div>
+                <p>Edle Box, maximaler Geschenk-Moment.</p>
+              </div>
+            </div>
+
+            <div class="priceLine">
+              <div><b id="priceTitle">Custom</b> <span class="muted" id="priceNote">Beliebt · Deko-Finish</span></div>
+              <div><b id="priceVal">ab 14,90 €</b></div>
             </div>
 
             <div class="actions">
-              <div class="left">
-                <button class="btn btnPrimary" type="button" id="next1">Weiter →</button>
-                <a class="btn btnGhost" href="#faq">Fragen?</a>
-              </div>
-              <div class="right">
-                <div class="priceBox">
-                  <div><b id="priceTitle">Custom</b><br/><span id="priceNote">Beliebt · Deko-Finish</span></div>
-                  <div style="font-weight:900" id="priceVal">—</div>
-                </div>
-              </div>
+              <span class="muted" style="font-size:13px">Schritt 1/5</span>
+              <button class="btn btnPrimary" type="button" id="next1">Weiter →</button>
             </div>
           </div>
 
-          <!-- PANEL 2 -->
-          <div class="panel" id="p2">
-            <h3 style="margin:0 0 8px;">Veredeln & Extras</h3>
-            <div class="helper">Optional – aber macht’s “süßer”.</div>
+          <!-- Step 2 -->
+          <div class="flowPanel" id="p2" style="display:none">
+            <h2 style="font-size:16px;margin:0 0 6px;">Extras (optional)</h2>
+            <p class="muted" style="margin:0 0 10px;font-size:13.5px">MVP: schlicht gehalten. Du kannst später Themes/Randomizer reinbauen.</p>
 
-            <div class="toggles" id="toggles">
-              <label class="toggle" data-key="sprinkles">
-                <input type="checkbox" id="xSprinkles" />
-                <div><b>Sprinkles-Look</b><span>Mehr “Deko-Chichi” auf dem Keks-Design.</span></div>
+            <div class="row">
+              <label class="tile" style="display:flex; gap:10px; align-items:flex-start; margin:0;">
+                <input type="checkbox" id="xSprinkles" style="width:auto;margin-top:2px">
+                <div><b>Sprinkles-Look</b><p style="margin:6px 0 0">Mehr Deko-Vibe.</p></div>
               </label>
-              <label class="toggle" data-key="sticker">
-                <input type="checkbox" id="xSticker" />
-                <div><b>Karten-Sticker</b><span>Kleines Sticker-Element auf der Reply-Karte.</span></div>
-              </label>
-              <label class="toggle" data-key="storyurl">
-                <input type="checkbox" id="xStory" />
-                <div><b>Mini-Story-URL</b><span>Kurzer Link, der den Moment erklärt (viral-friendly).</span></div>
-              </label>
-              <label class="toggle" data-key="photo">
-                <input type="checkbox" id="xPhoto" />
-                <div><b>Foto-Upload (später)</b><span>Platzhalter im MVP – vorbereitet fürs Upgrade.</span></div>
+              <label class="tile" style="display:flex; gap:10px; align-items:flex-start; margin:0;">
+                <input type="checkbox" id="xStory" style="width:auto;margin-top:2px">
+                <div><b>Mini-Story-URL</b><p style="margin:6px 0 0">Kurzer Link, der den Moment erklärt.</p></div>
               </label>
             </div>
 
             <div class="actions">
-              <div class="left">
-                <button class="btn btnGhost" type="button" id="back2">← Zurück</button>
-              </div>
-              <div class="right">
-                <button class="btn btnPrimary" type="button" id="next2">Weiter →</button>
-              </div>
+              <button class="btn btnGhost" type="button" id="back2">← Zurück</button>
+              <button class="btn btnPrimary" type="button" id="next2">Weiter →</button>
             </div>
           </div>
 
-          <!-- PANEL 3 -->
-          <div class="panel" id="p3">
-            <h3 style="margin:0 0 8px;">Adresse</h3>
-            <div class="helper">Wir brauchen Empfänger*in + deine Adresse für den Reply-Keks.</div>
+          <!-- Step 3 -->
+          <div class="flowPanel" id="p3" style="display:none">
+            <h2 style="font-size:16px;margin:0 0 6px;">Adresse</h2>
+            <p class="muted" style="margin:0 0 10px;font-size:13.5px">Empfänger*in + deine Adresse (für den Reply-Keks).</p>
 
             <div class="row">
               <div>
                 <label class="lbl" for="toName">Empfänger*in – Name</label>
-                <input id="toName" autocomplete="name" placeholder="z. B. Lisa" />
+                <input id="toName" placeholder="z. B. Lisa" />
               </div>
               <div>
                 <label class="lbl" for="fromName">Dein Name</label>
-                <input id="fromName" autocomplete="name" placeholder="z. B. Schmidti" />
+                <input id="fromName" placeholder="z. B. Schmidti" />
               </div>
             </div>
 
             <label class="lbl" for="toStreet">Empfänger*in – Straße & Hausnummer</label>
-            <input id="toStreet" autocomplete="street-address" placeholder="Musterstraße 12" />
+            <input id="toStreet" placeholder="Musterstraße 12" />
 
             <div class="row">
               <div>
@@ -978,7 +574,7 @@
             </div>
 
             <label class="lbl" for="fromStreet">Deine Straße & Hausnummer</label>
-            <input id="fromStreet" autocomplete="street-address" placeholder="Deine Straße 3" />
+            <input id="fromStreet" placeholder="Deine Straße 3" />
 
             <div class="row">
               <div>
@@ -992,57 +588,39 @@
             </div>
 
             <div class="actions">
-              <div class="left">
-                <button class="btn btnGhost" type="button" id="back3">← Zurück</button>
-              </div>
-              <div class="right">
-                <button class="btn btnPrimary" type="button" id="next3">Weiter →</button>
-              </div>
+              <button class="btn btnGhost" type="button" id="back3">← Zurück</button>
+              <button class="btn btnPrimary" type="button" id="next3">Weiter →</button>
             </div>
           </div>
 
-          <!-- PANEL 4 -->
-          <div class="panel" id="p4">
-            <h3 style="margin:0 0 8px;">Check & Zusammenfassung</h3>
-            <div class="card" style="margin-top:10px;">
-              <div class="small" id="summary"></div>
-            </div>
+          <!-- Step 4 -->
+          <div class="flowPanel" id="p4" style="display:none">
+            <h2 style="font-size:16px;margin:0 0 6px;">Check</h2>
+            <div class="muted" id="summary" style="font-size:13.5px; line-height:1.55;"></div>
 
             <div class="actions">
-              <div class="left">
-                <button class="btn btnGhost" type="button" id="back4">← Zurück</button>
-              </div>
-              <div class="right">
-                <button class="btn btnPrimary" type="button" id="next4">Weiter zum Bezahlen →</button>
-              </div>
+              <button class="btn btnGhost" type="button" id="back4">← Zurück</button>
+              <button class="btn btnPrimary" type="button" id="next4">Weiter zum Bezahlen →</button>
             </div>
           </div>
 
-          <!-- PANEL 5 -->
-          <div class="panel" id="p5">
-            <h3 style="margin:0 0 8px;">Bezahlen</h3>
-            <div class="helper">Du wirst über Stripe weitergeleitet. Danach speichern wir deinen Entwurf + OrderID lokal (MVP).</div>
+          <!-- Step 5 -->
+          <div class="flowPanel" id="p5" style="display:none">
+            <h2 style="font-size:16px;margin:0 0 6px;">Bezahlen</h2>
+            <p class="muted" style="margin:0 0 10px;font-size:13.5px">Weiterleitung über Stripe.</p>
 
-            <div class="card" style="margin-top:10px;">
-              <div class="small">
-                <b>OrderID:</b> <span id="oid">—</span><br/>
-                <b>Paket:</b> <span id="sPack">—</span><br/>
-                <b>Message:</b> <span id="sMsg">—</span><br/>
-                <b>Extras:</b> <span id="sExtras">—</span>
+            <div class="tile" style="cursor:default">
+              <div class="muted" style="font-size:13.5px; line-height:1.55">
+                <b style="color:var(--ink)">OrderID:</b> <span id="oid">(wird erstellt)</span><br/>
+                <b style="color:var(--ink)">Paket:</b> <span id="sPack">Custom</span><br/>
+                <b style="color:var(--ink)">Message:</b> <span id="sMsg">(deine Message)</span><br/>
+                <b style="color:var(--ink)">Extras:</b> <span id="sExtras">—</span>
               </div>
             </div>
 
             <div class="actions">
-              <div class="left">
-                <button class="btn btnGhost" type="button" id="back5">← Zurück</button>
-              </div>
-              <div class="right">
-                <a class="btn btnPrimary" id="payBtn" href="#" rel="noopener">Jetzt mit Stripe bezahlen →</a>
-              </div>
-            </div>
-
-            <div class="helper" style="margin-top:12px;">
-              Hinweis: Allergene/AGB/Versand findest du unten im Footer. Wir verkaufen keine Daten.
+              <button class="btn btnGhost" type="button" id="back5">← Zurück</button>
+              <a class="btn btnPrimary" id="payBtn" href="#" rel="noopener">Jetzt mit Stripe bezahlen →</a>
             </div>
           </div>
 
@@ -1053,117 +631,43 @@
     <!-- FAQ -->
     <section class="section" id="faq">
       <div class="wrap">
-        <div class="grid2">
-          <div class="card">
-            <h2>FAQ</h2>
-            <details>
-              <summary>Wie antwortet die Empfänger*in?</summary>
-              <p>Über den QR-Code auf der Karte. Kein Konto, keine App. Scan → Text tippen → absenden.</p>
-            </details>
-            <details>
-              <summary>Was passiert nach der Antwort?</summary>
-              <p>Wir backen den Reply-Keks mit der Antwort-Message und schicken ihn an deine Adresse zurück.</p>
-            </details>
-            <details>
-              <summary>Kann ich Vorlagen nutzen?</summary>
-              <p>Ja – oben im Hero gibt’s schnelle Trigger. Mehr Vorlagen kannst du später als Themes/Randomizer ausbauen.</p>
-            </details>
-            <details>
-              <summary>Welche Daten speichert ihr?</summary>
-              <p>Im MVP speichern wir lokal im Browser deinen Entwurf, damit du nicht neu tippen musst. Optionales Tracking ist aus.</p>
-            </details>
-          </div>
-
-          <div class="card" id="versand">
-            <h2>Versand & Infos</h2>
-            <ul class="bullets">
-              <li><b>Versand:</b> Brief/Warensendung (je nach Setup).</li>
-              <li><b>Tracking:</b> optional (später), im MVP minimal.</li>
-              <li><b>Allergene:</b> klar ausgewiesen in den Infos unten.</li>
-              <li><b>Support:</b> über Kontakt/Impressum.</li>
-            </ul>
-            <div style="margin-top:12px;">
-              <video muted playsinline loop preload="metadata" style="width:100%; border-radius:18px; border:1px solid var(--line); background:rgba(255,255,255,.7)" poster="assets/img/1000149743.jpg">
-                <source src="assets/img/grok_video_2025-12-13-20-51-18.mp4" type="video/mp4"/>
-              </video>
-              <div class="helper">Kurzes Mood-Video (optional).</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- LEGAL SECTIONS -->
-    <section class="section legal" id="impressum">
-      <div class="wrap">
-        <div class="card">
-          <h3>Impressum</h3>
-          <p class="small">
-            Platzhalter (MVP): Betreiber, Anschrift, Kontakt, Umsatzsteuer etc. hier eintragen.
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <section class="section legal" id="datenschutz">
-      <div class="wrap">
-        <div class="card">
-          <h3>Wie wir mit Daten umgehen</h3>
-          <p class="small">
-            Notwendig: Speichern deines Keks-Entwurfs (lokal im Browser). Optional: Verständnis, welche Kekse gefallen (derzeit aus). Wir verkaufen keine Daten.
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <section class="section legal" id="agb">
-      <div class="wrap">
-        <div class="card">
-          <h3>AGB</h3>
-          <p class="small">Platzhalter (MVP): Bedingungen, Widerruf, Lieferzeiten, Haftung.</p>
-        </div>
-      </div>
-    </section>
-
-    <section class="section legal" id="allergene">
-      <div class="wrap">
-        <div class="card">
-          <h3>Allergene</h3>
-          <p class="small">Platzhalter (MVP): Zutaten, Allergene, Spurenhinweise, Nährwerte.</p>
-        </div>
-      </div>
-    </section>
-
-    <section class="section legal" id="versandinfo">
-      <div class="wrap">
-        <div class="card">
-          <h3>Versand</h3>
-          <p class="small">Platzhalter (MVP): Versandarten, Kosten, Liefergebiet, Laufzeiten.</p>
+        <div class="panel">
+          <h2>FAQ</h2>
+          <details>
+            <summary>Wie antwortet die Empfänger*in?</summary>
+            <p>Über den QR-Code auf der Karte. Kein Konto, keine App. Scan → Text tippen → absenden.</p>
+          </details>
+          <details>
+            <summary>Was passiert nach der Antwort?</summary>
+            <p>Wir backen den Reply-Keks mit der Antwort-Message und schicken ihn an deine Adresse zurück.</p>
+          </details>
+          <details>
+            <summary>Welche Daten speichert ihr?</summary>
+            <p>Im MVP speichern wir lokal im Browser deinen Entwurf. Optionales Tracking ist standardmäßig aus.</p>
+          </details>
         </div>
       </div>
     </section>
 
   </main>
 
-  <!-- FOOTER -->
   <footer>
     <div class="wrap">
       <div class="footGrid">
         <div>
-          <div style="display:flex; align-items:center; gap:10px;">
-            <span style="font-size:18px; font-weight:900;">OnlyKeks</span>
-            <span class="small">Post, die schmeckt</span>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <b>OnlyKeks</b>
+            <span class="muted" style="font-size:13px">Post, die schmeckt</span>
           </div>
-          <p class="small" style="margin:10px 0 0;">
-            MVP: One-Page-Landing + Reply-Flow. Fokus auf Conversion, Vertrauen und Geschenk-Mood.
+          <p class="muted" style="margin:10px 0 0; font-size:13px; line-height:1.45">
+            MVP: One-Page + Reply-Flow. Clean, schnell, vertrauenswürdig.
           </p>
         </div>
         <div class="footLinks" aria-label="Footer Links">
-          <a href="#impressum">Impressum</a>
-          <a href="#datenschutz">Wie wir mit Daten umgehen</a>
-          <a href="#agb">AGB</a>
-          <a href="#versandinfo">Versand</a>
-          <a href="#allergene">Allergene</a>
+          <a href="#faq">FAQ</a>
+          <a href="privacy.html">Wie wir mit Daten umgehen</a>
+          <a href="keks.html">QR-Reply Demo</a>
+          <a href="#top">Nach oben</a>
         </div>
       </div>
     </div>
@@ -1172,340 +676,261 @@
   <!-- COOKIE CONSENT -->
   <div class="consent" id="consent">
     <div class="consentCard" role="dialog" aria-label="Cookie Hinweis" aria-modal="true">
-      <div class="consentText">
+      <div>
         <b>Cookie-Krümel 🍪</b>
-        <p>
-          Wir nutzen <b>Notwendiges</b>, damit dein Keks-Entwurf gespeichert bleibt.
-          Optional hilft uns zu verstehen, welche Kekse gefallen. <b>Wir verkaufen keine Daten.</b>
-        </p>
+        <p>Notwendig: Entwurf speichern. Optional: verstehen, welche Kekse gefallen. Wir verkaufen keine Daten.</p>
       </div>
-      <div class="consentBtns">
+      <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end">
         <button class="btn btnPrimary btnSmall" type="button" id="consentAll">Alles klar 🍪</button>
         <button class="btn btnGhost btnSmall" type="button" id="consentNeed">Nur das Nötigste</button>
-        <a class="btn btnGhost btnSmall" href="#datenschutz">Details</a>
+        <a class="btn btnGhost btnSmall" href="privacy.html">Details</a>
       </div>
     </div>
   </div>
 
   <script>
-    /*** CONFIG: NUR HIER STRIPE EINTRAGEN ***/
+    /*** CONFIG: STRIPE ***/
     const STRIPE_PAYMENT_LINK = "https://buy.stripe.com/aBcDeFgHiJkLmNoPqR";
 
-    /* ===== Helpers ===== */
     const $ = (id)=>document.getElementById(id);
     const qsa = (sel,root=document)=>Array.from(root.querySelectorAll(sel));
 
-    function uid(){
-      // short, readable, good enough for MVP (not cryptographic)
-      const a = Math.random().toString(36).slice(2,8).toUpperCase();
-      const b = Date.now().toString(36).slice(-6).toUpperCase();
-      return `OK-${b}-${a}`;
-    }
+    window.addEventListener("error", (e)=>console.warn("OnlyKeks JS error:", e.message));
+    window.addEventListener("unhandledrejection", (e)=>console.warn("OnlyKeks promise error:", e.reason));
 
-    /* ===== Hero: video fallback ===== */
+    /* Intro Gate (Fullscreen Video before app) */
+    (function introGate(){
+      const KEY = "onlykeks_intro_seen_v1";
+      const intro = $("intro");
+      const vid   = $("introVid");
+      const skip  = $("skipIntro");
+
+      const showApp = ()=>{
+        document.documentElement.classList.add("appReady");
+        if(intro) intro.classList.add("hide");
+        setTimeout(()=> intro && intro.remove(), 250);
+      };
+
+      if(localStorage.getItem(KEY)){
+        if(intro) intro.remove();
+        document.documentElement.classList.add("appReady");
+        return;
+      }
+
+      const done = ()=>{
+        localStorage.setItem(KEY, "1");
+        showApp();
+      };
+
+      const failsafe = setTimeout(done, 3500);
+
+      skip?.addEventListener("click", ()=>{
+        clearTimeout(failsafe);
+        done();
+      });
+
+      vid?.addEventListener("ended", ()=>{ clearTimeout(failsafe); done(); });
+      vid?.addEventListener("error", ()=>{ clearTimeout(failsafe); done(); });
+
+      const p = vid?.play?.();
+      if(p && typeof p.catch === "function"){
+        p.catch(()=>{ clearTimeout(failsafe); done(); });
+      }
+    })();
+
+    /* Hero media fallback */
     (function heroMedia(){
       const v = $("heroVideo");
       const img = $("heroImg");
       if(!v || !img) return;
-
-      // If video can play, show it and hide image; else show image.
-      const showVideo = ()=>{
-        img.style.display = "none";
-        v.style.display = "block";
-      };
-      const showImg = ()=>{
-        v.style.display = "none";
-        img.style.display = "block";
-      };
-
-      // Default to image until video is ready
+      const showVideo = ()=>{ img.style.display="none"; v.style.display="block"; };
+      const showImg   = ()=>{ v.style.display="none"; img.style.display="block"; };
       showImg();
-
       v.addEventListener("canplay", showVideo, {once:true});
       v.addEventListener("error", showImg, {once:true});
-
-      // If autoplay blocked, keep image
       const p = v.play();
       if(p && typeof p.catch === "function") p.catch(()=>showImg());
     })();
 
-    /* ===== First-load animation: crumbs + bite (once) ===== */
-    (function firstLoadAnim(){
-      const key = "onlykeks_anim_played_v1";
-      const reduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      if(reduced) return;
-
-      if(localStorage.getItem(key)) return;
-      localStorage.setItem(key, "1");
-
-      const layer = $("crumbLayer");
-      const bite = $("cookieBite");
-      if(!layer || !bite) return;
-
-      const isMobile = window.matchMedia && window.matchMedia("(max-width: 760px)").matches;
-      const n = isMobile ? 10 : 22;
-
-      // crumbs
-      for(let i=0;i<n;i++){
-        const c = document.createElement("div");
-        c.className = "crumb";
-        // random position & color
-        const left = Math.random()*92 + 2;
-        const top = Math.random()*20;
-        const size = (Math.random()*6 + 5) + "px";
-        const delay = Math.random()*220 + "ms";
-        const hue = Math.random() > .5 ? "rgba(255,79,163,.85)" : (Math.random() > .5 ? "rgba(255,124,197,.85)" : "rgba(11,27,42,.22)");
-        c.style.left = left + "%";
-        c.style.top = top + "px";
-        c.style.width = size;
-        c.style.height = size;
-        c.style.background = hue;
-        c.style.animationDelay = delay;
-        layer.appendChild(c);
-
-        setTimeout(()=>c.remove(), 1400);
-      }
-
-      // bite pop
-      setTimeout(()=>bite.classList.add("show"), isMobile ? 220 : 160);
-      setTimeout(()=>bite.classList.remove("show"), isMobile ? 900 : 1100);
-    })();
-
-    /* ===== FLOW LOGIC ===== */
-    const panels = { 1: $("p1"), 2: $("p2"), 3: $("p3"), 4: $("p4"), 5: $("p5") };
-    const steps  = qsa(".step");
-
-    function go(n){
-      Object.values(panels).forEach(p=>p.classList.remove("active"));
-      panels[n].classList.add("active");
-      steps.forEach(s=>s.classList.toggle("active", +s.dataset.step === n));
-
-      if(n === 5){
-        // Stripe link
-        const payBtn = $("payBtn");
-        payBtn.href = STRIPE_PAYMENT_LINK;
-
-        // Populate final summary
-        const state = readState();
-        $("oid").textContent = state.orderId || "—";
-        $("sPack").textContent = state.pack || "—";
-        $("sMsg").textContent = state.msg ? state.msg.slice(0,120) + (state.msg.length>120?"…":"") : "—";
-        $("sExtras").textContent = (state.extras && state.extras.length) ? state.extras.join(", ") : "—";
-      }
-      // keep view stable
-      document.querySelector("#flow").scrollIntoView({behavior:"smooth", block:"start"});
-    }
-
-    /* ===== State ===== */
-    const LS_KEY = "onlykeks_order_v1";
-
-    function readState(){
-      try{
-        return JSON.parse(localStorage.getItem(LS_KEY) || "{}");
-      }catch(e){
-        return {};
-      }
-    }
+    /* State */
+    const LS_KEY = "onlykeks_order_v2";
+    function readState(){ try{return JSON.parse(localStorage.getItem(LS_KEY)||"{}");}catch(e){return{};} }
     function writeState(patch){
       const cur = readState();
       const next = Object.assign({}, cur, patch);
       localStorage.setItem(LS_KEY, JSON.stringify(next));
       return next;
     }
-
-    function computePricing(pack){
-      // MVP: placeholder numbers (change later)
-      if(pack === "Quick")   return {title:"Quick",   note:"Schnell & sweet", val:"ab 9,90 €"};
-      if(pack === "Premium") return {title:"Premium", note:"Box-Vibe",        val:"ab 19,90 €"};
-      return {title:"Custom", note:"Beliebt · Deko-Finish", val:"ab 14,90 €"};
+    function uid(){
+      const a = Math.random().toString(36).slice(2,8).toUpperCase();
+      const b = Date.now().toString(36).slice(-6).toUpperCase();
+      return `OK-${b}-${a}`;
+    }
+    function esc(str){
+      return String(str ?? "")
+        .replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;").replaceAll("'","&#039;");
     }
 
-    /* ===== Message count & chips ===== */
+    function pricing(pack){
+      if(pack==="Quick")   return {title:"Quick",   note:"Schnell & sweet", val:"ab 9,90 €"};
+      if(pack==="Premium") return {title:"Premium", note:"Box-Vibe",        val:"ab 19,90 €"};
+      return {title:"Custom", note:"Beliebt · Deko-Finish", val:"ab 14,90 €"};
+    }
+    function setPriceUI(pack){
+      const p = pricing(pack);
+      $("priceTitle") && ($("priceTitle").textContent = p.title);
+      $("priceNote")  && ($("priceNote").textContent  = p.note);
+      $("priceVal")   && ($("priceVal").textContent   = p.val);
+    }
+
+    /* Flow panels */
+    const panels = {1:$("p1"),2:$("p2"),3:$("p3"),4:$("p4"),5:$("p5")};
+    const steps = qsa(".step");
+    function go(n){
+      Object.entries(panels).forEach(([k,p])=>{ if(p) p.style.display = (+k===n) ? "block":"none"; });
+      steps.forEach(s=>s.classList.toggle("active", +s.dataset.step===n));
+      document.querySelector("#flow").scrollIntoView({behavior:"smooth", block:"start"});
+
+      if(n===5){
+        $("payBtn").href = STRIPE_PAYMENT_LINK;
+        const s = readState();
+        $("oid").textContent = s.orderId || "(wird erstellt)";
+        $("sPack").textContent = s.pack || "Custom";
+        $("sMsg").textContent = s.msg ? (s.msg.slice(0,120)+(s.msg.length>120?"…":"")) : "(deine Message)";
+        $("sExtras").textContent = (s.extras && s.extras.length) ? s.extras.join(", ") : "—";
+      }
+    }
+
+    /* Message + chips */
     const msg = $("msg");
     const count = $("count");
     function updateCount(){
+      if(!msg || !count) return;
       count.textContent = `${msg.value.length} / 500`;
       writeState({msg: msg.value});
     }
-    msg.addEventListener("input", updateCount);
+    msg?.addEventListener("input", updateCount);
 
     qsa(".chip").forEach(ch=>{
       ch.addEventListener("click", ()=>{
+        if(!msg) return;
         msg.value = ch.dataset.msg || "";
         updateCount();
-        // push user into flow
         document.querySelector("#flow").scrollIntoView({behavior:"smooth", block:"start"});
       });
     });
 
-    /* ===== Pack tiles bind to select ===== */
+    /* Pack select + tiles */
     const packSel = $("pack");
-    const tiles = qsa(".pack-tile", $("packTiles"));
-    function setActivePack(pack){
-      packSel.value = pack;
+    const tiles = qsa(".tile", $("packTiles") || document);
+    function setPack(pack){
+      packSel && (packSel.value = pack);
       tiles.forEach(t=>{
-        const on = t.dataset.pack === pack;
+        const on = (t.dataset.pack === pack);
         t.classList.toggle("active", on);
         t.setAttribute("aria-checked", on ? "true":"false");
       });
-      const p = computePricing(pack);
-      $("priceTitle").textContent = p.title;
-      $("priceNote").textContent = p.note;
-      $("priceVal").textContent = p.val;
+      setPriceUI(pack);
       writeState({pack});
     }
+    tiles.forEach(t=>t.addEventListener("click", ()=>setPack(t.dataset.pack)));
+    packSel?.addEventListener("change", ()=>setPack(packSel.value));
 
-    tiles.forEach(t=>{
-      t.addEventListener("click", ()=>setActivePack(t.dataset.pack));
-    });
-    packSel.addEventListener("change", ()=>setActivePack(packSel.value));
-
-    /* ===== Extras toggles ===== */
+    /* Extras */
     const extrasMap = [
       {id:"xSprinkles", label:"Sprinkles-Look"},
-      {id:"xSticker",   label:"Karten-Sticker"},
-      {id:"xStory",     label:"Mini-Story-URL"},
-      {id:"xPhoto",     label:"Foto-Upload (später)"}
+      {id:"xStory", label:"Mini-Story-URL"},
     ];
-
     function readExtras(){
-      const out = [];
+      const out=[];
       for(const x of extrasMap){
         const el = $(x.id);
         if(el && el.checked) out.push(x.label);
       }
       return out;
     }
-    function syncToggleStyles(){
-      qsa(".toggle").forEach(t=>{
-        const input = t.querySelector("input");
-        t.classList.toggle("on", !!(input && input.checked));
-      });
-    }
-    qsa(".toggle input").forEach(inp=>{
-      inp.addEventListener("change", ()=>{
-        syncToggleStyles();
-        writeState({extras: readExtras()});
-      });
+    extrasMap.forEach(x=>{
+      $(x.id)?.addEventListener("change", ()=>writeState({extras: readExtras()}));
     });
 
-    /* ===== Address fields ===== */
+    /* Address fields */
     const fields = ["toName","fromName","toStreet","toZip","toCity","fromStreet","fromZip","fromCity"];
     fields.forEach(id=>{
-      const el = $(id);
-      el.addEventListener("input", ()=>{
-        writeState({[id]: el.value});
-      });
+      $(id)?.addEventListener("input", ()=>writeState({[id]: $(id).value}));
     });
 
-    /* ===== Summary render ===== */
+    /* Summary */
     function renderSummary(){
       const s = readState();
+      const p = pricing(s.pack || "Custom");
       const extras = (s.extras && s.extras.length) ? s.extras.join(", ") : "—";
-      const p = computePricing(s.pack || "Custom");
-
-      const lines = [
-        `<b>Paket:</b> ${escapeHtml(s.pack || "Custom")} <span style="color:var(--muted)">(${escapeHtml(p.val)})</span>`,
-        `<b>Message:</b><br/>${escapeHtml(s.msg || "—")}`,
-        `<b>Extras:</b> ${escapeHtml(extras)}`,
-        `<hr style="border:0;border-top:1px solid var(--line);margin:10px 0;">`,
-        `<b>Empfänger*in:</b> ${escapeHtml(s.toName || "—")}, ${escapeHtml(s.toStreet || "—")}, ${escapeHtml((s.toZip||"—")+" "+(s.toCity||"—"))}`,
-        `<b>Reply an:</b> ${escapeHtml(s.fromName || "—")}, ${escapeHtml(s.fromStreet || "—")}, ${escapeHtml((s.fromZip||"—")+" "+(s.fromCity||"—"))}`
-      ];
-      $("summary").innerHTML = lines.join("<br/>");
+      $("summary").innerHTML = `
+        <b>Paket:</b> ${esc(s.pack||"Custom")} <span class="muted">(${esc(p.val)})</span><br/>
+        <b>Message:</b><br/>${esc(s.msg||"—")}<br/><br/>
+        <b>Extras:</b> ${esc(extras)}<br/><br/>
+        <b>Empfänger*in:</b> ${esc(s.toName||"—")}, ${esc(s.toStreet||"—")}, ${esc((s.toZip||"—")+" "+(s.toCity||"—"))}<br/>
+        <b>Reply an:</b> ${esc(s.fromName||"—")}, ${esc(s.fromStreet||"—")}, ${esc((s.fromZip||"—")+" "+(s.fromCity||"—"))}
+      `;
     }
 
-    function escapeHtml(str){
-      return String(str ?? "")
-        .replaceAll("&","&amp;")
-        .replaceAll("<","&lt;")
-        .replaceAll(">","&gt;")
-        .replaceAll('"',"&quot;")
-        .replaceAll("'","&#039;");
-    }
-
-    /* ===== Buttons ===== */
-    $("next1").addEventListener("click", ()=>{
-      const txt = (msg.value || "").trim();
-      if(!txt){
-        msg.focus();
-        msg.style.boxShadow = "0 0 0 4px rgba(255,79,163,.16)";
-        setTimeout(()=>msg.style.boxShadow="", 400);
-        return;
-      }
+    /* Buttons */
+    $("next1")?.addEventListener("click", ()=>{
+      const txt = (msg?.value || "").trim();
+      if(!txt){ msg?.focus(); return; }
       go(2);
     });
-
-    $("back2").addEventListener("click", ()=>go(1));
-    $("next2").addEventListener("click", ()=>go(3));
-
-    $("back3").addEventListener("click", ()=>go(2));
-    $("next3").addEventListener("click", ()=>{
-      // basic required fields (MVP)
+    $("back2")?.addEventListener("click", ()=>go(1));
+    $("next2")?.addEventListener("click", ()=>go(3));
+    $("back3")?.addEventListener("click", ()=>go(2));
+    $("next3")?.addEventListener("click", ()=>{
       const s = readState();
       const need = ["toName","toStreet","toZip","toCity","fromName","fromStreet","fromZip","fromCity"];
       const missing = need.filter(k=>!String(s[k]||"").trim());
-      if(missing.length){
-        // focus first missing
-        const first = $(missing[0]);
-        if(first) first.focus();
-        return;
-      }
+      if(missing.length){ $(missing[0])?.focus(); return; }
       renderSummary();
       go(4);
     });
-
-    $("back4").addEventListener("click", ()=>go(3));
-    $("next4").addEventListener("click", ()=>{
-      // ensure orderId
+    $("back4")?.addEventListener("click", ()=>go(3));
+    $("next4")?.addEventListener("click", ()=>{
       const s = readState();
       if(!s.orderId) writeState({orderId: uid()});
       go(5);
     });
+    $("back5")?.addEventListener("click", ()=>go(4));
 
-    $("back5").addEventListener("click", ()=>go(4));
-
-    /* ===== Load saved state on start ===== */
+    /* Boot restore */
     (function boot(){
       const s = readState();
 
-      // message
-      if(s.msg){ msg.value = s.msg; }
+      if(msg && s.msg){ msg.value = s.msg; }
       updateCount();
 
-      // pack
-      setActivePack(s.pack || "Custom");
+      const initialPack = s.pack || "Custom";
+      setPack(initialPack);
 
-      // extras
-      for(const x of extrasMap){
-        const el = $(x.id);
-        if(el && s.extras && s.extras.includes(x.label)) el.checked = true;
+      // extras restore
+      if(Array.isArray(s.extras)){
+        extrasMap.forEach(x=>{
+          const el = $(x.id);
+          if(el) el.checked = s.extras.includes(x.label);
+        });
       }
-      syncToggleStyles();
 
-      // addresses
+      // addresses restore
       fields.forEach(id=>{
-        if(s[id]) $(id).value = s[id];
+        const el = $(id);
+        if(el && s[id]) el.value = s[id];
       });
-
-      // orderId
-      if(s.orderId) $("oid").textContent = s.orderId;
     })();
 
-    /* ===== Consent (A warm default) ===== */
+    /* Consent */
     const CONSENT_KEY = "onlykeks_consent_v1";
     const consentEl = $("consent");
-    function showConsent(){
-      const c = localStorage.getItem(CONSENT_KEY);
-      if(!c) consentEl.classList.add("show");
-    }
-    function setConsent(mode){
-      // mode: "all" | "need"
-      localStorage.setItem(CONSENT_KEY, mode);
-      consentEl.classList.remove("show");
-    }
-    $("consentAll").addEventListener("click", ()=>setConsent("all"));
-    $("consentNeed").addEventListener("click", ()=>setConsent("need"));
+    function showConsent(){ if(!localStorage.getItem(CONSENT_KEY)) consentEl?.classList.add("show"); }
+    function setConsent(mode){ localStorage.setItem(CONSENT_KEY, mode); consentEl?.classList.remove("show"); }
+    $("consentAll")?.addEventListener("click", ()=>setConsent("all"));
+    $("consentNeed")?.addEventListener("click", ()=>setConsent("need"));
     showConsent();
   </script>
 </body>

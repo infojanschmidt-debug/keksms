@@ -9,18 +9,20 @@
   <!-- SEO / Social -->
   <link rel="canonical" href="https://infojanschmidt-debug.github.io/keksms/" />
   <meta name="robots" content="index,follow" />
-  <meta name="theme-color" content="#00aff0" />
+  <meta name="theme-color" content="#ff4fa3" />
 
   <meta property="og:title" content="OnlyKeks – Post die schmeckt" />
   <meta property="og:description" content="Schicke süße Botschaften mit direkter QR-Antwort. Reply-Keks in 3 Klicks." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://infojanschmidt-debug.github.io/keksms/" />
-  <meta property="og:image" content="https://infojanschmidt-debug.github.io/keksms/assets/og.jpg" />
+
+  <!-- OG/Twitter Fallback (kein 404) -->
+  <meta property="og:image" content="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1200' height='630'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop stop-color='%23ffe6f2'/%3E%3Cstop offset='1' stop-color='%23ffd3ea'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='1200' height='630' fill='url(%23g)'/%3E%3Ctext x='70' y='210' font-family='Poppins,Arial' font-size='72' font-weight='900' fill='%230b1b2a'%3EOnlyKeks%3C/text%3E%3Ctext x='70' y='300' font-family='Poppins,Arial' font-size='38' font-weight='600' fill='%234b5b6b'%3EPost die schmeckt%3C/text%3E%3Ctext x='70' y='392' font-family='Poppins,Arial' font-size='34' fill='%234b5b6b'%3EScan.%20Reply.%20Grinsen.%3C/text%3E%3Ctext x='70' y='545' font-family='Poppins,Arial' font-size='40'%3E%F0%9F%8D%AA%F0%9F%93%B1%F0%9F%92%97%3C/text%3E%3C/svg%3E" />
 
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="OnlyKeks – Post die schmeckt" />
   <meta name="twitter:description" content="Schicke süße Botschaften mit direkter QR-Antwort." />
-  <meta name="twitter:image" content="https://infojanschmidt-debug.github.io/keksms/assets/og.jpg" />
+  <meta name="twitter:image" content="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1200' height='630'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop stop-color='%23ffe6f2'/%3E%3Cstop offset='1' stop-color='%23ffd3ea'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='1200' height='630' fill='url(%23g)'/%3E%3Ctext x='70' y='210' font-family='Poppins,Arial' font-size='72' font-weight='900' fill='%230b1b2a'%3EOnlyKeks%3C/text%3E%3Ctext x='70' y='300' font-family='Poppins,Arial' font-size='38' font-weight='600' fill='%234b5b6b'%3EPost die schmeckt%3C/text%3E%3Ctext x='70' y='392' font-family='Poppins,Arial' font-size='34' fill='%234b5b6b'%3EScan.%20Reply.%20Grinsen.%3C/text%3E%3Ctext x='70' y='545' font-family='Poppins,Arial' font-size='40'%3E%F0%9F%8D%AA%F0%9F%93%B1%F0%9F%92%97%3C/text%3E%3C/svg%3E" />
 
   <!-- Font (friendly rounded) -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -46,14 +48,25 @@
       --ink:#0b1b2a;
       --muted:#4b5b6b;
       --line: rgba(11,27,42,.10);
-      --blue:#00aff0;
-      --blue2:#2b7cff;
-      --blueSoft: rgba(0,175,240,.12);
 
-      /* Deko-soft */
+      /* Deko-soft (pinker / wolkiger) */
+      --sky1:#ffe6f2;
+      --sky2:#ffd3ea;
+      --sky3:#fff4ea;
+      --pink:#ff4fa3;
+      --pink2:#ff7cc5;
+      --pinkSoft: rgba(255,79,163,.14);
+      --pinkSoft2: rgba(255,124,197,.12);
+
+      /* optional: weniger OnlyFans-blau, mehr Deko-Pink */
+      --blue:#ff4fa3;
+      --blue2:#ff7cc5;
+
+      /* weniger blau (aber als soft highlight ok) */
+      --blueSoft: rgba(0,175,240,.08);
+
       --cookie:#c48752;
       --cookieLight:#f3d2b3;
-      --pinkSoft: rgba(255,105,180,.11);
 
       --radius:18px;
       --shadow: 0 18px 60px rgba(11,27,42,.12);
@@ -72,11 +85,15 @@
       margin:0;
       font-family: Poppins, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
       color:var(--ink);
+
+      /* Pastell-Pink Himmel (Geschenk-Mood) */
       background:
-        radial-gradient(900px 520px at 15% 0%, var(--blueSoft), transparent 60%),
-        radial-gradient(800px 520px at 85% 25%, rgba(43,124,255,.10), transparent 55%),
-        radial-gradient(900px 520px at 55% 0%, var(--pinkSoft), transparent 60%),
-        linear-gradient(180deg, var(--bg), var(--bg2));
+        radial-gradient(900px 520px at 15% 0%, rgba(255,79,163,.18), transparent 62%),
+        radial-gradient(800px 520px at 85% 18%, rgba(255,124,197,.16), transparent 58%),
+        radial-gradient(900px 520px at 55% 0%, rgba(255,230,242,.88), transparent 60%),
+        radial-gradient(900px 520px at 50% 100%, rgba(255,244,234,.70), transparent 55%),
+        linear-gradient(180deg, var(--sky1), var(--bg2));
+
       overflow-x:hidden;
       cursor: var(--cursor-cookie);
     }
@@ -89,9 +106,9 @@
     }
     input, textarea, select{ cursor:text; }
 
-    :focus-visible{outline:3px solid rgba(0,175,240,.55); outline-offset:3px;}
+    :focus-visible{outline:3px solid rgba(255,79,163,.45); outline-offset:3px;}
     .btn:focus-visible,.step:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{
-      box-shadow:0 0 0 6px rgba(0,175,240,.18);
+      box-shadow:0 0 0 6px rgba(255,79,163,.16);
     }
 
     #cookieRain{
@@ -115,7 +132,7 @@
     .logo{
       width:52px;height:52px;border-radius:18px;
       background: linear-gradient(135deg, var(--blue), var(--blue2));
-      box-shadow: 0 12px 30px rgba(0,175,240,.20);
+      box-shadow: 0 12px 30px rgba(255,79,163,.20);
       position:relative;
       flex:0 0 auto;
     }
@@ -151,7 +168,7 @@
     .btn.primary{
       color:white;
       background: linear-gradient(135deg, var(--blue), var(--blue2));
-      box-shadow: 0 14px 32px rgba(0,175,240,.22);
+      box-shadow: 0 14px 32px rgba(255,79,163,.22);
     }
     .btn.primary:hover{filter:brightness(1.03);transform:translateY(-1px)}
     .btn.ghost{
@@ -188,7 +205,7 @@
     .dot{
       width:8px;height:8px;border-radius:999px;
       background:var(--blue);
-      box-shadow:0 0 0 6px rgba(0,175,240,.14);
+      box-shadow:0 0 0 6px rgba(255,79,163,.14);
     }
     h1{margin:14px 0 10px;font-size:44px;line-height:1.02;letter-spacing:-1px;}
     .sub{margin:0 0 10px;color:var(--muted);line-height:1.58;font-size:16px;max-width:64ch;}
@@ -211,8 +228,8 @@
       display:inline-flex;align-items:center;gap:8px;
     }
     .tag.badge{
-      border:1px solid rgba(0,175,240,.22);
-      background:rgba(0,175,240,.08);
+      border:1px solid rgba(255,79,163,.22);
+      background:rgba(255,79,163,.08);
       color:var(--ink);
       font-weight:800;
     }
@@ -222,9 +239,9 @@
       margin-top:12px;
       padding:12px 14px;
       border-radius:16px;
-      border:1px solid rgba(0,175,240,.22);
+      border:1px solid rgba(255,79,163,.22);
       background:
-        linear-gradient(135deg, rgba(0,175,240,.10), rgba(43,124,255,.06)),
+        linear-gradient(135deg, rgba(255,79,163,.10), rgba(255,124,197,.06)),
         rgba(255,255,255,.86);
       box-shadow: var(--shadow2);
       display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;
@@ -253,7 +270,7 @@
       display:flex;align-items:center;justify-content:center;
       background:
         radial-gradient(520px 220px at 30% 10%, rgba(196,135,82,.18), transparent 62%),
-        linear-gradient(135deg, rgba(0,175,240,.10), rgba(255,255,255,.95));
+        linear-gradient(135deg, rgba(255,79,163,.12), rgba(255,255,255,.95));
     }
     .visual-wrap{
       position:relative;
@@ -270,7 +287,7 @@
       padding:8px 10px;border-radius:999px;
       background:linear-gradient(135deg,var(--blue),var(--blue2));
       color:white;font-weight:900;font-size:12px;
-      box-shadow:0 12px 26px rgba(0,175,240,.20);
+      box-shadow:0 12px 26px rgba(255,79,163,.20);
       transform:rotate(-8deg);
     }
     .hero-img{
@@ -281,7 +298,7 @@
       display:block;
       aspect-ratio: 16/10;
       object-fit: cover;
-      background: linear-gradient(135deg, rgba(255,105,180,.12), rgba(0,175,240,.10));
+      background: linear-gradient(135deg, rgba(255,79,163,.12), rgba(255,255,255,.10));
     }
     .visual-caption{margin-top:10px;color:var(--muted);font-size:12px;text-align:center;line-height:1.45;}
 
@@ -321,12 +338,12 @@
       user-select:none;
       min-height:44px;
     }
-    .step:hover{transform:translateY(-1px);background:rgba(0,175,240,.06)}
+    .step:hover{transform:translateY(-1px);background:rgba(255,79,163,.06)}
     .step.active{
       color:var(--ink);
-      border-color: rgba(0,175,240,.35);
+      border-color: rgba(255,79,163,.35);
       box-shadow: var(--shadow2);
-      background:rgba(0,175,240,.10);
+      background:rgba(255,79,163,.10);
     }
 
     /* Panels */
@@ -366,11 +383,11 @@
       transition: transform .12s ease, background .12s ease;
       min-height:44px;
     }
-    .chip:hover{transform:translateY(-1px);background:rgba(255,105,180,.08)}
+    .chip:hover{transform:translateY(-1px);background:rgba(255,79,163,.08)}
 
     .summary{
-      border:1px dashed rgba(0,175,240,.35);
-      background:rgba(0,175,240,.06);
+      border:1px dashed rgba(255,79,163,.35);
+      background:rgba(255,79,163,.06);
       border-radius:14px;
       padding:12px;
       color:var(--muted);
@@ -454,7 +471,7 @@
       .card:hover, .benefit:hover, .faq-item:hover, .field:hover, .visual-wrap:hover{
         transform: translateY(-2px);
         box-shadow: 0 18px 60px rgba(11,27,42,.14);
-        border-color: rgba(0,175,240,.22);
+        border-color: rgba(255,79,163,.22);
       }
       .btn.primary{position:relative;overflow:hidden;}
       .btn.primary::after{
@@ -489,7 +506,7 @@
       transition:transform .12s ease, box-shadow .12s ease, border-color .12s ease;
     }
     .pack-tile:hover{ transform:translateY(-1px); }
-    .pack-tile:focus{ outline:2px solid rgba(255,105,180,.28); outline-offset:2px; }
+    .pack-tile:focus{ outline:2px solid rgba(255,79,163,.28); outline-offset:2px; }
     .pack-head{ display:flex; justify-content:space-between; align-items:baseline; gap:10px; }
     .pack-name{ font-weight:900; color:var(--ink); letter-spacing:.2px; }
     .pack-price{ font-size:12px; color:var(--muted); }
@@ -498,14 +515,14 @@
       position:absolute; top:10px; right:10px;
       font-size:11px; font-weight:900;
       padding:6px 10px; border-radius:999px;
-      border:1px solid rgba(255,105,180,.28);
-      background:rgba(255,105,180,.10);
+      border:1px solid rgba(255,79,163,.28);
+      background:rgba(255,79,163,.10);
       color:var(--ink);
-      box-shadow:0 10px 22px rgba(255,105,180,.10);
+      box-shadow:0 10px 22px rgba(255,79,163,.10);
     }
     .pack-tile.is-active{
-      border-color:rgba(0,175,240,.45);
-      box-shadow:0 14px 38px rgba(0,175,240,.14);
+      border-color:rgba(255,79,163,.45);
+      box-shadow:0 14px 38px rgba(255,79,163,.14);
       background:rgba(255,255,255,.95);
     }
     .pack-tile.is-popular.is-active{
@@ -590,12 +607,14 @@
           <div class="visual-wrap">
             <span class="stamp">REPLY</span>
 
+            <!-- Hero Bild + Fallback -->
             <img
               id="heroImg"
               class="hero-img"
               src="assets/hero.jpg"
-              alt="Person hält einen Keks, scannt den QR-Code und freut sich über die Antwort"
-              loading="lazy" />
+              alt="Hände halten den Keks und die Karte, QR-Code wird mit dem Handy gescannt (weiches Tageslicht)"
+              loading="lazy"
+              onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%221280%22 height=%22800%22%3E%3Cdefs%3E%3ClinearGradient id=%22g%22 x1=%220%22 y1=%220%22 x2=%221%22 y2=%221%22%3E%3Cstop stop-color=%22%23ffe6f2%22/%3E%3Cstop offset=%221%22 stop-color=%22%23ffd3ea%22/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width=%221280%22 height=%22800%22 fill=%22url(%23g)%22/%3E%3Ccircle cx=%22340%22 cy=%22410%22 r=%22170%22 fill=%22%23c48752%22 opacity=%220.85%22/%3E%3Ctext x=%22530%22 y=%22360%22 font-family=%22Poppins,Arial%22 font-size=%2246%22 font-weight=%22900%22 fill=%22%230b1b2a%22%3EGeschenk-Moment%3C/text%3E%3Ctext x=%22530%22 y=%22425%22 font-family=%22Poppins,Arial%22 font-size=%2230%22 fill=%22%234b5b6b%22%3EH%C3%A4nde.%20Keks.%20QR.%20Reply.%3C/text%3E%3Ctext x=%22530%22 y=%22495%22 font-family=%22Poppins,Arial%22 font-size=%2234%22%3E%F0%9F%8D%AA%F0%9F%93%B1%F0%9F%92%97%3C/text%3E%3C/svg%3E';" />
 
             <div class="visual-caption">
               Emotionaler Moment: Keks in der Hand → QR-Scan → Reply-Grinsen. 🍪📱🙂
@@ -614,15 +633,61 @@
       </div>
     </section>
 
+    <!-- Story-Strip (3 Bilder) -->
+    <section class="section" id="story" aria-label="Geschenk-Mood">
+      <div class="container">
+        <div class="card" style="padding:18px">
+          <div class="flow-head" style="margin-bottom:8px">
+            <h2>So fühlt sich OnlyKeks an 🍪</h2>
+            <div class="tiny-links"><a href="#flow">Direkt starten</a></div>
+          </div>
+
+          <div class="ok-story-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px">
+            <figure style="margin:0">
+              <img src="assets/story-1.jpg" alt="Hände halten Keks und Karte im weichen Tageslicht" loading="lazy"
+                   style="width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:16px;border:1px solid var(--line)"
+                   onerror="this.style.display='none'">
+              <figcaption class="hint">1) Keks + Karte kommt an</figcaption>
+            </figure>
+
+            <figure style="margin:0">
+              <img src="assets/story-2.jpg" alt="Handy scannt den QR-Code am Keks (Geschenk-Mood, pinke Highlights)" loading="lazy"
+                   style="width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:16px;border:1px solid var(--line)"
+                   onerror="this.style.display='none'">
+              <figcaption class="hint">2) QR scannen</figcaption>
+            </figure>
+
+            <figure style="margin:0">
+              <img src="assets/story-3.jpg" alt="Reply wird am Handy geschrieben, warmes Tageslicht, cozy" loading="lazy"
+                   style="width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:16px;border:1px solid var(--line)"
+                   onerror="this.style.display='none'">
+              <figcaption class="hint">3) Reply senden</figcaption>
+            </figure>
+          </div>
+
+          <div class="cta-row" style="margin-top:12px">
+            <a class="btn primary" href="#flow">🍪 Reply-Keks starten</a>
+            <span class="pill">Kein Account · 3 Klicks · Geschenk-Moment</span>
+          </div>
+        </div>
+      </div>
+
+      <style>
+        @media(max-width:900px){
+          #story .ok-story-grid{grid-template-columns:1fr}
+        }
+      </style>
+    </section>
+
     <section class="section" id="flow" aria-label="Reply Flow">
       <div class="container">
         <div class="card flow-card">
           <div class="flow-head">
             <h2>Reply-Flow</h2>
             <div class="tiny-links">
-              <a href="#footer">Impressum</a>
-              <a href="#footer">Versand</a>
-              <a href="#footer">Allergene</a>
+              <a href="#impressum">Impressum</a>
+              <a href="#versand">Versand</a>
+              <a href="#allergene">Allergene</a>
             </div>
           </div>
 
@@ -773,7 +838,9 @@
 
               <div class="right">
                 <button class="btn ghost" id="back3" type="button">Zurück</button>
-                <a class="btn primary" id="payBtn" href="#" target="_blank" rel="noopener">Jetzt bezahlen</a>
+                <!-- Pay-Fallback direkt im HTML -->
+                <a class="btn primary" id="payBtn" href="https://buy.stripe.com/aBcDeFgHiJkLmNoPqR" target="_blank" rel="noopener">Jetzt bezahlen</a>
+                <noscript><div class="hint" style="margin-top:8px">Für den Stepper/Flow bitte JavaScript aktivieren.</div></noscript>
               </div>
             </div>
           </div>
@@ -789,7 +856,7 @@
             <h2>Kurz erklärt</h2>
             <div class="tiny-links">
               <a href="#flow">Zum Flow</a>
-              <a href="#footer">Versand</a>
+              <a href="#versand">Versand</a>
             </div>
           </div>
 
@@ -808,7 +875,7 @@
             </div>
             <div class="faq-item">
               <b>Allergene? ⚠️</b>
-              Enthält Gluten. Weitere Angaben unter „Allergene“ im Footer.
+              Enthält Gluten. Weitere Angaben unter „Allergene“ unten.
             </div>
           </div>
 
@@ -824,16 +891,66 @@
         </div>
       </div>
     </section>
+
+    <!-- Footer/Consent Links: echte Sections -->
+    <section class="section" id="impressum">
+      <div class="container">
+        <div class="card faq-card">
+          <h2 style="margin:0 0 10px">Impressum</h2>
+          <div class="hint">MVP: Trage hier Name, Anschrift, Kontakt ein.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="datenschutz">
+      <div class="container">
+        <div class="card faq-card">
+          <h2 style="margin:0 0 10px">Wie wir mit Daten umgehen</h2>
+          <div class="faq-item" style="margin-bottom:10px"><b>Notwendig 🍪</b> Wir speichern deinen Entwurf, damit der Flow funktioniert.</div>
+          <div class="faq-item" style="margin-bottom:10px"><b>Optional 📊</b> Analytics nur nach Zustimmung.</div>
+          <div class="hint">Für Livebetrieb: echte Datenschutzerklärung ergänzen.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="agb">
+      <div class="container">
+        <div class="card faq-card">
+          <h2 style="margin:0 0 10px">AGB</h2>
+          <div class="hint">MVP: Bedingungen ergänzen.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="versand">
+      <div class="container">
+        <div class="card faq-card">
+          <h2 style="margin:0 0 10px">Versand</h2>
+          <div class="faq-item"><b>Lieferzeit</b> 2–3 Werktage (MVP).</div>
+          <div class="faq-item" style="margin-top:10px"><b>Tracking</b> Sobald verfügbar.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="allergene">
+      <div class="container">
+        <div class="card faq-card">
+          <h2 style="margin:0 0 10px">Allergene</h2>
+          <div class="faq-item"><b>Hinweis</b> Enthält Gluten (MVP). Weitere Angaben ergänzen.</div>
+        </div>
+      </div>
+    </section>
+
   </main>
 
   <footer id="footer" aria-label="Footer">
     <div class="container">
       <div class="footer-links">
-        <a href="#">Impressum</a>
-        <a href="#">Wie wir mit Daten umgehen</a>
-        <a href="#">AGB</a>
-        <a href="#">Versand</a>
-        <a href="#">Allergene</a>
+        <a href="#impressum">Impressum</a>
+        <a href="#datenschutz">Wie wir mit Daten umgehen</a>
+        <a href="#agb">AGB</a>
+        <a href="#versand">Versand</a>
+        <a href="#allergene">Allergene</a>
       </div>
 
       <div class="social-links" aria-label="Social">
@@ -852,7 +969,7 @@
       <div class="consent-row">
         <p>
           Wir nutzen <b>notwendige Cookies</b>, um deinen Keks-Entwurf zu speichern. Optional: Analytics, damit wir kapieren, welche Kekse gefallen.
-          <br/><a href="#">Wie wir mit Daten umgehen</a> · <span style="white-space:nowrap">Wir verkaufen keine Daten.</span>
+          <br/><a href="#datenschutz">Wie wir mit Daten umgehen</a> · <span style="white-space:nowrap">Wir verkaufen keine Daten.</span>
         </p>
         <div class="consent-actions">
           <button class="btn ghost" id="consentNecessary" type="button">Nur das Nötigste</button>

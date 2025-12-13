@@ -59,11 +59,9 @@
       --shadow: 0 18px 60px rgba(11,27,42,.12);
       --shadow2: 0 10px 30px rgba(11,27,42,.08);
 
-      --danger:#d24a5c; /* calmer red */
+      --danger:#d24a5c;
 
-      /* =======================
-         DEKOFRAU-MOUSE (Cursor)
-      ======================= */
+      /* Cursor */
       --cursor-cookie: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 64 64'%3E%3Ccircle cx='28' cy='28' r='18' fill='%23c48752'/%3E%3Ccircle cx='22' cy='22' r='3' fill='%230b1b2a' opacity='.35'/%3E%3Ccircle cx='34' cy='20' r='2.8' fill='%230b1b2a' opacity='.30'/%3E%3Ccircle cx='20' cy='34' r='2.6' fill='%230b1b2a' opacity='.30'/%3E%3Ccircle cx='34' cy='34' r='2.3' fill='%230b1b2a' opacity='.28'/%3E%3C/svg%3E") 12 12, auto;
     }
 
@@ -89,10 +87,7 @@
     a, button, .btn, .step, .chip, summary, input[type="submit"], [role="button"]{
       cursor: var(--cursor-cookie);
     }
-
-    input, textarea, select{
-      cursor: text;
-    }
+    input, textarea, select{ cursor:text; }
 
     :focus-visible{outline:3px solid rgba(0,175,240,.55); outline-offset:3px;}
     .btn:focus-visible,.step:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{
@@ -115,10 +110,7 @@
       backdrop-filter: blur(12px);
       border-bottom:1px solid var(--line);
     }
-    .nav{
-      display:flex;align-items:center;justify-content:space-between;
-      padding:14px 0;gap:12px;
-    }
+    .nav{display:flex;align-items:center;justify-content:space-between;padding:14px 0;gap:12px;}
     .brand{display:flex;align-items:center;gap:12px}
     .logo{
       width:52px;height:52px;border-radius:18px;
@@ -178,16 +170,11 @@
 
     /* Hero */
     .hero{padding:46px 0 22px}
-    .hero-grid{
-      display:grid;grid-template-columns: 1.05fr .95fr;
-      gap:18px;align-items:stretch;
-    }
+    .hero-grid{display:grid;grid-template-columns: 1.05fr .95fr;gap:18px;align-items:stretch;}
     @media(max-width:980px){.hero-grid{grid-template-columns:1fr}}
 
     .hero-copy{padding:26px; position:relative;}
-    .hero-copy:before,.hero-copy:after{
-      content:"🍪"; position:absolute; opacity:.18; font-size:22px; filter:saturate(1.1);
-    }
+    .hero-copy:before,.hero-copy:after{content:"🍪"; position:absolute; opacity:.18; font-size:22px; filter:saturate(1.1);}
     .hero-copy:before{left:14px; top:14px; transform:rotate(-12deg);}
     .hero-copy:after{right:18px; bottom:18px; transform:rotate(18deg);}
 
@@ -203,23 +190,10 @@
       background:var(--blue);
       box-shadow:0 0 0 6px rgba(0,175,240,.14);
     }
-    h1{
-      margin:14px 0 10px;
-      font-size:44px;line-height:1.02;letter-spacing:-1px;
-    }
-    .sub{
-      margin:0 0 10px;
-      color:var(--muted);
-      line-height:1.58;
-      font-size:16px;
-      max-width:64ch;
-    }
-    .how{
-      display:flex;flex-wrap:wrap;gap:10px;
-      color:var(--muted);
-      font-size:13px;
-      margin-top:10px;
-    }
+    h1{margin:14px 0 10px;font-size:44px;line-height:1.02;letter-spacing:-1px;}
+    .sub{margin:0 0 10px;color:var(--muted);line-height:1.58;font-size:16px;max-width:64ch;}
+
+    .how{display:flex;flex-wrap:wrap;gap:10px;color:var(--muted);font-size:13px;margin-top:10px;}
     .how span{
       display:inline-flex;align-items:center;gap:8px;
       padding:8px 10px;border-radius:999px;
@@ -229,19 +203,14 @@
 
     .cta-row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:14px}
 
-    .social{
-      margin-top:12px;
-      display:flex;gap:10px;flex-wrap:wrap;
-      color:var(--muted);font-size:12px;
-    }
+    .social{margin-top:12px;display:flex;gap:10px;flex-wrap:wrap;color:var(--muted);font-size:12px;}
     .tag{
       padding:8px 10px;border-radius:999px;
       border:1px solid var(--line);
       background:rgba(255,255,255,.75);
-    }
-    .stars{
       display:inline-flex;align-items:center;gap:8px;
-      padding:8px 10px;border-radius:999px;
+    }
+    .tag.badge{
       border:1px solid rgba(0,175,240,.22);
       background:rgba(0,175,240,.08);
       color:var(--ink);
@@ -269,9 +238,7 @@
       border:1px solid rgba(11,27,42,.08);
       background:rgba(255,255,255,.72);
     }
-    .partner{
-      display:flex;gap:8px;align-items:center;flex-wrap:wrap;
-    }
+    .partner{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
     .partner .logo-pill{
       font-size:12px;font-weight:900;
       padding:7px 10px;border-radius:999px;
@@ -316,49 +283,26 @@
       object-fit: cover;
       background: linear-gradient(135deg, rgba(255,105,180,.12), rgba(0,175,240,.10));
     }
-    .visual-caption{
-      margin-top:10px;
-      color:var(--muted);
-      font-size:12px;
-      text-align:center;
-      line-height:1.45;
-    }
+    .visual-caption{margin-top:10px;color:var(--muted);font-size:12px;text-align:center;line-height:1.45;}
 
     /* Benefits */
     .benefits{padding:18px 0 26px}
-    .benefit-grid{
-      display:grid;
-      grid-template-columns:repeat(4,1fr);
-      gap:12px;
-    }
+    .benefit-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
     @media(max-width:980px){.benefit-grid{grid-template-columns:1fr 1fr}}
     @media(max-width:560px){.benefit-grid{grid-template-columns:1fr}}
     .benefit{
-      padding:16px;
-      border-radius:16px;
-      border:1px solid var(--line);
-      background:rgba(255,255,255,.90);
-      box-shadow:var(--shadow2);
-      color:var(--muted);
-      font-size:14px;
-      position:relative;
-      overflow:hidden;
+      padding:16px;border-radius:16px;border:1px solid var(--line);
+      background:rgba(255,255,255,.90);box-shadow:var(--shadow2);
+      color:var(--muted);font-size:14px;position:relative;overflow:hidden;
     }
-    .benefit:after{
-      content:"🍪";
-      position:absolute; right:12px; top:10px;
-      opacity:.14; font-size:22px; transform:rotate(12deg);
-    }
+    .benefit:after{content:"🍪";position:absolute; right:12px; top:10px;opacity:.14; font-size:22px; transform:rotate(12deg);}
     .benefit b{display:block;color:var(--ink);margin-bottom:6px}
     .benefit .emo{font-size:18px;margin-right:6px}
 
     /* Section spacing rhythm */
     .section{padding:26px 0}
     .flow-card{padding:18px}
-    .flow-head{
-      display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;
-      margin-bottom:12px;
-    }
+    .flow-head{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:12px;}
     .flow-head h2{margin:0;font-size:18px;letter-spacing:-.2px}
     .tiny-links{display:flex;gap:12px;flex-wrap:wrap;color:var(--muted);font-size:12px}
     .tiny-links a{border-bottom:1px dotted rgba(11,27,42,.28)}
@@ -434,14 +378,18 @@
       flex:1 1 320px;
     }
 
-    .actions{
-      display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;
-      margin-top:12px;
-    }
+    .actions{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:12px;}
     .right{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end}
 
     .hint{font-size:12px;color:var(--muted);margin-top:4px}
     .err{font-size:12px;color:var(--danger);margin-top:4px}
+    .err:empty{display:none}
+
+    /* Message meta row */
+    .row{display:flex;align-items:center;gap:10px}
+    .between{justify-content:space-between}
+    .small{font-size:12px}
+    .counter{opacity:.8;font-variant-numeric: tabular-nums;white-space:nowrap}
 
     /* FAQ */
     .faq-card{padding:18px}
@@ -451,9 +399,7 @@
     .faq-item b{display:block;margin-bottom:6px}
 
     /* Newsletter */
-    .newsletter{
-      display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:12px;
-    }
+    .newsletter{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:12px;}
     .newsletter input{flex:1 1 220px}
     .newsletter .btn{min-height:48px}
 
@@ -501,25 +447,16 @@
       *{ scroll-behavior:auto !important; }
     }
 
-    /* =======================
-       DEKOFRAU-MOUSE (Hovers)
-    ======================= */
     @media (prefers-reduced-motion: no-preference){
       .card, .benefit, .faq-item, .field, .visual-wrap{
         transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
       }
-
       .card:hover, .benefit:hover, .faq-item:hover, .field:hover, .visual-wrap:hover{
         transform: translateY(-2px);
         box-shadow: 0 18px 60px rgba(11,27,42,.14);
         border-color: rgba(0,175,240,.22);
       }
-
-      .btn.primary{
-        position: relative;
-        overflow: hidden;
-      }
-
+      .btn.primary{position:relative;overflow:hidden;}
       .btn.primary::after{
         content:"";
         position:absolute; inset:-40%;
@@ -530,29 +467,17 @@
         pointer-events:none;
       }
       .btn.primary:hover::after{ opacity: .55; }
-
-      .chip:hover, .step:hover{
-        transform: translateY(-1px);
-      }
+      .chip:hover, .step:hover{ transform: translateY(-1px); }
     }
 
     .trustbar b::after{ content:" 🍪"; opacity:.9; }
     .benefit b::before{ content:"🍪 "; }
 
-    /* =======================
-       PACK-TILES (MERGED)
-    ======================= */
+    /* PACK-TILES */
     select#pack.is-hidden{
       position:absolute; left:-9999px; width:1px; height:1px; opacity:0;
     }
-
-    .pack-tiles{
-      display:grid;
-      grid-template-columns:repeat(3, minmax(0,1fr));
-      gap:10px;
-      margin-top:10px;
-    }
-
+    .pack-tiles{display:grid;grid-template-columns:repeat(3, minmax(0,1fr));gap:10px;margin-top:10px;}
     .pack-tile{
       position:relative;
       text-align:left;
@@ -563,24 +488,12 @@
       cursor:pointer;
       transition:transform .12s ease, box-shadow .12s ease, border-color .12s ease;
     }
-
     .pack-tile:hover{ transform:translateY(-1px); }
-    .pack-tile:focus{
-      outline:2px solid rgba(255,105,180,.28);
-      outline-offset:2px;
-    }
-
+    .pack-tile:focus{ outline:2px solid rgba(255,105,180,.28); outline-offset:2px; }
     .pack-head{ display:flex; justify-content:space-between; align-items:baseline; gap:10px; }
     .pack-name{ font-weight:900; color:var(--ink); letter-spacing:.2px; }
     .pack-price{ font-size:12px; color:var(--muted); }
-
-    .pack-sub{
-      margin-top:6px;
-      font-size:12px;
-      color:var(--muted);
-      line-height:1.25;
-    }
-
+    .pack-sub{ margin-top:6px; font-size:12px; color:var(--muted); line-height:1.25; }
     .pack-badge{
       position:absolute; top:10px; right:10px;
       font-size:11px; font-weight:900;
@@ -590,23 +503,15 @@
       color:var(--ink);
       box-shadow:0 10px 22px rgba(255,105,180,.10);
     }
-
     .pack-tile.is-active{
       border-color:rgba(0,175,240,.45);
       box-shadow:0 14px 38px rgba(0,175,240,.14);
       background:rgba(255,255,255,.95);
     }
-
     .pack-tile.is-popular.is-active{
-      background:
-        linear-gradient(180deg, rgba(255,230,242,.55), rgba(255,255,255,.95));
+      background: linear-gradient(180deg, rgba(255,230,242,.55), rgba(255,255,255,.95));
     }
-
-    .pack-hint{
-      margin-top:8px;
-      font-size:12px;
-      color:var(--muted);
-    }
+    .pack-hint{ margin-top:8px; font-size:12px; color:var(--muted); }
 
     @media (max-width:640px){
       .pack-tiles{ grid-template-columns:1fr; }
@@ -674,10 +579,10 @@
           </div>
 
           <div class="social" aria-label="Status & Social Proof">
-            <span class="tag">Pilot / Early Access</span>
+            <span class="tag badge">Pilot läuft</span>
             <span class="tag">Kein Account im MVP</span>
             <span class="tag">Checkout über Stripe</span>
-            <span class="stars" aria-label="Bewertung">⭐ 4,9/5 · 300 Sendungen</span>
+            <span class="tag">Erste Replies kommen rein – Feedback bisher sehr sweet.</span>
           </div>
         </div>
 
@@ -785,13 +690,21 @@
             </div>
 
             <div class="field" style="margin-top:12px">
-              <label for="msg">Deine Nachricht</label>
+              <label for="msg">
+                Deine Nachricht <span class="hint">(max. <span id="msgMax">500</span> Zeichen)</span>
+              </label>
+
               <textarea id="msg"
                         aria-describedby="msgHint msgErr"
                         aria-invalid="false"
                         maxlength="500"
                         placeholder="Kurz, klar, fühlbar…"></textarea>
-              <div id="msgHint" class="hint">Kurz & klar. Max. 500 Zeichen.</div>
+
+              <div class="row between small" style="margin-top:6px">
+                <div id="msgHint" class="hint"></div>
+                <div class="counter"><span id="msgCount">0</span>/<span id="msgMax2">500</span></div>
+              </div>
+
               <div id="msgErr" class="err" role="alert" aria-live="polite"></div>
             </div>
 
@@ -808,21 +721,32 @@
             <div class="grid2">
               <div class="field">
                 <label for="toName">Empfängername</label>
-                <input id="toName" placeholder="z.B. Marlon" autocomplete="given-name" />
+                <input id="toName" placeholder="z.B. Marlon" autocomplete="name" />
               </div>
               <div class="field">
                 <label for="fromName">Absendername</label>
                 <input id="fromName" placeholder="z.B. Schmidti" autocomplete="name" />
               </div>
+
               <div class="field" style="grid-column:1/-1">
-                <label for="toAddr">Straße & Hausnummer, PLZ Ort</label>
-                <input id="toAddr"
-                       placeholder="Musterstraße 12, 12345 Berlin"
-                       autocomplete="street-address"
-                       inputmode="text"
-                       aria-describedby="toAddrHint toAddrErr"
-                       aria-invalid="false" />
-                <div id="toAddrHint" class="hint">Beispiel: Musterstraße 12, 12345 Berlin</div>
+                <label>Empfängeradresse</label>
+
+                <div class="grid2">
+                  <div>
+                    <label for="toStreet" style="margin-top:0">Straße & Hausnr.</label>
+                    <input id="toStreet" placeholder="Musterstraße 12" autocomplete="street-address" />
+                  </div>
+                  <div>
+                    <label for="toZip" style="margin-top:0">PLZ</label>
+                    <input id="toZip" placeholder="12345" inputmode="numeric" autocomplete="postal-code" />
+                  </div>
+                  <div style="grid-column:1/-1">
+                    <label for="toCity" style="margin-top:0">Ort</label>
+                    <input id="toCity" placeholder="Berlin" autocomplete="address-level2" />
+                  </div>
+                </div>
+
+                <div id="toAddrHint" class="hint">Beispiel: Musterstraße 12 · 12345 · Berlin</div>
                 <div id="toAddrErr" class="err" role="alert" aria-live="polite"></div>
               </div>
             </div>
@@ -1006,6 +930,7 @@
   steps.forEach(s=>{
     s.addEventListener("click", () => {
       const step = +s.dataset.step;
+      if (step === 2 && !validateMessage()) return;
       if (step === 3 && (!validateMessage() || !validateAddressDE())) return;
       go(step);
     });
@@ -1025,6 +950,7 @@
     if (e.key === "ArrowRight") {
       const next = all[(idx + 1) % all.length];
       const step = +next.dataset.step;
+      if (step === 2 && !validateMessage()) return;
       if (step === 3 && (!validateMessage() || !validateAddressDE())) return;
       next.focus();
       go(step);
@@ -1035,6 +961,7 @@
     } else if (e.key === "Enter" || e.key === " ") {
       e.preventDefault();
       const step = +active.dataset.step;
+      if (step === 2 && !validateMessage()) return;
       if (step === 3 && (!validateMessage() || !validateAddressDE())) return;
       go(step);
     }
@@ -1069,7 +996,9 @@
       const nextIdx = dx < 0 ? (idx+1)%all.length : (idx-1+all.length)%all.length;
       const step = +all[nextIdx].dataset.step;
 
-      if(step === 3 && (!validateMessage() || !validateAddressDE())) return;
+      if (step === 2 && !validateMessage()) return;
+      if (step === 3 && (!validateMessage() || !validateAddressDE())) return;
+
       go(step);
       all[nextIdx].focus?.();
     }, {passive:true});
@@ -1079,6 +1008,7 @@
   document.querySelectorAll(".chip").forEach(ch=>{
     ch.addEventListener("click", ()=>{
       if(msg) msg.value = ch.dataset.msg;
+      syncMsgUI();
       updateSummaries();
     });
   });
@@ -1088,13 +1018,16 @@
   const back2 = document.getElementById("back2");
   const back3 = document.getElementById("back3");
 
-  const toAddr = document.getElementById("toAddr");
   const sum1 = document.getElementById("sum1");
   const sum2 = document.getElementById("sum2");
   const sum3 = document.getElementById("sum3");
   const pack = document.getElementById("pack");
   const toName = document.getElementById("toName");
   const fromName = document.getElementById("fromName");
+
+  const toStreet = document.getElementById("toStreet");
+  const toZip    = document.getElementById("toZip");
+  const toCity   = document.getElementById("toCity");
 
   function esc(s){
     return String(s||"")
@@ -1110,19 +1043,53 @@
     return 29.90;
   }
 
+  /* =======================
+     MESSAGE LIMIT + COUNTER (Single Source of Truth)
+  ======================= */
+  const msgCount = document.getElementById("msgCount");
+  const msgMax = document.getElementById("msgMax");
+  const msgMax2 = document.getElementById("msgMax2");
+  const msgErr = document.getElementById("msgErr");
+  const msgHint = document.getElementById("msgHint");
+
+  const LIMIT = 500;
+  if(msg){
+    msg.maxLength = LIMIT;
+    if(msgMax) msgMax.textContent = LIMIT;
+    if(msgMax2) msgMax2.textContent = LIMIT;
+  }
+
+  function syncMsgUI(){
+    if(!msg) return;
+    const len = msg.value.length;
+    msgCount && (msgCount.textContent = len);
+
+    const remaining = LIMIT - len;
+    if(msgHint){
+      msgHint.textContent = remaining <= 50 ? `Noch ${remaining} Zeichen übrig.` : "";
+    }
+
+    if(msgErr) msgErr.textContent = "";
+  }
+
   function updateSummaries(){
     const p = pack ? pack.value : "Custom";
     const price = priceFor(p);
     const m = msg ? msg.value.trim() : "";
+
     sum1 && (sum1.innerHTML =
       `<b>Preview:</b> Paket <b>${esc(p)}</b> · <span style="color:var(--muted)">${price.toFixed(2)} €</span><br/>„${esc(m||"…")}“`
     );
 
     const tn = toName ? toName.value.trim() : "";
     const fn = fromName ? fromName.value.trim() : "";
-    const ta = toAddr ? toAddr.value.trim() : "";
+    const st = toStreet ? toStreet.value.trim() : "";
+    const zi = toZip ? toZip.value.trim() : "";
+    const ci = toCity ? toCity.value.trim() : "";
+    const addrLine = [st, zi, ci].filter(Boolean).join(" · ");
+
     sum2 && (sum2.innerHTML =
-      `<b>Check:</b> Empfänger <b>${esc(tn||"—")}</b> · Absender <b>${esc(fn||"—")}</b><br/>Adresse: ${esc(ta||"—")}`
+      `<b>Check:</b> Empfänger <b>${esc(tn||"—")}</b> · Absender <b>${esc(fn||"—")}</b><br/>Adresse: ${esc(addrLine||"—")}`
     );
 
     const ship = (p === "Premium") ? 0 : 2.90;
@@ -1144,37 +1111,46 @@
   const updateSummariesDebounced = debounce(updateSummaries, 120);
 
   function validateMessage(){
-    const v = (msg?.value || "").trim();
-    const err = document.getElementById("msgErr");
+    if(!msg) return false;
+    const v = (msg.value || "").trim();
     if (!v || v.length < 3){
-      msg?.setAttribute("aria-invalid","true");
-      err && (err.textContent = "Bitte eine kurze Nachricht (mind. 3 Zeichen).");
-      msg?.focus();
+      msg.setAttribute("aria-invalid","true");
+      msgErr && (msgErr.textContent = "Bitte eine kurze Nachricht (mind. 3 Zeichen).");
+      msg.focus();
       return false;
     }
-    msg?.setAttribute("aria-invalid","false");
-    err && (err.textContent = "");
+    msg.setAttribute("aria-invalid","false");
+    msgErr && (msgErr.textContent = "");
     return true;
   }
 
   function validateAddressDE(){
-    const v = (toAddr?.value || "").trim();
     const err = document.getElementById("toAddrErr");
 
-    const re = /.+\s+\d+.*[, ]\s*\d{5}\s+.+/;
-    if (!re.test(v)){
-      toAddr?.setAttribute("aria-invalid","true");
-      err && (err.textContent = "Adresse unvollständig. Beispiel: Musterstraße 12, 12345 Berlin");
-      toAddr?.focus();
+    const st = (toStreet?.value || "").trim();
+    const zi = (toZip?.value || "").trim();
+    const ci = (toCity?.value || "").trim();
+
+    const ok = (st.length >= 3) && /^\d{5}$/.test(zi) && (ci.length >= 2);
+
+    if(!ok){
+      err && (err.textContent = "Adresse unvollständig. Beispiel: Musterstraße 12 · 12345 · Berlin");
+      toStreet?.focus();
       return false;
     }
-    toAddr?.setAttribute("aria-invalid","false");
     err && (err.textContent = "");
     return true;
   }
 
+  // PLZ: nur 5 Ziffern
+  toZip?.addEventListener("input", (e)=>{
+    e.target.value = e.target.value.replace(/\D/g,"").slice(0,5);
+  });
+
   next1 && next1.addEventListener("click", ()=>{
+    syncMsgUI();
     updateSummaries();
+    if(!validateMessage()) return;
     go(2);
     document.getElementById("toName")?.focus();
   });
@@ -1182,6 +1158,7 @@
   back2 && back2.addEventListener("click", ()=>{ updateSummaries(); go(1); });
 
   next2 && next2.addEventListener("click", ()=>{
+    syncMsgUI();
     updateSummaries();
     const ok = validateMessage() && validateAddressDE();
     if(!ok) return;
@@ -1190,18 +1167,22 @@
 
   back3 && back3.addEventListener("click", ()=>{ updateSummaries(); go(2); });
 
-  [pack, msg, toName, fromName, toAddr].forEach(el=>{
-    el && el.addEventListener("input", updateSummariesDebounced);
-    el && el.addEventListener("change", updateSummariesDebounced);
+  [pack, msg, toName, fromName, toStreet, toZip, toCity].forEach(el=>{
+    el && el.addEventListener("input", ()=>{
+      if(el === msg) syncMsgUI();
+      updateSummariesDebounced();
+    });
+    el && el.addEventListener("change", ()=>{
+      if(el === msg) syncMsgUI();
+      updateSummariesDebounced();
+    });
   });
 
-  msg?.addEventListener("blur", validateMessage);
-  toAddr?.addEventListener("blur", validateAddressDE);
+  msg?.addEventListener("blur", ()=>{ syncMsgUI(); validateMessage(); });
+  [toStreet, toZip, toCity].forEach(el=> el?.addEventListener("blur", validateAddressDE));
 
   /* =======================
      PACK-TILES (MERGED INIT)
-     - nutzt #pack als Source of Truth
-     - triggert change -> Summaries + evtl. andere Listener
   ======================= */
   (function initPackTiles(){
     const packEl = document.getElementById("pack");
@@ -1226,7 +1207,6 @@
 
       if(hintEl) hintEl.textContent = labelMap[p] || labelMap.Custom;
 
-      // feuert deine bestehenden change-Listener (Summaries etc.)
       packEl.dispatchEvent(new Event("change", { bubbles:true }));
     }
 
@@ -1268,6 +1248,7 @@
 
   go(1);
   if(payBtn) payBtn.href = STRIPE_PAYMENT_LINK;
+  syncMsgUI();
   updateSummaries();
 
   /* =======================

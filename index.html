@@ -14,29 +14,25 @@
   <meta property="og:description" content="Schicke süße Botschaften mit direkter QR-Antwort. Reply-Keks in 3 Klicks – kein Account." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://infojanschmidt-debug.github.io/keksms/" />
-  <!-- OG fallback: lege ein echtes Bild ins Repo: /assets/img/og.jpg -->
   <meta property="og:image" content="https://infojanschmidt-debug.github.io/keksms/assets/img/og.jpg" />
   <meta name="twitter:card" content="summary_large_image" />
 
-  <!-- Font (rund, soft, deko) -->
+  <!-- Font -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;800&display=swap" rel="stylesheet">
 
   <style>
     :root{
-      /* clean base */
       --bg:#ffffff;
       --ink:#0b1b2a;
       --muted:#4b5b6b;
       --line: rgba(11,27,42,.10);
 
-      /* deko-chichi sky */
       --sky1:#ffe6f2;
       --sky2:#ffd3ea;
       --sky3:#fff4ea;
 
-      /* pink accents */
       --pink:#ff4fa3;
       --pink2:#ff7cc5;
       --pinkSoft: rgba(255,79,163,.14);
@@ -64,11 +60,10 @@
         linear-gradient(180deg, var(--sky1), var(--sky2) 45%, var(--sky3));
       overflow-x:hidden;
     }
-
     a{ color:inherit; }
     .wrap{ width:min(var(--max), calc(100% - 40px)); margin:0 auto; }
 
-    /* top bar */
+    /* sticky header */
     header{
       position:sticky; top:0; z-index:20;
       backdrop-filter: blur(10px);
@@ -80,9 +75,7 @@
       padding:14px 0;
       gap:12px;
     }
-    .brand{
-      display:flex; align-items:center; gap:10px; font-weight:800; letter-spacing:.2px;
-    }
+    .brand{ display:flex; align-items:center; gap:10px; font-weight:800; letter-spacing:.2px; }
     .logo{
       width:42px; height:42px; border-radius:14px;
       background:
@@ -92,6 +85,7 @@
       box-shadow: 0 10px 20px rgba(201,139,95,.25);
       position:relative;
       overflow:hidden;
+      transform: translateZ(0);
     }
     .logo:after{
       content:"";
@@ -104,10 +98,8 @@
         -26px 22px 0 rgba(120,60,20,.20);
     }
     .brand small{ display:block; font-weight:700; color:var(--muted); margin-top:1px; }
-    .nav{
-      display:flex; align-items:center; gap:14px;
-      color:var(--muted);
-    }
+
+    .nav{ display:flex; align-items:center; gap:14px; color:var(--muted); }
     .nav a{
       text-decoration:none;
       font-weight:700;
@@ -116,9 +108,8 @@
       transition:.15s;
     }
     .nav a:hover{ background: rgba(255,255,255,.65); color:var(--ink); }
-    .ctaTop{
-      display:flex; align-items:center; gap:10px;
-    }
+
+    .ctaTop{ display:flex; align-items:center; gap:10px; }
     .btn{
       border:0; cursor:pointer;
       font-weight:800;
@@ -226,17 +217,8 @@
     .ico svg{ width:18px; height:18px; opacity:.85; }
 
     /* hero media */
-    .heroMedia{
-      padding:0;
-      overflow:hidden;
-      position:relative;
-      min-height: 340px;
-    }
-    .heroMedia .mediaInner{
-      height:100%;
-      display:flex;
-      flex-direction:column;
-    }
+    .heroMedia{ padding:0; overflow:hidden; position:relative; min-height: 340px; }
+    .heroMedia .mediaInner{ height:100%; display:flex; flex-direction:column; }
     .heroMedia img, .heroMedia video{
       width:100%;
       height:100%;
@@ -248,10 +230,7 @@
         radial-gradient(700px 350px at 30% 10%, rgba(255,255,255,.8), rgba(255,255,255,0)),
         linear-gradient(135deg, rgba(255,79,163,.20), rgba(201,139,95,.18));
     }
-    .mediaBadge{
-      position:absolute; left:14px; bottom:14px;
-      display:flex; gap:10px; flex-wrap:wrap;
-    }
+    .mediaBadge{ position:absolute; left:14px; bottom:14px; display:flex; gap:10px; flex-wrap:wrap; }
     .badge{
       background: rgba(255,255,255,.70);
       border: 1px solid rgba(255,255,255,.85);
@@ -264,23 +243,13 @@
 
     /* sections */
     section{ padding: 18px 0; }
-    .grid3{
-      display:grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap:14px;
-    }
-    .mini{
-      padding:16px;
-    }
+    .grid3{ display:grid; grid-template-columns: repeat(3, 1fr); gap:14px; }
+    .mini{ padding:16px; }
     .mini h3{ margin:0 0 6px; font-size:16px; letter-spacing:-.2px; }
     .mini p{ margin:0; color:var(--muted); font-weight:700; line-height:1.45; }
 
-    /* Story strip with images/videos */
-    .storyStrip{
-      display:grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap:14px;
-    }
+    /* Story strip */
+    .storyStrip{ display:grid; grid-template-columns: repeat(3, 1fr); gap:14px; }
     .storyCard{
       overflow:hidden;
       border-radius: var(--radius);
@@ -298,34 +267,19 @@
         radial-gradient(650px 320px at 30% 10%, rgba(255,255,255,.75), rgba(255,255,255,0)),
         linear-gradient(135deg, rgba(255,79,163,.16), rgba(201,139,95,.14));
     }
-    .storyCap{
-      padding: 12px 14px 14px;
-    }
+    .storyCap{ padding: 12px 14px 14px; }
     .storyCap strong{ display:block; font-size:14px; }
     .storyCap span{ display:block; margin-top:4px; color:var(--muted); font-weight:700; font-size:13px; }
 
     /* Flow */
-    .flow{
-      display:grid;
-      grid-template-columns: 1fr;
-      gap:14px;
-    }
-    .flowHead{
-      display:flex; align-items:flex-end; justify-content:space-between; gap:12px;
-      padding: 0 4px;
-    }
+    .flow{ display:grid; grid-template-columns: 1fr; gap:14px; }
+    .flowHead{ display:flex; align-items:flex-end; justify-content:space-between; gap:12px; padding: 0 4px; }
     .flowHead h2{ margin:0; font-size: 22px; letter-spacing:-.2px; }
     .flowHead p{ margin:0; color:var(--muted); font-weight:700; }
-
-    .steps{
-      display:flex; gap:10px; flex-wrap:wrap;
-    }
+    .steps{ display:flex; gap:10px; flex-wrap:wrap; }
     .step{
-      font-weight:900;
-      font-size: 12px;
-      color: var(--muted);
-      padding: 8px 10px;
-      border-radius: 999px;
+      font-weight:900; font-size: 12px; color: var(--muted);
+      padding: 8px 10px; border-radius: 999px;
       background: rgba(255,255,255,.65);
       border: 1px solid rgba(255,255,255,.80);
     }
@@ -336,14 +290,10 @@
       box-shadow: 0 14px 26px rgba(255,79,163,.22);
     }
 
-    .panel{
-      display:none;
-      padding:18px;
-    }
+    .panel{ display:none; padding:18px; }
     .panel.active{ display:block; }
 
     .formRow{ display:grid; grid-template-columns: 1fr 1fr; gap:12px; }
-    .formRow3{ display:grid; grid-template-columns: 1fr 1fr 1fr; gap:12px; }
     label.lbl{ display:block; font-weight:900; margin: 10px 0 8px; }
     input, textarea, select{
       width:100%;
@@ -356,25 +306,12 @@
       box-shadow: 0 10px 18px rgba(0,0,0,.06);
     }
     textarea{ min-height: 120px; resize: vertical; }
-
-    .hint{
-      margin: 8px 0 0;
-      color: var(--muted);
-      font-weight:700;
-      font-size: 13px;
-      line-height:1.4;
-    }
+    .hint{ margin: 8px 0 0; color: var(--muted); font-weight:700; font-size: 13px; line-height:1.4; }
 
     /* Pack tiles */
-    .pack-tiles{
-      display:grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap:12px;
-      margin-top: 10px;
-    }
+    .pack-tiles{ display:grid; grid-template-columns: repeat(3, 1fr); gap:12px; margin-top: 10px; }
     .packTile{
-      text-align:left;
-      padding:14px;
+      text-align:left; padding:14px;
       border-radius: 18px;
       border: 1px solid rgba(255,79,163,.18);
       background: rgba(255,255,255,.70);
@@ -394,45 +331,27 @@
         linear-gradient(135deg, rgba(255,79,163,.16), rgba(255,124,197,.10)),
         rgba(255,255,255,.70);
     }
-    .packTile .t{
-      display:flex; align-items:center; justify-content:space-between; gap:10px;
-      font-weight:1000;
-    }
+    .packTile .t{ display:flex; align-items:center; justify-content:space-between; gap:10px; font-weight:1000; }
     .packTile .t b{ font-size:16px; }
     .packTile .t em{
-      font-style:normal;
-      font-size:12px;
-      padding:6px 10px;
-      border-radius:999px;
+      font-style:normal; font-size:12px;
+      padding:6px 10px; border-radius:999px;
       background: rgba(255,79,163,.12);
       border: 1px solid rgba(255,79,163,.18);
-      color: #7a2a54;
-      font-weight:1000;
+      color: #7a2a54; font-weight:1000;
       white-space:nowrap;
     }
     .packTile .d{ margin-top:8px; color:var(--muted); font-weight:800; font-size:13px; line-height:1.35; }
-    .packTile .k{
-      margin-top:10px;
-      display:flex; gap:8px; flex-wrap:wrap;
-    }
+    .packTile .k{ margin-top:10px; display:flex; gap:8px; flex-wrap:wrap; }
     .tag{
-      font-size:12px;
-      font-weight:900;
-      color: #6b3a56;
+      font-size:12px; font-weight:900; color: #6b3a56;
       background: rgba(255,255,255,.70);
       border: 1px solid rgba(255,255,255,.85);
-      padding:6px 10px;
-      border-radius: 999px;
+      padding:6px 10px; border-radius: 999px;
     }
 
-    /* “Keks gestalten” preview box */
-    .cookiePlay{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap:14px;
-      margin-top: 12px;
-      align-items:stretch;
-    }
+    /* Cookie play */
+    .cookiePlay{ display:grid; grid-template-columns: 1fr 1fr; gap:14px; margin-top: 12px; align-items:stretch; }
     .cookieStage{
       border-radius: var(--radius);
       border: 1px solid rgba(255,255,255,.85);
@@ -478,17 +397,13 @@
         -46px 62px 0 rgba(120,60,20,.16),
         -70px 40px 0 rgba(120,60,20,.14);
     }
-    .sprinkles{
-      position:absolute; inset:0;
-      pointer-events:none;
-    }
+    .sprinkles{ position:absolute; inset:0; pointer-events:none; }
     .spr{
       position:absolute;
       width:10px; height:4px;
       border-radius: 99px;
       background: rgba(255,79,163,.65);
       transform: rotate(18deg);
-      filter: blur(.1px);
       opacity: .0;
       transition: opacity .2s;
     }
@@ -501,10 +416,7 @@
       box-shadow: var(--shadowSoft);
       padding: 14px;
     }
-    .ctrlRow{
-      display:flex; gap:10px; flex-wrap:wrap;
-      margin-top: 10px;
-    }
+    .ctrlRow{ display:flex; gap:10px; flex-wrap:wrap; margin-top: 10px; }
     .smallBtn{
       border: 1px solid rgba(255,79,163,.22);
       background: rgba(255,79,163,.10);
@@ -517,7 +429,6 @@
     }
     .smallBtn:hover{ transform: translateY(-1px); background: rgba(255,79,163,.14); }
 
-    /* Bottom nav buttons */
     .panelNav{
       display:flex;
       justify-content:space-between;
@@ -535,37 +446,14 @@
       box-shadow: var(--shadowSoft);
       padding: 12px 14px;
     }
-    summary{
-      font-weight:1000;
-      cursor:pointer;
-      list-style:none;
-    }
+    summary{ font-weight:1000; cursor:pointer; list-style:none; }
     summary::-webkit-details-marker{ display:none; }
-    details p{
-      margin: 10px 0 0;
-      color: var(--muted);
-      font-weight:700;
-      line-height:1.45;
-    }
+    details p{ margin: 10px 0 0; color: var(--muted); font-weight:700; line-height:1.45; }
 
-    /* Footer sections */
-    footer{
-      padding: 28px 0 50px;
-      color: var(--muted);
-    }
-    .footGrid{
-      display:grid;
-      grid-template-columns: 1.2fr .8fr;
-      gap:14px;
-      align-items:start;
-    }
-    .footCard{
-      padding:16px;
-    }
-    .footLinks{
-      display:flex; flex-wrap:wrap; gap:10px;
-      margin-top: 10px;
-    }
+    footer{ padding: 28px 0 50px; color: var(--muted); }
+    .footGrid{ display:grid; grid-template-columns: 1.2fr .8fr; gap:14px; align-items:start; }
+    .footCard{ padding:16px; }
+    .footLinks{ display:flex; flex-wrap:wrap; gap:10px; margin-top: 10px; }
     .footLinks a{
       text-decoration:none;
       padding:10px 12px;
@@ -576,11 +464,7 @@
     }
 
     /* Cookie consent */
-    .consent{
-      position:fixed; left:14px; right:14px; bottom:14px;
-      z-index:50;
-      display:none;
-    }
+    .consent{ position:fixed; left:14px; right:14px; bottom:14px; z-index:50; display:none; }
     .consent.show{ display:block; }
     .consentBox{
       width:min(820px, 100%);
@@ -592,16 +476,8 @@
       padding: 14px;
       backdrop-filter: blur(10px);
     }
-    .consentGrid{
-      display:grid;
-      grid-template-columns: 1fr auto;
-      gap:12px;
-      align-items:center;
-    }
-    .consentTitle{
-      font-weight:1000;
-      margin:0;
-    }
+    .consentGrid{ display:grid; grid-template-columns: 1fr auto; gap:12px; align-items:center; }
+    .consentTitle{ font-weight:1000; margin:0; }
     .consentText{
       margin:6px 0 0;
       color: var(--muted);
@@ -617,12 +493,145 @@
       border-bottom: 2px dotted rgba(255,79,163,.45);
     }
 
-    /* Hero animation canvas */
-    #heroFx{
+    /* Hero fx canvas */
+    #heroFx{ position:absolute; inset:0; pointer-events:none; z-index:2; }
+
+    /* ===== Cookie Cursor (DOM follower) ===== */
+    .cookieCursor{
+      position: fixed;
+      left: 0; top: 0;
+      width: 34px; height: 34px;
+      border-radius: 999px;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%,-50%) scale(0.0);
+      transition: transform 260ms ease, opacity 260ms ease;
+      opacity: 0;
+      background:
+        radial-gradient(circle at 35% 30%, rgba(255,255,255,.80), rgba(255,255,255,0) 60%),
+        linear-gradient(135deg, var(--cookie2), var(--cookie));
+      box-shadow: 0 16px 26px rgba(201,139,95,.25);
+      will-change: transform,left,top;
+    }
+    .cookieCursor:after{
+      content:"";
+      position:absolute; inset:10px 10px auto auto;
+      width:7px; height:7px; border-radius:99px;
+      background: rgba(120,60,20,.22);
+      box-shadow:
+        -14px 6px 0 rgba(120,60,20,.20),
+        -8px 14px 0 rgba(120,60,20,.16),
+        -18px 18px 0 rgba(120,60,20,.18);
+    }
+    body.cursorOn *{ cursor: none !important; }
+    body.cursorOn .cookieCursor{
+      opacity: 1;
+      transform: translate(-50%,-50%) scale(1);
+    }
+    @media (pointer: coarse){
+      body.cursorOn *{ cursor: auto !important; }
+      .cookieCursor{ display:none !important; }
+    }
+
+    /* ===== Click Intro Overlay: roll -> bite -> QR ===== */
+    .introOverlay{
+      position: fixed; inset: 0;
+      z-index: 9998;
+      pointer-events: none;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255,255,255,.45);
+      backdrop-filter: blur(6px);
+    }
+    .introOverlay.show{ display:flex; }
+    .introStage{
+      width: min(520px, calc(100% - 40px));
+      height: 220px;
+      border-radius: 26px;
+      border: 1px solid rgba(255,255,255,.85);
+      background: rgba(255,255,255,.70);
+      box-shadow: 0 26px 90px rgba(0,0,0,.20);
+      position: relative;
+      overflow: hidden;
+    }
+    .introCookie{
+      position: absolute;
+      left: -120px;
+      top: 50%;
+      width: 92px; height: 92px;
+      margin-top: -46px;
+      border-radius: 999px;
+      background:
+        radial-gradient(circle at 35% 30%, rgba(255,255,255,.80), rgba(255,255,255,0) 60%),
+        linear-gradient(135deg, var(--cookie2), var(--cookie));
+      box-shadow: 0 20px 40px rgba(201,139,95,.28);
+      transform: rotate(0deg);
+    }
+    .introCookie:after{
+      content:"";
+      position:absolute; inset:18px 18px auto auto;
+      width:10px; height:10px; border-radius:99px;
+      background: rgba(120,60,20,.22);
+      box-shadow:
+        -22px 10px 0 rgba(120,60,20,.18),
+        -12px 26px 0 rgba(120,60,20,.20),
+        -28px 38px 0 rgba(120,60,20,.16);
+    }
+    .biteMask{
       position:absolute;
-      inset:0;
-      pointer-events:none;
-      z-index:2;
+      right: 8px; top: 10px;
+      width: 44px; height: 44px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.85);
+      transform: scale(0);
+      transform-origin: center;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.65);
+    }
+    .introQR{
+      position:absolute;
+      right: 18px; bottom: 18px;
+      width: 72px; height: 72px;
+      border-radius: 16px;
+      background: rgba(255,255,255,.85);
+      border: 1px solid rgba(11,27,42,.10);
+      display:flex; align-items:center; justify-content:center;
+      opacity: 0;
+      transform: translateY(10px) scale(.96);
+      box-shadow: 0 18px 40px rgba(0,0,0,.12);
+    }
+    .introText{
+      position:absolute;
+      left: 18px; bottom: 18px;
+      font-weight: 1000;
+      color: #6b3a56;
+      background: rgba(255,255,255,.70);
+      border: 1px solid rgba(255,255,255,.85);
+      padding: 10px 12px;
+      border-radius: 999px;
+      box-shadow: 0 14px 28px rgba(0,0,0,.10);
+    }
+
+    @keyframes rollIn {
+      0%   { left:-120px; transform: rotate(0deg); }
+      70%  { left: 300px; transform: rotate(520deg); }
+      100% { left: 310px; transform: rotate(580deg); }
+    }
+    @keyframes bitePop {
+      0% { transform: scale(0); }
+      60%{ transform: scale(1.0); }
+      100%{ transform: scale(0.0); }
+    }
+    @keyframes qrShow {
+      0% { opacity:0; transform: translateY(10px) scale(.96); }
+      100% { opacity:1; transform: translateY(0) scale(1); }
+    }
+
+    @media (prefers-reduced-motion: reduce){
+      #heroFx{ display:none !important; }
+      .introOverlay{ display:none !important; }
+      body.cursorOn *{ cursor:auto !important; }
+      .cookieCursor{ display:none !important; }
     }
 
     /* Mobile */
@@ -635,18 +644,44 @@
       .faqGrid{ grid-template-columns: 1fr; }
       .footGrid{ grid-template-columns: 1fr; }
       .cookiePlay{ grid-template-columns: 1fr; }
-      .formRow, .formRow3{ grid-template-columns: 1fr; }
+      .formRow{ grid-template-columns: 1fr; }
 
-      /* Mobile consent short mode */
       .consentText{ display:none; }
       .consentGrid{ grid-template-columns: 1fr; }
       .consentActions{ justify-content:stretch; }
       .consentActions .btn{ width:100%; }
+
+      @keyframes rollIn {
+        0%   { left:-120px; transform: rotate(0deg); }
+        70%  { left: 220px; transform: rotate(520deg); }
+        100% { left: 230px; transform: rotate(580deg); }
+      }
     }
   </style>
 </head>
 
 <body>
+  <!-- Cursor -->
+  <div class="cookieCursor" id="cookieCursor" aria-hidden="true"></div>
+
+  <!-- Click Intro Overlay -->
+  <div class="introOverlay" id="introOverlay" aria-hidden="true">
+    <div class="introStage">
+      <div class="introCookie" id="introCookie">
+        <div class="biteMask" id="biteMask"></div>
+      </div>
+
+      <div class="introQR" id="introQR">
+        <!-- simple QR icon (svg) -->
+        <svg viewBox="0 0 24 24" width="44" height="44" fill="none" stroke="currentColor" stroke-width="2" opacity=".85">
+          <path d="M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3z"/>
+          <path d="M14 14h3v3h-3zM19 14h2v2h-2zM14 19h2v2h-2zM18 18h3v3h-3z"/>
+        </svg>
+      </div>
+      <div class="introText">Keks rollt rein → Biss → QR ✨</div>
+    </div>
+  </div>
+
   <header>
     <div class="wrap top">
       <div class="brand">
@@ -671,7 +706,6 @@
   </header>
 
   <main>
-    <!-- HERO -->
     <section class="hero">
       <div class="wrap heroGrid">
         <div class="card heroText">
@@ -721,14 +755,11 @@
           </div>
         </div>
 
-        <!-- HERO MEDIA: nutze bevorzugt ein Video (hands + cookie + qr scan), sonst img fallback -->
         <div class="card heroMedia" aria-label="Hero Bild/Video">
           <div class="mediaInner">
-            <!-- Wenn du ein Hero-Video hast: /assets/video/hero.mp4 -->
             <video id="heroVideo" autoplay muted playsinline loop preload="metadata" poster="assets/img/hero.jpg">
               <source src="assets/video/hero.mp4" type="video/mp4">
             </video>
-            <!-- Fallback Bild (wird angezeigt, falls Video fehlt/blocked) -->
             <img id="heroImg" src="assets/img/hero.jpg" alt="Hände halten einen Keks, QR wird gescannt, Geschenk-Mood" loading="eager" decoding="async" style="display:none;" />
           </div>
           <div class="mediaBadge" aria-hidden="true">
@@ -740,7 +771,6 @@
       </div>
     </section>
 
-    <!-- BENEFITS -->
     <section>
       <div class="wrap grid3">
         <div class="card mini">
@@ -758,11 +788,9 @@
       </div>
     </section>
 
-    <!-- STORY STRIP: hier bindest du deine 3 Bilder/Kurzvideos ein -->
     <section>
       <div class="wrap storyStrip" aria-label="Story Bilder">
         <article class="storyCard">
-          <!-- entweder img oder video -->
           <img src="assets/img/story-1.jpg" alt="Keks + Karte in der Hand, pinker Himmel" loading="lazy" decoding="async" />
           <div class="storyCap">
             <strong>Geschenk-Moment</strong>
@@ -771,7 +799,7 @@
         </article>
 
         <article class="storyCard">
-          <video muted playsinline loop preload="metadata" poster="assets/img/story-2.jpg">
+          <video id="storyVideo2" muted playsinline loop preload="metadata" poster="assets/img/story-2.jpg">
             <source src="assets/video/story-2.mp4" type="video/mp4">
           </video>
           <div class="storyCap">
@@ -790,7 +818,6 @@
       </div>
     </section>
 
-    <!-- FLOW -->
     <section id="flow">
       <div class="wrap flow">
         <div class="flowHead">
@@ -808,7 +835,6 @@
         </div>
 
         <div class="card">
-          <!-- PANEL 1 -->
           <div class="panel active" id="p1">
             <h3 style="margin:0 0 6px;">1) Message schreiben</h3>
             <p class="hint" style="margin-top:0;">Kurz, sweet, ehrlich. Bis 500 Zeichen.</p>
@@ -818,7 +844,6 @@
             <div class="hint"><span id="count">0</span>/500 Zeichen</div>
 
             <label class="lbl" for="pack">Paket</label>
-            <!-- Source of Truth bleibt drin (Tiles steuern nur den Wert) -->
             <select id="pack" name="pack">
               <option value="Quick">Quick</option>
               <option value="Custom" selected>Custom</option>
@@ -855,7 +880,6 @@
             </div>
           </div>
 
-          <!-- PANEL 2 -->
           <div class="panel" id="p2">
             <h3 style="margin:0 0 6px;">2) Keks veredeln</h3>
             <p class="hint" style="margin-top:0;">Hier ist der „Spiel-Faktor“: rumklicken, ausprobieren, hübsch machen.</p>
@@ -895,7 +919,6 @@
             </div>
           </div>
 
-          <!-- PANEL 3 -->
           <div class="panel" id="p3">
             <h3 style="margin:0 0 6px;">3) Extras</h3>
             <p class="hint" style="margin-top:0;">Optional. Kein Overkill. Nur das, was wirklich kickt.</p>
@@ -936,7 +959,6 @@
             </div>
           </div>
 
-          <!-- PANEL 4 -->
           <div class="panel" id="p4">
             <h3 style="margin:0 0 6px;">4) Adresse</h3>
             <p class="hint" style="margin-top:0;">Sauber, klar, damit die Post nicht rumzickt.</p>
@@ -972,7 +994,6 @@
             </div>
           </div>
 
-          <!-- PANEL 5 -->
           <div class="panel" id="p5">
             <h3 style="margin:0 0 6px;">5) Bezahlen</h3>
             <p class="hint" style="margin-top:0;">Du wirst zu Stripe weitergeleitet. Wir speichern nur das Nötigste für deinen Keks-Entwurf.</p>
@@ -980,9 +1001,7 @@
             <div class="grid3">
               <div class="card mini">
                 <h3>Dein Entwurf</h3>
-                <p class="hint" id="summary" style="margin:8px 0 0;">
-                  —
-                </p>
+                <p class="hint" id="summary" style="margin:8px 0 0;">—</p>
               </div>
               <div class="card mini">
                 <h3>Reply-Code</h3>
@@ -1005,7 +1024,6 @@
       </div>
     </section>
 
-    <!-- FAQ -->
     <section id="faq">
       <div class="wrap">
         <h2 style="margin:0 0 12px;">FAQ</h2>
@@ -1030,7 +1048,6 @@
       </div>
     </section>
 
-    <!-- Footer sections as anchors -->
     <section id="versand">
       <div class="wrap">
         <div class="card mini">
@@ -1046,9 +1063,7 @@
       <div class="wrap footGrid">
         <div class="card footCard">
           <div style="font-weight:1000;">OnlyKeks</div>
-          <p class="hint" style="margin:8px 0 0;">
-            Geschenk-Mood statt Tech-Kram. Ein Keks, eine Message, ein Reply-Loop.
-          </p>
+          <p class="hint" style="margin:8px 0 0;">Geschenk-Mood statt Tech-Kram. Ein Keks, eine Message, ein Reply-Loop.</p>
           <div class="footLinks">
             <a href="#impressum">Impressum</a>
             <a href="#datenschutz">Wie wir mit Daten umgehen</a>
@@ -1090,7 +1105,6 @@
     </footer>
   </main>
 
-  <!-- Cookie consent -->
   <div class="consent" id="consent">
     <div class="consentBox">
       <div class="consentGrid">
@@ -1113,18 +1127,34 @@
     /*** CONFIG: NUR HIER STRIPE EINTRAGEN ***/
     const STRIPE_PAYMENT_LINK = "https://buy.stripe.com/aBcDeFgHiJkLmNoPqR";
 
+    /**
+     * OPTIONAL: Base Path Fix, falls du doch mal aus einem Unterordner lädst.
+     * Normal für GH Pages Project Site passt "assets/..." bereits.
+     */
+    const BASE = ""; // z.B. "/keksms" oder "" lassen
+
+    const A = (p) => (BASE ? (BASE.replace(/\/$/,"") + "/" + p.replace(/^\//,"")) : p);
+
     /* =======================
-       ELEMENTS
+       ELEMENTS (sauber)
     ======================= */
     const msg       = document.getElementById("msg");
     const count     = document.getElementById("count");
     const packSel   = document.getElementById("pack");
     const packTiles = document.getElementById("packTiles");
     const steps     = document.querySelectorAll(".step");
-    const panels    = { 1: p1, 2: p2, 3: p3, 4: p4, 5: p5 };
+
+    const panels = {
+      1: document.getElementById("p1"),
+      2: document.getElementById("p2"),
+      3: document.getElementById("p3"),
+      4: document.getElementById("p4"),
+      5: document.getElementById("p5"),
+    };
 
     const heroVideo = document.getElementById("heroVideo");
     const heroImg   = document.getElementById("heroImg");
+    const storyVideo2 = document.getElementById("storyVideo2");
 
     const cookieStage = document.getElementById("cookieStage");
     const sprinkles   = document.getElementById("sprinkles");
@@ -1135,24 +1165,57 @@
     const payBtn      = document.getElementById("payBtn");
 
     /* =======================
+       HARDENED MEDIA PATHS
+       (damit "assets/..." wirklich gezogen wird)
+    ======================= */
+    // Set sources explicitly (hilft wenn Browser cached komisch / base tag etc.)
+    heroVideo.querySelector("source").src = A("assets/video/hero.mp4");
+    heroVideo.poster = A("assets/img/hero.jpg");
+    heroImg.src = A("assets/img/hero.jpg");
+
+    if(storyVideo2){
+      storyVideo2.querySelector("source").src = A("assets/video/story-2.mp4");
+      storyVideo2.poster = A("assets/img/story-2.jpg");
+    }
+
+    // update story imgs
+    document.querySelectorAll('img[src^="assets/"]').forEach(img => {
+      img.src = A(img.getAttribute("src"));
+    });
+
+    /* =======================
        HERO VIDEO FALLBACK
-       (wenn Video fehlt/blocked -> Bild zeigen)
     ======================= */
     (function heroFallback(){
-      let ok = false;
-      heroVideo.addEventListener("canplay", ()=>{ ok = true; heroImg.style.display="none"; });
-      heroVideo.addEventListener("error", ()=>{
+      const showImg = ()=>{
         heroVideo.style.display="none";
         heroImg.style.display="block";
-      });
-      // Autoplay kann auf manchen Geräten blocken -> nach kurzer Zeit fallback, falls nicht playt
+      };
+
+      heroVideo.addEventListener("error", showImg);
+      heroVideo.addEventListener("stalled", showImg);
+
+      // Autoplay kann blocken -> fallback
       setTimeout(()=>{
         const playing = !!(heroVideo.currentTime > 0 && !heroVideo.paused && !heroVideo.ended);
-        if(!playing){
-          heroVideo.style.display="none";
-          heroImg.style.display="block";
-        }
+        if(!playing) showImg();
       }, 900);
+    })();
+
+    // story video fallback -> poster img remains anyway, but if file missing, stop it
+    (function storyFallback(){
+      if(!storyVideo2) return;
+      storyVideo2.addEventListener("error", ()=>{
+        storyVideo2.style.display = "none";
+        // optional: swap in an img
+        const host = storyVideo2.parentElement;
+        const img = document.createElement("img");
+        img.src = A("assets/img/story-2.jpg");
+        img.alt = "QR-Scan – Handy scannt den QR-Code";
+        img.loading = "lazy";
+        img.decoding = "async";
+        host.insertBefore(img, host.firstChild);
+      });
     })();
 
     /* =======================
@@ -1169,11 +1232,23 @@
     /* =======================
        COUNTER + SAVE (necessary storage)
     ======================= */
+    function collectDraft(){
+      return {
+        msg: msg.value || "",
+        pack: packSel.value || "Custom",
+        theme: themeSel?.value || "classic",
+        hand: document.getElementById("hand")?.value || "soft",
+        trigger: document.getElementById("trigger")?.value || "",
+        toName: document.getElementById("toName")?.value || "",
+        fromName: document.getElementById("fromName")?.value || "",
+        toStreet: document.getElementById("toStreet")?.value || "",
+        toZip: document.getElementById("toZip")?.value || "",
+        toCity: document.getElementById("toCity")?.value || "",
+        sprinklesOn: cookieStage.classList.contains("playing")
+      };
+    }
     function saveDraft(){
-      const draft = collectDraft();
-      try{
-        localStorage.setItem("ok_draft", JSON.stringify(draft));
-      }catch(e){}
+      try{ localStorage.setItem("ok_draft", JSON.stringify(collectDraft())); }catch(e){}
     }
 
     msg.addEventListener("input", ()=>{
@@ -1183,11 +1258,9 @@
 
     /* =======================
        PACK TILES -> SELECT
-       (Select bleibt Source of Truth)
     ======================= */
     function setActivePack(pack){
       packSel.value = pack;
-      packSel.dispatchEvent(new Event("change"));
 
       document.querySelectorAll(".packTile").forEach(t=>{
         const on = t.dataset.pack === pack;
@@ -1196,11 +1269,9 @@
       });
       saveDraft();
     }
-
     packTiles.querySelectorAll(".packTile").forEach(tile=>{
       tile.addEventListener("click", ()=> setActivePack(tile.dataset.pack));
     });
-
     packSel.addEventListener("change", ()=> setActivePack(packSel.value));
 
     /* =======================
@@ -1209,18 +1280,13 @@
     function go(n){
       Object.values(panels).forEach(p=>p.classList.remove("active"));
       panels[n].classList.add("active");
-
       steps.forEach(s=> s.classList.toggle("active", +s.dataset.step === n));
 
       if(n === 5){
-        // bind Stripe
         payBtn.href = STRIPE_PAYMENT_LINK;
-
-        // build summary + reply code
         const draft = collectDraft();
         const code  = getOrCreateReplyCode();
         replyEl.textContent = code;
-
         summaryEl.textContent =
           `Paket: ${draft.pack} • Message: „${(draft.msg || "").slice(0, 90)}${(draft.msg||"").length>90?"…":""}“ • Stil: ${draft.theme} • Trigger: ${draft.trigger || "—"}`;
       }
@@ -1237,10 +1303,7 @@
     });
 
     /* =======================
-       COOKIE PLAY (light MVP)
-       - sprinkle toggle
-       - random sprinkle positions
-       - theme switch (visual only)
+       COOKIE PLAY
     ======================= */
     function seedSprinkles(){
       sprinkles.innerHTML = "";
@@ -1255,17 +1318,14 @@
         sprinkles.appendChild(el);
       }
     }
-
     function toggleSprinkles(){
       cookieStage.classList.toggle("playing");
       const on = cookieStage.classList.contains("playing");
-      // animate in/out
       sprinkles.querySelectorAll(".spr").forEach((el, i)=>{
         setTimeout(()=> el.style.opacity = on ? "1" : "0", i*12);
       });
       saveDraft();
     }
-
     function randomize(){
       seedSprinkles();
       cookieStage.classList.add("playing");
@@ -1274,7 +1334,6 @@
       });
       saveDraft();
     }
-
     function resetPlay(){
       cookieStage.classList.remove("playing");
       seedSprinkles();
@@ -1289,31 +1348,11 @@
         if(a==="reset") resetPlay();
       });
     });
-
-    themeSel.addEventListener("change", ()=>{
-      // rein optisch: wir speichern nur den Wert; die Stage bleibt bewusst simpel
-      saveDraft();
-    });
+    themeSel.addEventListener("change", saveDraft);
 
     /* =======================
-       DRAFT COLLECT/RESTORE
+       RESTORE
     ======================= */
-    function collectDraft(){
-      return {
-        msg: msg.value || "",
-        pack: packSel.value || "Custom",
-        theme: themeSel?.value || "classic",
-        hand: document.getElementById("hand")?.value || "soft",
-        trigger: document.getElementById("trigger")?.value || "",
-        toName: document.getElementById("toName")?.value || "",
-        fromName: document.getElementById("fromName")?.value || "",
-        toStreet: document.getElementById("toStreet")?.value || "",
-        toZip: document.getElementById("toZip")?.value || "",
-        toCity: document.getElementById("toCity")?.value || "",
-        sprinklesOn: cookieStage.classList.contains("playing")
-      };
-    }
-
     function restoreDraft(){
       try{
         const raw = localStorage.getItem("ok_draft");
@@ -1321,21 +1360,19 @@
         const d = JSON.parse(raw);
 
         if(d.msg){ msg.value = d.msg; }
-        if(d.pack){ packSel.value = d.pack; }
+        if(d.pack){ setActivePack(d.pack); }
         if(d.theme){ themeSel.value = d.theme; }
-        if(d.hand){ document.getElementById("hand").value = d.hand; }
-        if(d.trigger !== undefined){ document.getElementById("trigger").value = d.trigger; }
 
-        if(d.toName){ document.getElementById("toName").value = d.toName; }
-        if(d.fromName){ document.getElementById("fromName").value = d.fromName; }
-        if(d.toStreet){ document.getElementById("toStreet").value = d.toStreet; }
-        if(d.toZip){ document.getElementById("toZip").value = d.toZip; }
-        if(d.toCity){ document.getElementById("toCity").value = d.toCity; }
+        const hand = document.getElementById("hand");
+        const trig = document.getElementById("trigger");
+        if(hand && d.hand){ hand.value = d.hand; }
+        if(trig && d.trigger !== undefined){ trig.value = d.trigger; }
 
-        // apply pack tiles state
-        setActivePack(packSel.value);
+        ["toName","fromName","toStreet","toZip","toCity"].forEach(id=>{
+          const el = document.getElementById(id);
+          if(el && d[id]) el.value = d[id];
+        });
 
-        // sprinkles state
         seedSprinkles();
         if(d.sprinklesOn){
           cookieStage.classList.add("playing");
@@ -1347,7 +1384,7 @@
     }
 
     /* =======================
-       REPLY CODE (simple MVP)
+       REPLY CODE
     ======================= */
     function getOrCreateReplyCode(){
       let code = "";
@@ -1360,7 +1397,6 @@
 
     /* =======================
        COOKIE CONSENT
-       - necessary vs optional
     ======================= */
     const consent = document.getElementById("consent");
     const consentAll  = document.getElementById("consentAll");
@@ -1375,7 +1411,6 @@
       }
     }
     function setConsent(mode){
-      // mode: "all" | "need"
       try{ localStorage.setItem("ok_consent", mode); }catch(e){}
       consent.classList.remove("show");
     }
@@ -1383,39 +1418,33 @@
     consentNeed.addEventListener("click", ()=> setConsent("need"));
 
     /* =======================
-       HERO INTRO ANIM (first visit only)
-       Wunsch: 1x abspielen, mobile dezent.
-       Varianten: Krümelregen + Keksform, Flip, Bite, QR-Reveal.
-       Umsetzung: leichtes Canvas Partikel + mini "coin flip" icon.
+       HERO INTRO CANVAS (first load once)
+       - roundRect fallback
     ======================= */
-    const INTRO_KEY = "ok_intro_played_v1";
+    const INTRO_KEY = "ok_intro_played_v2";
 
-    function isMobile(){
-      return window.matchMedia && window.matchMedia("(max-width: 920px)").matches;
+    function isMobile(){ return window.matchMedia && window.matchMedia("(max-width: 920px)").matches; }
+    function reduceMotion(){ return window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches; }
+
+    function rr(ctx, x, y, w, h, r){
+      // roundRect polyfill (simple)
+      r = Math.min(r, w/2, h/2);
+      ctx.beginPath();
+      ctx.moveTo(x+r, y);
+      ctx.arcTo(x+w, y, x+w, y+h, r);
+      ctx.arcTo(x+w, y+h, x, y+h, r);
+      ctx.arcTo(x, y+h, x, y, r);
+      ctx.arcTo(x, y, x+w, y, r);
+      ctx.closePath();
     }
 
     function playIntroOnce(){
+      if(reduceMotion()) return;
       let played = false;
       try{ played = localStorage.getItem(INTRO_KEY) === "1"; }catch(e){}
       if(played) return;
       try{ localStorage.setItem(INTRO_KEY, "1"); }catch(e){}
-
-      // On mobile: only crumb rain (dezent)
-      const mobile = isMobile();
-
-      // 1) crumbs that briefly form cookie in hero
-      runCrumbRain({ subtle: mobile });
-
-      if(!mobile){
-        // 2) small cookie "coin flip" into hero text
-        setTimeout(()=> runCoinFlip(), 520);
-
-        // 3) bite effect (tiny corner bite illusion on logo)
-        setTimeout(()=> runBiteOnLogo(), 1050);
-
-        // 4) QR stamp reveal (badge pulse)
-        setTimeout(()=> runQRStampPulse(), 1500);
-      }
+      runCrumbRain({ subtle: isMobile() });
     }
 
     function runCrumbRain({subtle=false}={}){
@@ -1459,6 +1488,7 @@
 
       const cookieCenter = { x: w()*0.62, y: h()*0.44, rad: subtle? 42 : 58 };
       let t0 = performance.now();
+      const tStart = performance.now();
 
       function drawCookieGhost(alpha){
         ctx.save();
@@ -1476,15 +1506,13 @@
 
         ctx.clearRect(0,0,w(),h());
 
-        // ghost cookie target for a moment
-        const elapsed = now - (tStart);
+        const elapsed = now - tStart;
         const ghostA = elapsed < 900 ? (0.55 - (elapsed/900)*0.45) : 0;
         if(ghostA > 0) drawCookieGhost(ghostA);
 
         parts.forEach(p=>{
           p.life += dt;
 
-          // After ~350ms: gently pull some crumbs toward cookie area to "form" it
           if(!subtle && p.life > 350 && p.life < 1100){
             const dx = cookieCenter.x - p.x;
             const dy = cookieCenter.y - p.y;
@@ -1502,13 +1530,11 @@
           ctx.translate(p.x, p.y);
           ctx.rotate(p.r);
           ctx.fillStyle = p.c;
-          ctx.beginPath();
-          ctx.roundRect(-p.s/2, -p.s/2, p.s, p.s*0.55, 3);
+          rr(ctx, -p.s/2, -p.s/2, p.s, p.s*0.55, 3);
           ctx.fill();
           ctx.restore();
         });
 
-        // stop after 1.8s
         if(now - tStart < (subtle ? 1200 : 1800)){
           requestAnimationFrame(tick);
         }else{
@@ -1517,61 +1543,83 @@
         }
       }
 
-      const tStart = performance.now();
       requestAnimationFrame(tick);
     }
 
-    function runCoinFlip(){
-      // tiny floating cookie coin over hero text (DOM element)
-      const host = document.querySelector(".heroText");
-      const el = document.createElement("div");
-      el.setAttribute("aria-hidden","true");
-      el.style.position = "absolute";
-      el.style.right = "-60px";
-      el.style.top = "64px";
-      el.style.width = "44px";
-      el.style.height = "44px";
-      el.style.borderRadius = "999px";
-      el.style.background = "radial-gradient(circle at 35% 30%, rgba(255,255,255,.75), rgba(255,255,255,0) 60%), linear-gradient(135deg, var(--cookie2), var(--cookie))";
-      el.style.boxShadow = "0 18px 30px rgba(201,139,95,.25)";
-      el.style.transform = "translateX(0) rotateY(0deg) rotate(12deg)";
-      el.style.transition = "transform 600ms cubic-bezier(.2,.9,.2,1), right 600ms cubic-bezier(.2,.9,.2,1)";
-      host.appendChild(el);
+    /* =======================
+       CLICK INTRO (roll -> bite -> QR) ON FIRST CLICK
+    ======================= */
+    const CLICK_KEY = "ok_click_intro_v1";
+    const overlay = document.getElementById("introOverlay");
+    const introCookie = document.getElementById("introCookie");
+    const biteMask = document.getElementById("biteMask");
+    const introQR = document.getElementById("introQR");
 
-      requestAnimationFrame(()=>{
-        el.style.right = "18px";
-        el.style.transform = "translateX(0) rotateY(360deg) rotate(12deg)";
-      });
+    function playClickIntroOnce(){
+      if(reduceMotion()) return;
+      let done = false;
+      try{ done = localStorage.getItem(CLICK_KEY) === "1"; }catch(e){}
+      if(done) return;
 
-      setTimeout(()=>{ el.style.opacity = "0.0"; el.style.transition = "opacity 500ms"; }, 1200);
-      setTimeout(()=>{ el.remove(); }, 1750);
+      const onFirst = ()=>{
+        document.removeEventListener("pointerdown", onFirst, {capture:true});
+        try{ localStorage.setItem(CLICK_KEY, "1"); }catch(e){}
+
+        overlay.classList.add("show");
+
+        // reset
+        introCookie.style.animation = "none";
+        biteMask.style.animation = "none";
+        introQR.style.animation = "none";
+        introQR.style.opacity = "0";
+
+        // roll in
+        requestAnimationFrame(()=>{
+          introCookie.style.animation = "rollIn 900ms cubic-bezier(.2,.9,.2,1) forwards";
+        });
+
+        // bite (mask pops on cookie)
+        setTimeout(()=>{
+          biteMask.style.animation = "bitePop 520ms cubic-bezier(.2,.9,.2,1) forwards";
+        }, 720);
+
+        // QR appears
+        setTimeout(()=>{
+          introQR.style.animation = "qrShow 360ms ease forwards";
+        }, 980);
+
+        // hide overlay
+        setTimeout(()=>{
+          overlay.classList.remove("show");
+        }, 1550);
+      };
+
+      // capture so it triggers even if they click a button
+      document.addEventListener("pointerdown", onFirst, {capture:true, once:true});
     }
 
-    function runBiteOnLogo(){
-      // small "bite" illusion on logo via clip-path
-      const logo = document.querySelector(".logo");
-      const old = logo.style.clipPath;
-      logo.style.transition = "clip-path 450ms ease";
-      logo.style.clipPath = "path('M0,0 H42 V42 H0 Z M34,10 A8,8 0 1,0 34,26 A8,8 0 1,0 34,10 Z')";
-      setTimeout(()=>{
-        logo.style.clipPath = old || "none";
-      }, 900);
-    }
+    /* =======================
+       COOKIE CURSOR
+    ======================= */
+    const cursorEl = document.getElementById("cookieCursor");
+    function enableCookieCursor(){
+      if(reduceMotion()) return;
+      // no cursor on touch devices anyway via CSS
+      document.body.classList.add("cursorOn");
+      let x = window.innerWidth/2, y = window.innerHeight/2;
 
-    function runQRStampPulse(){
-      // pulse badges to simulate QR stamp reveal
-      const badges = document.querySelectorAll(".badge");
-      badges.forEach((b,i)=>{
-        b.style.transition = "transform 260ms ease, box-shadow 260ms ease";
-        setTimeout(()=>{
-          b.style.transform = "translateY(-2px) scale(1.03)";
-          b.style.boxShadow = "0 16px 28px rgba(255,79,163,.18)";
-        }, i*120);
-        setTimeout(()=>{
-          b.style.transform = "none";
-          b.style.boxShadow = "none";
-        }, 520 + i*120);
-      });
+      const move = (e)=>{
+        x = e.clientX; y = e.clientY;
+        cursorEl.style.left = x + "px";
+        cursorEl.style.top  = y + "px";
+      };
+      window.addEventListener("mousemove", move, {passive:true});
+
+      // click micro-pop
+      window.addEventListener("mousedown", ()=>{
+        cursorEl.style.transform = "translate(-50%,-50%) scale(1.08)";
+        setTimeout(()=> cursorEl.style.transform = "translate(-50%,-50%) scale(1)", 120);
+      }, {passive:true});
     }
 
     /* =======================
@@ -1580,7 +1628,16 @@
     seedSprinkles();
     restoreDraft();
     showConsentIfNeeded();
+
+    // set initial pack UI
+    setActivePack(packSel.value || "Custom");
+
+    // intros
     playIntroOnce();
+    playClickIntroOnce();
+
+    // cursor
+    enableCookieCursor();
   </script>
 </body>
 </html>

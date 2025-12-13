@@ -14,7 +14,9 @@
   <meta property="og:description" content="Schicke süße Botschaften mit direkter QR-Antwort. Reply-Keks in 3 Klicks – kein Account." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://infojanschmidt-debug.github.io/keksms/" />
-  <meta property="og:image" content="https://infojanschmidt-debug.github.io/keksms/assets/img/og.jpg" />
+  <!-- OG image: wird per JS NICHT gesetzt, muss real existieren -->
+  <!-- Wenn du kein og.jpg hast: entweder erstellen oder hier auf ein existierendes JPG zeigen -->
+  <meta property="og:image" content="https://infojanschmidt-debug.github.io/keksms/assets/1000149739.jpg" />
   <meta name="twitter:card" content="summary_large_image" />
 
   <!-- Font -->
@@ -241,7 +243,6 @@
       color: #6b3a56;
     }
 
-    /* sections */
     section{ padding: 18px 0; }
     .grid3{ display:grid; grid-template-columns: repeat(3, 1fr); gap:14px; }
     .mini{ padding:16px; }
@@ -496,7 +497,7 @@
     /* Hero fx canvas */
     #heroFx{ position:absolute; inset:0; pointer-events:none; z-index:2; }
 
-    /* ===== Cookie Cursor (DOM follower) ===== */
+    /* ===== Cookie Cursor ===== */
     .cookieCursor{
       position: fixed;
       left: 0; top: 0;
@@ -672,7 +673,6 @@
       </div>
 
       <div class="introQR" id="introQR">
-        <!-- simple QR icon (svg) -->
         <svg viewBox="0 0 24 24" width="44" height="44" fill="none" stroke="currentColor" stroke-width="2" opacity=".85">
           <path d="M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3z"/>
           <path d="M14 14h3v3h-3zM19 14h2v2h-2zM14 19h2v2h-2zM18 18h3v3h-3z"/>
@@ -757,10 +757,10 @@
 
         <div class="card heroMedia" aria-label="Hero Bild/Video">
           <div class="mediaInner">
-            <video id="heroVideo" autoplay muted playsinline loop preload="metadata" poster="assets/img/hero.jpg">
-              <source src="assets/video/hero.mp4" type="video/mp4">
+            <video id="heroVideo" autoplay muted playsinline loop preload="metadata" poster="">
+              <source id="heroSrc" src="" type="video/mp4">
             </video>
-            <img id="heroImg" src="assets/img/hero.jpg" alt="Hände halten einen Keks, QR wird gescannt, Geschenk-Mood" loading="eager" decoding="async" style="display:none;" />
+            <img id="heroImg" src="" alt="Hände halten einen Keks, QR wird gescannt, Geschenk-Mood" loading="eager" decoding="async" style="display:none;" />
           </div>
           <div class="mediaBadge" aria-hidden="true">
             <span class="badge">Weiches Tageslicht</span>
@@ -791,7 +791,7 @@
     <section>
       <div class="wrap storyStrip" aria-label="Story Bilder">
         <article class="storyCard">
-          <img src="assets/img/story-1.jpg" alt="Keks + Karte in der Hand, pinker Himmel" loading="lazy" decoding="async" />
+          <img id="story1" src="" alt="Keks + Karte in der Hand, pinker Himmel" loading="lazy" decoding="async" />
           <div class="storyCap">
             <strong>Geschenk-Moment</strong>
             <span>Sieht aus wie Deko – fühlt sich an wie „ich denk an dich“.</span>
@@ -799,8 +799,8 @@
         </article>
 
         <article class="storyCard">
-          <video id="storyVideo2" muted playsinline loop preload="metadata" poster="assets/img/story-2.jpg">
-            <source src="assets/video/story-2.mp4" type="video/mp4">
+          <video id="storyVideo2" muted playsinline loop preload="metadata" poster="">
+            <source id="story2Src" src="" type="video/mp4">
           </video>
           <div class="storyCap">
             <strong>QR-Scan</strong>
@@ -809,7 +809,7 @@
         </article>
 
         <article class="storyCard">
-          <img src="assets/img/story-3.jpg" alt="Antwort kommt an, Keks wird geöffnet" loading="lazy" decoding="async" />
+          <img id="story3" src="" alt="Antwort kommt an, Keks wird geöffnet" loading="lazy" decoding="async" />
           <div class="storyCap">
             <strong>Reply-Loop</strong>
             <span>Du bekommst echte Post zurück – nur eben… lecker.</span>
@@ -1127,16 +1127,22 @@
     /*** CONFIG: NUR HIER STRIPE EINTRAGEN ***/
     const STRIPE_PAYMENT_LINK = "https://buy.stripe.com/aBcDeFgHiJkLmNoPqR";
 
-    /**
-     * OPTIONAL: Base Path Fix, falls du doch mal aus einem Unterordner lädst.
-     * Normal für GH Pages Project Site passt "assets/..." bereits.
-     */
-    const BASE = ""; // z.B. "/keksms" oder "" lassen
-
+    // Auto-Base für GitHub Pages Project Site (/keksms)
+    const BASE = location.pathname.includes("/keksms/") ? "/keksms" : "";
     const A = (p) => (BASE ? (BASE.replace(/\/$/,"") + "/" + p.replace(/^\//,"")) : p);
 
+    // ===== DEINE REPO-DATEIEN (passen zu deinem Listing) =====
+    const HERO_IMG   = "assets/1000149739.jpg";
+    const STORY1_IMG = "assets/1000149740.jpg";
+    const STORY2_IMG = "assets/1000149741.jpg";
+    const STORY3_IMG = "assets/1000149742.jpg";
+
+    // Videos liegen bei dir unter: keksms/assets/video/...
+    const HERO_MP4   = "keksms/assets/video/grok_video_2025-12-13-20-49-35.mp4";
+    const STORY2_MP4 = "keksms/assets/video/grok_video_2025-12-13-20-51-18.mp4";
+
     /* =======================
-       ELEMENTS (sauber)
+       ELEMENTS
     ======================= */
     const msg       = document.getElementById("msg");
     const count     = document.getElementById("count");
@@ -1156,6 +1162,9 @@
     const heroImg   = document.getElementById("heroImg");
     const storyVideo2 = document.getElementById("storyVideo2");
 
+    const story1 = document.getElementById("story1");
+    const story3 = document.getElementById("story3");
+
     const cookieStage = document.getElementById("cookieStage");
     const sprinkles   = document.getElementById("sprinkles");
     const themeSel    = document.getElementById("theme");
@@ -1165,23 +1174,23 @@
     const payBtn      = document.getElementById("payBtn");
 
     /* =======================
-       HARDENED MEDIA PATHS
-       (damit "assets/..." wirklich gezogen wird)
+       MEDIA: sources setzen (keine 404 mehr)
     ======================= */
-    // Set sources explicitly (hilft wenn Browser cached komisch / base tag etc.)
-    heroVideo.querySelector("source").src = A("assets/video/hero.mp4");
-    heroVideo.poster = A("assets/img/hero.jpg");
-    heroImg.src = A("assets/img/hero.jpg");
+    // HERO
+    heroImg.src = A(HERO_IMG);
+    heroVideo.poster = A(HERO_IMG);
+    heroVideo.querySelector("source").src = A(HERO_MP4);
+    heroVideo.load();
+
+    // STORY
+    story1.src = A(STORY1_IMG);
+    story3.src = A(STORY3_IMG);
 
     if(storyVideo2){
-      storyVideo2.querySelector("source").src = A("assets/video/story-2.mp4");
-      storyVideo2.poster = A("assets/img/story-2.jpg");
+      storyVideo2.poster = A(STORY2_IMG);
+      storyVideo2.querySelector("source").src = A(STORY2_MP4);
+      storyVideo2.load();
     }
-
-    // update story imgs
-    document.querySelectorAll('img[src^="assets/"]').forEach(img => {
-      img.src = A(img.getAttribute("src"));
-    });
 
     /* =======================
        HERO VIDEO FALLBACK
@@ -1191,26 +1200,24 @@
         heroVideo.style.display="none";
         heroImg.style.display="block";
       };
-
       heroVideo.addEventListener("error", showImg);
       heroVideo.addEventListener("stalled", showImg);
-
-      // Autoplay kann blocken -> fallback
       setTimeout(()=>{
         const playing = !!(heroVideo.currentTime > 0 && !heroVideo.paused && !heroVideo.ended);
         if(!playing) showImg();
       }, 900);
     })();
 
-    // story video fallback -> poster img remains anyway, but if file missing, stop it
+    /* =======================
+       STORY VIDEO FALLBACK
+    ======================= */
     (function storyFallback(){
       if(!storyVideo2) return;
       storyVideo2.addEventListener("error", ()=>{
         storyVideo2.style.display = "none";
-        // optional: swap in an img
         const host = storyVideo2.parentElement;
         const img = document.createElement("img");
-        img.src = A("assets/img/story-2.jpg");
+        img.src = A(STORY2_IMG);
         img.alt = "QR-Scan – Handy scannt den QR-Code";
         img.loading = "lazy";
         img.decoding = "async";
@@ -1230,7 +1237,7 @@
     });
 
     /* =======================
-       COUNTER + SAVE (necessary storage)
+       DRAFT
     ======================= */
     function collectDraft(){
       return {
@@ -1257,11 +1264,10 @@
     });
 
     /* =======================
-       PACK TILES -> SELECT
+       PACK TILES
     ======================= */
     function setActivePack(pack){
       packSel.value = pack;
-
       document.querySelectorAll(".packTile").forEach(t=>{
         const on = t.dataset.pack === pack;
         t.classList.toggle("active", on);
@@ -1290,11 +1296,9 @@
         summaryEl.textContent =
           `Paket: ${draft.pack} • Message: „${(draft.msg || "").slice(0, 90)}${(draft.msg||"").length>90?"…":""}“ • Stil: ${draft.theme} • Trigger: ${draft.trigger || "—"}`;
       }
-
       saveDraft();
       document.getElementById("flow").scrollIntoView({behavior:"smooth", block:"start"});
     }
-
     document.querySelectorAll("[data-next]").forEach(b=>{
       b.addEventListener("click", ()=> go(+b.dataset.next));
     });
@@ -1339,7 +1343,6 @@
       seedSprinkles();
       saveDraft();
     }
-
     document.querySelectorAll("[data-action]").forEach(b=>{
       b.addEventListener("click", ()=>{
         const a = b.dataset.action;
@@ -1418,16 +1421,14 @@
     consentNeed.addEventListener("click", ()=> setConsent("need"));
 
     /* =======================
-       HERO INTRO CANVAS (first load once)
-       - roundRect fallback
+       HERO INTRO CANVAS (1x)
+       roundRect polyfill included
     ======================= */
     const INTRO_KEY = "ok_intro_played_v2";
-
     function isMobile(){ return window.matchMedia && window.matchMedia("(max-width: 920px)").matches; }
     function reduceMotion(){ return window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches; }
 
     function rr(ctx, x, y, w, h, r){
-      // roundRect polyfill (simple)
       r = Math.min(r, w/2, h/2);
       ctx.beginPath();
       ctx.moveTo(x+r, y);
@@ -1542,12 +1543,11 @@
           window.removeEventListener("resize", resize);
         }
       }
-
       requestAnimationFrame(tick);
     }
 
     /* =======================
-       CLICK INTRO (roll -> bite -> QR) ON FIRST CLICK
+       CLICK INTRO (roll -> bite -> QR) 1x
     ======================= */
     const CLICK_KEY = "ok_click_intro_v1";
     const overlay = document.getElementById("introOverlay");
@@ -1562,39 +1562,31 @@
       if(done) return;
 
       const onFirst = ()=>{
-        document.removeEventListener("pointerdown", onFirst, {capture:true});
         try{ localStorage.setItem(CLICK_KEY, "1"); }catch(e){}
-
         overlay.classList.add("show");
 
-        // reset
         introCookie.style.animation = "none";
         biteMask.style.animation = "none";
         introQR.style.animation = "none";
         introQR.style.opacity = "0";
 
-        // roll in
         requestAnimationFrame(()=>{
           introCookie.style.animation = "rollIn 900ms cubic-bezier(.2,.9,.2,1) forwards";
         });
 
-        // bite (mask pops on cookie)
         setTimeout(()=>{
           biteMask.style.animation = "bitePop 520ms cubic-bezier(.2,.9,.2,1) forwards";
         }, 720);
 
-        // QR appears
         setTimeout(()=>{
           introQR.style.animation = "qrShow 360ms ease forwards";
         }, 980);
 
-        // hide overlay
         setTimeout(()=>{
           overlay.classList.remove("show");
         }, 1550);
       };
 
-      // capture so it triggers even if they click a button
       document.addEventListener("pointerdown", onFirst, {capture:true, once:true});
     }
 
@@ -1604,18 +1596,12 @@
     const cursorEl = document.getElementById("cookieCursor");
     function enableCookieCursor(){
       if(reduceMotion()) return;
-      // no cursor on touch devices anyway via CSS
       document.body.classList.add("cursorOn");
-      let x = window.innerWidth/2, y = window.innerHeight/2;
-
       const move = (e)=>{
-        x = e.clientX; y = e.clientY;
-        cursorEl.style.left = x + "px";
-        cursorEl.style.top  = y + "px";
+        cursorEl.style.left = e.clientX + "px";
+        cursorEl.style.top  = e.clientY + "px";
       };
       window.addEventListener("mousemove", move, {passive:true});
-
-      // click micro-pop
       window.addEventListener("mousedown", ()=>{
         cursorEl.style.transform = "translate(-50%,-50%) scale(1.08)";
         setTimeout(()=> cursorEl.style.transform = "translate(-50%,-50%) scale(1)", 120);
@@ -1628,15 +1614,10 @@
     seedSprinkles();
     restoreDraft();
     showConsentIfNeeded();
-
-    // set initial pack UI
     setActivePack(packSel.value || "Custom");
 
-    // intros
     playIntroOnce();
     playClickIntroOnce();
-
-    // cursor
     enableCookieCursor();
   </script>
 </body>

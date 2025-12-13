@@ -3,927 +3,1082 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>OnlyKeks – Post die schmeckt</title>
-  <meta name="description" content="Post die schmeckt. Sende einen Keks mit Message & Reply-Loop. 3 Klicks, kein Account." />
+  <title>OnlyKeks – Post, die schmeckt</title>
+  <meta name="description" content="Gestalte einen Keks mit deiner Message. Verschicken. Essen. Reply-Loop per QR." />
 
   <style>
     :root{
-      /* OnlyFans-clean */
+      /* OnlyFans-clean base */
       --bg:#ffffff;
-      --bg2:#f6fbff;
       --ink:#0b1b2a;
       --muted:#4b5b6b;
       --line: rgba(11,27,42,.10);
-      --blue:#00aff0;
-      --blue2:#2b7cff;
-      --blueSoft: rgba(0,175,240,.12);
 
-      /* Dekofrau-soft */
+      /* Deko-Chichi palette */
+      --sky1:#ffe6f1;
+      --sky2:#ffd2ea;
+      --pink:#ff4fa3;
+      --pink2:#ff77bf;
+      --vanilla:#fff6ea;
       --cookie:#c48752;
-      --cookieLight:#f3d2b3;
-      --pinkSoft: rgba(255,105,180,.10);
+      --cookie2:#e7b892;
 
-      --radius:18px;
+      --card:#ffffffcc;
+      --glass: rgba(255,255,255,.72);
       --shadow: 0 18px 60px rgba(11,27,42,.12);
-      --shadow2: 0 10px 30px rgba(11,27,42,.08);
+
+      --radius: 22px;
+      --radius2: 28px;
+
+      --focus: 0 0 0 4px rgba(255,79,163,.22);
+      --max: 1100px;
+
+      --t: 220ms;
     }
 
-    *{box-sizing:border-box}
-    html,body{height:100%}
+    *{ box-sizing: border-box; }
+    html,body{ height:100%; }
     body{
       margin:0;
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
       color:var(--ink);
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji","Segoe UI Emoji";
       background:
-        radial-gradient(900px 520px at 15% 0%, var(--blueSoft), transparent 60%),
-        radial-gradient(800px 520px at 85% 25%, rgba(43,124,255,.10), transparent 55%),
-        radial-gradient(900px 520px at 55% 0%, var(--pinkSoft), transparent 60%),
-        linear-gradient(180deg, var(--bg), var(--bg2));
+        radial-gradient(900px 500px at 20% -10%, rgba(255,79,163,.25), transparent 60%),
+        radial-gradient(900px 600px at 80% 0%, rgba(255,210,234,.65), transparent 60%),
+        linear-gradient(180deg, var(--sky1), var(--bg) 46%, var(--vanilla));
       overflow-x:hidden;
     }
-    a{color:inherit;text-decoration:none}
-    .container{max-width:1120px;margin:0 auto;padding:0 18px}
 
-    /* Background cookie rain */
-    #cookieRain{
-      position:fixed; inset:0;
-      width:100%; height:100%;
-      z-index:0;
-      pointer-events:none;
-      opacity:.07;
-    }
-    main, header, footer{position:relative; z-index:1}
+    a{ color: inherit; text-decoration: none; }
+    .wrap{ max-width: var(--max); margin:0 auto; padding: 22px; }
 
-    /* Header */
-    header{
-      position:sticky;top:0;z-index:50;
-      background:rgba(255,255,255,.86);
-      backdrop-filter: blur(12px);
-      border-bottom:1px solid var(--line);
+    /* Topbar */
+    .topbar{
+      position: sticky; top: 0; z-index: 20;
+      backdrop-filter: blur(10px);
+      background: rgba(255,255,255,.68);
+      border-bottom: 1px solid var(--line);
     }
-    .nav{
-      display:flex;align-items:center;justify-content:space-between;
-      padding:14px 0;gap:12px;
+    .topbar .wrap{
+      display:flex; align-items:center; justify-content:space-between; gap: 14px;
+      padding: 14px 22px;
     }
-    .brand{display:flex;align-items:center;gap:12px}
+    .brand{
+      display:flex; align-items:center; gap: 10px; font-weight: 800; letter-spacing: .2px;
+    }
     .logo{
-      width:52px;height:52px;border-radius:18px;
-      background: linear-gradient(135deg, var(--blue), var(--blue2));
-      box-shadow: 0 12px 30px rgba(0,175,240,.20);
-      position:relative;
-      flex:0 0 auto;
+      width: 38px; height: 38px; border-radius: 14px;
+      background:
+        radial-gradient(14px 14px at 35% 35%, rgba(255,255,255,.8), transparent 60%),
+        radial-gradient(18px 18px at 70% 60%, rgba(255,255,255,.55), transparent 60%),
+        linear-gradient(180deg, var(--cookie2), var(--cookie));
+      box-shadow: 0 10px 30px rgba(196,135,82,.35);
+      position: relative;
     }
     .logo:after{
       content:"";
-      position:absolute;inset:13px;border-radius:12px;
-      background:rgba(255,255,255,.55);
-      border:1px solid rgba(255,255,255,.65);
+      position:absolute; inset: 9px 8px 10px 10px;
+      border-radius: 999px;
+      background:
+        radial-gradient(3px 3px at 25% 35%, rgba(11,27,42,.18), transparent 60%),
+        radial-gradient(3px 3px at 55% 30%, rgba(11,27,42,.18), transparent 60%),
+        radial-gradient(3px 3px at 70% 55%, rgba(11,27,42,.18), transparent 60%),
+        radial-gradient(3px 3px at 35% 70%, rgba(11,27,42,.18), transparent 60%);
+      opacity:.9;
     }
-    .brand b{font-size:18px;font-weight:900;letter-spacing:-.2px}
-    .brand small{display:block;color:var(--muted);font-size:12px;margin-top:2px}
-
-    .nav-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:flex-end}
+    .brand small{ display:block; font-weight:600; color:var(--muted); letter-spacing:0; margin-top: -2px; }
     .pill{
-      font-size:12px;color:var(--muted);
-      border:1px solid var(--line);
-      background:rgba(255,255,255,.7);
-      padding:9px 12px;border-radius:999px;
-      white-space:nowrap;
+      font-size: 12px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.7);
+      color: var(--muted);
+      display:inline-flex; align-items:center; gap:8px;
+      white-space: nowrap;
     }
+    .dot{ width: 8px; height:8px; border-radius:999px; background: var(--pink); box-shadow: 0 0 0 4px rgba(255,79,163,.18); }
 
     .btn{
-      border:0;cursor:pointer;border-radius:999px;
-      padding:13px 18px;font-weight:900;font-size:14px;
-      display:inline-flex;align-items:center;gap:10px;
-      transition: transform .12s ease, filter .12s ease, box-shadow .12s ease;
-      white-space:nowrap;
+      appearance:none; border:0;
+      padding: 12px 16px;
+      border-radius: 999px;
+      font-weight: 800;
+      cursor:pointer;
+      transition: transform var(--t) ease, box-shadow var(--t) ease, filter var(--t) ease;
+      display:inline-flex; align-items:center; justify-content:center; gap:10px;
+      user-select:none;
     }
-    .btn:active{transform:translateY(1px)}
-    .btn.primary{
-      color:white;
-      background: linear-gradient(135deg, var(--blue), var(--blue2));
-      box-shadow: 0 14px 32px rgba(0,175,240,.22);
+    .btn:focus{ outline:none; box-shadow: var(--focus); }
+    .btn-primary{
+      background: linear-gradient(180deg, var(--pink2), var(--pink));
+      color: #fff;
+      box-shadow: 0 14px 40px rgba(255,79,163,.30);
     }
-    .btn.primary:hover{filter:brightness(1.03);transform:translateY(-1px)}
-    .btn.ghost{
-      background:white;border:1px solid var(--line);color:var(--ink);
-      box-shadow:none;
+    .btn-primary:hover{ transform: translateY(-1px); filter: brightness(1.02); }
+    .btn-ghost{
+      background: rgba(255,255,255,.7);
+      border: 1px solid var(--line);
+      color: var(--ink);
     }
+    .btn-ghost:hover{ transform: translateY(-1px); }
 
     /* Hero */
-    .hero{padding:44px 0 18px}
-    .hero-grid{
-      display:grid;grid-template-columns: 1.05fr .95fr;
-      gap:18px;align-items:stretch;
+    .hero{
+      padding: 36px 0 10px;
     }
-    @media(max-width:980px){.hero-grid{grid-template-columns:1fr}}
-    @media(max-width:520px){
-      .hero{padding:28px 0 10px}
-      h1{font-size:32px}
-      .cta-row{gap:8px}
-      .trustbar{padding:12px}
-      .visual-wrap{padding:14px}
+    .heroGrid{
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap: 22px;
+      align-items: stretch;
+    }
+    @media (max-width: 920px){
+      .heroGrid{ grid-template-columns: 1fr; }
     }
 
     .card{
-      background:rgba(255,255,255,.92);
-      border:1px solid var(--line);
-      border-radius:var(--radius);
-      box-shadow:var(--shadow);
-      overflow:hidden;
+      background: var(--glass);
+      border: 1px solid rgba(11,27,42,.08);
+      border-radius: var(--radius2);
+      box-shadow: var(--shadow);
     }
-    .hero-copy{padding:24px}
-    .kicker{
-      display:inline-flex;align-items:center;gap:10px;
-      font-size:12px;color:var(--muted);
-      padding:9px 12px;border-radius:999px;
-      border:1px solid var(--line);
-      background:rgba(255,255,255,.80);
+
+    .heroLeft{ padding: 26px; position: relative; overflow:hidden; }
+    .heroLeft:before{
+      content:"";
+      position:absolute; inset:-80px -120px auto auto; width: 340px; height: 340px; border-radius: 999px;
+      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.65), transparent 60%),
+                  radial-gradient(circle at 65% 70%, rgba(255,79,163,.25), transparent 62%),
+                  linear-gradient(180deg, rgba(255,210,234,.9), rgba(255,255,255,.0));
+      filter: blur(1px);
+      opacity: .9;
+      transform: rotate(8deg);
     }
-    .dot{
-      width:8px;height:8px;border-radius:999px;
-      background:var(--blue);
-      box-shadow:0 0 0 6px rgba(0,175,240,.14);
-    }
+
     h1{
-      margin:14px 0 10px;
-      font-size:44px;line-height:1.02;letter-spacing:-1px;
+      margin: 0 0 8px;
+      font-size: clamp(30px, 3.3vw, 46px);
+      line-height: 1.05;
+      letter-spacing: -.6px;
     }
     .sub{
-      margin:0 0 12px;
-      color:var(--muted);
-      line-height:1.55;
-      font-size:16px;
-      max-width:62ch;
-    }
-    .cta-row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:12px}
-
-    /* Social proof */
-    .social{
-      margin-top:12px;
-      display:flex;gap:10px;flex-wrap:wrap;
-      color:var(--muted);font-size:12px;
-    }
-    .tag{
-      padding:8px 10px;border-radius:999px;
-      border:1px solid var(--line);
-      background:rgba(255,255,255,.75);
+      margin: 0 0 18px;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.45;
+      max-width: 60ch;
     }
 
-    /* Trust bar */
-    .trustbar{
-      margin-top:12px;
-      padding:12px 14px;
-      border-radius:16px;
-      border:1px solid rgba(0,175,240,.22);
-      background:
-        linear-gradient(135deg, rgba(0,175,240,.10), rgba(43,124,255,.06)),
-        rgba(255,255,255,.85);
-      box-shadow: var(--shadow2);
-      display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;
+    .trustRow{
+      display:flex; flex-wrap:wrap; gap: 10px;
+      margin: 14px 0 0;
     }
-    .trustbar b{font-size:12px;letter-spacing:.2px}
-    .trustitems{display:flex;gap:12px;flex-wrap:wrap;color:var(--muted);font-size:13px}
-    .trustitems span{white-space:nowrap}
+    .trust{
+      display:flex; align-items:center; gap: 10px;
+      padding: 10px 12px;
+      border-radius: 16px;
+      border: 1px solid rgba(11,27,42,.08);
+      background: rgba(255,255,255,.64);
+      color: var(--muted);
+      font-size: 13px;
+      white-space: nowrap;
+    }
+    .icon{
+      width: 22px; height: 22px; border-radius: 10px;
+      background: linear-gradient(180deg, rgba(255,79,163,.22), rgba(255,79,163,.06));
+      border: 1px solid rgba(255,79,163,.22);
+      display:grid; place-items:center;
+      font-weight: 900;
+      color: var(--pink);
+      flex: 0 0 auto;
+    }
 
-    /* Hero Visual */
-    .visual-card{
-      padding:18px;
-      display:flex;align-items:center;justify-content:center;
-      background:
-        radial-gradient(520px 220px at 30% 10%, rgba(196,135,82,.18), transparent 62%),
-        linear-gradient(135deg, rgba(0,175,240,.10), rgba(255,255,255,.95));
-    }
-    .visual-wrap{
-      position:relative;
-      width:min(520px,100%);
-      padding:18px 18px 14px;
-      border-radius:20px;
-      border:1px solid var(--line);
-      background:rgba(255,255,255,.72);
-      box-shadow:var(--shadow);
-    }
-    .stamp{
-      position:absolute; right:14px; top:14px;
-      padding:8px 10px;border-radius:999px;
-      background:linear-gradient(135deg,var(--blue),var(--blue2));
-      color:white;font-weight:900;font-size:12px;
-      box-shadow:0 12px 26px rgba(0,175,240,.20);
-      transform:rotate(-8deg);
-    }
-    .visual-row{
+    /* Right visual */
+    .heroRight{
+      padding: 22px;
       display:grid;
-      grid-template-columns: 1.2fr .9fr;
-      gap:14px;
-      align-items:center;
+      gap: 12px;
+      align-content: start;
     }
-    @media(max-width:560px){.visual-row{grid-template-columns:1fr}}
-    .visual-left{
-      display:flex;align-items:center;justify-content:center;
-      padding:10px;
-      border-radius:18px;
-      border:1px solid rgba(11,27,42,.08);
-      background:rgba(255,255,255,.80);
-      min-height:180px;
-      position:relative;
-      overflow:hidden;
-    }
-    .cookie{
-      width:150px;height:150px;border-radius:50%;
-      background: radial-gradient(circle at 30% 30%, var(--cookieLight), var(--cookie));
-      box-shadow:0 18px 48px rgba(11,27,42,.22);
-      animation: float 4s ease-in-out infinite;
-      position:relative;
-    }
-    .cookie:after{
-      content:"";
-      position:absolute; inset:22px;
-      border-radius:50%;
-      border:2px dotted rgba(11,27,42,.14);
-    }
-    @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
-    .visual-right{display:grid;gap:10px;}
-    .cardpaper{
-      height:92px;
-      border-radius:16px;
-      background:#fff;
-      border:1px solid var(--line);
-      box-shadow:0 12px 24px rgba(11,27,42,.10);
-      position:relative;
-      overflow:hidden;
-    }
-    .cardpaper:before{
-      content:"";
-      position:absolute; left:14px; right:14px; top:18px; height:10px;
-      border-radius:999px; background:rgba(11,27,42,.08);
-    }
-    .cardpaper:after{
-      content:"";
-      position:absolute; left:14px; right:34px; top:44px; height:10px;
-      border-radius:999px; background:rgba(11,27,42,.06);
-    }
-    .qr{
-      height:92px;
-      border-radius:16px;
-      border:1px solid var(--line);
+    .visual{
+      border-radius: var(--radius2);
       background:
-        linear-gradient(90deg,#0b1b2a 10%,transparent 10%),
-        linear-gradient(#0b1b2a 10%,transparent 10%);
-      background-size:16px 16px;
-      opacity:.75;
-      box-shadow:0 12px 24px rgba(11,27,42,.10);
+        radial-gradient(240px 140px at 25% 10%, rgba(255,255,255,.85), transparent 60%),
+        radial-gradient(260px 170px at 80% 25%, rgba(255,79,163,.18), transparent 60%),
+        linear-gradient(180deg, rgba(255,255,255,.72), rgba(255,255,255,.35));
+      border: 1px solid rgba(11,27,42,.08);
+      overflow:hidden;
+      padding: 18px;
+      position: relative;
+      min-height: 260px;
     }
-    .visual-caption{
-      margin-top:10px;
-      color:var(--muted);
-      font-size:12px;
-      text-align:center;
-      line-height:1.45;
+    .cookieCard{
+      position:absolute; left: 16px; top: 18px;
+      width: 62%;
+      max-width: 320px;
+      background: rgba(255,255,255,.82);
+      border: 1px solid rgba(11,27,42,.10);
+      border-radius: 22px;
+      padding: 14px;
+      box-shadow: 0 18px 60px rgba(11,27,42,.10);
+      transform: rotate(-1.2deg);
     }
+    .cookieCard .qr{
+      width: 64px; height: 64px; border-radius: 16px;
+      background:
+        linear-gradient(90deg, rgba(11,27,42,.10) 1px, transparent 1px) 0 0/10px 10px,
+        linear-gradient(0deg, rgba(11,27,42,.10) 1px, transparent 1px) 0 0/10px 10px,
+        rgba(255,255,255,.9);
+      border: 1px solid rgba(11,27,42,.10);
+      margin-left:auto;
+    }
+    .cookieCard b{ display:block; margin-bottom:6px; }
+    .cookieCard p{ margin:0; color: var(--muted); font-size: 13px; line-height: 1.35; }
 
-    /* Benefits */
-    .benefits{padding:8px 0 18px}
-    .benefit-grid{
-      display:grid;
-      grid-template-columns:repeat(4,1fr);
-      gap:12px;
+    .cookieBlob{
+      position:absolute; right: 12px; bottom: 18px;
+      width: 210px; height: 210px; border-radius: 999px;
+      background:
+        radial-gradient(30px 30px at 35% 30%, rgba(255,255,255,.65), transparent 60%),
+        radial-gradient(20px 20px at 70% 55%, rgba(255,255,255,.45), transparent 60%),
+        linear-gradient(180deg, var(--cookie2), var(--cookie));
+      box-shadow: 0 20px 60px rgba(196,135,82,.30);
+      border: 1px solid rgba(11,27,42,.10);
     }
-    @media(max-width:980px){.benefit-grid{grid-template-columns:1fr 1fr}}
-    @media(max-width:560px){.benefit-grid{grid-template-columns:1fr}}
-    .benefit{
-      padding:14px;
-      border-radius:16px;
-      border:1px solid var(--line);
-      background:rgba(255,255,255,.88);
-      box-shadow:var(--shadow2);
-      color:var(--muted);
-      font-size:14px;
+    .chips{
+      position:absolute; right: 26px; top: 22px;
+      display:grid; gap: 8px;
     }
-    .benefit b{display:block;color:var(--ink);margin-bottom:6px}
-
-    /* Flow section */
-    .section{padding:18px 0}
-    .flow-card{padding:18px}
-    .flow-head{
-      display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;
-      margin-bottom:12px;
-    }
-    .flow-head h2{margin:0;font-size:18px;letter-spacing:-.2px}
-    .tiny-links{display:flex;gap:12px;flex-wrap:wrap;color:var(--muted);font-size:12px}
-    .tiny-links a{border-bottom:1px dotted rgba(11,27,42,.28)}
-    .divider{height:1px;background:var(--line);margin:12px 0}
-
-    /* Stepper */
-    .stepper{display:flex;gap:10px;flex-wrap:wrap}
-    .step{
-      padding:10px 12px;border-radius:999px;
-      border:1px solid var(--line);
-      background:white;
-      color:var(--muted);
-      font-weight:900;
-      font-size:12px;
+    .chip{
+      font-size: 12px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(11,27,42,.10);
+      background: rgba(255,255,255,.7);
+      color: var(--muted);
       cursor:pointer;
-      transition: transform .12s ease, background .12s ease, box-shadow .12s ease;
+      transition: transform var(--t) ease, background var(--t) ease;
+      user-select:none;
+      text-align:center;
+      white-space:nowrap;
+    }
+    .chip:hover{ transform: translateY(-1px); background: rgba(255,255,255,.85); }
+
+    .miniNote{
+      font-size: 12px; color: var(--muted);
+      padding: 10px 12px;
+      border-radius: 16px;
+      border: 1px solid rgba(11,27,42,.08);
+      background: rgba(255,255,255,.65);
+    }
+
+    /* Sections */
+    section{ padding: 18px 0; }
+    .sectionTitle{
+      font-size: 20px;
+      margin: 0 0 10px;
+      letter-spacing: -.2px;
+    }
+
+    .how{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+    @media (max-width: 920px){
+      .how{ grid-template-columns: 1fr; }
+    }
+    .stepCard{ padding: 16px; border-radius: var(--radius2); }
+    .stepCard h3{ margin: 0 0 6px; font-size: 16px; }
+    .stepCard p{ margin: 0; color: var(--muted); line-height: 1.45; font-size: 14px; }
+    .stepNum{
+      width: 38px; height: 38px; border-radius: 14px;
+      display:grid; place-items:center;
+      font-weight: 900;
+      color: #fff;
+      background: linear-gradient(180deg, var(--pink2), var(--pink));
+      box-shadow: 0 14px 34px rgba(255,79,163,.22);
+      margin-bottom: 10px;
+    }
+
+    /* Configurator */
+    .config{ padding: 18px; }
+    .configGrid{
+      display:grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 14px;
+      align-items:start;
+    }
+    @media (max-width: 980px){
+      .configGrid{ grid-template-columns: 1fr; }
+    }
+
+    .tabs{
+      display:flex; gap: 8px; flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+    .tab{
+      padding: 10px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(11,27,42,.10);
+      background: rgba(255,255,255,.65);
+      color: var(--muted);
+      cursor:pointer;
+      font-weight: 800;
+      font-size: 13px;
+      transition: transform var(--t) ease, background var(--t) ease;
       user-select:none;
     }
-    .step:hover{transform:translateY(-1px);background:rgba(0,175,240,.06)}
-    .step.active{
-      color:var(--ink);
-      border-color: rgba(0,175,240,.35);
-      box-shadow: var(--shadow2);
-      background:rgba(0,175,240,.10);
+    .tab:hover{ transform: translateY(-1px); }
+    .tab.active{
+      background: rgba(255,79,163,.12);
+      border-color: rgba(255,79,163,.25);
+      color: var(--ink);
     }
 
-    /* Panels */
-    .panel{display:none}
-    .panel.active{display:block}
-
-    .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-    @media(max-width:900px){.grid2{grid-template-columns:1fr}}
+    .panel{ display:none; }
+    .panel.active{ display:block; animation: pop .18s ease; }
+    @keyframes pop{
+      from{ transform: translateY(6px); opacity: .0; }
+      to{ transform: translateY(0); opacity: 1; }
+    }
 
     .field{
-      border:1px solid var(--line);
-      background:white;
-      border-radius:14px;
-      padding:12px;
-      box-shadow: var(--shadow2);
+      display:grid; gap: 8px;
+      margin: 10px 0 14px;
     }
-    label{display:block;font-size:12px;color:var(--muted);font-weight:900;margin-bottom:8px}
+    label{ font-size: 13px; color: var(--muted); font-weight: 800; }
     input, textarea, select{
       width:100%;
-      border:1px solid rgba(11,27,42,.14);
-      background:white;
-      border-radius:12px;
-      padding:12px 12px;
+      border-radius: 16px;
+      border: 1px solid rgba(11,27,42,.12);
+      background: rgba(255,255,255,.78);
+      padding: 12px 12px;
       font: inherit;
-      outline:none;
+      outline: none;
+      transition: box-shadow var(--t) ease, border-color var(--t) ease;
     }
-    textarea{min-height:120px;resize:vertical}
+    textarea{ min-height: 92px; resize: vertical; }
+    input:focus, textarea:focus, select:focus{
+      box-shadow: var(--focus);
+      border-color: rgba(255,79,163,.38);
+    }
 
-    /* Chips */
-    .chips{display:flex;gap:10px;flex-wrap:wrap}
-    .chip{
-      font-size:13px;font-weight:900;color:var(--ink);
-      padding:10px 12px;border-radius:999px;
-      border:1px solid var(--line);
-      background:white;
-      cursor:pointer;
-      transition: transform .12s ease, background .12s ease;
+    .templates{
+      display:flex; flex-wrap: wrap; gap: 8px;
+      margin-bottom: 8px;
     }
-    .chip:hover{transform:translateY(-1px);background:rgba(255,105,180,.08)}
+    .tpl{
+      padding: 9px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(11,27,42,.10);
+      background: rgba(255,255,255,.68);
+      color: var(--muted);
+      cursor:pointer;
+      font-size: 12px;
+      user-select:none;
+    }
+    .tpl:hover{ background: rgba(255,255,255,.88); }
+
+    .twocol{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    @media (max-width: 560px){
+      .twocol{ grid-template-columns: 1fr; }
+    }
+
+    .swatches{ display:flex; gap: 10px; flex-wrap:wrap; }
+    .sw{
+      width: 42px; height: 42px; border-radius: 16px;
+      border: 1px solid rgba(11,27,42,.12);
+      cursor:pointer;
+      position: relative;
+      box-shadow: 0 10px 26px rgba(11,27,42,.08);
+    }
+    .sw.active:after{
+      content:"✓";
+      position:absolute; inset:0;
+      display:grid; place-items:center;
+      color:#fff;
+      font-weight: 900;
+      text-shadow: 0 2px 10px rgba(11,27,42,.35);
+    }
+
+    /* Preview / Summary */
+    .preview{
+      padding: 16px;
+      border-radius: var(--radius2);
+      border: 1px solid rgba(11,27,42,.10);
+      background: rgba(255,255,255,.7);
+      position: sticky;
+      top: 88px;
+    }
+    @media (max-width: 980px){
+      .preview{ position: static; }
+    }
+    .keksPreview{
+      border-radius: 999px;
+      width: 180px; height: 180px;
+      margin: 6px auto 14px;
+      border: 1px solid rgba(11,27,42,.12);
+      box-shadow: 0 18px 50px rgba(196,135,82,.25);
+      position: relative;
+      overflow:hidden;
+    }
+    .stamp{
+      position:absolute;
+      right: 18px; bottom: 18px;
+      width: 52px; height: 52px;
+      border-radius: 18px;
+      display:grid; place-items:center;
+      font-weight: 900;
+      color: rgba(11,27,42,.72);
+      background: rgba(255,255,255,.60);
+      border: 1px dashed rgba(11,27,42,.20);
+      transform: rotate(8deg);
+      opacity: .0;
+      transition: opacity var(--t) ease;
+    }
+    .stamp.on{ opacity: 1; }
 
     .summary{
-      border:1px dashed rgba(0,175,240,.35);
-      background:rgba(0,175,240,.06);
-      border-radius:14px;
-      padding:12px;
-      color:var(--muted);
-      font-size:13px;line-height:1.45;
-      flex:1 1 320px;
+      display:grid; gap: 10px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+    .sumRow{
+      display:flex; justify-content:space-between; gap: 10px;
+      border-bottom: 1px dashed rgba(11,27,42,.12);
+      padding-bottom: 8px;
+    }
+    .sumRow b{ color: var(--ink); }
+
+    .bigPrice{
+      font-size: 24px; font-weight: 900; color: var(--ink);
+      letter-spacing: -.3px;
     }
 
-    .actions{
-      display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;
-      margin-top:12px;
+    .note{
+      font-size: 12px; color: var(--muted);
+      line-height: 1.4;
     }
-    .right{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end}
 
-    .hint{font-size:12px;color:var(--muted);margin-top:4px}
-    .err{font-size:12px;color:#b00020;margin-top:4px}
+    /* Extras */
+    .extrasRow{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    @media (max-width: 720px){
+      .extrasRow{ grid-template-columns: 1fr; }
+    }
+    .check{
+      display:flex; align-items:flex-start; gap: 10px;
+      padding: 12px 12px;
+      border-radius: 18px;
+      border: 1px solid rgba(11,27,42,.10);
+      background: rgba(255,255,255,.66);
+      cursor:pointer;
+      user-select:none;
+    }
+    .box{
+      width: 18px; height: 18px; border-radius: 6px;
+      border: 1px solid rgba(11,27,42,.20);
+      background: rgba(255,255,255,.8);
+      flex: 0 0 auto;
+      margin-top: 2px;
+      display:grid; place-items:center;
+      font-weight: 900;
+      color: var(--pink);
+    }
+    .check.active{ border-color: rgba(255,79,163,.25); background: rgba(255,79,163,.08); }
+    .check.active .box{ border-color: rgba(255,79,163,.35); }
+    .check small{ display:block; color: var(--muted); margin-top: 2px; line-height: 1.35; }
+    .check b{ display:block; }
 
-    /* FAQ */
-    .faq-card{padding:18px}
-    .faq-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-    @media(max-width:900px){.faq-grid{grid-template-columns:1fr}}
-    .faq-item{padding:14px;border-radius:16px;border:1px solid var(--line);background:rgba(255,255,255,.90);box-shadow:var(--shadow2)}
-    .faq-item b{display:block;margin-bottom:6px}
+    /* Offer band */
+    .offer{
+      margin-top: 12px;
+      padding: 12px 12px;
+      border-radius: 18px;
+      background: linear-gradient(180deg, rgba(255,79,163,.14), rgba(255,79,163,.06));
+      border: 1px solid rgba(255,79,163,.22);
+      display:flex; align-items:center; justify-content:space-between; gap: 12px;
+      flex-wrap:wrap;
+    }
+    .offer b{ letter-spacing: -.2px; }
+    .qty{
+      display:flex; align-items:center; gap: 8px;
+    }
+    .qty button{
+      width: 40px; height: 40px;
+      border-radius: 14px;
+      border: 1px solid rgba(11,27,42,.12);
+      background: rgba(255,255,255,.75);
+      cursor:pointer;
+      font-weight: 900;
+    }
+    .qty input{
+      width: 60px;
+      text-align:center;
+      padding: 10px 8px;
+      border-radius: 14px;
+    }
 
     /* Footer */
     footer{
-      margin-top:22px;
-      padding:22px 0 34px;
-      border-top:1px solid var(--line);
-      background:rgba(255,255,255,.65);
-      color:var(--muted);
-      font-size:12px;
+      padding: 26px 0 40px;
+      color: var(--muted);
+      font-size: 13px;
     }
-    .footer-links{display:flex;gap:14px;flex-wrap:wrap}
-    .footer-links a{border-bottom:1px dotted rgba(11,27,42,.28)}
+    .footerGrid{
+      display:flex; flex-wrap: wrap; gap: 10px 16px;
+      align-items:center;
+      border-top: 1px solid rgba(11,27,42,.10);
+      padding-top: 16px;
+    }
+    .footerGrid a{
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
 
-    @media (prefers-reduced-motion: reduce){
-      #cookieRain{ display:none; }
-      *{ scroll-behavior:auto !important; }
-    }
+    /* Tiny helper */
+    .hidden{ display:none !important; }
   </style>
 </head>
 
 <body>
-  <canvas id="cookieRain"></canvas>
-
-  <header>
-    <div class="container">
-      <div class="nav">
-        <a class="brand" href="#top" aria-label="OnlyKeks Start">
-          <span class="logo" aria-hidden="true"></span>
-          <span>
-            <b>OnlyKeks</b>
-            <small>Post die schmeckt</small>
-          </span>
-        </a>
-
-        <div class="nav-actions">
-          <span class="pill">One page · One CTA · Reply-Loop</span>
-          <a class="btn primary" href="#flow">Reply-Keks starten</a>
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="wrap">
+      <div class="brand" aria-label="OnlyKeks">
+        <div class="logo" aria-hidden="true"></div>
+        <div>
+          OnlyKeks
+          <small>Post, die schmeckt</small>
         </div>
+      </div>
+
+      <div style="display:flex; align-items:center; gap:10px;">
+        <span class="pill"><span class="dot"></span> Pilot-Charge · wenige Slots</span>
+        <button class="btn btn-primary" id="jumpToConfig">Keks gestalten</button>
       </div>
     </div>
-  </header>
+  </div>
 
-  <main id="top">
+  <main class="wrap">
+
+    <!-- HERO -->
     <section class="hero">
-      <div class="container hero-grid">
-        <div class="card hero-copy">
-          <span class="kicker"><span class="dot"></span>Weil Post nicht schmeckt</span>
-          <h1>Eine Message,<br/>die man essen kann.</h1>
+      <div class="heroGrid">
+        <div class="card heroLeft">
+          <h1>Gestalte einen Keks mit deiner Message.</h1>
           <p class="sub">
-            Du schickst 1 Keks mit Botschaft & QR-Reply. Empfänger scannt → antwortet → wir machen den Reply-Keks → zurück.
+            Verschicken. Essen. Zurückantworten per QR — ohne Account, ohne Stress.
           </p>
 
-          <div class="cta-row">
-            <a class="btn primary" href="#flow">Reply-Keks starten</a>
-            <a class="btn ghost" href="#faq">Kurz erklärt</a>
+          <div style="display:flex; gap:10px; flex-wrap:wrap;">
+            <button class="btn btn-primary" id="startBtn">Keks gestalten</button>
+            <button class="btn btn-ghost" id="howBtn">So läuft’s</button>
           </div>
 
-          <div class="trustbar" role="note" aria-label="Versand & Sicherheit">
-            <b>STANDARD</b>
-            <div class="trustitems">
-              <span>📦 Versand 2–3 Werktage</span>
-              <span>🔎 Trackbar</span>
-              <span>🔒 Sicher zahlen</span>
-              <span>⚠️ Allergene</span>
-            </div>
-          </div>
-
-          <div class="social" aria-label="Status">
-            <span class="tag">Pilot / Early Access</span>
-            <span class="tag">Kein Account im MVP</span>
-            <span class="tag">Checkout über Stripe</span>
+          <div class="trustRow" role="list" aria-label="Trust Signals">
+            <div class="trust" role="listitem"><span class="icon">✓</span> sicher bezahlen</div>
+            <div class="trust" role="listitem"><span class="icon">⏱</span> schnell fertig</div>
+            <div class="trust" role="listitem"><span class="icon">♡</span> liebevoll verpackt</div>
+            <div class="trust" role="listitem"><span class="icon">QR</span> Reply-Loop</div>
           </div>
         </div>
 
-        <div class="card visual-card" aria-label="Produktvisual">
-          <div class="visual-wrap">
-            <span class="stamp">REPLY</span>
+        <div class="card heroRight">
+          <div class="visual" aria-label="Produkt Visual">
+            <div class="chips" aria-label="Template Vorschläge">
+              <div class="chip" data-msg="Hab an dich gedacht ♡">Hab an dich gedacht</div>
+              <div class="chip" data-msg="Du schaffst das. Ich glaub an dich.">Motivation</div>
+              <div class="chip" data-msg="Heute bist du dran: Pause machen ☁️">Self-Care</div>
+              <div class="chip" data-msg="Danke, dass du da bist.">Danke</div>
+            </div>
 
-            <div class="visual-row">
-              <div class="visual-left">
-                <div class="cookie" role="img" aria-label="Keks" aria-hidden="false"></div>
-              </div>
-
-              <div class="visual-right">
-                <div class="cardpaper" role="img" aria-label="Karte" aria-hidden="false"></div>
-                <div class="qr" role="img" aria-label="QR-Code" aria-hidden="false"></div>
+            <div class="cookieCard">
+              <b>Dein Keks kommt mit Karte + QR</b>
+              <p>Empfänger scannt, antwortet in 20 Sekunden und du bekommst Post zurück.</p>
+              <div style="display:flex; align-items:flex-end; gap: 10px; margin-top: 10px;">
+                <div style="flex:1; font-size:12px; color:var(--muted);">
+                  Reply-Code wird automatisch erstellt.
+                </div>
+                <div class="qr" aria-hidden="true"></div>
               </div>
             </div>
 
-            <div class="visual-caption">
-              Produktanker: Keks + Karte + QR. Antwort in 3 Klicks.
-            </div>
+            <div class="cookieBlob" aria-hidden="true"></div>
+          </div>
+
+          <div class="miniNote">
+            Fokus: <b>einfach</b> · deko-hübsch · klarer Flow. Extras sind optional — Hauptsache: <b>Keks gestalten</b>.
           </div>
         </div>
       </div>
     </section>
 
-    <section class="benefits">
-      <div class="container benefit-grid">
-        <div class="benefit"><b>Überraschungseffekt</b>Briefkasten-Moment, den man wahrnimmt.</div>
-        <div class="benefit"><b>Antwort per QR</b>Scan → Text → Adresse → fertig.</div>
-        <div class="benefit"><b>Persönlich & essbar</b>Message mit Gefühl statt Papier.</div>
-        <div class="benefit"><b>Viral weiterleitbar</b>Empfänger kann direkt zurücksenden.</div>
+    <!-- HOW IT WORKS -->
+    <section id="how">
+      <h2 class="sectionTitle">So läuft’s (kurz & süß)</h2>
+      <div class="how">
+        <div class="card stepCard">
+          <div class="stepNum">1</div>
+          <h3>Message schreiben</h3>
+          <p>Vorlage wählen oder frei tippen. Kurz reicht.</p>
+        </div>
+        <div class="card stepCard">
+          <div class="stepNum">2</div>
+          <h3>Keks veredeln</h3>
+          <p>Farbe + Stempel. Fertig. Kein Gefrickel.</p>
+        </div>
+        <div class="card stepCard">
+          <div class="stepNum">3</div>
+          <h3>Abschicken & Reply kriegen</h3>
+          <p>Empfänger scannt QR und antwortet. Du bekommst den Reply.</p>
+        </div>
       </div>
     </section>
 
-    <section class="section" id="flow">
-      <div class="container">
-        <div class="card flow-card">
-          <div class="flow-head">
-            <h2>Reply-Flow</h2>
-            <div class="tiny-links">
-              <a href="#footer">Impressum</a>
-              <a href="#footer">Versand</a>
-              <a href="#footer">Allergene</a>
+    <!-- CONFIGURATOR -->
+    <section id="config">
+      <div class="card config">
+        <div style="display:flex; align-items:flex-end; justify-content:space-between; gap: 12px; flex-wrap:wrap;">
+          <div>
+            <h2 class="sectionTitle" style="margin:0;">Gestalte deinen Keks</h2>
+            <div style="color:var(--muted); font-size:13px; margin-top:6px;">
+              3 Steps. Clean. Deko-chichi. Fertig.
             </div>
           </div>
 
-          <div class="stepper" role="tablist" aria-label="Schritte">
-            <button type="button" class="step active" id="step1" data-step="1" aria-controls="p1" aria-label="Schritt 1: Nachricht">1) Nachricht</button>
-            <button type="button" class="step" id="step2" data-step="2" aria-controls="p2" aria-label="Schritt 2: Adresse">2) Adresse</button>
-            <button type="button" class="step" id="step3" data-step="3" aria-controls="p3" aria-label="Schritt 3: Bezahlen">3) Bezahlen</button>
+          <div class="pill" title="Optional später aktivierbar">
+            <span class="dot"></span> Extras: Bro-Kekse, Token-Stempel, Bundles
           </div>
+        </div>
 
-          <div class="divider"></div>
+        <div class="configGrid" style="margin-top:14px;">
+          <!-- LEFT: Flow -->
+          <div>
+            <div class="tabs" role="tablist" aria-label="Konfigurator Steps">
+              <button class="tab active" data-tab="p1" role="tab" aria-selected="true">1) Message</button>
+              <button class="tab" data-tab="p2" role="tab" aria-selected="false">2) Veredeln</button>
+              <button class="tab" data-tab="p3" role="tab" aria-selected="false">3) Versand & Pay</button>
+            </div>
 
-          <div class="panel active" id="p1" role="tabpanel" aria-labelledby="step1">
-            <div class="grid2">
-              <div class="field">
-                <label for="pack">Paket</label>
-                <select id="pack">
-                  <option value="Quick">Quick</option>
-                  <option value="Custom" selected>Custom</option>
-                  <option value="Premium">Premium</option>
-                </select>
+            <!-- PANEL 1 -->
+            <div class="panel active" id="p1" role="tabpanel">
+              <div class="templates" aria-label="Templates">
+                <div class="tpl" data-tpl="Danke, dass du da bist. ♡">Danke</div>
+                <div class="tpl" data-tpl="Du schaffst das. Ich glaub an dich. ☁️">Motivation</div>
+                <div class="tpl" data-tpl="Ich vermiss dich. Wann sehen wir uns?">Vermissen</div>
+                <div class="tpl" data-tpl="Heute: Pause. Tee. Du. ♡">Self-Care</div>
+                <div class="tpl" data-tpl="Kurzer Reminder: Du bist großartig.">Sweet</div>
               </div>
 
               <div class="field">
-                <label>Templates</label>
-                <div class="chips">
-                  <button class="chip" data-msg="Reply oder du bist feige." type="button" aria-label="Template Frech auswählen">Frech</button>
-                  <button class="chip" data-msg="Ich denk an dich. Reply, wenn du lächelst." type="button" aria-label="Template Love auswählen">Love</button>
-                  <button class="chip" data-msg="Du schaffst das. Reply – ich glaub an dich." type="button" aria-label="Template Motivation auswählen">Motivation</button>
-                  <button class="chip" data-msg="Kurzer Ping. Reply per QR – dann machen wir Deal." type="button" aria-label="Template Business auswählen">Business</button>
+                <label for="msg">Deine Message</label>
+                <textarea id="msg" maxlength="240" placeholder="Schreib was Süßes… (max. 240 Zeichen)"></textarea>
+                <div style="display:flex; justify-content:space-between; gap:10px;">
+                  <div class="note">Tipp: Kurz & echt wirkt am stärksten.</div>
+                  <div class="note"><span id="count">0</span>/240</div>
+                </div>
+              </div>
+
+              <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                <button class="btn btn-primary" id="toP2">Weiter: Veredeln</button>
+                <button class="btn btn-ghost" id="quickFill">Nimm ein Template</button>
+              </div>
+            </div>
+
+            <!-- PANEL 2 -->
+            <div class="panel" id="p2" role="tabpanel">
+              <div class="twocol">
+                <div class="field">
+                  <label>Keks-Farbe</label>
+                  <div class="swatches" id="swatches">
+                    <div class="sw active" data-color="classic" title="Classic" style="background: linear-gradient(180deg, var(--cookie2), var(--cookie));"></div>
+                    <div class="sw" data-color="vanilla" title="Vanille" style="background: linear-gradient(180deg, #fff2d9, #ffd8ad);"></div>
+                    <div class="sw" data-color="pink" title="Rosé" style="background: linear-gradient(180deg, #ffd1e8, #ff93c8);"></div>
+                    <div class="sw" data-color="choco" title="Schoko" style="background: linear-gradient(180deg, #a06a55, #6f3f33);"></div>
+                  </div>
+                  <div class="note">Minimal: nur 4 Styles. Mehr später.</div>
+                </div>
+
+                <div class="field">
+                  <label for="stampSel">Stempel (digital)</label>
+                  <select id="stampSel">
+                    <option value="none">Kein Stempel</option>
+                    <option value="♡">Herz ♡</option>
+                    <option value="★">Stern ★</option>
+                    <option value="☺">Smile ☺</option>
+                    <option value="✿">Blume ✿</option>
+                  </select>
+                  <div class="note">Stempel ist optional. Kein Stress.</div>
+                </div>
+              </div>
+
+              <div class="offer" aria-label="Bundle Angebot">
+                <div>
+                  <b>Bundle-Deal:</b> Kauf 3, erhalte 25% Rabatt
+                  <div class="note">Pilot-Logik eingebaut. UI bleibt clean.</div>
+                </div>
+                <div class="qty" aria-label="Menge">
+                  <button id="minus" aria-label="Menge reduzieren">−</button>
+                  <input id="qty" type="number" min="1" max="9" value="1" inputmode="numeric" />
+                  <button id="plus" aria-label="Menge erhöhen">+</button>
+                </div>
+              </div>
+
+              <div style="margin-top:12px; display:flex; gap:10px; flex-wrap:wrap;">
+                <button class="btn btn-primary" id="toP3">Weiter: Versand & Pay</button>
+                <button class="btn btn-ghost" id="backP1">Zurück</button>
+              </div>
+
+              <div style="margin-top:14px;">
+                <div class="note">
+                  Optional später (Feature-Flags): „Bro/Was geht/Moin“ Kekse als eigene Kategorie, ohne den Hauptflow zu stören.
                 </div>
               </div>
             </div>
 
-            <div class="field" style="margin-top:12px">
-              <label for="msg">Deine Nachricht</label>
-              <textarea id="msg"
-                        aria-describedby="msgHint msgErr"
-                        aria-invalid="false"
-                        maxlength="500"
-                        placeholder="Kurz, klar, fühlbar…"></textarea>
-              <div id="msgHint" class="hint">Kurz & klar. Max. 500 Zeichen.</div>
-              <div id="msgErr" class="err" role="alert" aria-live="polite"></div>
-            </div>
-
-            <div class="actions">
-              <div class="summary" id="sum1">Template wählen oder frei tippen. Dann weiter zur Adresse.</div>
-              <div class="right">
-                <button class="btn primary" id="next1" type="button">Weiter</button>
+            <!-- PANEL 3 -->
+            <div class="panel" id="p3" role="tabpanel">
+              <div class="extrasRow">
+                <div class="field">
+                  <label for="name">Absender-Name (optional)</label>
+                  <input id="name" placeholder="z.B. Lisa" />
+                </div>
+                <div class="field">
+                  <label for="toName">Empfänger-Name (optional)</label>
+                  <input id="toName" placeholder="z.B. Mia" />
+                </div>
               </div>
-            </div>
-          </div>
 
-          <div class="panel" id="p2" role="tabpanel" aria-labelledby="step2" hidden>
-            <div class="grid2">
               <div class="field">
-                <label for="toName">Empfängername</label>
-                <input id="toName" placeholder="z.B. Marlon" autocomplete="given-name" />
-              </div>
-              <div class="field">
-                <label for="fromName">Absendername</label>
-                <input id="fromName" placeholder="z.B. Schmidti" autocomplete="name" />
-              </div>
-              <div class="field" style="grid-column:1/-1">
-                <label for="toAddr">Straße & Hausnummer, PLZ Ort</label>
-                <input id="toAddr"
-                       placeholder="Musterstraße 12, 12345 Berlin"
-                       autocomplete="street-address"
-                       inputmode="text"
-                       aria-describedby="toAddrHint toAddrErr"
-                       aria-invalid="false" />
-                <div id="toAddrHint" class="hint">Beispiel: Musterstraße 12, 12345 Berlin</div>
-                <div id="toAddrErr" class="err" role="alert" aria-live="polite"></div>
-              </div>
-            </div>
-
-            <div class="actions">
-              <div class="summary" id="sum2">Adresse prüfen. Danach geht’s zum Checkout.</div>
-              <div class="right">
-                <button class="btn ghost" id="back2" type="button">Zurück</button>
-                <button class="btn primary" id="next2" type="button">Weiter</button>
-              </div>
-            </div>
-          </div>
-
-          <div class="panel" id="p3" role="tabpanel" aria-labelledby="step3" hidden>
-            <div class="summary" id="sum3">
-              Fast fertig. Klick auf „Jetzt bezahlen“, dann geht’s zum sicheren Checkout.
-            </div>
-
-            <div class="actions">
-              <div class="summary" style="max-width:520px">
-                📦 Versand 2–3 Werktage · 🔎 Trackbar · 🔒 Sicher zahlen · ⚠️ Allergene
+                <label for="addr">Versandadresse</label>
+                <input id="addr" placeholder="Straße & Hausnr., PLZ Ort" />
+                <div class="note">Bitte so, dass Postbotin direkt lächelt.</div>
               </div>
 
-              <div class="right">
-                <button class="btn ghost" id="back3" type="button">Zurück</button>
-                <a class="btn primary" id="payBtn" href="#" target="_blank" rel="noopener">Jetzt bezahlen</a>
+              <div class="extrasRow">
+                <div class="check" id="giftWrap" role="checkbox" aria-checked="false" tabindex="0">
+                  <div class="box" aria-hidden="true"></div>
+                  <div>
+                    <b>Geschenk-Verpackung</b>
+                    <small>Extra hübsch, extra safe. (+2,50€)</small>
+                  </div>
+                </div>
+
+                <div class="check" id="photoOpt" role="checkbox" aria-checked="false" tabindex="0">
+                  <div class="box" aria-hidden="true"></div>
+                  <div>
+                    <b>Mini-Foto (später)</b>
+                    <small>Feature-Flag. UI ist schon vorbereitet.</small>
+                  </div>
+                </div>
+              </div>
+
+              <div style="margin-top:12px; display:flex; gap:10px; flex-wrap:wrap;">
+                <a class="btn btn-primary" id="payBtn" href="#" target="_blank" rel="noopener">Jetzt sicher bezahlen</a>
+                <button class="btn btn-ghost" id="backP2">Zurück</button>
+              </div>
+
+              <div style="margin-top:12px;" class="note">
+                Allergene/Details kommen nach Checkout oder im Footer. Pilot-Charge: begrenzt.
               </div>
             </div>
           </div>
 
+          <!-- RIGHT: Preview / Summary -->
+          <aside class="preview" aria-label="Vorschau & Zusammenfassung">
+            <div class="keksPreview" id="keksPreview" aria-label="Keks Vorschau">
+              <div class="stamp" id="stamp">♡</div>
+            </div>
+
+            <div class="summary">
+              <div class="sumRow"><span>Produkt</span><b>Reply-Keks</b></div>
+              <div class="sumRow"><span>Menge</span><b id="sumQty">1</b></div>
+              <div class="sumRow"><span>Bundle</span><b id="sumBundle">–</b></div>
+              <div class="sumRow"><span>Stempel</span><b id="sumStamp">–</b></div>
+              <div class="sumRow"><span>Extras</span><b id="sumExtras">–</b></div>
+
+              <div style="display:flex; align-items:baseline; justify-content:space-between; gap:10px; margin-top:4px;">
+                <span style="color:var(--muted);">Gesamt</span>
+                <span class="bigPrice" id="sumTotal">9,90€</span>
+              </div>
+
+              <div class="note" id="sumNote">
+                Preislogik ist MVP-ready. Stripe-Link wird in CONFIG gesetzt.
+              </div>
+            </div>
+          </aside>
         </div>
       </div>
     </section>
 
-    <section class="section" id="faq">
-      <div class="container">
-        <div class="card faq-card">
-          <div class="flow-head">
-            <h2>Kurz erklärt</h2>
-            <div class="tiny-links">
-              <a href="#flow">Zum Flow</a>
-              <a href="#footer">Versand</a>
-            </div>
-          </div>
-
-          <div class="faq-grid">
-            <div class="faq-item">
-              <b>Was kommt an?</b>
-              Ein Keks, eine Karte und ein QR-Code für die Antwort.
-            </div>
-            <div class="faq-item">
-              <b>Wie funktioniert der Reply?</b>
-              Der Empfänger scannt den QR-Code und kann direkt antworten.
-            </div>
-            <div class="faq-item">
-              <b>Wie lange ist das haltbar?</b>
-              Luftdicht verpackt mehrere Monate (Details im Produktblatt).
-            </div>
-            <div class="faq-item">
-              <b>Allergene?</b>
-              Enthält Gluten. Weitere Angaben unter „Allergene“ im Footer.
-            </div>
-          </div>
-
-          <div style="margin-top:12px">
-            <a class="btn primary" href="#flow">Reply-Keks starten</a>
-          </div>
-        </div>
+    <footer>
+      <div class="footerGrid">
+        <span>© <span id="y"></span> OnlyKeks</span>
+        <a href="#0" aria-label="Impressum">Impressum</a>
+        <a href="#0" aria-label="Datenschutz">Datenschutz</a>
+        <a href="#0" aria-label="AGB">AGB</a>
+        <a href="#0" aria-label="Versand">Versand</a>
+        <a href="#0" aria-label="Allergene">Allergene</a>
       </div>
-    </section>
+    </footer>
   </main>
 
-  <footer id="footer">
-    <div class="container">
-      <div class="footer-links">
-        <a href="#">Impressum</a>
-        <a href="#">Datenschutz</a>
-        <a href="#">AGB</a>
-        <a href="#">Versand</a>
-        <a href="#">Allergene</a>
-      </div>
-      <div style="margin-top:8px">© OnlyKeks · Post die schmeckt</div>
-    </div>
-  </footer>
-
   <script>
-  /*** CONFIG: NUR HIER STRIPE EINTRAGEN ***/
-  const STRIPE_PAYMENT_LINK = "https://buy.stripe.com/aBcDeFgHiJkLmNoPqR";
+    /*** CONFIG: NUR HIER STRIPE EINTRAGEN ***/
+    const STRIPE_PAYMENT_LINK = "https://buy.stripe.com/aBcDeFgHiJkLmNoPqR"; // <- dein Link
 
-  /* =======================
-     FLOW LOGIC (robust)
-  ======================= */
-  const steps  = document.querySelectorAll(".step");
-  const payBtn = document.getElementById("payBtn");
+    /*** PRICING (MVP) ***/
+    const BASE_PRICE = 9.90;
+    const GIFT_WRAP = 2.50;
+    const BUNDLE_QTY = 3;
+    const BUNDLE_DISCOUNT = 0.25; // 25%
 
-  const panels = {
-    1: document.getElementById("p1"),
-    2: document.getElementById("p2"),
-    3: document.getElementById("p3"),
-  };
+    // Elements
+    const y = document.getElementById("y");
+    y.textContent = new Date().getFullYear();
 
-  steps.forEach(s=>{
-    s.setAttribute("role","tab");
-    s.setAttribute("aria-selected","false");
-  });
+    const startBtn = document.getElementById("startBtn");
+    const howBtn = document.getElementById("howBtn");
+    const jumpToConfig = document.getElementById("jumpToConfig");
 
-  function go(n){
-    Object.entries(panels).forEach(([k,p])=>{
-      if(!p) return;
-      const on = (+k === n);
-      p.classList.toggle("active", on);
-      p.toggleAttribute("hidden", !on);
-    });
-
-    steps.forEach(s=>{
-      const active = (+s.dataset.step === n);
-      s.classList.toggle("active", active);
-      s.setAttribute("aria-selected", active ? "true":"false");
-      s.setAttribute("tabindex", active ? "0":"-1");
-    });
-
-    if(n === 3 && payBtn){
-      payBtn.href = STRIPE_PAYMENT_LINK;
-    }
-  }
-
-  steps.forEach(s=>{
-    s.addEventListener("click", () => {
-      const step = +s.dataset.step;
-      if (step === 3 && (!validateMessage() || !validateAddressDE())) return;
-      go(step);
-    });
-  });
-
-  const stepper = document.querySelector(".stepper");
-  stepper?.addEventListener("keydown", (e) => {
-    const active = document.activeElement;
-    if (!active || active.tagName !== "BUTTON" || !active.classList.contains("step")) return;
-
-    const all = Array.from(steps);
-    const idx = all.indexOf(active);
-
-    if (e.key === "ArrowRight" || e.key === "ArrowLeft") e.preventDefault();
-
-    if (e.key === "ArrowRight") {
-      const next = all[(idx + 1) % all.length];
-      const step = +next.dataset.step;
-      if (step === 3 && (!validateMessage() || !validateAddressDE())) return;
-      next.focus();
-      go(step);
-    } else if (e.key === "ArrowLeft") {
-      const prev = all[(idx - 1 + all.length) % all.length];
-      prev.focus();
-      go(+prev.dataset.step);
-    } else if (e.key === "Enter" || e.key === " ") {
-      e.preventDefault();
-      const step = +active.dataset.step;
-      if (step === 3 && (!validateMessage() || !validateAddressDE())) return;
-      go(step);
-    }
-  });
-
-  const msg = document.getElementById("msg");
-  document.querySelectorAll(".chip").forEach(ch=>{
-    ch.addEventListener("click", ()=>{
-      if(msg) msg.value = ch.dataset.msg;
-      updateSummaries();
-    });
-  });
-
-  const next1 = document.getElementById("next1");
-  const next2 = document.getElementById("next2");
-  const back2 = document.getElementById("back2");
-  const back3 = document.getElementById("back3");
-
-  const toAddr = document.getElementById("toAddr");
-  const sum1 = document.getElementById("sum1");
-  const sum2 = document.getElementById("sum2");
-  const sum3 = document.getElementById("sum3");
-  const pack = document.getElementById("pack");
-  const toName = document.getElementById("toName");
-  const fromName = document.getElementById("fromName");
-
-  function esc(s){
-    return String(s||"")
-      .replaceAll("&","&amp;")
-      .replaceAll("<","&lt;")
-      .replaceAll(">","&gt;")
-      .replaceAll('"',"&quot;");
-  }
-
-  function priceFor(p){
-    if(p === "Quick") return 9.90;
-    if(p === "Custom") return 14.90;
-    return 29.90;
-  }
-
-  function updateSummaries(){
-    const p = pack ? pack.value : "Custom";
-    const price = priceFor(p);
-    const m = msg ? msg.value.trim() : "";
-    sum1 && (sum1.innerHTML =
-      `<b>Preview:</b> Paket <b>${esc(p)}</b> · <span style="color:var(--muted)">${price.toFixed(2)} €</span><br/>„${esc(m||"…")}“`
-    );
-
-    const tn = toName ? toName.value.trim() : "";
-    const fn = fromName ? fromName.value.trim() : "";
-    const ta = toAddr ? toAddr.value.trim() : "";
-    sum2 && (sum2.innerHTML =
-      `<b>Check:</b> Empfänger <b>${esc(tn||"—")}</b> · Absender <b>${esc(fn||"—")}</b><br/>Adresse: ${esc(ta||"—")}`
-    );
-
-    const ship = (p === "Premium") ? 0 : 2.90;
-    const total = price + ship;
-    sum3 && (sum3.innerHTML =
-      `<b>Checkout:</b> Paket <b>${esc(p)}</b> — ${price.toFixed(2)} € · Versand ${ship.toFixed(2)} €<br/>
-       <b>Gesamt: ${total.toFixed(2)} €</b><br/>
-       <span style="color:var(--muted)">Nachricht:</span> „${esc(m||"…")}“`
-    );
-  }
-
-  function debounce(fn, wait=120){
-    let t;
-    return (...args)=>{
-      clearTimeout(t);
-      t = setTimeout(()=>fn(...args), wait);
+    const tabs = Array.from(document.querySelectorAll(".tab"));
+    const panels = {
+      p1: document.getElementById("p1"),
+      p2: document.getElementById("p2"),
+      p3: document.getElementById("p3")
     };
-  }
-  const updateSummariesDebounced = debounce(updateSummaries, 120);
 
-  function validateMessage(){
-    const v = (msg?.value || "").trim();
-    const err = document.getElementById("msgErr");
-    if (!v || v.length < 3){
-      msg?.setAttribute("aria-invalid","true");
-      err && (err.textContent = "Bitte eine kurze Nachricht (mind. 3 Zeichen).");
-      msg?.focus();
-      return false;
+    const msg = document.getElementById("msg");
+    const count = document.getElementById("count");
+    const templates = Array.from(document.querySelectorAll(".tpl"));
+    const chips = Array.from(document.querySelectorAll(".chip"));
+
+    const toP2 = document.getElementById("toP2");
+    const toP3 = document.getElementById("toP3");
+    const backP1 = document.getElementById("backP1");
+    const backP2 = document.getElementById("backP2");
+    const quickFill = document.getElementById("quickFill");
+
+    const swatches = Array.from(document.querySelectorAll(".sw"));
+    const keksPreview = document.getElementById("keksPreview");
+
+    const stampSel = document.getElementById("stampSel");
+    const stamp = document.getElementById("stamp");
+
+    const qty = document.getElementById("qty");
+    const plus = document.getElementById("plus");
+    const minus = document.getElementById("minus");
+
+    const giftWrap = document.getElementById("giftWrap");
+    const photoOpt = document.getElementById("photoOpt"); // feature flag placeholder
+    const payBtn = document.getElementById("payBtn");
+
+    // Summary
+    const sumQty = document.getElementById("sumQty");
+    const sumBundle = document.getElementById("sumBundle");
+    const sumStamp = document.getElementById("sumStamp");
+    const sumExtras = document.getElementById("sumExtras");
+    const sumTotal = document.getElementById("sumTotal");
+    const sumNote = document.getElementById("sumNote");
+
+    // State
+    const state = {
+      panel: "p1",
+      msg: "",
+      color: "classic",
+      stamp: "none",
+      qty: 1,
+      giftWrap: false,
+      photo: false
+    };
+
+    // Helpers
+    function euro(n){
+      // keep German format
+      return n.toFixed(2).replace(".", ",") + "€";
     }
-    msg?.setAttribute("aria-invalid","false");
-    err && (err.textContent = "");
-    return true;
-  }
 
-  function validateAddressDE(){
-    const v = (toAddr?.value || "").trim();
-    const err = document.getElementById("toAddrErr");
-
-    const re = /.+\s+\d+.*[, ]\s*\d{5}\s+.+/;
-    if (!re.test(v)){
-      toAddr?.setAttribute("aria-invalid","true");
-      err && (err.textContent = "Adresse unvollständig. Beispiel: Musterstraße 12, 12345 Berlin");
-      toAddr?.focus();
-      return false;
+    function scrollToId(id){
+      const el = document.getElementById(id);
+      if(!el) return;
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
     }
-    toAddr?.setAttribute("aria-invalid","false");
-    err && (err.textContent = "");
-    return true;
-  }
 
-  next1 && next1.addEventListener("click", ()=>{
-    updateSummaries();
-    go(2);
-    document.getElementById("toName")?.focus();
-  });
+    function setPanel(id){
+      state.panel = id;
+      tabs.forEach(t => {
+        const on = t.dataset.tab === id;
+        t.classList.toggle("active", on);
+        t.setAttribute("aria-selected", on ? "true" : "false");
+      });
+      Object.values(panels).forEach(p => p.classList.remove("active"));
+      panels[id].classList.add("active");
 
-  back2 && back2.addEventListener("click", ()=>{ updateSummaries(); go(1); });
-
-  next2 && next2.addEventListener("click", ()=>{
-    updateSummaries();
-    const ok = validateMessage() && validateAddressDE();
-    if(!ok) return;
-    go(3);
-  });
-
-  back3 && back3.addEventListener("click", ()=>{ updateSummaries(); go(2); });
-
-  [pack, msg, toName, fromName, toAddr].forEach(el=>{
-    el && el.addEventListener("input", updateSummariesDebounced);
-    el && el.addEventListener("change", updateSummariesDebounced);
-  });
-
-  msg?.addEventListener("blur", validateMessage);
-  toAddr?.addEventListener("blur", validateAddressDE);
-
-  go(1);
-  if(payBtn) payBtn.href = STRIPE_PAYMENT_LINK;
-  updateSummaries();
-
-  /* =======================
-     COOKIE RAIN (DPR-scharf)
-  ======================= */
-  const reduce = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
-  const c = document.getElementById("cookieRain");
-  if(c && !reduce){
-    const ctx = c.getContext("2d");
-
-    function resize(){
-      const dpr = window.devicePixelRatio || 1;
-
-      c.width  = Math.floor(innerWidth  * dpr);
-      c.height = Math.floor(innerHeight * dpr);
-
-      c.style.width  = `${innerWidth}px`;
-      c.style.height = `${innerHeight}px`;
-
-      ctx.setTransform(1,0,0,1,0,0);
-      ctx.scale(dpr, dpr);
+      if(id === "p3"){
+        payBtn.href = STRIPE_PAYMENT_LINK;
+      }
     }
-    resize();
-    addEventListener("resize", resize);
 
-    const cookies = [...Array(30)].map(() => ({
-      x: Math.random()*innerWidth,
-      y: Math.random()*innerHeight,
-      r: 10 + Math.random()*22,
-      v: 0.6 + Math.random()*1.4
+    function clampInt(v, min, max){
+      const n = Math.max(min, Math.min(max, parseInt(v || "0", 10)));
+      return isFinite(n) ? n : min;
+    }
+
+    function computeTotal(){
+      const q = state.qty;
+      let subtotal = BASE_PRICE * q;
+
+      const bundleEligible = q >= BUNDLE_QTY;
+      const bundleDiscount = bundleEligible ? subtotal * BUNDLE_DISCOUNT : 0;
+
+      let extras = 0;
+      if(state.giftWrap) extras += GIFT_WRAP;
+
+      const total = subtotal - bundleDiscount + extras;
+      return { subtotal, bundleEligible, bundleDiscount, extras, total };
+    }
+
+    function paintCookie(){
+      let bg;
+      switch(state.color){
+        case "vanilla": bg = "linear-gradient(180deg, #fff2d9, #ffd8ad)"; break;
+        case "pink": bg = "linear-gradient(180deg, #ffd1e8, #ff93c8)"; break;
+        case "choco": bg = "linear-gradient(180deg, #a06a55, #6f3f33)"; break;
+        default: bg = "linear-gradient(180deg, var(--cookie2), var(--cookie))";
+      }
+      keksPreview.style.background = bg;
+
+      if(state.stamp !== "none"){
+        stamp.textContent = state.stamp;
+        stamp.classList.add("on");
+        sumStamp.textContent = state.stamp;
+      } else {
+        stamp.classList.remove("on");
+        sumStamp.textContent = "–";
+      }
+    }
+
+    function updateSummary(){
+      state.msg = (msg.value || "").trim();
+      sumQty.textContent = String(state.qty);
+
+      const { bundleEligible, bundleDiscount, extras, total } = computeTotal();
+
+      sumBundle.textContent = bundleEligible ? ("−" + euro(bundleDiscount) + " (3+ Deal)") : "–";
+
+      const ex = [];
+      if(state.giftWrap) ex.push("Geschenk");
+      if(state.photo) ex.push("Foto (später)");
+      sumExtras.textContent = ex.length ? ex.join(", ") : "–";
+
+      sumTotal.textContent = euro(total);
+
+      // note
+      if(bundleEligible){
+        sumNote.textContent = "Bundle aktiv. Du sparst automatisch ab 3 Stück.";
+      } else {
+        sumNote.textContent = "Tipp: Ab 3 Stück gibt’s 25% Bundle-Rabatt.";
+      }
+    }
+
+    function toggleCheck(el, key){
+      state[key] = !state[key];
+      el.classList.toggle("active", state[key]);
+      el.setAttribute("aria-checked", state[key] ? "true" : "false");
+      el.querySelector(".box").textContent = state[key] ? "✓" : "";
+      updateSummary();
+    }
+
+    // Wire: top CTAs
+    startBtn.addEventListener("click", () => { scrollToId("config"); });
+    jumpToConfig.addEventListener("click", () => { scrollToId("config"); });
+    howBtn.addEventListener("click", () => { scrollToId("how"); });
+
+    // Wire: chips/templates fill message
+    templates.forEach(t => t.addEventListener("click", () => {
+      msg.value = t.dataset.tpl || "";
+      msg.dispatchEvent(new Event("input"));
+    }));
+    chips.forEach(c => c.addEventListener("click", () => {
+      msg.value = c.dataset.msg || "";
+      msg.dispatchEvent(new Event("input"));
+      scrollToId("config");
     }));
 
-    let last = 0;
-    const FPS = 30;
-    const frameInterval = 1000 / FPS;
+    quickFill.addEventListener("click", () => {
+      const t = templates[Math.floor(Math.random() * templates.length)];
+      msg.value = t.dataset.tpl || "Hab an dich gedacht ♡";
+      msg.dispatchEvent(new Event("input"));
+    });
 
-    function draw(ts){
-      if (document.hidden) { requestAnimationFrame(draw); return; }
-      if (ts - last < frameInterval) { requestAnimationFrame(draw); return; }
-      last = ts;
+    msg.addEventListener("input", () => {
+      count.textContent = String((msg.value || "").length);
+      updateSummary();
+    });
 
-      ctx.clearRect(0, 0, innerWidth, innerHeight);
-      cookies.forEach(o=>{
-        o.y += o.v;
-        if(o.y > innerHeight) o.y = -50;
-        ctx.beginPath();
-        ctx.arc(o.x,o.y,o.r,0,Math.PI*2);
-        ctx.fillStyle = "#c48752";
-        ctx.fill();
-      });
-      requestAnimationFrame(draw);
+    // Tabs
+    tabs.forEach(t => t.addEventListener("click", () => setPanel(t.dataset.tab)));
+
+    // Navigation buttons
+    toP2.addEventListener("click", () => {
+      if((msg.value || "").trim().length < 2){
+        msg.focus();
+        msg.scrollIntoView({behavior:"smooth", block:"center"});
+        return;
+      }
+      setPanel("p2");
+    });
+    toP3.addEventListener("click", () => setPanel("p3"));
+    backP1.addEventListener("click", () => setPanel("p1"));
+    backP2.addEventListener("click", () => setPanel("p2"));
+
+    // Swatches
+    swatches.forEach(s => s.addEventListener("click", () => {
+      swatches.forEach(x => x.classList.remove("active"));
+      s.classList.add("active");
+      state.color = s.dataset.color || "classic";
+      paintCookie();
+      updateSummary();
+    }));
+
+    // Stamp
+    stampSel.addEventListener("change", () => {
+      state.stamp = stampSel.value;
+      paintCookie();
+      updateSummary();
+    });
+
+    // Qty controls
+    function setQty(v){
+      state.qty = clampInt(v, 1, 9);
+      qty.value = state.qty;
+      updateSummary();
     }
-    requestAnimationFrame(draw);
-  }
+    plus.addEventListener("click", () => setQty(state.qty + 1));
+    minus.addEventListener("click", () => setQty(state.qty - 1));
+    qty.addEventListener("input", () => setQty(qty.value));
+    qty.addEventListener("blur", () => setQty(qty.value));
+
+    // Extras
+    giftWrap.addEventListener("click", () => toggleCheck(giftWrap, "giftWrap"));
+    photoOpt.addEventListener("click", () => toggleCheck(photoOpt, "photo"));
+    giftWrap.addEventListener("keydown", (e) => { if(e.key === "Enter" || e.key === " "){ e.preventDefault(); toggleCheck(giftWrap, "giftWrap"); }});
+    photoOpt.addEventListener("keydown", (e) => { if(e.key === "Enter" || e.key === " "){ e.preventDefault(); toggleCheck(photoOpt, "photo"); }});
+
+    // Init
+    paintCookie();
+    updateSummary();
+    setPanel("p1");
   </script>
 </body>
 </html>

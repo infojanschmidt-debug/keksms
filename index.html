@@ -3,1493 +3,1322 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>OnlyKeks – Post die schmeckt</title>
-  <meta name="description" content="Schicke süße Botschaften mit direkter QR-Antwort. Reply-Keks in 3 Klicks – kein Account." />
-
-  <!-- SEO / Social -->
-  <link rel="canonical" href="https://infojanschmidt-debug.github.io/keksms/" />
-  <meta name="robots" content="index,follow" />
-  <meta name="theme-color" content="#ff4fa3" />
-
-  <meta property="og:title" content="OnlyKeks – Post die schmeckt" />
-  <meta property="og:description" content="Schicke süße Botschaften mit direkter QR-Antwort. Reply-Keks in 3 Klicks." />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://infojanschmidt-debug.github.io/keksms/" />
-
-  <!-- OG/Twitter Fallback (kein 404) -->
-  <meta property="og:image" content="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1200' height='630'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop stop-color='%23ffe6f2'/%3E%3Cstop offset='1' stop-color='%23ffd3ea'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='1200' height='630' fill='url(%23g)'/%3E%3Ctext x='70' y='210' font-family='Poppins,Arial' font-size='72' font-weight='900' fill='%230b1b2a'%3EOnlyKeks%3C/text%3E%3Ctext x='70' y='300' font-family='Poppins,Arial' font-size='38' font-weight='600' fill='%234b5b6b'%3EPost die schmeckt%3C/text%3E%3Ctext x='70' y='392' font-family='Poppins,Arial' font-size='34' fill='%234b5b6b'%3EScan.%20Reply.%20Grinsen.%3C/text%3E%3Ctext x='70' y='545' font-family='Poppins,Arial' font-size='40'%3E%F0%9F%8D%AA%F0%9F%93%B1%F0%9F%92%97%3C/text%3E%3C/svg%3E" />
-
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="OnlyKeks – Post die schmeckt" />
-  <meta name="twitter:description" content="Schicke süße Botschaften mit direkter QR-Antwort." />
-  <meta name="twitter:image" content="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1200' height='630'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop stop-color='%23ffe6f2'/%3E%3Cstop offset='1' stop-color='%23ffd3ea'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='1200' height='630' fill='url(%23g)'/%3E%3Ctext x='70' y='210' font-family='Poppins,Arial' font-size='72' font-weight='900' fill='%230b1b2a'%3EOnlyKeks%3C/text%3E%3Ctext x='70' y='300' font-family='Poppins,Arial' font-size='38' font-weight='600' fill='%234b5b6b'%3EPost die schmeckt%3C/text%3E%3Ctext x='70' y='392' font-family='Poppins,Arial' font-size='34' fill='%234b5b6b'%3EScan.%20Reply.%20Grinsen.%3C/text%3E%3Ctext x='70' y='545' font-family='Poppins,Arial' font-size='40'%3E%F0%9F%8D%AA%F0%9F%93%B1%F0%9F%92%97%3C/text%3E%3C/svg%3E" />
-
-  <!-- Font (friendly rounded) -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800;900&display=swap" rel="stylesheet" />
-
-  <!-- Schema (lightweight) -->
-  <script type="application/ld+json">
-  {
-    "@context":"https://schema.org",
-    "@type":"Product",
-    "name":"OnlyKeks Reply-Keks",
-    "description":"Essbare Nachricht mit QR-Reply-Flow.",
-    "brand":{"@type":"Brand","name":"OnlyKeks"}
-  }
-  </script>
-
+  <title>OnlyKeks – Keks Konfigurator</title>
+  <meta name="description" content="Gestalte deinen Keks in Mini-Steps: Text → Look → Extras. Live Preview, Presets, Random, Teilen." />
   <style>
     :root{
-      /* OnlyFans-clean */
-      --bg:#ffffff;
-      --bg2:#f6fbff;
       --ink:#0b1b2a;
       --muted:#4b5b6b;
-      --line: rgba(11,27,42,.10);
+      --card: rgba(255,255,255,.78);
+      --card2: rgba(255,255,255,.62);
+      --line: rgba(11,27,42,.12);
+      --shadow: 0 18px 60px rgba(11,27,42,.12);
 
-      /* Deko-soft (pinker / wolkiger) */
+      /* Pastell-Himmel + pink */
       --sky1:#ffe6f2;
       --sky2:#ffd3ea;
       --sky3:#fff4ea;
       --pink:#ff4fa3;
       --pink2:#ff7cc5;
-      --pinkSoft: rgba(255,79,163,.14);
-      --pinkSoft2: rgba(255,124,197,.12);
 
-      /* optional: weniger OnlyFans-blau, mehr Deko-Pink */
-      --blue:#ff4fa3;
-      --blue2:#ff7cc5;
+      /* Cookie colors */
+      --cookie1:#e9c7a2;
+      --cookie2:#d9ad7f;
+      --cookie3:#c79363;
 
-      /* weniger blau (aber als soft highlight ok) */
-      --blueSoft: rgba(0,175,240,.08);
-
-      --cookie:#c48752;
-      --cookieLight:#f3d2b3;
-
-      --radius:18px;
-      --shadow: 0 18px 60px rgba(11,27,42,.12);
-      --shadow2: 0 10px 30px rgba(11,27,42,.08);
-
-      --danger:#d24a5c;
-
-      /* Cursor */
-      --cursor-cookie: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 64 64'%3E%3Ccircle cx='28' cy='28' r='18' fill='%23c48752'/%3E%3Ccircle cx='22' cy='22' r='3' fill='%230b1b2a' opacity='.35'/%3E%3Ccircle cx='34' cy='20' r='2.8' fill='%230b1b2a' opacity='.30'/%3E%3Ccircle cx='20' cy='34' r='2.6' fill='%230b1b2a' opacity='.30'/%3E%3Ccircle cx='34' cy='34' r='2.3' fill='%230b1b2a' opacity='.28'/%3E%3C/svg%3E") 12 12, auto;
+      --radius: 22px;
     }
 
     *{box-sizing:border-box}
-    html,body{height:100%}
-
     body{
       margin:0;
-      font-family: Poppins, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
       color:var(--ink);
-
-      /* Pastell-Pink Himmel (Geschenk-Mood) */
       background:
-        radial-gradient(900px 520px at 15% 0%, rgba(255,79,163,.18), transparent 62%),
-        radial-gradient(800px 520px at 85% 18%, rgba(255,124,197,.16), transparent 58%),
-        radial-gradient(900px 520px at 55% 0%, rgba(255,230,242,.88), transparent 60%),
-        radial-gradient(900px 520px at 50% 100%, rgba(255,244,234,.70), transparent 55%),
-        linear-gradient(180deg, var(--sky1), var(--bg2));
-
-      overflow-x:hidden;
-      cursor: var(--cursor-cookie);
+        radial-gradient(1200px 600px at 15% 15%, rgba(255,79,163,.16), transparent 60%),
+        radial-gradient(900px 500px at 85% 20%, rgba(255,124,197,.14), transparent 55%),
+        linear-gradient(180deg, var(--sky1), var(--sky2), var(--sky3));
+      min-height:100vh;
     }
 
-    a{color:inherit;text-decoration:none}
-    .container{max-width:1120px;margin:0 auto;padding:0 18px}
-
-    a, button, .btn, .step, .chip, summary, input[type="submit"], [role="button"]{
-      cursor: var(--cursor-cookie);
-    }
-    input, textarea, select{ cursor:text; }
-
-    :focus-visible{outline:3px solid rgba(255,79,163,.45); outline-offset:3px;}
-    .btn:focus-visible,.step:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{
-      box-shadow:0 0 0 6px rgba(255,79,163,.16);
-    }
-
-    #cookieRain{
-      position:fixed; inset:0;
-      width:100%; height:100%;
-      z-index:0;
-      pointer-events:none;
-      opacity:.075;
-    }
-    main, header, footer, .consent{position:relative; z-index:1}
-
-    /* Header */
+    .wrap{max-width:1100px;margin:0 auto;padding:22px 16px 110px}
     header{
-      position:sticky;top:0;z-index:50;
-      background:rgba(255,255,255,.88);
-      backdrop-filter: blur(12px);
-      border-bottom:1px solid var(--line);
+      display:flex; gap:12px; align-items:center; justify-content:space-between;
+      padding:6px 6px 14px;
     }
-    .nav{display:flex;align-items:center;justify-content:space-between;padding:14px 0;gap:12px;}
-    .brand{display:flex;align-items:center;gap:12px}
+    .brand{display:flex; align-items:center; gap:10px; font-weight:950; letter-spacing:.2px;}
     .logo{
-      width:52px;height:52px;border-radius:18px;
-      background: linear-gradient(135deg, var(--blue), var(--blue2));
-      box-shadow: 0 12px 30px rgba(255,79,163,.20);
-      position:relative;
-      flex:0 0 auto;
+      width:44px;height:44px;border-radius:14px;
+      background: radial-gradient(circle at 30% 30%, #fff, rgba(255,255,255,.4) 40%, rgba(255,79,163,.25) 70%),
+                linear-gradient(135deg, rgba(255,255,255,.9), rgba(255,255,255,.5));
+      box-shadow: 0 12px 30px rgba(255,79,163,.18);
+      position:relative; overflow:hidden;
     }
-    .logo:after{
-      content:"";
-      position:absolute;inset:13px;border-radius:12px;
-      background:rgba(255,255,255,.55);
-      border:1px solid rgba(255,255,255,.65);
-    }
-    .brand b{font-size:18px;font-weight:900;letter-spacing:-.2px}
-    .brand small{display:block;color:var(--muted);font-size:12px;margin-top:2px}
+    .logo:after{content:"🍪"; position:absolute; inset:0; display:grid; place-items:center; font-size:22px; transform: translateY(1px);}
+    .sub{color:var(--muted); font-weight:650; font-size:13px}
 
-    .nav-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:flex-end}
     .pill{
-      font-size:12px;color:var(--muted);
-      border:1px solid var(--line);
-      background:rgba(255,255,255,.7);
-      padding:9px 12px;border-radius:999px;
+      display:inline-flex; align-items:center; gap:8px;
+      font-size:12px; font-weight:850; color:rgba(11,27,42,.75);
+      padding:8px 10px; border-radius:999px;
+      border:1px solid rgba(11,27,42,.10);
+      background: rgba(255,255,255,.55);
       white-space:nowrap;
     }
+
+    .grid{
+      display:grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap:16px;
+      align-items:start;
+    }
+    @media (max-width: 920px){
+      .grid{grid-template-columns:1fr;}
+    }
+
+    .card{
+      background: var(--card);
+      border:1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+    }
+    .card .hd{
+      padding:14px 16px 10px;
+      display:flex; justify-content:space-between; align-items:flex-start; gap:12px;
+    }
+    .title{font-size:18px;font-weight:950;line-height:1.2}
+    .small{font-size:12px; color:var(--muted); font-weight:650}
+
+    /* Stepper */
+    .stepsTop{
+      padding:0 16px 12px;
+      display:flex; gap:10px; flex-wrap:wrap; align-items:center; justify-content:space-between;
+    }
+    .progress{
+      display:flex; gap:8px; align-items:center; flex-wrap:wrap;
+    }
+    .stepDot{
+      display:flex; align-items:center; gap:8px;
+      padding:8px 10px;
+      border-radius:999px;
+      border:1px solid rgba(11,27,42,.10);
+      background: rgba(255,255,255,.58);
+      font-weight:900; font-size:12px;
+      color: rgba(11,27,42,.68);
+    }
+    .stepDot.active{
+      border-color: rgba(255,79,163,.45);
+      color: rgba(11,27,42,.85);
+      background: linear-gradient(180deg, rgba(255,79,163,.14), rgba(255,255,255,.62));
+    }
+    .stepDot.done{
+      border-color: rgba(11,27,42,.12);
+      background: rgba(255,255,255,.72);
+    }
+    .stepDot .n{
+      width:18px; height:18px; border-radius:50%;
+      display:grid; place-items:center;
+      border:2px solid rgba(11,27,42,.22);
+      font-size:11px;
+    }
+    .stepDot.active .n{border-color: rgba(255,79,163,.55)}
+    .stepDot.done .n{border-color: rgba(11,27,42,.24)}
+    .successHint{
+      font-weight:900;
+      font-size:12px;
+      color: rgba(11,27,42,.72);
+      padding:8px 10px;
+      border-radius:999px;
+      border:1px solid rgba(11,27,42,.10);
+      background: rgba(255,255,255,.55);
+    }
+
+    .body{padding:0 16px 16px}
+    label.lbl{display:block;font-size:12px;font-weight:950;color:rgba(11,27,42,.78);margin:10px 0 6px}
+
+    textarea, select, input[type="text"]{
+      width:100%;
+      border:1px solid var(--line);
+      border-radius: 16px;
+      padding:12px 12px;
+      font-size:14px;
+      background: rgba(255,255,255,.72);
+      outline:none;
+    }
+    textarea{min-height:96px; resize:vertical}
+
+    .row{display:grid; grid-template-columns:1fr 1fr; gap:12px}
+    @media (max-width: 620px){ .row{grid-template-columns:1fr} }
+
+    .divider{height:1px; background: rgba(11,27,42,.08); margin:12px 0}
+
+    /* Chips + presets */
+    .chips,.presetBar{display:flex; flex-wrap:wrap; gap:8px; margin-top:8px}
+    .chip,.preset{
+      border:1px solid rgba(11,27,42,.10);
+      background: rgba(255,255,255,.6);
+      padding:10px 12px;
+      border-radius:999px;
+      font-weight:950; font-size:12px;
+      cursor:pointer;
+      transition: transform .08s ease, border-color .2s ease;
+    }
+    .chip:active,.preset:active{transform: scale(.98)}
+    .preset{
+      border-color: rgba(255,79,163,.25);
+      background: linear-gradient(180deg, rgba(255,79,163,.12), rgba(255,255,255,.62));
+    }
+    .preset:hover{border-color: rgba(255,79,163,.45)}
+
+    /* Options cards */
+    .radioGrid{display:grid; grid-template-columns: repeat(3,1fr); gap:10px}
+    @media (max-width: 620px){ .radioGrid{grid-template-columns:1fr} }
+
+    .opt{
+      border:1px solid rgba(11,27,42,.10);
+      background: rgba(255,255,255,.60);
+      border-radius: 18px;
+      padding:12px;
+      cursor:pointer;
+      display:flex; gap:10px; align-items:flex-start;
+      transition: transform .08s ease, border-color .2s ease;
+    }
+    .opt:active{transform:scale(.99)}
+    .opt.active{border-color: rgba(255,79,163,.45)}
+    .dot{
+      width:14px;height:14px;border-radius:50%;
+      border:2px solid rgba(11,27,42,.28);
+      margin-top:2px;
+      flex:0 0 auto;
+      position:relative;
+    }
+    .opt.active .dot{border-color: rgba(255,79,163,.65)}
+    .opt.active .dot:after{content:""; position:absolute; inset:3px; border-radius:50%; background: rgba(255,79,163,.75);}
+    .opt .t{font-weight:950; font-size:13px}
+    .opt .d{font-size:12px; color:rgba(11,27,42,.62); font-weight:650; margin-top:2px}
+
+    /* Range */
+    .range{display:grid; grid-template-columns: 1fr auto; gap:10px; align-items:center}
+    input[type="range"]{width:100%}
 
     /* Buttons */
     .btn{
-      border:0;border-radius:999px;
-      padding:14px 18px;
-      min-height:48px;
-      font-weight:900;font-size:14px;
-      display:inline-flex;align-items:center;gap:10px;
-      transition: transform .12s ease, filter .12s ease, box-shadow .12s ease;
-      white-space:nowrap;
-    }
-    .btn:active{transform:translateY(1px)}
-    .btn.primary{
-      color:white;
-      background: linear-gradient(135deg, var(--blue), var(--blue2));
-      box-shadow: 0 14px 32px rgba(255,79,163,.22);
-    }
-    .btn.primary:hover{filter:brightness(1.03);transform:translateY(-1px)}
-    .btn.ghost{
-      background:white;border:1px solid var(--line);color:var(--ink);
-      box-shadow:none;
-    }
-
-    /* Cards */
-    .card{
-      background:rgba(255,255,255,.92);
-      border:1px solid var(--line);
-      border-radius:var(--radius);
-      box-shadow:var(--shadow);
-      overflow:hidden;
-    }
-
-    /* Hero */
-    .hero{padding:46px 0 22px}
-    .hero-grid{display:grid;grid-template-columns: 1.05fr .95fr;gap:18px;align-items:stretch;}
-    @media(max-width:980px){.hero-grid{grid-template-columns:1fr}}
-
-    .hero-copy{padding:26px; position:relative;}
-    .hero-copy:before,.hero-copy:after{content:"🍪"; position:absolute; opacity:.18; font-size:22px; filter:saturate(1.1);}
-    .hero-copy:before{left:14px; top:14px; transform:rotate(-12deg);}
-    .hero-copy:after{right:18px; bottom:18px; transform:rotate(18deg);}
-
-    .kicker{
-      display:inline-flex;align-items:center;gap:10px;
-      font-size:12px;color:var(--muted);
-      padding:9px 12px;border-radius:999px;
-      border:1px solid var(--line);
-      background:rgba(255,255,255,.80);
-    }
-    .dot{
-      width:8px;height:8px;border-radius:999px;
-      background:var(--blue);
-      box-shadow:0 0 0 6px rgba(255,79,163,.14);
-    }
-    h1{margin:14px 0 10px;font-size:44px;line-height:1.02;letter-spacing:-1px;}
-    .sub{margin:0 0 10px;color:var(--muted);line-height:1.58;font-size:16px;max-width:64ch;}
-
-    .how{display:flex;flex-wrap:wrap;gap:10px;color:var(--muted);font-size:13px;margin-top:10px;}
-    .how span{
-      display:inline-flex;align-items:center;gap:8px;
-      padding:8px 10px;border-radius:999px;
-      border:1px solid var(--line);
-      background:rgba(255,255,255,.75);
-    }
-
-    .cta-row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:14px}
-
-    .social{margin-top:12px;display:flex;gap:10px;flex-wrap:wrap;color:var(--muted);font-size:12px;}
-    .tag{
-      padding:8px 10px;border-radius:999px;
-      border:1px solid var(--line);
-      background:rgba(255,255,255,.75);
-      display:inline-flex;align-items:center;gap:8px;
-    }
-    .tag.badge{
-      border:1px solid rgba(255,79,163,.22);
-      background:rgba(255,79,163,.08);
-      color:var(--ink);
-      font-weight:800;
-    }
-
-    /* Trust bar */
-    .trustbar{
-      margin-top:12px;
+      border:1px solid rgba(11,27,42,.12);
+      background: rgba(255,255,255,.72);
+      border-radius: 16px;
       padding:12px 14px;
-      border-radius:16px;
-      border:1px solid rgba(255,79,163,.22);
-      background:
-        linear-gradient(135deg, rgba(255,79,163,.10), rgba(255,124,197,.06)),
-        rgba(255,255,255,.86);
-      box-shadow: var(--shadow2);
-      display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;
-    }
-    .trustbar b{font-size:12px;letter-spacing:.2px}
-    .trustitems{display:flex;gap:10px;flex-wrap:wrap;color:var(--muted);font-size:13px}
-    .trustitems span{
-      white-space:nowrap;
-      display:inline-flex;align-items:center;gap:8px;
-      padding:7px 10px;border-radius:999px;
-      border:1px solid rgba(11,27,42,.08);
-      background:rgba(255,255,255,.72);
-    }
-    .partner{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
-    .partner .logo-pill{
-      font-size:12px;font-weight:900;
-      padding:7px 10px;border-radius:999px;
-      border:1px solid rgba(11,27,42,.10);
-      background:rgba(255,255,255,.82);
-      color:var(--ink);
-    }
-
-    /* Hero Visual */
-    .visual-card{
-      padding:18px;
-      display:flex;align-items:center;justify-content:center;
-      background:
-        radial-gradient(520px 220px at 30% 10%, rgba(196,135,82,.18), transparent 62%),
-        linear-gradient(135deg, rgba(255,79,163,.12), rgba(255,255,255,.95));
-    }
-    .visual-wrap{
-      position:relative;
-      width:min(520px,100%);
-      padding:18px 18px 14px;
-      border-radius:20px;
-      border:1px solid var(--line);
-      background:rgba(255,255,255,.72);
-      box-shadow:var(--shadow);
-      overflow:hidden;
-    }
-    .stamp{
-      position:absolute; right:14px; top:14px;
-      padding:8px 10px;border-radius:999px;
-      background:linear-gradient(135deg,var(--blue),var(--blue2));
-      color:white;font-weight:900;font-size:12px;
-      box-shadow:0 12px 26px rgba(255,79,163,.20);
-      transform:rotate(-8deg);
-    }
-    .hero-img{
-      width:100%;
-      border-radius:18px;
-      border:1px solid rgba(11,27,42,.10);
-      box-shadow:0 14px 30px rgba(11,27,42,.10);
-      display:block;
-      aspect-ratio: 16/10;
-      object-fit: cover;
-      background: linear-gradient(135deg, rgba(255,79,163,.12), rgba(255,255,255,.10));
-    }
-    .visual-caption{margin-top:10px;color:var(--muted);font-size:12px;text-align:center;line-height:1.45;}
-
-    /* Benefits */
-    .benefits{padding:18px 0 26px}
-    .benefit-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
-    @media(max-width:980px){.benefit-grid{grid-template-columns:1fr 1fr}}
-    @media(max-width:560px){.benefit-grid{grid-template-columns:1fr}}
-    .benefit{
-      padding:16px;border-radius:16px;border:1px solid var(--line);
-      background:rgba(255,255,255,.90);box-shadow:var(--shadow2);
-      color:var(--muted);font-size:14px;position:relative;overflow:hidden;
-    }
-    .benefit:after{content:"🍪";position:absolute; right:12px; top:10px;opacity:.14; font-size:22px; transform:rotate(12deg);}
-    .benefit b{display:block;color:var(--ink);margin-bottom:6px}
-    .benefit .emo{font-size:18px;margin-right:6px}
-
-    /* Section spacing rhythm */
-    .section{padding:26px 0}
-    .flow-card{padding:18px}
-    .flow-head{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:12px;}
-    .flow-head h2{margin:0;font-size:18px;letter-spacing:-.2px}
-    .tiny-links{display:flex;gap:12px;flex-wrap:wrap;color:var(--muted);font-size:12px}
-    .tiny-links a{border-bottom:1px dotted rgba(11,27,42,.28)}
-    .divider{height:1px;background:var(--line);margin:12px 0}
-
-    /* Stepper */
-    .stepper{display:flex;gap:10px;flex-wrap:wrap}
-    .step{
-      padding:10px 12px;border-radius:999px;
-      border:1px solid var(--line);
-      background:white;
-      color:var(--muted);
-      font-weight:900;
-      font-size:12px;
-      transition: transform .12s ease, background .12s ease, box-shadow .12s ease;
-      user-select:none;
-      min-height:44px;
-    }
-    .step:hover{transform:translateY(-1px);background:rgba(255,79,163,.06)}
-    .step.active{
-      color:var(--ink);
-      border-color: rgba(255,79,163,.35);
-      box-shadow: var(--shadow2);
-      background:rgba(255,79,163,.10);
-    }
-
-    /* Panels */
-    .panel{display:none}
-    .panel.active{display:block}
-
-    .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-    @media(max-width:900px){.grid2{grid-template-columns:1fr}}
-
-    .field{
-      border:1px solid var(--line);
-      background:white;
-      border-radius:14px;
-      padding:12px;
-      box-shadow: var(--shadow2);
-    }
-    label{display:block;font-size:12px;color:var(--muted);font-weight:900;margin-bottom:8px}
-    input, textarea, select{
-      width:100%;
-      border:1px solid rgba(11,27,42,.14);
-      background:white;
-      border-radius:12px;
-      padding:12px 12px;
-      font: inherit;
-      outline:none;
-      min-height:48px;
-    }
-    textarea{min-height:120px;resize:vertical}
-
-    /* Chips */
-    .chips{display:flex;gap:10px;flex-wrap:wrap}
-    .chip{
-      font-size:13px;font-weight:900;color:var(--ink);
-      padding:10px 12px;border-radius:999px;
-      border:1px solid var(--line);
-      background:white;
-      transition: transform .12s ease, background .12s ease;
-      min-height:44px;
-    }
-    .chip:hover{transform:translateY(-1px);background:rgba(255,79,163,.08)}
-
-    .summary{
-      border:1px dashed rgba(255,79,163,.35);
-      background:rgba(255,79,163,.06);
-      border-radius:14px;
-      padding:12px;
-      color:var(--muted);
-      font-size:13px;line-height:1.45;
-      flex:1 1 320px;
-    }
-
-    .actions{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:12px;}
-    .right{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end}
-
-    .hint{font-size:12px;color:var(--muted);margin-top:4px}
-    .err{font-size:12px;color:var(--danger);margin-top:4px}
-    .err:empty{display:none}
-
-    /* Message meta row */
-    .row{display:flex;align-items:center;gap:10px}
-    .between{justify-content:space-between}
-    .small{font-size:12px}
-    .counter{opacity:.8;font-variant-numeric: tabular-nums;white-space:nowrap}
-
-    /* FAQ */
-    .faq-card{padding:18px}
-    .faq-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-    @media(max-width:900px){.faq-grid{grid-template-columns:1fr}}
-    .faq-item{padding:14px;border-radius:16px;border:1px solid var(--line);background:rgba(255,255,255,.92);box-shadow:var(--shadow2)}
-    .faq-item b{display:block;margin-bottom:6px}
-
-    /* Newsletter */
-    .newsletter{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:12px;}
-    .newsletter input{flex:1 1 220px}
-    .newsletter .btn{min-height:48px}
-
-    /* Footer */
-    footer{
-      margin-top:28px;
-      padding:22px 0 34px;
-      border-top:1px solid var(--line);
-      background:rgba(255,255,255,.68);
-      color:var(--muted);
-      font-size:12px;
-    }
-    .footer-links{display:flex;gap:14px;flex-wrap:wrap}
-    .footer-links a{border-bottom:1px dotted rgba(11,27,42,.28)}
-    .social-links{display:flex;gap:12px;flex-wrap:wrap;margin-top:10px}
-    .social-links a{border:1px solid rgba(11,27,42,.10); background:rgba(255,255,255,.75); padding:8px 10px; border-radius:999px}
-
-    /* Consent */
-    .consent{
-      position:fixed; left:14px; right:14px; bottom:14px;
-      z-index:60;
-      display:none;
-    }
-    .consent .card{
-      padding:14px;
-      border-radius:16px;
-      box-shadow:var(--shadow);
-      background:rgba(255,255,255,.94);
-    }
-    .consent-row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between}
-    .consent p{margin:0;color:var(--muted);font-size:12px;line-height:1.4}
-    .consent-actions{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end}
-    .consent a{border-bottom:1px dotted rgba(11,27,42,.28)}
-    .consent .btn{min-height:44px;padding:12px 14px}
-
-    @media(max-width:520px){
-      .hero{padding:30px 0 14px}
-      h1{font-size:32px}
-      .hero-copy{padding:18px}
-      .visual-wrap{padding:14px}
-    }
-
-    @media (prefers-reduced-motion: reduce){
-      #cookieRain{ display:none; }
-      *{ scroll-behavior:auto !important; }
-    }
-
-    @media (prefers-reduced-motion: no-preference){
-      .card, .benefit, .faq-item, .field, .visual-wrap{
-        transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
-      }
-      .card:hover, .benefit:hover, .faq-item:hover, .field:hover, .visual-wrap:hover{
-        transform: translateY(-2px);
-        box-shadow: 0 18px 60px rgba(11,27,42,.14);
-        border-color: rgba(255,79,163,.22);
-      }
-      .btn.primary{position:relative;overflow:hidden;}
-      .btn.primary::after{
-        content:"";
-        position:absolute; inset:-40%;
-        background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.55), transparent 55%);
-        transform: translateX(-20%) translateY(-10%);
-        opacity: 0;
-        transition: opacity .18s ease;
-        pointer-events:none;
-      }
-      .btn.primary:hover::after{ opacity: .55; }
-      .chip:hover, .step:hover{ transform: translateY(-1px); }
-    }
-
-    .trustbar b::after{ content:" 🍪"; opacity:.9; }
-    .benefit b::before{ content:"🍪 "; }
-
-    /* PACK-TILES */
-    select#pack.is-hidden{
-      position:absolute; left:-9999px; width:1px; height:1px; opacity:0;
-    }
-    .pack-tiles{display:grid;grid-template-columns:repeat(3, minmax(0,1fr));gap:10px;margin-top:10px;}
-    .pack-tile{
-      position:relative;
-      text-align:left;
-      padding:12px;
-      border-radius:18px;
-      border:1px solid var(--line);
-      background:rgba(255,255,255,.86);
+      font-weight:950;
       cursor:pointer;
-      transition:transform .12s ease, box-shadow .12s ease, border-color .12s ease;
+      display:inline-flex; align-items:center; justify-content:center; gap:10px;
+      transition: transform .08s ease, box-shadow .2s ease, border-color .2s ease;
+      min-height:44px;
     }
-    .pack-tile:hover{ transform:translateY(-1px); }
-    .pack-tile:focus{ outline:2px solid rgba(255,79,163,.28); outline-offset:2px; }
-    .pack-head{ display:flex; justify-content:space-between; align-items:baseline; gap:10px; }
-    .pack-name{ font-weight:900; color:var(--ink); letter-spacing:.2px; }
-    .pack-price{ font-size:12px; color:var(--muted); }
-    .pack-sub{ margin-top:6px; font-size:12px; color:var(--muted); line-height:1.25; }
-    .pack-badge{
-      position:absolute; top:10px; right:10px;
-      font-size:11px; font-weight:900;
-      padding:6px 10px; border-radius:999px;
-      border:1px solid rgba(255,79,163,.28);
-      background:rgba(255,79,163,.10);
-      color:var(--ink);
-      box-shadow:0 10px 22px rgba(255,79,163,.10);
+    .btn:active{transform: scale(.98)}
+    .btn.primary{
+      border-color: rgba(255,79,163,.35);
+      background: linear-gradient(180deg, rgba(255,79,163,.18), rgba(255,255,255,.76));
+      box-shadow: 0 14px 30px rgba(255,79,163,.18);
     }
-    .pack-tile.is-active{
-      border-color:rgba(255,79,163,.45);
-      box-shadow:0 14px 38px rgba(255,79,163,.14);
-      background:rgba(255,255,255,.95);
-    }
-    .pack-tile.is-popular.is-active{
-      background: linear-gradient(180deg, rgba(255,230,242,.55), rgba(255,255,255,.95));
-    }
-    .pack-hint{ margin-top:8px; font-size:12px; color:var(--muted); }
+    .btn.danger{border-color: rgba(255,0,0,.18)}
+    .btn[disabled]{opacity:.5; cursor:not-allowed}
 
-    @media (max-width:640px){
-      .pack-tiles{ grid-template-columns:1fr; }
+    /* Preview */
+    .previewWrap{padding:16px}
+    .stage{
+      background: var(--card2);
+      border: 1px dashed rgba(11,27,42,.16);
+      border-radius: var(--radius);
+      padding:18px;
+      display:grid;
+      place-items:center;
+      position:relative;
+      overflow:hidden;
+      min-height: 420px;
+    }
+    .stage:before{
+      content:"";
+      position:absolute; inset:-60px -60px auto auto;
+      width:220px; height:220px;
+      background: radial-gradient(circle at 30% 30%, rgba(255,79,163,.18), transparent 62%);
+      transform: rotate(18deg);
+    }
+    .hint{
+      position:absolute; left:16px; top:16px;
+      font-size:12px; font-weight:950;
+      color:rgba(11,27,42,.55);
+      background: rgba(255,255,255,.55);
+      border:1px solid rgba(11,27,42,.10);
+      padding:8px 10px;
+      border-radius:999px;
+    }
+
+    .mini{
+      display:flex; gap:10px; align-items:center; justify-content:space-between;
+      padding:12px 16px 14px;
+      border-top:1px solid rgba(11,27,42,.08);
+      flex-wrap:wrap;
+    }
+    .kpi{display:flex; gap:10px; flex-wrap:wrap; align-items:center; color:rgba(11,27,42,.72); font-weight:900; font-size:12px;}
+    .tag{padding:8px 10px;border-radius:999px; border:1px solid rgba(11,27,42,.10); background: rgba(255,255,255,.55);}
+
+    /* Toast */
+    .toast{
+      position:fixed; left:50%; bottom:88px; transform:translateX(-50%);
+      background: rgba(255,255,255,.85);
+      border:1px solid rgba(11,27,42,.12);
+      border-radius:999px;
+      padding:10px 14px;
+      box-shadow: 0 18px 50px rgba(11,27,42,.14);
+      font-weight:950; font-size:12px;
+      opacity:0; pointer-events:none;
+      transition: opacity .2s ease, transform .2s ease;
+      z-index:99;
+    }
+    .toast.show{opacity:1; transform:translateX(-50%) translateY(-6px)}
+
+    /* Micro animations */
+    @keyframes pop { 0%{transform:scale(.92);opacity:0} 60%{transform:scale(1.06);opacity:1} 100%{transform:scale(1);opacity:1} }
+    @keyframes fadeUp { 0%{opacity:0;transform:translateY(4px)} 100%{opacity:1;transform:translateY(0)} }
+    #sprinkleLayer.anim, #stickerLayer.anim{transform-origin:180px 180px; animation: pop .22s ease-out;}
+    #textLayer.anim{transform-origin:180px 210px; animation: fadeUp .18s ease-out;}
+
+    /* Step panels */
+    .panel{display:none;}
+    .panel.active{display:block;}
+
+    /* Mobile thumb: sticky bottom bar */
+    .bottomBar{
+      position:fixed; left:0; right:0; bottom:0;
+      background: rgba(255,255,255,.82);
+      border-top:1px solid rgba(11,27,42,.12);
+      backdrop-filter: blur(10px);
+      padding:10px 12px calc(10px + env(safe-area-inset-bottom));
+      z-index:100;
+    }
+    .bottomInner{
+      max-width:1100px;
+      margin:0 auto;
+      display:flex;
+      gap:10px;
+      align-items:center;
+      justify-content:space-between;
+    }
+    .bottomInner .left, .bottomInner .right{display:flex; gap:10px; align-items:center; flex-wrap:wrap;}
+    .bottomInner .btn{min-width:110px}
+    .bottomMeta{
+      font-size:12px;
+      font-weight:900;
+      color: rgba(11,27,42,.72);
+      padding:8px 10px;
+      border-radius:999px;
+      border:1px solid rgba(11,27,42,.10);
+      background: rgba(255,255,255,.55);
+      white-space:nowrap;
+    }
+
+    /* Make mobile less scroll-chaos: preview first */
+    @media (max-width: 920px){
+      .wrap{padding-bottom:140px;}
+      .stage{min-height:360px;}
+      .hint{display:none;}
     }
   </style>
 </head>
-
 <body>
-  <canvas id="cookieRain" aria-hidden="true"></canvas>
-
-  <header>
-    <div class="container">
-      <div class="nav">
-        <a class="brand" href="#top" aria-label="OnlyKeks Start">
-          <span class="logo" aria-hidden="true"></span>
-          <span>
-            <b>OnlyKeks</b>
-            <small>Post die schmeckt</small>
-          </span>
-        </a>
-
-        <div class="nav-actions">
-          <span class="pill">One page · One CTA · Reply-Loop 🍪</span>
-          <a class="btn primary" id="navCta" href="#flow">🍪 Reply-Keks starten</a>
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <div>
+          <div style="font-size:18px;font-weight:950;line-height:1.1">OnlyKeks</div>
+          <div class="sub">Mini-Steps · Live Preview · Presets · Teilen</div>
         </div>
       </div>
-    </div>
-  </header>
+      <div class="pill" title="Speichert lokal im Browser">🔒 Entwurf wird lokal gespeichert</div>
+    </header>
 
-  <main id="top">
-    <section class="hero" aria-label="Hero">
-      <div class="container hero-grid">
-        <div class="card hero-copy">
-          <span class="kicker"><span class="dot"></span>Post, die man wirklich fühlt ✉️</span>
-
-          <h1 id="heroH1">Schicke süße Botschaften<br/>mit direkter QR-Antwort.</h1>
-          <p class="sub" id="heroSub">
-            Du schickst 1 Keks mit Message & QR-Reply. Empfänger scannt → antwortet → wir machen den Reply-Keks → zurück. 📩
-          </p>
-
-          <div class="how" aria-label="Ablauf">
-            <span aria-label="Schritt 1">🍪 Keks wählen</span>
-            <span aria-label="Schritt 2">✍️ Botschaft schreiben</span>
-            <span aria-label="Schritt 3">📱 QR scannen</span>
-            <span aria-label="Schritt 4">💌 Antwort erhalten</span>
+    <div class="grid">
+      <!-- Left: Stepper + Controls -->
+      <section class="card" aria-label="Konfigurator">
+        <div class="hd">
+          <div>
+            <div class="title">Gestalte deinen Keks</div>
+            <div class="small">Erst Emotion, dann Upsell: Text → Look → Extras.</div>
           </div>
-
-          <div class="cta-row">
-            <a class="btn primary" id="heroCta" href="#flow">🍪 Reply-Keks starten</a>
-            <a class="btn ghost" href="#faq">Kurz erklärt</a>
-          </div>
-
-          <div class="trustbar" role="note" aria-label="Versand & Sicherheit">
-            <b>STANDARD</b>
-            <div class="trustitems">
-              <span title="Versand"><span aria-hidden="true">📦</span> 2–3 Werktage</span>
-              <span title="Tracking"><span aria-hidden="true">🔎</span> Trackbar</span>
-              <span title="Zahlung"><span aria-hidden="true">🔒</span> Sicher zahlen</span>
-              <span title="Allergene"><span aria-hidden="true">⚠️</span> Allergene</span>
-            </div>
-            <div class="partner" aria-label="Partner">
-              <span class="logo-pill" aria-label="Versandpartner">DHL</span>
-              <span class="logo-pill" aria-label="Paymentpartner">Stripe</span>
-            </div>
-          </div>
-
-          <div class="social" aria-label="Status & Social Proof">
-            <span class="tag badge">Pilot läuft</span>
-            <span class="tag">Kein Account im MVP</span>
-            <span class="tag">Checkout über Stripe</span>
-            <span class="tag">Erste Replies kommen rein – Feedback bisher sehr sweet.</span>
-          </div>
+          <div class="pill" id="stepTitle">Step 1/3 · Text</div>
         </div>
 
-        <div class="card visual-card" aria-label="Emotionale Bildwelt">
-          <div class="visual-wrap">
-            <span class="stamp">REPLY</span>
-
-            <!-- Hero Bild + Fallback -->
-            <img
-              id="heroImg"
-              class="hero-img"
-              src="assets/hero.jpg"
-              alt="Hände halten den Keks und die Karte, QR-Code wird mit dem Handy gescannt (weiches Tageslicht)"
-              loading="lazy"
-              onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%221280%22 height=%22800%22%3E%3Cdefs%3E%3ClinearGradient id=%22g%22 x1=%220%22 y1=%220%22 x2=%221%22 y2=%221%22%3E%3Cstop stop-color=%22%23ffe6f2%22/%3E%3Cstop offset=%221%22 stop-color=%22%23ffd3ea%22/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width=%221280%22 height=%22800%22 fill=%22url(%23g)%22/%3E%3Ccircle cx=%22340%22 cy=%22410%22 r=%22170%22 fill=%22%23c48752%22 opacity=%220.85%22/%3E%3Ctext x=%22530%22 y=%22360%22 font-family=%22Poppins,Arial%22 font-size=%2246%22 font-weight=%22900%22 fill=%22%230b1b2a%22%3EGeschenk-Moment%3C/text%3E%3Ctext x=%22530%22 y=%22425%22 font-family=%22Poppins,Arial%22 font-size=%2230%22 fill=%22%234b5b6b%22%3EH%C3%A4nde.%20Keks.%20QR.%20Reply.%3C/text%3E%3Ctext x=%22530%22 y=%22495%22 font-family=%22Poppins,Arial%22 font-size=%2234%22%3E%F0%9F%8D%AA%F0%9F%93%B1%F0%9F%92%97%3C/text%3E%3C/svg%3E';" />
-
-            <div class="visual-caption">
-              Emotionaler Moment: Keks in der Hand → QR-Scan → Reply-Grinsen. 🍪📱🙂
-            </div>
+        <div class="stepsTop">
+          <div class="progress" aria-label="Fortschritt">
+            <div class="stepDot" id="dot1"><span class="n">1</span> Text</div>
+            <div class="stepDot" id="dot2"><span class="n">2</span> Look</div>
+            <div class="stepDot" id="dot3"><span class="n">3</span> Extras</div>
           </div>
+          <div class="successHint" id="successHint">Kurz & süß wirkt am besten 🍪</div>
         </div>
-      </div>
-    </section>
 
-    <section class="benefits" aria-label="Vorteile">
-      <div class="container benefit-grid">
-        <div class="benefit"><b><span class="emo" aria-hidden="true">🍪</span>Überraschungseffekt</b>Briefkasten-Moment, den man wahrnimmt.</div>
-        <div class="benefit"><b><span class="emo" aria-hidden="true">📱</span>Antwort per QR</b>Scan → Text → Adresse → fertig.</div>
-        <div class="benefit"><b><span class="emo" aria-hidden="true">💌</span>Persönlich & essbar</b>Message mit Gefühl statt Papier.</div>
-        <div class="benefit"><b><span class="emo" aria-hidden="true">✨</span>Viral weiterleitbar</b>Empfänger kann direkt zurücksenden.</div>
-      </div>
-    </section>
+        <div class="body">
 
-    <!-- Story-Strip (3 Bilder) -->
-    <section class="section" id="story" aria-label="Geschenk-Mood">
-      <div class="container">
-        <div class="card" style="padding:18px">
-          <div class="flow-head" style="margin-bottom:8px">
-            <h2>So fühlt sich OnlyKeks an 🍪</h2>
-            <div class="tiny-links"><a href="#flow">Direkt starten</a></div>
-          </div>
+          <!-- STEP 1: TEXT -->
+          <div class="panel" id="p1">
+            <label class="lbl" for="msg">Deine Message (kommt auf den Keks)</label>
+            <textarea id="msg" maxlength="140" placeholder="z.B. „Du schaffst das! 🍪“"></textarea>
 
-          <div class="ok-story-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px">
-            <figure style="margin:0">
-              <img src="assets/story-1.jpg" alt="Hände halten Keks und Karte im weichen Tageslicht" loading="lazy"
-                   style="width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:16px;border:1px solid var(--line)"
-                   onerror="this.style.display='none'">
-              <figcaption class="hint">1) Keks + Karte kommt an</figcaption>
-            </figure>
-
-            <figure style="margin:0">
-              <img src="assets/story-2.jpg" alt="Handy scannt den QR-Code am Keks (Geschenk-Mood, pinke Highlights)" loading="lazy"
-                   style="width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:16px;border:1px solid var(--line)"
-                   onerror="this.style.display='none'">
-              <figcaption class="hint">2) QR scannen</figcaption>
-            </figure>
-
-            <figure style="margin:0">
-              <img src="assets/story-3.jpg" alt="Reply wird am Handy geschrieben, warmes Tageslicht, cozy" loading="lazy"
-                   style="width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:16px;border:1px solid var(--line)"
-                   onerror="this.style.display='none'">
-              <figcaption class="hint">3) Reply senden</figcaption>
-            </figure>
-          </div>
-
-          <div class="cta-row" style="margin-top:12px">
-            <a class="btn primary" href="#flow">🍪 Reply-Keks starten</a>
-            <span class="pill">Kein Account · 3 Klicks · Geschenk-Moment</span>
-          </div>
-        </div>
-      </div>
-
-      <style>
-        @media(max-width:900px){
-          #story .ok-story-grid{grid-template-columns:1fr}
-        }
-      </style>
-    </section>
-
-    <section class="section" id="flow" aria-label="Reply Flow">
-      <div class="container">
-        <div class="card flow-card">
-          <div class="flow-head">
-            <h2>Reply-Flow</h2>
-            <div class="tiny-links">
-              <a href="#impressum">Impressum</a>
-              <a href="#versand">Versand</a>
-              <a href="#allergene">Allergene</a>
+            <div class="row">
+              <div>
+                <div class="small" style="margin-top:8px;">
+                  <b id="charCount">0</b>/140 Zeichen · <span style="font-weight:900">kurz & süß</span> wirkt am besten.
+                </div>
+              </div>
+              <div style="display:flex; justify-content:flex-end; align-items:center; margin-top:8px;">
+                <span class="pill" id="charHint">Perfekt.</span>
+              </div>
             </div>
+
+            <div class="chips" id="chips">
+              <button class="chip" data-msg="Ich denk an dich 💗">Ich denk an dich</button>
+              <button class="chip" data-msg="Du schaffst das. Weiter. 💪">Motivation</button>
+              <button class="chip" data-msg="Happy Birthday, du Legende! 🥳">Birthday</button>
+              <button class="chip" data-msg="Danke dir! 🙏🍪">Danke</button>
+              <button class="chip" data-msg="Beweg deinen Arsch 😄">Frech</button>
+            </div>
+
+            <div class="divider"></div>
+            <div class="small">Wenn du willst: Im nächsten Step machst du den Look „wow“. Kein Stress.</div>
           </div>
 
-          <div class="stepper" role="tablist" aria-label="Schritte">
-            <button type="button" class="step active" id="step1" data-step="1" aria-controls="p1" aria-label="Schritt 1: Nachricht">✍️ 1) Nachricht</button>
-            <button type="button" class="step" id="step2" data-step="2" aria-controls="p2" aria-label="Schritt 2: Adresse">🏠 2) Adresse</button>
-            <button type="button" class="step" id="step3" data-step="3" aria-controls="p3" aria-label="Schritt 3: Bezahlen">💳 3) Bezahlen</button>
-          </div>
+          <!-- STEP 2: LOOK -->
+          <div class="panel" id="p2">
+            <div class="small">Vorauswahl ist schon hübsch. Du optimierst nur noch.</div>
 
-          <div class="divider"></div>
+            <div class="divider"></div>
 
-          <!-- Panel 1 -->
-          <div class="panel active" id="p1" role="tabpanel" aria-labelledby="step1">
-            <div class="grid2">
-              <div class="field">
-                <label for="pack">Paket</label>
+            <div style="font-weight:950; font-size:14px; margin:6px 0 6px;">🎛️ Presets (1 Klick = schöner Keks)</div>
+            <div class="presetBar" id="presetBar">
+              <button class="preset" data-preset="love">💗 Liebe</button>
+              <button class="preset" data-preset="sassy">😈 Frech</button>
+              <button class="preset" data-preset="birthday">🥳 Birthday</button>
+              <button class="preset" data-preset="motivation">💪 Motivation</button>
+              <button class="preset" data-preset="thanks">🙏 Danke</button>
+              <button class="preset" data-preset="party">🎉 Party</button>
+              <button class="preset" data-preset="cute">🎀 Süß</button>
+            </div>
 
-                <!-- Select bleibt Source of Truth (hidden) -->
-                <select id="pack" class="is-hidden" aria-label="Paket wählen (Fallback)">
-                  <option value="Quick">Quick</option>
-                  <option value="Custom" selected>Custom</option>
-                  <option value="Premium">Premium</option>
+            <div class="divider"></div>
+
+            <div class="row">
+              <div>
+                <div style="font-weight:950; font-size:14px; margin:6px 0 6px;">🍪 Form</div>
+                <div class="radioGrid" id="shapeGrid">
+                  <div class="opt" data-shape="round">
+                    <div class="dot"></div>
+                    <div><div class="t">Rund</div><div class="d">Klassisch, safe.</div></div>
+                  </div>
+                  <div class="opt" data-shape="heart">
+                    <div class="dot"></div>
+                    <div><div class="t">Herz</div><div class="d">Mehr Gefühl.</div></div>
+                  </div>
+                  <div class="opt" data-shape="star">
+                    <div class="dot"></div>
+                    <div><div class="t">Stern</div><div class="d">Party-Vibe.</div></div>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <div style="font-weight:950; font-size:14px; margin:6px 0 6px;">🎀 Icing</div>
+                <label class="lbl" for="icing">Farbe</label>
+                <select id="icing">
+                  <option value="none">Ohne (pur)</option>
+                  <option value="pink">Pinky Gloss</option>
+                  <option value="vanilla">Vanilla Cream</option>
+                  <option value="choco">Choco Drip</option>
+                  <option value="mint">Minty Fresh</option>
                 </select>
 
-                <!-- Tiles -->
-                <div class="pack-tiles" id="packTiles" role="radiogroup" aria-label="Paket wählen" tabindex="0">
-                  <button type="button" class="pack-tile" data-pack="Quick" role="radio" aria-checked="false">
-                    <div class="pack-head">
-                      <span class="pack-name">Quick</span>
-                      <span class="pack-price">ab 9,90 €</span>
-                    </div>
-                    <div class="pack-sub">süß & schnell • perfekt für „nur kurz was sagen“</div>
-                  </button>
-
-                  <button type="button" class="pack-tile is-popular is-active" data-pack="Custom" role="radio" aria-checked="true">
-                    <div class="pack-badge">Beliebt</div>
-                    <div class="pack-head">
-                      <span class="pack-name">Custom</span>
-                      <span class="pack-price">ab 14,90 €</span>
-                    </div>
-                    <div class="pack-sub">dein Standard • mehr Deko • mehr „awww“</div>
-                  </button>
-
-                  <button type="button" class="pack-tile" data-pack="Premium" role="radio" aria-checked="false">
-                    <div class="pack-head">
-                      <span class="pack-name">Premium</span>
-                      <span class="pack-price">ab 29,90 €</span>
-                    </div>
-                    <div class="pack-sub">Box & extra Wow • ideal als kleines Geschenk</div>
-                  </button>
-                </div>
-
-                <div class="pack-hint" id="packHint">Custom · ab 14,90 € · Standard (beliebt)</div>
-              </div>
-
-              <div class="field">
-                <label>Templates</label>
-                <div class="chips">
-                  <button class="chip" data-msg="Reply oder du bist feige." type="button" aria-label="Template Frech auswählen">😈 Frech</button>
-                  <button class="chip" data-msg="Ich denk an dich. Reply, wenn du lächelst." type="button" aria-label="Template Love auswählen">💗 Love</button>
-                  <button class="chip" data-msg="Du schaffst das. Reply – ich glaub an dich." type="button" aria-label="Template Motivation auswählen">🔥 Motivation</button>
-                  <button class="chip" data-msg="Kurzer Ping. Reply per QR – dann machen wir Deal." type="button" aria-label="Template Business auswählen">🤝 Business</button>
-                </div>
+                <label class="lbl" for="drip">Style</label>
+                <select id="drip">
+                  <option value="smooth">Glatt</option>
+                  <option value="drip">Drip</option>
+                  <option value="zigzag">Zigzag</option>
+                </select>
               </div>
             </div>
 
-            <div class="field" style="margin-top:12px">
-              <label for="msg">
-                Deine Nachricht <span class="hint">(max. <span id="msgMax">500</span> Zeichen)</span>
-              </label>
+            <div class="divider"></div>
 
-              <textarea id="msg"
-                        aria-describedby="msgHint msgErr"
-                        aria-invalid="false"
-                        maxlength="500"
-                        placeholder="Kurz, klar, fühlbar…"></textarea>
+            <div class="row">
+              <div>
+                <div style="font-weight:950; font-size:14px; margin:6px 0 6px;">🌈 Sprinkles</div>
+                <label class="lbl" for="sprinkles">Typ</label>
+                <select id="sprinkles">
+                  <option value="none">Keine</option>
+                  <option value="dots">Dots</option>
+                  <option value="stars">Mini-Sterne</option>
+                  <option value="confetti">Konfetti</option>
+                </select>
 
-              <div class="row between small" style="margin-top:6px">
-                <div id="msgHint" class="hint"></div>
-                <div class="counter"><span id="msgCount">0</span>/<span id="msgMax2">500</span></div>
-              </div>
-
-              <div id="msgErr" class="err" role="alert" aria-live="polite"></div>
-            </div>
-
-            <div class="actions">
-              <div class="summary" id="sum1">Template wählen oder frei tippen. Dann weiter zur Adresse.</div>
-              <div class="right">
-                <button class="btn primary" id="next1" type="button">Weiter</button>
-              </div>
-            </div>
-          </div>
-
-          <!-- Panel 2 -->
-          <div class="panel" id="p2" role="tabpanel" aria-labelledby="step2" hidden>
-            <div class="grid2">
-              <div class="field">
-                <label for="toName">Empfängername</label>
-                <input id="toName" placeholder="z.B. Marlon" autocomplete="name" />
-              </div>
-              <div class="field">
-                <label for="fromName">Absendername</label>
-                <input id="fromName" placeholder="z.B. Schmidti" autocomplete="name" />
-              </div>
-
-              <div class="field" style="grid-column:1/-1">
-                <label>Empfängeradresse</label>
-
-                <div class="grid2">
+                <div class="range">
                   <div>
-                    <label for="toStreet" style="margin-top:0">Straße & Hausnr.</label>
-                    <input id="toStreet" placeholder="Musterstraße 12" autocomplete="street-address" />
+                    <label class="lbl" for="sprinkleAmt">Menge</label>
+                    <input id="sprinkleAmt" type="range" min="0" max="100" value="55" />
                   </div>
-                  <div>
-                    <label for="toZip" style="margin-top:0">PLZ</label>
-                    <input id="toZip" placeholder="12345" inputmode="numeric" autocomplete="postal-code" />
-                  </div>
-                  <div style="grid-column:1/-1">
-                    <label for="toCity" style="margin-top:0">Ort</label>
-                    <input id="toCity" placeholder="Berlin" autocomplete="address-level2" />
-                  </div>
+                  <div class="pill" id="sprinkleLabel">55%</div>
                 </div>
+              </div>
 
-                <div id="toAddrHint" class="hint">Beispiel: Musterstraße 12 · 12345 · Berlin</div>
-                <div id="toAddrErr" class="err" role="alert" aria-live="polite"></div>
+              <div>
+                <div style="font-weight:950; font-size:14px; margin:6px 0 6px;">🧷 Sticker</div>
+                <label class="lbl" for="sticker">Motiv</label>
+                <select id="sticker">
+                  <option value="none">Keiner</option>
+                  <option value="bow">Schleife</option>
+                  <option value="heart">Herz</option>
+                  <option value="sparkle">Glitzer</option>
+                  <option value="smile">Smiley</option>
+                </select>
+
+                <div class="range">
+                  <div>
+                    <label class="lbl" for="stickerSize">Größe</label>
+                    <input id="stickerSize" type="range" min="60" max="140" value="100" />
+                  </div>
+                  <div class="pill" id="stickerLabel">100%</div>
+                </div>
               </div>
             </div>
 
-            <div class="actions">
-              <div class="summary" id="sum2">Adresse prüfen. Danach geht’s zum Checkout.</div>
-              <div class="right">
-                <button class="btn ghost" id="back2" type="button">Zurück</button>
-                <button class="btn primary" id="next2" type="button">Weiter</button>
+            <div class="divider"></div>
+
+            <div class="row">
+              <button class="btn primary" id="random" type="button">🎲 Überrasch mich 🍪</button>
+              <button class="btn" id="copyJson" type="button">📋 JSON kopieren</button>
+            </div>
+          </div>
+
+          <!-- STEP 3: EXTRAS (4) -->
+          <div class="panel" id="p3">
+            <div class="small">Erst war’s süß – jetzt machen wir’s „Geschenk-ready“.</div>
+
+            <div class="divider"></div>
+
+            <div class="row">
+              <div>
+                <div style="font-weight:950; font-size:14px; margin:6px 0 6px;">🎁 Geschenk-Box</div>
+                <select id="giftBox">
+                  <option value="none">Ohne Box (Standard)</option>
+                  <option value="soft">Soft-Box (süß & sicher)</option>
+                  <option value="premium">Premium-Box (Wow-Faktor)</option>
+                </select>
+
+                <label class="lbl" for="giftWrap">Karte / Schleife</label>
+                <select id="giftWrap">
+                  <option value="card">Karte + QR (Standard)</option>
+                  <option value="card_note">Karte + Mini-Notiz</option>
+                  <option value="card_bow">Karte + Schleife</option>
+                </select>
+              </div>
+
+              <div>
+                <div style="font-weight:950; font-size:14px; margin:6px 0 6px;">🚚 Versand</div>
+                <select id="shipping">
+                  <option value="standard">Standard (günstig)</option>
+                  <option value="tracked">Tracking (empfohlen)</option>
+                  <option value="express">Express (schnell)</option>
+                </select>
+
+                <label class="lbl" for="note">Extra-Hinweis (optional)</label>
+                <input id="note" type="text" maxlength="80" placeholder="z.B. ‚Bitte nicht knicken‘" />
               </div>
             </div>
+
+            <div class="divider"></div>
+
+            <div class="row">
+              <button class="btn" id="shareImg" type="button">📤 Keks teilen (Bild)</button>
+              <button class="btn primary" id="saveDraft" type="button">💗 Entwurf speichern</button>
+            </div>
+
+            <div class="divider"></div>
+            <div class="small">Next Step (später): Checkout / Adresse / Payment – hier nur Config + Social.</div>
           </div>
+        </div>
+      </section>
 
-          <!-- Panel 3 -->
-          <div class="panel" id="p3" role="tabpanel" aria-labelledby="step3" hidden>
-            <div class="summary" id="sum3">
-              Fast fertig. Klick auf „Jetzt bezahlen“, dann geht’s zum sicheren Checkout.
-            </div>
-
-            <div class="actions">
-              <div class="summary" style="max-width:520px">
-                📦 Versand 2–3 Werktage · 🔎 Trackbar · 🔒 Sicher zahlen · ⚠️ Allergene
-              </div>
-
-              <div class="right">
-                <button class="btn ghost" id="back3" type="button">Zurück</button>
-                <!-- Pay-Fallback direkt im HTML -->
-                <a class="btn primary" id="payBtn" href="https://buy.stripe.com/aBcDeFgHiJkLmNoPqR" target="_blank" rel="noopener">Jetzt bezahlen</a>
-                <noscript><div class="hint" style="margin-top:8px">Für den Stepper/Flow bitte JavaScript aktivieren.</div></noscript>
-              </div>
-            </div>
+      <!-- Right: Preview -->
+      <aside class="card" aria-label="Live Preview">
+        <div class="hd">
+          <div>
+            <div class="title">Live Preview</div>
+            <div class="small">Alles, was du klickst, siehst du sofort.</div>
           </div>
-
+          <div class="pill">👀 Instant</div>
         </div>
-      </div>
-    </section>
 
-    <section class="section" id="faq" aria-label="FAQ">
-      <div class="container">
-        <div class="card faq-card">
-          <div class="flow-head">
-            <h2>Kurz erklärt</h2>
-            <div class="tiny-links">
-              <a href="#flow">Zum Flow</a>
-              <a href="#versand">Versand</a>
-            </div>
+        <div class="previewWrap">
+          <div class="stage">
+            <div class="hint">Mobile: Buttons unten. Desktop: Preview rechts.</div>
+            <svg id="cookieSvg" width="360" height="360" viewBox="0 0 360 360" role="img" aria-label="Keks Vorschau">
+              <defs>
+                <radialGradient id="cookieGrad" cx="30%" cy="25%" r="70%">
+                  <stop offset="0%" stop-color="var(--cookie1)" />
+                  <stop offset="55%" stop-color="var(--cookie2)" />
+                  <stop offset="100%" stop-color="var(--cookie3)" />
+                </radialGradient>
+
+                <filter id="softShadow" x="-30%" y="-30%" width="160%" height="160%">
+                  <feDropShadow dx="0" dy="18" stdDeviation="14" flood-color="rgba(11,27,42,.20)"/>
+                </filter>
+
+                <filter id="gloss" x="-30%" y="-30%" width="160%" height="160%">
+                  <feGaussianBlur stdDeviation="6" result="b"/>
+                  <feColorMatrix in="b" type="matrix"
+                    values="1 0 0 0 0
+                            0 1 0 0 0
+                            0 0 1 0 0
+                            0 0 0 .35 0" result="c"/>
+                  <feMerge>
+                    <feMergeNode in="c"/>
+                    <feMergeNode in="SourceGraphic"/>
+                  </feMerge>
+                </filter>
+              </defs>
+
+              <g id="cookieBase" filter="url(#softShadow)"></g>
+              <g id="icingLayer"></g>
+              <g id="sprinkleLayer"></g>
+              <g id="stickerLayer"></g>
+              <g id="textLayer"></g>
+            </svg>
           </div>
+        </div>
 
-          <div class="faq-grid">
-            <div class="faq-item">
-              <b>Was kommt an? 🍪</b>
-              Ein Keks, eine Karte und ein QR-Code für die Antwort.
-            </div>
-            <div class="faq-item">
-              <b>Wie funktioniert der Reply? 📱</b>
-              Empfänger scannt den QR-Code und antwortet direkt – ohne Account.
-            </div>
-            <div class="faq-item">
-              <b>Wie lange ist das haltbar? 📦</b>
-              Luftdicht verpackt mehrere Monate (Details im Produktblatt).
-            </div>
-            <div class="faq-item">
-              <b>Allergene? ⚠️</b>
-              Enthält Gluten. Weitere Angaben unter „Allergene“ unten.
-            </div>
+        <div class="mini">
+          <div class="kpi">
+            <span class="tag">Form: <b id="kShape">Rund</b></span>
+            <span class="tag">Icing: <b id="kIcing">Pinky</b></span>
+            <span class="tag">Sprinkles: <b id="kSpr">Dots</b></span>
           </div>
-
-          <div style="margin-top:14px">
-            <a class="btn primary" href="#flow">🍪 Reply-Keks starten</a>
-          </div>
-
-          <div class="newsletter" aria-label="Newsletter">
-            <input id="newsEmail" type="email" placeholder="E-Mail für Newsletter (optional)" autocomplete="email" />
-            <button class="btn ghost" id="newsBtn" type="button">✨ Updates bekommen</button>
-          </div>
-          <div class="hint">Optional. Kein Spam-Film.</div>
+          <span class="pill" id="previewMeta">Ready 🍪</span>
         </div>
-      </div>
-    </section>
-
-    <!-- Footer/Consent Links: echte Sections -->
-    <section class="section" id="impressum">
-      <div class="container">
-        <div class="card faq-card">
-          <h2 style="margin:0 0 10px">Impressum</h2>
-          <div class="hint">MVP: Trage hier Name, Anschrift, Kontakt ein.</div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="datenschutz">
-      <div class="container">
-        <div class="card faq-card">
-          <h2 style="margin:0 0 10px">Wie wir mit Daten umgehen</h2>
-          <div class="faq-item" style="margin-bottom:10px"><b>Notwendig 🍪</b> Wir speichern deinen Entwurf, damit der Flow funktioniert.</div>
-          <div class="faq-item" style="margin-bottom:10px"><b>Optional 📊</b> Analytics nur nach Zustimmung.</div>
-          <div class="hint">Für Livebetrieb: echte Datenschutzerklärung ergänzen.</div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="agb">
-      <div class="container">
-        <div class="card faq-card">
-          <h2 style="margin:0 0 10px">AGB</h2>
-          <div class="hint">MVP: Bedingungen ergänzen.</div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="versand">
-      <div class="container">
-        <div class="card faq-card">
-          <h2 style="margin:0 0 10px">Versand</h2>
-          <div class="faq-item"><b>Lieferzeit</b> 2–3 Werktage (MVP).</div>
-          <div class="faq-item" style="margin-top:10px"><b>Tracking</b> Sobald verfügbar.</div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="allergene">
-      <div class="container">
-        <div class="card faq-card">
-          <h2 style="margin:0 0 10px">Allergene</h2>
-          <div class="faq-item"><b>Hinweis</b> Enthält Gluten (MVP). Weitere Angaben ergänzen.</div>
-        </div>
-      </div>
-    </section>
-
-  </main>
-
-  <footer id="footer" aria-label="Footer">
-    <div class="container">
-      <div class="footer-links">
-        <a href="#impressum">Impressum</a>
-        <a href="#datenschutz">Wie wir mit Daten umgehen</a>
-        <a href="#agb">AGB</a>
-        <a href="#versand">Versand</a>
-        <a href="#allergene">Allergene</a>
-      </div>
-
-      <div class="social-links" aria-label="Social">
-        <a href="#" aria-label="Instagram">Instagram</a>
-        <a href="#" aria-label="TikTok">TikTok</a>
-        <a href="#" aria-label="Pinterest">Pinterest</a>
-      </div>
-
-      <div style="margin-top:10px">© OnlyKeks · Post die schmeckt</div>
+      </aside>
     </div>
-  </footer>
+  </div>
 
-  <!-- Cookie Consent (Needed/Optional) -->
-  <div class="consent" id="consent" role="dialog" aria-label="Cookie Einstellungen">
-    <div class="card">
-      <div class="consent-row">
-        <p>
-          Wir nutzen <b>notwendige Cookies</b>, um deinen Keks-Entwurf zu speichern. Optional: Analytics, damit wir kapieren, welche Kekse gefallen.
-          <br/><a href="#datenschutz">Wie wir mit Daten umgehen</a> · <span style="white-space:nowrap">Wir verkaufen keine Daten.</span>
-        </p>
-        <div class="consent-actions">
-          <button class="btn ghost" id="consentNecessary" type="button">Nur das Nötigste</button>
-          <button class="btn primary" id="consentAll" type="button">Alles klar 🍪</button>
-        </div>
+  <!-- Sticky bottom controls (5) -->
+  <div class="bottomBar" role="navigation" aria-label="Step Navigation">
+    <div class="bottomInner">
+      <div class="left">
+        <span class="bottomMeta" id="bottomMeta">Step 1/3</span>
+        <button class="btn" id="backBtn" type="button" disabled>← Zurück</button>
+      </div>
+      <div class="right">
+        <button class="btn danger" id="resetBtn" type="button">🧽 Reset</button>
+        <button class="btn primary" id="nextBtn" type="button">Weiter →</button>
       </div>
     </div>
   </div>
 
+  <div class="toast" id="toast">Gespeichert 🍪</div>
+
   <script>
-  /*** CONFIG: NUR HIER ANPASSEN ***/
-  const STRIPE_PAYMENT_LINK = "https://buy.stripe.com/aBcDeFgHiJkLmNoPqR";
+    // ---------- Helpers ----------
+    const $ = (id)=>document.getElementById(id);
+    const rand = (a,b)=>Math.floor(Math.random()*(b-a+1))+a;
+    const pick = (arr)=>arr[Math.floor(Math.random()*arr.length)];
+    function escapeXml(s){ return s.replace(/[<>&'"]/g, (c)=>({ "<":"&lt;", ">":"&gt;", "&":"&amp;", "'":"&apos;", '"':"&quot;" }[c])); }
 
-  // Analytics (nur nach Consent laden!)
-  const GA_ID = "G-XXXXXXXXXX"; // TODO: ersetzen
-
-  /* =======================
-     A/B HERO (simple)
-  ======================= */
-  (function heroAB(){
-    const key = "ok_ab_hero_v1";
-    const v = localStorage.getItem(key) || (Math.random() < 0.5 ? "A" : "B");
-    localStorage.setItem(key, v);
-
-    const h1 = document.getElementById("heroH1");
-    const sub = document.getElementById("heroSub");
-    const cta = document.getElementById("heroCta");
-    if(!h1 || !sub || !cta) return;
-
-    if(v === "B"){
-      h1.innerHTML = "Post, die schmeckt.<br/>Mit Reply in 3 Klicks.";
-      sub.textContent = "Keks wählen → Nachricht → QR-Reply. Kein Account, schneller Checkout.";
-      cta.textContent = "✨ Jetzt Reply-Keks bauen";
-      cta.dataset.ab = "B";
-    } else {
-      cta.dataset.ab = "A";
-    }
-  })();
-
-  /* =======================
-     FLOW LOGIC
-  ======================= */
-  const steps  = document.querySelectorAll(".step");
-  const payBtn = document.getElementById("payBtn");
-
-  const panels = {
-    1: document.getElementById("p1"),
-    2: document.getElementById("p2"),
-    3: document.getElementById("p3"),
-  };
-
-  steps.forEach(s=>{
-    s.setAttribute("role","tab");
-    s.setAttribute("aria-selected","false");
-  });
-
-  function go(n){
-    Object.entries(panels).forEach(([k,p])=>{
-      if(!p) return;
-      const on = (+k === n);
-      p.classList.toggle("active", on);
-      p.toggleAttribute("hidden", !on);
-    });
-
-    steps.forEach(s=>{
-      const active = (+s.dataset.step === n);
-      s.classList.toggle("active", active);
-      s.setAttribute("aria-selected", active ? "true":"false");
-      s.setAttribute("tabindex", active ? "0":"-1");
-    });
-
-    if(n === 3 && payBtn) payBtn.href = STRIPE_PAYMENT_LINK;
-  }
-
-  steps.forEach(s=>{
-    s.addEventListener("click", () => {
-      const step = +s.dataset.step;
-      if (step === 2 && !validateMessage()) return;
-      if (step === 3 && (!validateMessage() || !validateAddressDE())) return;
-      go(step);
-    });
-  });
-
-  /* Arrow keys (tabs) */
-  const stepper = document.querySelector(".stepper");
-  stepper?.addEventListener("keydown", (e) => {
-    const active = document.activeElement;
-    if (!active || active.tagName !== "BUTTON" || !active.classList.contains("step")) return;
-
-    const all = Array.from(steps);
-    const idx = all.indexOf(active);
-
-    if (e.key === "ArrowRight" || e.key === "ArrowLeft") e.preventDefault();
-
-    if (e.key === "ArrowRight") {
-      const next = all[(idx + 1) % all.length];
-      const step = +next.dataset.step;
-      if (step === 2 && !validateMessage()) return;
-      if (step === 3 && (!validateMessage() || !validateAddressDE())) return;
-      next.focus();
-      go(step);
-    } else if (e.key === "ArrowLeft") {
-      const prev = all[(idx - 1 + all.length) % all.length];
-      prev.focus();
-      go(+prev.dataset.step);
-    } else if (e.key === "Enter" || e.key === " ") {
-      e.preventDefault();
-      const step = +active.dataset.step;
-      if (step === 2 && !validateMessage()) return;
-      if (step === 3 && (!validateMessage() || !validateAddressDE())) return;
-      go(step);
-    }
-  });
-
-  /* Swipe gestures (mobile) */
-  (function enableSwipe(){
-    const area = document.querySelector(".flow-card");
-    if(!area) return;
-
-    let sx=0, sy=0, st=0;
-    area.addEventListener("touchstart", (e)=>{
-      const t = e.touches[0];
-      sx=t.clientX; sy=t.clientY; st=Date.now();
-    }, {passive:true});
-
-    area.addEventListener("touchend", (e)=>{
-      const t = e.changedTouches[0];
-      const dx=t.clientX - sx;
-      const dy=t.clientY - sy;
-      const dt=Date.now()-st;
-
-      if(dt>600) return;
-      if(Math.abs(dx) < 60) return;
-      if(Math.abs(dy) > 80) return;
-
-      const active = document.querySelector(".step.active");
-      const all = Array.from(document.querySelectorAll(".step"));
-      const idx = all.indexOf(active);
-      if(idx < 0) return;
-
-      const nextIdx = dx < 0 ? (idx+1)%all.length : (idx-1+all.length)%all.length;
-      const step = +all[nextIdx].dataset.step;
-
-      if (step === 2 && !validateMessage()) return;
-      if (step === 3 && (!validateMessage() || !validateAddressDE())) return;
-
-      go(step);
-      all[nextIdx].focus?.();
-    }, {passive:true});
-  })();
-
-  const msg = document.getElementById("msg");
-  document.querySelectorAll(".chip").forEach(ch=>{
-    ch.addEventListener("click", ()=>{
-      if(msg) msg.value = ch.dataset.msg;
-      syncMsgUI();
-      updateSummaries();
-    });
-  });
-
-  const next1 = document.getElementById("next1");
-  const next2 = document.getElementById("next2");
-  const back2 = document.getElementById("back2");
-  const back3 = document.getElementById("back3");
-
-  const sum1 = document.getElementById("sum1");
-  const sum2 = document.getElementById("sum2");
-  const sum3 = document.getElementById("sum3");
-  const pack = document.getElementById("pack");
-  const toName = document.getElementById("toName");
-  const fromName = document.getElementById("fromName");
-
-  const toStreet = document.getElementById("toStreet");
-  const toZip    = document.getElementById("toZip");
-  const toCity   = document.getElementById("toCity");
-
-  function esc(s){
-    return String(s||"")
-      .replaceAll("&","&amp;")
-      .replaceAll("<","&lt;")
-      .replaceAll(">","&gt;")
-      .replaceAll('"',"&quot;");
-  }
-
-  function priceFor(p){
-    if(p === "Quick") return 9.90;
-    if(p === "Custom") return 14.90;
-    return 29.90;
-  }
-
-  /* =======================
-     MESSAGE LIMIT + COUNTER (Single Source of Truth)
-  ======================= */
-  const msgCount = document.getElementById("msgCount");
-  const msgMax = document.getElementById("msgMax");
-  const msgMax2 = document.getElementById("msgMax2");
-  const msgErr = document.getElementById("msgErr");
-  const msgHint = document.getElementById("msgHint");
-
-  const LIMIT = 500;
-  if(msg){
-    msg.maxLength = LIMIT;
-    if(msgMax) msgMax.textContent = LIMIT;
-    if(msgMax2) msgMax2.textContent = LIMIT;
-  }
-
-  function syncMsgUI(){
-    if(!msg) return;
-    const len = msg.value.length;
-    msgCount && (msgCount.textContent = len);
-
-    const remaining = LIMIT - len;
-    if(msgHint){
-      msgHint.textContent = remaining <= 50 ? `Noch ${remaining} Zeichen übrig.` : "";
+    function toast(txt){
+      ui.toast.textContent = txt;
+      ui.toast.classList.add("show");
+      clearTimeout(toast._t);
+      toast._t = setTimeout(()=>ui.toast.classList.remove("show"), 1400);
     }
 
-    if(msgErr) msgErr.textContent = "";
-  }
+    // ---------- UI ----------
+    const ui = {
+      // stepper
+      stepTitle: $("stepTitle"),
+      dot1: $("dot1"), dot2: $("dot2"), dot3: $("dot3"),
+      successHint: $("successHint"),
+      bottomMeta: $("bottomMeta"),
+      backBtn: $("backBtn"),
+      nextBtn: $("nextBtn"),
+      resetBtn: $("resetBtn"),
 
-  function updateSummaries(){
-    const p = pack ? pack.value : "Custom";
-    const price = priceFor(p);
-    const m = msg ? msg.value.trim() : "";
+      // panels
+      p1: $("p1"), p2: $("p2"), p3: $("p3"),
 
-    sum1 && (sum1.innerHTML =
-      `<b>Preview:</b> Paket <b>${esc(p)}</b> · <span style="color:var(--muted)">${price.toFixed(2)} €</span><br/>„${esc(m||"…")}“`
-    );
+      // step1
+      msg: $("msg"),
+      chips: $("chips"),
+      charCount: $("charCount"),
+      charHint: $("charHint"),
 
-    const tn = toName ? toName.value.trim() : "";
-    const fn = fromName ? fromName.value.trim() : "";
-    const st = toStreet ? toStreet.value.trim() : "";
-    const zi = toZip ? toZip.value.trim() : "";
-    const ci = toCity ? toCity.value.trim() : "";
-    const addrLine = [st, zi, ci].filter(Boolean).join(" · ");
+      // step2
+      presetBar: $("presetBar"),
+      shapeGrid: $("shapeGrid"),
+      icing: $("icing"),
+      drip: $("drip"),
+      sprinkles: $("sprinkles"),
+      sprinkleAmt: $("sprinkleAmt"),
+      sprinkleLabel: $("sprinkleLabel"),
+      sticker: $("sticker"),
+      stickerSize: $("stickerSize"),
+      stickerLabel: $("stickerLabel"),
+      random: $("random"),
+      copyJson: $("copyJson"),
 
-    sum2 && (sum2.innerHTML =
-      `<b>Check:</b> Empfänger <b>${esc(tn||"—")}</b> · Absender <b>${esc(fn||"—")}</b><br/>Adresse: ${esc(addrLine||"—")}`
-    );
+      // step3 extras
+      giftBox: $("giftBox"),
+      giftWrap: $("giftWrap"),
+      shipping: $("shipping"),
+      note: $("note"),
+      shareImg: $("shareImg"),
+      saveDraft: $("saveDraft"),
 
-    const ship = (p === "Premium") ? 0 : 2.90;
-    const total = price + ship;
-    sum3 && (sum3.innerHTML =
-      `<b>Checkout:</b> Paket <b>${esc(p)}</b> — ${price.toFixed(2)} € · Versand ${ship.toFixed(2)} €<br/>
-       <b>Gesamt: ${total.toFixed(2)} €</b><br/>
-       <span style="color:var(--muted)">Nachricht:</span> „${esc(m||"…")}“`
-    );
-  }
+      // preview
+      cookieSvg: $("cookieSvg"),
+      cookieBase: $("cookieBase"),
+      icingLayer: $("icingLayer"),
+      sprinkleLayer: $("sprinkleLayer"),
+      stickerLayer: $("stickerLayer"),
+      textLayer: $("textLayer"),
+      kShape: $("kShape"),
+      kIcing: $("kIcing"),
+      kSpr: $("kSpr"),
+      previewMeta: $("previewMeta"),
 
-  function debounce(fn, wait=120){
-    let t;
-    return (...args)=>{
-      clearTimeout(t);
-      t = setTimeout(()=>fn(...args), wait);
-    };
-  }
-  const updateSummariesDebounced = debounce(updateSummaries, 120);
-
-  function validateMessage(){
-    if(!msg) return false;
-    const v = (msg.value || "").trim();
-    if (!v || v.length < 3){
-      msg.setAttribute("aria-invalid","true");
-      msgErr && (msgErr.textContent = "Bitte eine kurze Nachricht (mind. 3 Zeichen).");
-      msg.focus();
-      return false;
-    }
-    msg.setAttribute("aria-invalid","false");
-    msgErr && (msgErr.textContent = "");
-    return true;
-  }
-
-  function validateAddressDE(){
-    const err = document.getElementById("toAddrErr");
-
-    const st = (toStreet?.value || "").trim();
-    const zi = (toZip?.value || "").trim();
-    const ci = (toCity?.value || "").trim();
-
-    const ok = (st.length >= 3) && /^\d{5}$/.test(zi) && (ci.length >= 2);
-
-    if(!ok){
-      err && (err.textContent = "Adresse unvollständig. Beispiel: Musterstraße 12 · 12345 · Berlin");
-      toStreet?.focus();
-      return false;
-    }
-    err && (err.textContent = "");
-    return true;
-  }
-
-  // PLZ: nur 5 Ziffern
-  toZip?.addEventListener("input", (e)=>{
-    e.target.value = e.target.value.replace(/\D/g,"").slice(0,5);
-  });
-
-  next1 && next1.addEventListener("click", ()=>{
-    syncMsgUI();
-    updateSummaries();
-    if(!validateMessage()) return;
-    go(2);
-    document.getElementById("toName")?.focus();
-  });
-
-  back2 && back2.addEventListener("click", ()=>{ updateSummaries(); go(1); });
-
-  next2 && next2.addEventListener("click", ()=>{
-    syncMsgUI();
-    updateSummaries();
-    const ok = validateMessage() && validateAddressDE();
-    if(!ok) return;
-    go(3);
-  });
-
-  back3 && back3.addEventListener("click", ()=>{ updateSummaries(); go(2); });
-
-  [pack, msg, toName, fromName, toStreet, toZip, toCity].forEach(el=>{
-    el && el.addEventListener("input", ()=>{
-      if(el === msg) syncMsgUI();
-      updateSummariesDebounced();
-    });
-    el && el.addEventListener("change", ()=>{
-      if(el === msg) syncMsgUI();
-      updateSummariesDebounced();
-    });
-  });
-
-  msg?.addEventListener("blur", ()=>{ syncMsgUI(); validateMessage(); });
-  [toStreet, toZip, toCity].forEach(el=> el?.addEventListener("blur", validateAddressDE));
-
-  /* =======================
-     PACK-TILES (MERGED INIT)
-  ======================= */
-  (function initPackTiles(){
-    const packEl = document.getElementById("pack");
-    const tilesWrap = document.getElementById("packTiles");
-    const hintEl = document.getElementById("packHint");
-    if(!packEl || !tilesWrap) return;
-
-    const labelMap = {
-      Quick:  "Quick · ab 9,90 € · süß & schnell",
-      Custom: "Custom · ab 14,90 € · Standard (beliebt)",
-      Premium:"Premium · ab 29,90 € · Box & extra Wow"
+      toast: $("toast"),
     };
 
-    function setPack(p){
-      packEl.value = p;
+    // ---------- State ----------
+    const LS_KEY = "onlykeks_stepper_v1";
+    const defaultState = {
+      step: 1,
 
-      tilesWrap.querySelectorAll(".pack-tile").forEach(btn=>{
-        const on = btn.dataset.pack === p;
-        btn.classList.toggle("is-active", on);
-        btn.setAttribute("aria-checked", on ? "true" : "false");
-      });
+      // (2) Vorauswahl statt leer
+      msg: "Ich denk an dich 💗",
+      shape: "heart",
+      icing: "pink",
+      drip: "smooth",
+      sprinkles: "dots",
+      sprinkleAmt: 55,
+      sticker: "bow",
+      stickerSize: 115,
 
-      if(hintEl) hintEl.textContent = labelMap[p] || labelMap.Custom;
+      // (4) Extras NACH dem Keks
+      extras: {
+        giftBox: "none",
+        giftWrap: "card",
+        shipping: "tracked",
+        note: ""
+      }
+    };
 
-      packEl.dispatchEvent(new Event("change", { bubbles:true }));
+    let state = loadDraft() ?? structuredClone(defaultState);
+    let lastState = structuredClone(state);
+
+    function saveLocal(){ localStorage.setItem(LS_KEY, JSON.stringify(state)); }
+    function loadDraft(){
+      try{
+        const raw = localStorage.getItem(LS_KEY);
+        if(!raw) return null;
+        const parsed = JSON.parse(raw);
+        return parsed && typeof parsed === "object" ? parsed : null;
+      }catch(e){ return null; }
     }
 
-    tilesWrap.addEventListener("click", (e)=>{
-      const btn = e.target.closest(".pack-tile");
+    function setState(patch){
+      const prev = structuredClone(state);
+      state = { ...state, ...patch };
+      render(prev);
+      saveLocal();
+    }
+
+    function setExtras(patch){
+      const prev = structuredClone(state);
+      state.extras = { ...state.extras, ...patch };
+      render(prev);
+      saveLocal();
+    }
+
+    // ---------- Presets (kuratiert) ----------
+    const PRESETS = {
+      love:     { shape:"heart", icing:"pink",   drip:"drip",   sprinkles:"stars",    sprinkleAmt:45, sticker:"heart",   stickerSize:115, msg:"Für dich, weil du du bist 💗" },
+      sassy:    { shape:"round", icing:"choco",  drip:"zigzag", sprinkles:"confetti", sprinkleAmt:65, sticker:"smile",   stickerSize:95,  msg:"Beweg deinen Arsch 😄" },
+      birthday: { shape:"star",  icing:"vanilla",drip:"zigzag", sprinkles:"confetti", sprinkleAmt:80, sticker:"sparkle", stickerSize:125, msg:"Happy Birthday, du Legende! 🥳" },
+      motivation:{shape:"round", icing:"mint",   drip:"smooth", sprinkles:"dots",     sprinkleAmt:35, sticker:"sparkle", stickerSize:105, msg:"Du schaffst das. Weiter. 💪" },
+      thanks:   { shape:"round", icing:"vanilla",drip:"smooth", sprinkles:"stars",    sprinkleAmt:25, sticker:"bow",     stickerSize:95,  msg:"Danke dir! 🙏🍪" },
+      party:    { shape:"star",  icing:"pink",   drip:"drip",   sprinkles:"confetti", sprinkleAmt:70, sticker:"sparkle", stickerSize:120, msg:"Heute wird’s groß. 🎉" },
+      cute:     { shape:"heart", icing:"pink",   drip:"smooth", sprinkles:"dots",     sprinkleAmt:55, sticker:"bow",     stickerSize:115, msg:"Ich denk an dich 💗" },
+    };
+
+    // ---------- Stepper logic ----------
+    function goStep(n){
+      const clamped = Math.max(1, Math.min(3, n));
+      const prev = structuredClone(state);
+      state.step = clamped;
+      render(prev);
+      saveLocal();
+      // success moments
+      if(clamped === 2) toast("Sieht süß aus 🍪");
+      if(clamped === 3) toast("Jetzt machen wir’s Geschenk-ready 🎁");
+    }
+
+    function canNext(){
+      // minimal guard: always allow next; but keep UX friendly
+      return true;
+    }
+
+    ui.backBtn.addEventListener("click", ()=> goStep(state.step - 1));
+    ui.nextBtn.addEventListener("click", ()=>{
+      if(!canNext()) return;
+      if(state.step < 3) goStep(state.step + 1);
+      else toast("Fertig 🍪 (Checkout kommt als nächstes)");
+    });
+
+    ui.resetBtn.addEventListener("click", ()=>{
+      const prev = structuredClone(state);
+      state = structuredClone(defaultState);
+      render(prev);
+      saveLocal();
+      toast("Reset – wieder sauber 🍪");
+    });
+
+    // ---------- Bind Step 1 (Text + visible limit) ----------
+    ui.chips.addEventListener("click", (e)=>{
+      const btn = e.target.closest(".chip");
       if(!btn) return;
-      setPack(btn.dataset.pack);
+      ui.msg.value = btn.dataset.msg;
+      setState({ msg: ui.msg.value });
+    });
+    ui.msg.addEventListener("input", ()=> setState({ msg: ui.msg.value }));
+
+    // ---------- Bind Step 2 (Look) ----------
+    ui.presetBar.addEventListener("click", (e)=>{
+      const btn = e.target.closest(".preset");
+      if(!btn) return;
+      const preset = PRESETS[btn.dataset.preset];
+      if(!preset) return;
+      setState({ ...preset });
+      syncInputsFromState();
+      toast("Preset angewendet ✨");
     });
 
-    tilesWrap.addEventListener("keydown", (e)=>{
-      const keys = ["ArrowLeft","ArrowRight","ArrowUp","ArrowDown"];
-      if(!keys.includes(e.key)) return;
-
-      const tiles = [...tilesWrap.querySelectorAll(".pack-tile")];
-      const active = Math.max(0, tiles.findIndex(t => t.classList.contains("is-active")));
-      let next = active;
-
-      if(e.key==="ArrowLeft" || e.key==="ArrowUp") next = Math.max(0, active - 1);
-      if(e.key==="ArrowRight"|| e.key==="ArrowDown") next = Math.min(tiles.length - 1, active + 1);
-
-      tiles[next]?.focus();
-      const np = tiles[next]?.dataset.pack;
-      if(np) setPack(np);
-      e.preventDefault();
+    ui.shapeGrid.addEventListener("click", (e)=>{
+      const opt = e.target.closest(".opt");
+      if(!opt) return;
+      setState({ shape: opt.dataset.shape });
     });
 
-    packEl.addEventListener("change", ()=> {
-      const v = packEl.value || "Custom";
-      if(hintEl) hintEl.textContent = labelMap[v] || labelMap.Custom;
-      tilesWrap.querySelectorAll(".pack-tile").forEach(btn=>{
-        const on = btn.dataset.pack === v;
-        btn.classList.toggle("is-active", on);
-        btn.setAttribute("aria-checked", on ? "true" : "false");
+    ui.icing.addEventListener("change", ()=> setState({ icing: ui.icing.value }));
+    ui.drip.addEventListener("change", ()=> setState({ drip: ui.drip.value }));
+    ui.sprinkles.addEventListener("change", ()=> setState({ sprinkles: ui.sprinkles.value }));
+
+    ui.sprinkleAmt.addEventListener("input", ()=>{
+      ui.sprinkleLabel.textContent = ui.sprinkleAmt.value + "%";
+      // smooth update
+      const prev = structuredClone(state);
+      state.sprinkleAmt = +ui.sprinkleAmt.value;
+      render(prev);
+      saveLocal();
+    });
+
+    ui.sticker.addEventListener("change", ()=> setState({ sticker: ui.sticker.value }));
+    ui.stickerSize.addEventListener("input", ()=>{
+      ui.stickerLabel.textContent = ui.stickerSize.value + "%";
+      const prev = structuredClone(state);
+      state.stickerSize = +ui.stickerSize.value;
+      render(prev);
+      saveLocal();
+    });
+
+    ui.random.addEventListener("click", ()=>{
+      const shapes = ["round","heart","star"];
+      const icings = ["none","pink","vanilla","choco","mint"];
+      const drips = ["smooth","drip","zigzag"];
+      const spr = ["none","dots","stars","confetti"];
+      const st = ["none","bow","heart","sparkle","smile"];
+      const msgs = [
+        "Ich denk an dich 💗",
+        "Du schaffst das. Weiter. 💪",
+        "Happy Birthday, du Legende! 🥳",
+        "Danke dir! 🙏🍪",
+        "Beweg deinen Arsch 😄",
+        "Komm vorbei. Jetzt. 🍪",
+        "Heute wird’s groß. 🎉"
+      ];
+      setState({
+        msg: pick(msgs),
+        shape: pick(shapes),
+        icing: pick(icings),
+        drip: pick(drips),
+        sprinkles: pick(spr),
+        sprinkleAmt: rand(10, 90),
+        sticker: pick(st),
+        stickerSize: rand(70, 130)
       });
+      syncInputsFromState();
+      toast("Überraschung ✨");
     });
 
-    setPack(packEl.value || "Custom");
-  })();
+    ui.copyJson.addEventListener("click", async ()=>{
+      const json = JSON.stringify(state, null, 2);
+      try{ await navigator.clipboard.writeText(json); toast("JSON kopiert 📋"); }
+      catch(e){ prompt("Kopieren:", json); }
+    });
 
-  go(1);
-  if(payBtn) payBtn.href = STRIPE_PAYMENT_LINK;
-  syncMsgUI();
-  updateSummaries();
+    // ---------- Bind Step 3 (Extras) ----------
+    ui.giftBox.addEventListener("change", ()=> setExtras({ giftBox: ui.giftBox.value }));
+    ui.giftWrap.addEventListener("change", ()=> setExtras({ giftWrap: ui.giftWrap.value }));
+    ui.shipping.addEventListener("change", ()=> setExtras({ shipping: ui.shipping.value }));
+    ui.note.addEventListener("input", ()=> setExtras({ note: ui.note.value }));
 
-  /* =======================
-     Cookie Consent + Analytics
-  ======================= */
-  const CONSENT_KEY = "ok_consent_v1"; // { necessary:true, analytics:true }
-  const consentEl = document.getElementById("consent");
-  const btnNecessary = document.getElementById("consentNecessary");
-  const btnAll = document.getElementById("consentAll");
+    ui.saveDraft.addEventListener("click", ()=>{
+      saveLocal();
+      toast("Entwurf gespeichert 🍪");
+    });
 
-  function readConsent(){
-    try { return JSON.parse(localStorage.getItem(CONSENT_KEY) || "null"); }
-    catch { return null; }
-  }
-  function writeConsent(obj){
-    localStorage.setItem(CONSENT_KEY, JSON.stringify(obj));
-  }
+    ui.shareImg.addEventListener("click", async ()=>{
+      try{
+        ui.shareImg.disabled = true;
+        const blob = await svgToPngBlob(ui.cookieSvg, 1080, 1080);
+        const file = new File([blob], "onlykeks.png", { type: "image/png" });
 
-  function loadGA(){
-    if(!GA_ID || GA_ID === "G-XXXXXXXXXX") return;
-    if(document.getElementById("gaScript")) return;
+        if(navigator.canShare && navigator.canShare({ files: [file] })){
+          await navigator.share({ title:"OnlyKeks", text:"Mein Keks-Design 🍪", files:[file] });
+          toast("Geteilt 📤");
+        } else {
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = url; a.download = "onlykeks.png";
+          document.body.appendChild(a); a.click(); a.remove();
+          URL.revokeObjectURL(url);
+          toast("PNG gespeichert 📥");
+        }
+      } catch(e){
+        console.error(e);
+        toast("Share ging nich – Browser zickt 😅");
+      } finally {
+        ui.shareImg.disabled = false;
+      }
+    });
 
-    const s1 = document.createElement("script");
-    s1.id = "gaScript";
-    s1.async = true;
-    s1.src = "https://www.googletagmanager.com/gtag/js?id=" + encodeURIComponent(GA_ID);
-    document.head.appendChild(s1);
+    // ---------- SVG render ----------
+    function labelShape(s){ return ({round:"Rund", heart:"Herz", star:"Stern"}[s] || "Rund"); }
+    function labelIcing(i){ return ({none:"Ohne", pink:"Pinky", vanilla:"Vanilla", choco:"Choco", mint:"Mint"}[i] || "Pinky"); }
+    function labelSpr(s){ return ({none:"Keine", dots:"Dots", stars:"Sterne", confetti:"Konfetti"}[s] || "Dots"); }
 
-    window.dataLayer = window.dataLayer || [];
-    window.gtag = function(){ dataLayer.push(arguments); };
-    gtag("js", new Date());
-    gtag("config", GA_ID, { anonymize_ip: true });
-  }
-
-  function applyConsent(c){
-    if(!c) return;
-    if(c.analytics) loadGA();
-  }
-
-  const existing = readConsent();
-  if(!existing){
-    consentEl.style.display = "block";
-  } else {
-    applyConsent(existing);
-  }
-
-  btnNecessary?.addEventListener("click", ()=>{
-    writeConsent({necessary:true, analytics:false});
-    consentEl.style.display = "none";
-  });
-  btnAll?.addEventListener("click", ()=>{
-    writeConsent({necessary:true, analytics:true});
-    applyConsent({necessary:true, analytics:true});
-    consentEl.style.display = "none";
-  });
-
-  function track(name, params={}){
-    if(typeof window.gtag === "function"){
-      window.gtag("event", name, params);
+    function microAnim(el){
+      el.classList.remove("anim");
+      void el.getBoundingClientRect();
+      el.classList.add("anim");
+      setTimeout(()=> el.classList.remove("anim"), 260);
     }
-  }
-  document.getElementById("heroCta")?.addEventListener("click", ()=>track("cta_click",{where:"hero", ab: document.getElementById("heroCta")?.dataset.ab || "?"}));
-  document.getElementById("navCta")?.addEventListener("click", ()=>track("cta_click",{where:"nav"}));
-  document.getElementById("payBtn")?.addEventListener("click", ()=>track("pay_click",{where:"flow"}));
 
-  document.getElementById("newsBtn")?.addEventListener("click", ()=>{
-    const v = (document.getElementById("newsEmail")?.value || "").trim();
-    if(!v) return alert("Bitte E-Mail eintragen.");
-    track("newsletter_submit",{where:"faq"});
-    alert("Danke! (MVP: hier später echte Newsletter-Anbindung)");
-  });
+    function render(prev){
+      // Step panels
+      ui.p1.classList.toggle("active", state.step === 1);
+      ui.p2.classList.toggle("active", state.step === 2);
+      ui.p3.classList.toggle("active", state.step === 3);
 
-  /* =======================
-     COOKIE RAIN (DPR safe)
-  ======================= */
-  const reduce = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
-  const c = document.getElementById("cookieRain");
-  if(c && !reduce){
-    const ctx = c.getContext("2d");
+      // Step header + dots
+      const titles = {1:"Text",2:"Look",3:"Extras"};
+      ui.stepTitle.textContent = `Step ${state.step}/3 · ${titles[state.step]}`;
+      ui.bottomMeta.textContent = `Step ${state.step}/3`;
+      ui.backBtn.disabled = state.step === 1;
+      ui.nextBtn.textContent = state.step === 3 ? "Fertig" : "Weiter →";
 
-    function resize(){
-      const dpr = window.devicePixelRatio || 1;
+      ui.dot1.classList.toggle("active", state.step===1);
+      ui.dot2.classList.toggle("active", state.step===2);
+      ui.dot3.classList.toggle("active", state.step===3);
 
-      c.width  = Math.floor(innerWidth  * dpr);
-      c.height = Math.floor(innerHeight * dpr);
+      ui.dot1.classList.toggle("done", state.step>1);
+      ui.dot2.classList.toggle("done", state.step>2);
 
-      c.style.width  = `${innerWidth}px`;
-      c.style.height = `${innerHeight}px`;
+      // Success hint per step
+      if(state.step === 1) ui.successHint.textContent = "Kurz & süß wirkt am besten 🍪";
+      if(state.step === 2) ui.successHint.textContent = "Sieht süß aus? Dann weiter. ✨";
+      if(state.step === 3) ui.successHint.textContent = "Jetzt Extras – erst jetzt. 🎁";
 
-      ctx.setTransform(1,0,0,1,0,0);
-      ctx.scale(dpr, dpr);
-    }
-    resize();
-    addEventListener("resize", resize);
+      // Char counter (3)
+      const len = (state.msg || "").length;
+      ui.charCount.textContent = len;
+      ui.charHint.textContent =
+        len < 12 ? "Kurz – gerne 1 Satz."
+        : len <= 60 ? "Perfekt: kurz & süß."
+        : len <= 110 ? "Noch ok – aber kürzer wirkt stärker."
+        : "Schon lang – kürzer wirkt besser.";
 
-    const cookies = [...Array(30)].map(() => ({
-      x: Math.random()*innerWidth,
-      y: Math.random()*innerHeight,
-      r: 10 + Math.random()*22,
-      v: 0.6 + Math.random()*1.4
-    }));
+      // Sync look inputs (only if they exist in DOM - they do)
+      ui.sprinkleLabel.textContent = `${state.sprinkleAmt}%`;
+      ui.stickerLabel.textContent = `${state.stickerSize}%`;
 
-    let last = 0;
-    const FPS = 30;
-    const frameInterval = 1000 / FPS;
-
-    function draw(ts){
-      if (document.hidden) { requestAnimationFrame(draw); return; }
-      if (ts - last < frameInterval) { requestAnimationFrame(draw); return; }
-      last = ts;
-
-      ctx.clearRect(0, 0, innerWidth, innerHeight);
-      cookies.forEach(o=>{
-        o.y += o.v;
-        if(o.y > innerHeight) o.y = -50;
-        ctx.beginPath();
-        ctx.arc(o.x,o.y,o.r,0,Math.PI*2);
-        ctx.fillStyle = "#c48752";
-        ctx.fill();
+      // highlight shape cards
+      [...ui.shapeGrid.querySelectorAll(".opt")].forEach(el=>{
+        el.classList.toggle("active", el.dataset.shape === state.shape);
       });
-      requestAnimationFrame(draw);
+
+      // preview KPIs
+      ui.kShape.textContent = labelShape(state.shape);
+      ui.kIcing.textContent = labelIcing(state.icing);
+      ui.kSpr.textContent = labelSpr(state.sprinkles);
+
+      // build SVG layers
+      ui.cookieBase.innerHTML = buildCookieBase(state.shape);
+      ui.icingLayer.innerHTML = buildIcing(state.shape, state.icing, state.drip);
+      ui.sprinkleLayer.innerHTML = buildSprinkles(state.shape, state.sprinkles, state.sprinkleAmt);
+      ui.stickerLayer.innerHTML = buildSticker(state.shape, state.sticker, state.stickerSize);
+      ui.textLayer.innerHTML = buildText(state.shape, state.msg);
+
+      // Micro-animations (3)
+      if(prev){
+        if(prev.msg !== state.msg) microAnim(ui.textLayer);
+        if(prev.sprinkles !== state.sprinkles || prev.sprinkleAmt !== state.sprinkleAmt) microAnim(ui.sprinkleLayer);
+        if(prev.sticker !== state.sticker || prev.stickerSize !== state.stickerSize) microAnim(ui.stickerLayer);
+      }
+
+      // Preview meta
+      if(state.step === 1) ui.previewMeta.textContent = "Text sitzt 🍪";
+      if(state.step === 2) ui.previewMeta.textContent = "Look knallt ✨";
+      if(state.step === 3) ui.previewMeta.textContent = "Geschenk-ready 🎁";
+
+      lastState = structuredClone(state);
     }
-    requestAnimationFrame(draw);
-  }
+
+    function syncInputsFromState(){
+      ui.msg.value = state.msg;
+
+      ui.icing.value = state.icing;
+      ui.drip.value = state.drip;
+      ui.sprinkles.value = state.sprinkles;
+      ui.sprinkleAmt.value = state.sprinkleAmt;
+      ui.sticker.value = state.sticker;
+      ui.stickerSize.value = state.stickerSize;
+
+      ui.giftBox.value = state.extras.giftBox;
+      ui.giftWrap.value = state.extras.giftWrap;
+      ui.shipping.value = state.extras.shipping;
+      ui.note.value = state.extras.note || "";
+
+      ui.sprinkleLabel.textContent = `${state.sprinkleAmt}%`;
+      ui.stickerLabel.textContent = `${state.stickerSize}%`;
+    }
+
+    // ---------- SVG building blocks ----------
+    function shapeClip(shape){ return `clip_${shape}`; }
+
+    function buildCookieBase(shape){
+      if(shape === "heart"){
+        return `
+          <path d="M180 310
+                   C140 290 85 252 85 195
+                   C85 152 115 130 145 130
+                   C165 130 176 140 180 150
+                   C184 140 195 130 215 130
+                   C245 130 275 152 275 195
+                   C275 252 220 290 180 310Z"
+                fill="url(#cookieGrad)" stroke="rgba(11,27,42,.10)" stroke-width="2"/>
+          ${chocoChipsMask("heart")}
+        `;
+      }
+      if(shape === "star"){
+        return `
+          <path d="M180 60
+                   L210 128
+                   L284 136
+                   L228 184
+                   L246 258
+                   L180 220
+                   L114 258
+                   L132 184
+                   L76 136
+                   L150 128Z"
+                fill="url(#cookieGrad)" stroke="rgba(11,27,42,.10)" stroke-width="2"/>
+          ${chocoChipsMask("star")}
+        `;
+      }
+      return `
+        <circle cx="180" cy="180" r="128" fill="url(#cookieGrad)" stroke="rgba(11,27,42,.10)" stroke-width="2"/>
+        ${chocoChipsMask("round")}
+      `;
+    }
+
+    function chocoChipsMask(shape){
+      const chips = [
+        [130,130,9],[210,120,7],[250,175,8],[165,220,7],[110,205,6],[220,235,9],[185,175,6]
+      ];
+      const clip = shapeClip(shape);
+      return `
+        <g clip-path="url(#${clip})" opacity=".55">
+          ${chips.map(([x,y,r])=>`<circle cx="${x}" cy="${y}" r="${r}" fill="rgba(90,54,30,.55)"/>`).join("")}
+        </g>
+      `;
+    }
+
+    function buildIcing(shape, icing, drip){
+      const defs = `
+        <defs>
+          <clipPath id="clip_round"><circle cx="180" cy="180" r="128"/></clipPath>
+          <clipPath id="clip_heart">
+            <path d="M180 310 C140 290 85 252 85 195 C85 152 115 130 145 130
+                     C165 130 176 140 180 150 C184 140 195 130 215 130
+                     C245 130 275 152 275 195 C275 252 220 290 180 310Z"/>
+          </clipPath>
+          <clipPath id="clip_star">
+            <path d="M180 60 L210 128 L284 136 L228 184 L246 258 L180 220
+                     L114 258 L132 184 L76 136 L150 128Z"/>
+          </clipPath>
+
+          <linearGradient id="icingPink" x1="0" x2="0" y1="0" y2="1">
+            <stop offset="0%" stop-color="rgba(255,79,163,.85)"/>
+            <stop offset="100%" stop-color="rgba(255,124,197,.65)"/>
+          </linearGradient>
+          <linearGradient id="icingVanilla" x1="0" x2="0" y1="0" y2="1">
+            <stop offset="0%" stop-color="rgba(255,248,235,.92)"/>
+            <stop offset="100%" stop-color="rgba(255,229,200,.72)"/>
+          </linearGradient>
+          <linearGradient id="icingChoco" x1="0" x2="0" y1="0" y2="1">
+            <stop offset="0%" stop-color="rgba(92,50,24,.86)"/>
+            <stop offset="100%" stop-color="rgba(140,78,44,.66)"/>
+          </linearGradient>
+          <linearGradient id="icingMint" x1="0" x2="0" y1="0" y2="1">
+            <stop offset="0%" stop-color="rgba(190,255,238,.85)"/>
+            <stop offset="100%" stop-color="rgba(120,240,210,.62)"/>
+          </linearGradient>
+        </defs>
+      `;
+
+      if(icing === "none") return defs;
+
+      const fill = ({
+        pink: "url(#icingPink)",
+        vanilla: "url(#icingVanilla)",
+        choco: "url(#icingChoco)",
+        mint: "url(#icingMint)"
+      }[icing]) || "url(#icingPink)";
+
+      const clip = shapeClip(shape);
+      const top = icingTopPath(shape);
+      const dripPath = drip === "drip" ? icingDripPath(shape) : (drip === "zigzag" ? icingZigzagPath(shape) : "");
+
+      return `
+        ${defs}
+        <g clip-path="url(#${clip})">
+          <path d="${top}" fill="${fill}" filter="url(#gloss)"></path>
+          ${dripPath ? `<path d="${dripPath}" fill="${fill}" opacity=".92" filter="url(#gloss)"></path>` : ""}
+          <path d="${top}" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="2" opacity=".55"></path>
+        </g>
+      `;
+    }
+
+    function icingTopPath(shape){
+      if(shape==="heart"){
+        return "M105 170 C120 130 160 110 180 122 C200 110 240 130 255 170 C250 188 240 205 220 214 C200 224 160 224 140 214 C120 205 110 188 105 170Z";
+      }
+      if(shape==="star"){
+        return "M120 140 C150 100 210 100 240 140 C235 170 210 190 180 192 C150 190 125 170 120 140Z";
+      }
+      return "M95 150 C120 105 240 105 265 150 C255 195 225 220 180 222 C135 220 105 195 95 150Z";
+    }
+    function icingDripPath(shape){
+      if(shape==="heart"){
+        return "M112 178 C125 205 120 230 134 246 C148 262 150 240 160 232 C170 224 176 255 186 252 C196 249 198 225 208 228 C218 231 220 260 235 246 C250 232 245 205 252 178 Z";
+      }
+      if(shape==="star"){
+        return "M128 160 C138 188 135 210 150 222 C165 234 165 210 175 205 C185 200 190 230 202 226 C214 222 214 196 224 202 C234 208 236 234 250 222 C264 210 258 188 246 160 Z";
+      }
+      return "M102 165 C118 196 112 225 130 240 C148 255 150 230 162 224 C174 218 178 252 190 248 C202 244 202 212 214 218 C226 224 228 255 248 240 C268 225 260 196 258 165 Z";
+    }
+    function icingZigzagPath(shape){
+      if(shape==="heart"){
+        return "M110 178 L130 195 L150 178 L170 195 L190 178 L210 195 L230 178 L250 195 L255 178 L110 178Z";
+      }
+      if(shape==="star"){
+        return "M130 162 L148 176 L166 162 L184 176 L202 162 L220 176 L238 162 L246 170 L130 170Z";
+      }
+      return "M105 165 L125 182 L145 165 L165 182 L185 165 L205 182 L225 165 L245 182 L258 165 L105 165Z";
+    }
+
+    function sprinkleColor(i){
+      const colors = [
+        "rgba(255,79,163,.95)",
+        "rgba(255,196,0,.90)",
+        "rgba(120,240,210,.90)",
+        "rgba(255,255,255,.85)",
+        "rgba(92,50,24,.65)"
+      ];
+      return colors[i % colors.length];
+    }
+
+    function starPath(cx, cy, r){
+      const pts = [];
+      for(let i=0;i<10;i++){
+        const ang = (Math.PI/5)*i - Math.PI/2;
+        const rr = (i%2===0)? r : r*0.45;
+        pts.push([cx + Math.cos(ang)*rr, cy + Math.sin(ang)*rr]);
+      }
+      return "M" + pts.map(p=>p.map(n=>n.toFixed(1)).join(" ")).join(" L ") + " Z";
+    }
+
+    function buildSprinkles(shape, type, amt){
+      if(type === "none" || amt <= 0) return "";
+      const clip = shapeClip(shape);
+      const n = Math.round(amt * (type==="confetti" ? 2.2 : 1.6));
+      const items = [];
+      const bounds = {x0:95, y0:120, x1:265, y1:250};
+
+      for(let i=0;i<n;i++){
+        const x = rand(bounds.x0, bounds.x1);
+        const y = rand(bounds.y0, bounds.y1);
+        const rot = rand(0,359);
+
+        if(type === "dots"){
+          items.push(`<circle cx="${x}" cy="${y}" r="${rand(2,4)}" fill="${sprinkleColor(i)}" opacity=".95"/>`);
+        } else if(type === "stars"){
+          items.push(`<path d="${starPath(x,y,rand(3,5))}" fill="${sprinkleColor(i)}" opacity=".95" transform="rotate(${rot} ${x} ${y})"/>`);
+        } else {
+          const w = rand(5,10), h = rand(2,4);
+          items.push(`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="2" fill="${sprinkleColor(i)}" opacity=".95" transform="rotate(${rot} ${x} ${y})"/>`);
+        }
+      }
+
+      return `<g clip-path="url(#${clip})" opacity=".9">${items.join("")}</g>`;
+    }
+
+    function buildSticker(shape, sticker, sizePct){
+      if(sticker === "none") return "";
+      const clip = shapeClip(shape);
+      const s = sizePct/100;
+      const x = 180, y = 118;
+      return `<g clip-path="url(#${clip})" transform="translate(${x} ${y}) scale(${s})">${stickerSvg(sticker)}</g>`;
+    }
+
+    function stickerSvg(kind){
+      if(kind === "bow"){
+        return `
+          <g filter="url(#gloss)">
+            <path d="M-62 10 C-88 -10 -88 -36 -62 -46 C-40 -54 -22 -36 -18 -18 C-14 -2 -32 22 -62 10Z" fill="rgba(255,79,163,.85)"/>
+            <path d="M62 10 C88 -10 88 -36 62 -46 C40 -54 22 -36 18 -18 C14 -2 32 22 62 10Z" fill="rgba(255,124,197,.75)"/>
+            <circle cx="0" cy="-10" r="14" fill="rgba(255,255,255,.75)" stroke="rgba(11,27,42,.10)"/>
+            <path d="M-10 0 C-6 18 -20 30 -32 34 C-14 32 -2 20 0 6 C2 20 14 32 32 34 C20 30 6 18 10 0Z" fill="rgba(255,255,255,.55)" opacity=".85"/>
+          </g>
+        `;
+      }
+      if(kind === "heart"){
+        return `
+          <g filter="url(#gloss)">
+            <path d="M0 48 C-34 26 -54 6 -54 -20 C-54 -40 -40 -54 -22 -54
+                     C-8 -54 -2 -46 0 -40 C2 -46 8 -54 22 -54
+                     C40 -54 54 -40 54 -20 C54 6 34 26 0 48Z"
+                  fill="rgba(255,79,163,.85)" stroke="rgba(255,255,255,.45)" stroke-width="3"/>
+          </g>
+        `;
+      }
+      if(kind === "sparkle"){
+        return `
+          <g filter="url(#gloss)">
+            <path d="M0 -60 L12 -18 L50 0 L12 18 L0 60 L-12 18 L-50 0 L-12 -18Z"
+                  fill="rgba(255,255,255,.85)" stroke="rgba(255,79,163,.35)" stroke-width="3"/>
+            <circle cx="38" cy="-34" r="10" fill="rgba(255,196,0,.88)"/>
+          </g>
+        `;
+      }
+      return `
+        <g filter="url(#gloss)">
+          <circle cx="0" cy="0" r="44" fill="rgba(255,248,235,.88)" stroke="rgba(11,27,42,.10)" stroke-width="3"/>
+          <circle cx="-16" cy="-10" r="6" fill="rgba(11,27,42,.65)"/>
+          <circle cx="16" cy="-10" r="6" fill="rgba(11,27,42,.65)"/>
+          <path d="M-18 12 C-8 26 8 26 18 12" fill="none" stroke="rgba(11,27,42,.55)" stroke-width="5" stroke-linecap="round"/>
+        </g>
+      `;
+    }
+
+    function wrapText(str, maxChars){
+      const words = str.split(/\s+/).filter(Boolean);
+      const lines = [];
+      let line = "";
+      for(const w of words){
+        const test = line ? line + " " + w : w;
+        if(test.length <= maxChars) line = test;
+        else{ if(line) lines.push(line); line = w; }
+      }
+      if(line) lines.push(line);
+      if(lines.length===0 && str.length){
+        for(let i=0;i<str.length;i+=maxChars) lines.push(str.slice(i,i+maxChars));
+      }
+      return lines.length ? lines : [str];
+    }
+
+    function buildText(shape, msg){
+      const text = (msg || "").trim().slice(0, 140);
+      if(!text) return "";
+      const clip = shapeClip(shape);
+      const lines = wrapText(text, 18).slice(0, 3);
+      const y0 = 210 - (lines.length-1)*16;
+      const font = 18;
+
+      return `
+        <g clip-path="url(#${clip})">
+          <text x="180" y="${y0}" text-anchor="middle"
+                font-size="${font}" font-weight="950"
+                fill="rgba(11,27,42,.72)"
+                style="letter-spacing:.2px">
+            ${lines.map((ln,i)=>`<tspan x="180" dy="${i===0?0:22}">${escapeXml(ln)}</tspan>`).join("")}
+          </text>
+          <text x="180" y="${y0+2}" text-anchor="middle"
+                font-size="${font}" font-weight="950"
+                fill="rgba(255,255,255,.35)"
+                style="letter-spacing:.2px" opacity=".55">
+            ${lines.map((ln,i)=>`<tspan x="180" dy="${i===0?0:22}">${escapeXml(ln)}</tspan>`).join("")}
+          </text>
+        </g>
+      `;
+    }
+
+    // ---------- SVG -> PNG for Share ----------
+    async function svgToPngBlob(svgEl, width, height){
+      const svgClone = svgEl.cloneNode(true);
+      svgClone.setAttribute("width", width);
+      svgClone.setAttribute("height", height);
+      svgClone.setAttribute("viewBox", "0 0 360 360");
+
+      const xml = new XMLSerializer().serializeToString(svgClone);
+      const svgBlob = new Blob([xml], { type: "image/svg+xml;charset=utf-8" });
+      const url = URL.createObjectURL(svgBlob);
+
+      const img = new Image();
+      img.decoding = "async";
+      await new Promise((res, rej)=>{ img.onload = res; img.onerror = rej; img.src = url; });
+
+      const canvas = document.createElement("canvas");
+      canvas.width = width; canvas.height = height;
+      const ctx = canvas.getContext("2d");
+      ctx.fillStyle = "rgba(255,255,255,1)";
+      ctx.fillRect(0,0,width,height);
+      ctx.drawImage(img, 0, 0, width, height);
+
+      URL.revokeObjectURL(url);
+      return await new Promise((res)=> canvas.toBlob(res, "image/png", 0.92));
+    }
+
+    // ---------- Init ----------
+    function init(){
+      // show draft loaded
+      if(localStorage.getItem(LS_KEY)) toast("Draft geladen 🍪");
+
+      // ensure panels visible
+      syncInputsFromState();
+      render(structuredClone(state));
+
+      // If draft had step 3 but extras fields missing, keep safe
+      state.step = Math.max(1, Math.min(3, state.step || 1));
+      goStep(state.step); // also triggers render + save
+    }
+
+    init();
   </script>
 </body>
 </html>

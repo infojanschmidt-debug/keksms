@@ -4,844 +4,878 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>OnlyKeks – Post, die schmeckt</title>
-  <meta name="description" content="Schicke süße Botschaften mit direkter QR-Antwort. Reply-Keks in 3 Klicks – kein Account." />
+  <meta name="description" content="Schicke süße Botschaften mit direkter QR-Antwort. Reply-Keks ohne Account – in wenigen Klicks." />
+
+  <!-- SEO / Social -->
   <link rel="canonical" href="https://infojanschmidt-debug.github.io/keksms/" />
   <meta name="robots" content="index,follow" />
-
-  <!-- Theme / Social -->
   <meta name="theme-color" content="#ff4fa3" />
+
   <meta property="og:title" content="OnlyKeks – Post, die schmeckt" />
-  <meta property="og:description" content="Schicke süße Botschaften mit direkter QR-Antwort. Reply-Keks in 3 Klicks – kein Account." />
+  <meta property="og:description" content="Schicke süße Botschaften mit direkter QR-Antwort. Reply-Keks ohne Account – in wenigen Klicks." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://infojanschmidt-debug.github.io/keksms/" />
-  <!-- OG image: wird per JS NICHT gesetzt, muss real existieren -->
-  <!-- Wenn du kein og.jpg hast: entweder erstellen oder hier auf ein existierendes JPG zeigen -->
-  <meta property="og:image" content="https://infojanschmidt-debug.github.io/keksms/assets/1000149739.jpg" />
-  <meta name="twitter:card" content="summary_large_image" />
-
-  <!-- Font -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;800&display=swap" rel="stylesheet">
+  <meta property="og:image" content="https://infojanschmidt-debug.github.io/keksms/assets/img/1000149739.jpg" />
+  <meta property="og:image:alt" content="Hände halten einen Keks, QR wird gescannt" />
 
   <style>
     :root{
+      /* OnlyFans-clean base */
       --bg:#ffffff;
       --ink:#0b1b2a;
       --muted:#4b5b6b;
       --line: rgba(11,27,42,.10);
 
+      /* Deko-Chichi palette */
       --sky1:#ffe6f2;
       --sky2:#ffd3ea;
       --sky3:#fff4ea;
-
       --pink:#ff4fa3;
       --pink2:#ff7cc5;
       --pinkSoft: rgba(255,79,163,.14);
       --pinkSoft2: rgba(255,124,197,.12);
 
-      --cookie:#c98b5f;
-      --cookie2:#e6b08a;
-
+      --card: rgba(255,255,255,.80);
+      --card2: rgba(255,255,255,.65);
+      --shadow: 0 18px 50px rgba(11,27,42,.10);
+      --shadow2: 0 10px 30px rgba(11,27,42,.08);
       --radius: 22px;
-      --shadow: 0 16px 50px rgba(0,0,0,.10);
-      --shadowSoft: 0 10px 30px rgba(0,0,0,.08);
 
       --max: 1100px;
     }
 
-    *{ box-sizing:border-box; }
-    html,body{ height:100%; }
+    *{box-sizing:border-box}
+    html,body{height:100%}
     body{
       margin:0;
-      font-family: "Nunito", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
       color:var(--ink);
       background:
-        radial-gradient(1200px 600px at 15% 0%, rgba(255,255,255,.75), rgba(255,255,255,0)),
-        radial-gradient(900px 500px at 85% 10%, rgba(255,255,255,.60), rgba(255,255,255,0)),
+        radial-gradient(900px 600px at 20% 10%, rgba(255,79,163,.16), transparent 60%),
+        radial-gradient(900px 600px at 90% 20%, rgba(255,124,197,.14), transparent 55%),
         linear-gradient(180deg, var(--sky1), var(--sky2) 45%, var(--sky3));
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
       overflow-x:hidden;
     }
-    a{ color:inherit; }
-    .wrap{ width:min(var(--max), calc(100% - 40px)); margin:0 auto; }
 
-    /* sticky header */
-    header{
-      position:sticky; top:0; z-index:20;
-      backdrop-filter: blur(10px);
-      background: rgba(255,255,255,.55);
-      border-bottom: 1px solid rgba(255,255,255,.6);
-    }
-    .top{
-      display:flex; align-items:center; justify-content:space-between;
-      padding:14px 0;
-      gap:12px;
-    }
-    .brand{ display:flex; align-items:center; gap:10px; font-weight:800; letter-spacing:.2px; }
-    .logo{
-      width:42px; height:42px; border-radius:14px;
-      background:
-        radial-gradient(circle at 35% 30%, #fff, rgba(255,255,255,0) 55%),
-        radial-gradient(circle at 65% 70%, rgba(255,255,255,.55), rgba(255,255,255,0) 58%),
-        linear-gradient(135deg, var(--cookie2), var(--cookie));
-      box-shadow: 0 10px 20px rgba(201,139,95,.25);
-      position:relative;
-      overflow:hidden;
-      transform: translateZ(0);
-    }
-    .logo:after{
-      content:"";
-      position:absolute; inset:10px 10px auto auto;
-      width:9px; height:9px; border-radius:99px;
-      background: rgba(120,60,20,.25);
-      box-shadow:
-        -18px 8px 0 rgba(120,60,20,.22),
-        -10px 18px 0 rgba(120,60,20,.18),
-        -26px 22px 0 rgba(120,60,20,.20);
-    }
-    .brand small{ display:block; font-weight:700; color:var(--muted); margin-top:1px; }
+    a{color:inherit}
+    .wrap{max-width:var(--max); margin:0 auto; padding:0 18px}
 
-    .nav{ display:flex; align-items:center; gap:14px; color:var(--muted); }
-    .nav a{
-      text-decoration:none;
-      font-weight:700;
-      padding:10px 12px;
-      border-radius:14px;
-      transition:.15s;
-    }
-    .nav a:hover{ background: rgba(255,255,255,.65); color:var(--ink); }
-
-    .ctaTop{ display:flex; align-items:center; gap:10px; }
-    .btn{
-      border:0; cursor:pointer;
-      font-weight:800;
-      padding:12px 16px;
-      border-radius:16px;
-      background: rgba(255,255,255,.75);
-      box-shadow: var(--shadowSoft);
-      transition:.15s;
-      text-decoration:none;
-      display:inline-flex; align-items:center; justify-content:center;
-      gap:10px;
-      white-space:nowrap;
-    }
-    .btn:hover{ transform: translateY(-1px); }
-    .btnPrimary{
-      color:#fff;
-      background: linear-gradient(135deg, var(--pink), var(--pink2));
-      box-shadow: 0 16px 30px rgba(255,79,163,.30);
-    }
-    .pill{
-      font-size:12px;
-      padding:6px 10px;
-      border-radius:999px;
-      background: rgba(255,255,255,.65);
-      border: 1px solid rgba(255,255,255,.8);
-      color: var(--muted);
-      font-weight:800;
-    }
-
-    /* hero */
-    .hero{ padding: 28px 0 14px; position:relative; }
-    .heroGrid{
-      display:grid;
-      grid-template-columns: 1.1fr .9fr;
-      gap:22px;
-      align-items:stretch;
-    }
-    .card{
+    /* Topbar */
+    .topbar{
+      position:sticky; top:0; z-index:50;
+      backdrop-filter: blur(14px);
       background: rgba(255,255,255,.72);
-      border: 1px solid rgba(255,255,255,.85);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
+      border-bottom:1px solid var(--line);
     }
-    .heroText{ padding:22px; position:relative; overflow:hidden; }
-    h1{
-      margin:0 0 10px;
-      font-size: clamp(30px, 3.2vw, 44px);
-      line-height:1.05;
-      letter-spacing:-.5px;
+    .topbar .inner{
+      display:flex; align-items:center; justify-content:space-between;
+      height:70px;
+      gap:14px;
     }
-    .sub{
-      margin:0 0 14px;
-      color: var(--muted);
-      font-size: 16px;
-      line-height:1.45;
-      font-weight:700;
-      max-width: 44ch;
+    .brand{
+      display:flex; align-items:center; gap:12px;
+      text-decoration:none;
+      min-width: 180px;
     }
-
-    .chipRow{ display:flex; flex-wrap:wrap; gap:10px; margin:14px 0 14px; }
-    .chip{
-      border: 1px solid rgba(255,79,163,.20);
-      background: rgba(255,79,163,.10);
-      color: #7a2a54;
+    .brandMark{
+      width:46px; height:46px; flex:0 0 auto; /* BIGGER */
+      filter: drop-shadow(0 10px 18px rgba(11,27,42,.10));
+    }
+    .brandText{
+      display:flex; flex-direction:column; line-height:1.05;
+    }
+    .brandText strong{font-size:18px; letter-spacing:.2px}
+    .brandText span{font-size:12.5px; color:var(--muted)}
+    nav{
+      display:flex; gap:14px; align-items:center;
+    }
+    nav a{
+      text-decoration:none;
+      font-size:13.5px;
+      color:var(--muted);
+      padding:10px 10px;
+      border-radius:12px;
+      transition:.15s ease;
+    }
+    nav a:hover{background: rgba(255,79,163,.10); color:var(--ink)}
+    .topCta{
+      display:flex; gap:10px; align-items:center;
+    }
+    .btn{
+      border:0;
       border-radius: 999px;
-      padding: 10px 12px;
-      font-weight:800;
+      padding:12px 16px;
+      font-weight:700;
       cursor:pointer;
-      transition:.15s;
+      text-decoration:none;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      transition: transform .12s ease, box-shadow .12s ease, background .12s ease;
+      box-shadow: var(--shadow2);
       user-select:none;
     }
-    .chip:hover{ transform: translateY(-1px); background: rgba(255,79,163,.14); }
-
-    .heroActions{
-      display:flex; gap:12px; align-items:center; flex-wrap:wrap;
-      margin-top: 10px;
+    .btn:active{transform: translateY(1px)}
+    .btnPrimary{
+      background: linear-gradient(135deg, var(--pink), var(--pink2));
+      color:#fff;
+    }
+    .btnPrimary:hover{box-shadow: 0 14px 40px rgba(255,79,163,.22)}
+    .btnGhost{
+      background: rgba(255,255,255,.85);
+      border:1px solid var(--line);
+      color:var(--ink);
+    }
+    .btnGhost:hover{background: rgba(255,255,255,.98)}
+    .hideSm{display:inline-flex}
+    @media (max-width: 760px){
+      nav{display:none}
+      .hideSm{display:none}
+      .topbar .inner{height:66px}
+      .brandText strong{font-size:16px}
     }
 
-    /* Trust bar */
-    .trustBar{
-      margin: 14px 0 0;
-      padding: 12px 14px;
+    /* Hero */
+    .hero{
+      padding: 26px 0 10px;
+      position:relative;
+    }
+    .heroGrid{
+      display:grid;
+      grid-template-columns: 1.08fr .92fr;
+      gap: 20px;
+      align-items:stretch;
+    }
+    @media (max-width: 920px){
+      .heroGrid{grid-template-columns:1fr; gap:14px}
+    }
+
+    .heroCard{
+      background: var(--card);
+      border:1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 22px;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .kicker{
+      display:inline-flex; gap:8px; align-items:center;
+      background: rgba(255,79,163,.10);
+      border:1px solid rgba(255,79,163,.18);
+      padding:8px 12px;
+      border-radius:999px;
+      font-weight:700;
+      font-size:12.5px;
+    }
+    .kicker svg{width:16px; height:16px}
+
+    h1{
+      margin:14px 0 10px;
+      font-size: 42px;
+      line-height:1.05;
+      letter-spacing:-.6px;
+    }
+    @media (max-width: 520px){
+      h1{font-size:34px}
+    }
+    .sub{
+      margin:0 0 16px;
+      color: var(--muted);
+      font-size: 16px;
+      line-height:1.5;
+      max-width: 52ch;
+    }
+
+    .miniFlow{
+      display:flex; flex-wrap:wrap; gap:10px;
+      margin: 12px 0 18px;
+    }
+    .chip{
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.75);
+      padding:10px 12px;
+      border-radius: 999px;
+      font-size: 13px;
+      cursor:pointer;
+      transition:.12s ease;
+      user-select:none;
+    }
+    .chip:hover{transform: translateY(-1px); background: rgba(255,255,255,.95)}
+
+    .trustbar{
       display:grid;
       grid-template-columns: repeat(4, 1fr);
       gap:10px;
-      align-items:center;
-      border-radius: 18px;
-      background: rgba(255,255,255,.62);
-      border: 1px solid rgba(255,255,255,.8);
+      margin-top: 14px;
     }
     .trustItem{
-      display:flex; gap:10px; align-items:center;
-      font-weight:800;
-      color: var(--muted);
-      font-size: 13px;
-      min-height: 40px;
-    }
-    .ico{
-      width:36px; height:36px; border-radius: 14px;
-      background: rgba(255,79,163,.12);
-      border: 1px solid rgba(255,79,163,.18);
-      display:flex; align-items:center; justify-content:center;
-      flex:0 0 auto;
-    }
-    .ico svg{ width:18px; height:18px; opacity:.85; }
-
-    /* hero media */
-    .heroMedia{ padding:0; overflow:hidden; position:relative; min-height: 340px; }
-    .heroMedia .mediaInner{ height:100%; display:flex; flex-direction:column; }
-    .heroMedia img, .heroMedia video{
-      width:100%;
-      height:100%;
-      object-fit: cover;
-      display:block;
-      flex: 1 1 auto;
-      min-height: 340px;
-      background:
-        radial-gradient(700px 350px at 30% 10%, rgba(255,255,255,.8), rgba(255,255,255,0)),
-        linear-gradient(135deg, rgba(255,79,163,.20), rgba(201,139,95,.18));
-    }
-    .mediaBadge{ position:absolute; left:14px; bottom:14px; display:flex; gap:10px; flex-wrap:wrap; }
-    .badge{
       background: rgba(255,255,255,.70);
-      border: 1px solid rgba(255,255,255,.85);
+      border:1px solid var(--line);
+      border-radius: 16px;
+      padding: 10px 10px;
+      display:flex; gap:10px; align-items:center;
+      min-height: 54px;
+    }
+    .trustItem svg{width:18px; height:18px; opacity:.9}
+    .trustItem b{font-size:12.5px}
+    .trustItem span{display:block; font-size:11.5px; color:var(--muted); margin-top:2px}
+    @media (max-width: 920px){
+      .trustbar{grid-template-columns: repeat(2, 1fr)}
+    }
+
+    /* Hero media */
+    .heroMedia{
+      background: linear-gradient(180deg, rgba(255,255,255,.75), rgba(255,255,255,.55));
+      border:1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      position:relative;
+      overflow:hidden;
+      min-height: 360px;
+    }
+    .mediaInner{
+      position:absolute; inset:0;
+      display:flex; align-items:center; justify-content:center;
+      padding: 14px;
+    }
+    .mediaFrame{
+      width:100%; height:100%;
+      border-radius: calc(var(--radius) - 8px);
+      overflow:hidden;
+      position:relative;
+      background: rgba(255,255,255,.6);
+      border:1px solid rgba(11,27,42,.08);
+    }
+    .mediaFrame img, .mediaFrame video{
+      width:100%; height:100%;
+      object-fit:cover;
+      display:block;
+    }
+    .mediaBadge{
+      position:absolute; left:14px; top:14px;
+      background: rgba(255,255,255,.82);
+      border:1px solid var(--line);
       border-radius: 999px;
       padding: 8px 10px;
-      font-weight:900;
-      font-size: 12px;
-      color: #6b3a56;
+      display:flex; gap:8px; align-items:center;
+      font-weight:800;
+      font-size:12.5px;
+      box-shadow: var(--shadow2);
     }
-
-    section{ padding: 18px 0; }
-    .grid3{ display:grid; grid-template-columns: repeat(3, 1fr); gap:14px; }
-    .mini{ padding:16px; }
-    .mini h3{ margin:0 0 6px; font-size:16px; letter-spacing:-.2px; }
-    .mini p{ margin:0; color:var(--muted); font-weight:700; line-height:1.45; }
+    .mediaBadge svg{width:16px; height:16px}
+    .mediaNote{
+      position:absolute; right:14px; bottom:14px;
+      background: rgba(255,255,255,.82);
+      border:1px solid var(--line);
+      border-radius: 16px;
+      padding: 10px 12px;
+      font-size:12px;
+      color:var(--muted);
+      box-shadow: var(--shadow2);
+      max-width: 240px;
+    }
 
     /* Story strip */
-    .storyStrip{ display:grid; grid-template-columns: repeat(3, 1fr); gap:14px; }
-    .storyCard{
+    .strip{
+      margin: 18px 0 8px;
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:12px;
+    }
+    .strip .shot{
+      border-radius: 18px;
       overflow:hidden;
-      border-radius: var(--radius);
-      border:1px solid rgba(255,255,255,.85);
-      background: rgba(255,255,255,.72);
-      box-shadow: var(--shadowSoft);
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.65);
+      box-shadow: var(--shadow2);
+      min-height: 140px;
       position:relative;
-      min-height: 220px;
     }
-    .storyCard img, .storyCard video{
-      width:100%; height: 220px;
-      object-fit: cover;
+    .strip img{
+      width:100%; height:100%;
+      object-fit:cover;
       display:block;
-      background:
-        radial-gradient(650px 320px at 30% 10%, rgba(255,255,255,.75), rgba(255,255,255,0)),
-        linear-gradient(135deg, rgba(255,79,163,.16), rgba(201,139,95,.14));
     }
-    .storyCap{ padding: 12px 14px 14px; }
-    .storyCap strong{ display:block; font-size:14px; }
-    .storyCap span{ display:block; margin-top:4px; color:var(--muted); font-weight:700; font-size:13px; }
+    .shot span{
+      position:absolute; left:10px; bottom:10px;
+      background: rgba(255,255,255,.82);
+      border:1px solid var(--line);
+      padding:6px 10px;
+      border-radius: 999px;
+      font-size:12px;
+      color:var(--muted);
+      font-weight:700;
+    }
+    @media (max-width: 920px){
+      .strip{grid-template-columns:1fr; }
+      .strip .shot{min-height: 170px;}
+    }
+
+    /* Main sections */
+    .section{padding: 16px 0}
+    .grid2{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+    @media (max-width: 920px){ .grid2{grid-template-columns:1fr} }
+
+    .card{
+      background: var(--card2);
+      border:1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow2);
+      padding: 18px;
+    }
+    .card h2{margin:0 0 10px; font-size:20px}
+    .bullets{margin:0; padding-left: 18px; color:var(--muted); line-height:1.5}
+    .bullets li{margin:8px 0}
 
     /* Flow */
-    .flow{ display:grid; grid-template-columns: 1fr; gap:14px; }
-    .flowHead{ display:flex; align-items:flex-end; justify-content:space-between; gap:12px; padding: 0 4px; }
-    .flowHead h2{ margin:0; font-size: 22px; letter-spacing:-.2px; }
-    .flowHead p{ margin:0; color:var(--muted); font-weight:700; }
-    .steps{ display:flex; gap:10px; flex-wrap:wrap; }
-    .step{
-      font-weight:900; font-size: 12px; color: var(--muted);
-      padding: 8px 10px; border-radius: 999px;
-      background: rgba(255,255,255,.65);
-      border: 1px solid rgba(255,255,255,.80);
-    }
-    .step.active{
-      color:#fff;
-      background: linear-gradient(135deg, var(--pink), var(--pink2));
-      border-color: rgba(255,255,255,.15);
-      box-shadow: 0 14px 26px rgba(255,79,163,.22);
-    }
-
-    .panel{ display:none; padding:18px; }
-    .panel.active{ display:block; }
-
-    .formRow{ display:grid; grid-template-columns: 1fr 1fr; gap:12px; }
-    label.lbl{ display:block; font-weight:900; margin: 10px 0 8px; }
-    input, textarea, select{
-      width:100%;
-      font: inherit;
-      padding: 12px 12px;
-      border-radius: 16px;
-      border: 1px solid rgba(11,27,42,.10);
-      background: rgba(255,255,255,.85);
-      outline: none;
-      box-shadow: 0 10px 18px rgba(0,0,0,.06);
-    }
-    textarea{ min-height: 120px; resize: vertical; }
-    .hint{ margin: 8px 0 0; color: var(--muted); font-weight:700; font-size: 13px; line-height:1.4; }
-
-    /* Pack tiles */
-    .pack-tiles{ display:grid; grid-template-columns: repeat(3, 1fr); gap:12px; margin-top: 10px; }
-    .packTile{
-      text-align:left; padding:14px;
-      border-radius: 18px;
-      border: 1px solid rgba(255,79,163,.18);
-      background: rgba(255,255,255,.70);
-      box-shadow: var(--shadowSoft);
-      cursor:pointer;
-      transition:.15s;
-      position:relative;
-      overflow:hidden;
-      user-select:none;
-    }
-    .packTile:hover{ transform: translateY(-1px); }
-    .packTile.active{
-      border-color: rgba(255,79,163,.42);
-      box-shadow: 0 18px 34px rgba(255,79,163,.18);
-      background:
-        radial-gradient(500px 260px at 20% 0%, rgba(255,255,255,.85), rgba(255,255,255,0)),
-        linear-gradient(135deg, rgba(255,79,163,.16), rgba(255,124,197,.10)),
-        rgba(255,255,255,.70);
-    }
-    .packTile .t{ display:flex; align-items:center; justify-content:space-between; gap:10px; font-weight:1000; }
-    .packTile .t b{ font-size:16px; }
-    .packTile .t em{
-      font-style:normal; font-size:12px;
-      padding:6px 10px; border-radius:999px;
-      background: rgba(255,79,163,.12);
-      border: 1px solid rgba(255,79,163,.18);
-      color: #7a2a54; font-weight:1000;
-      white-space:nowrap;
-    }
-    .packTile .d{ margin-top:8px; color:var(--muted); font-weight:800; font-size:13px; line-height:1.35; }
-    .packTile .k{ margin-top:10px; display:flex; gap:8px; flex-wrap:wrap; }
-    .tag{
-      font-size:12px; font-weight:900; color: #6b3a56;
-      background: rgba(255,255,255,.70);
-      border: 1px solid rgba(255,255,255,.85);
-      padding:6px 10px; border-radius: 999px;
-    }
-
-    /* Cookie play */
-    .cookiePlay{ display:grid; grid-template-columns: 1fr 1fr; gap:14px; margin-top: 12px; align-items:stretch; }
-    .cookieStage{
+    .flow{
+      background: rgba(255,255,255,.60);
+      border:1px solid var(--line);
       border-radius: var(--radius);
-      border: 1px solid rgba(255,255,255,.85);
-      background: rgba(255,255,255,.65);
-      box-shadow: var(--shadowSoft);
-      padding: 14px;
-      position:relative;
+      box-shadow: var(--shadow);
       overflow:hidden;
-      min-height: 260px;
     }
-    .cookieCanvas{
-      width:100%;
-      height: 230px;
-      border-radius: 18px;
-      background:
-        radial-gradient(180px 180px at 50% 52%, rgba(201,139,95,.22), rgba(201,139,95,0) 65%),
-        radial-gradient(260px 240px at 45% 40%, rgba(255,255,255,.80), rgba(255,255,255,0) 62%),
-        linear-gradient(135deg, rgba(255,79,163,.12), rgba(255,124,197,.10)),
-        rgba(255,255,255,.65);
+    .flowHead{
+      padding: 18px;
       display:flex;
       align-items:center;
-      justify-content:center;
-      position:relative;
-      overflow:hidden;
-    }
-    .cookieDisc{
-      width: 150px; height:150px;
-      border-radius: 999px;
-      background:
-        radial-gradient(circle at 35% 30%, rgba(255,255,255,.75), rgba(255,255,255,0) 60%),
-        linear-gradient(135deg, var(--cookie2), var(--cookie));
-      box-shadow: 0 18px 34px rgba(201,139,95,.25);
-      position:relative;
-    }
-    .cookieDisc:after{
-      content:"";
-      position:absolute; inset:26px 26px auto auto;
-      width:10px; height:10px; border-radius:99px;
-      background: rgba(120,60,20,.25);
-      box-shadow:
-        -34px 16px 0 rgba(120,60,20,.18),
-        -18px 40px 0 rgba(120,60,20,.20),
-        -46px 62px 0 rgba(120,60,20,.16),
-        -70px 40px 0 rgba(120,60,20,.14);
-    }
-    .sprinkles{ position:absolute; inset:0; pointer-events:none; }
-    .spr{
-      position:absolute;
-      width:10px; height:4px;
-      border-radius: 99px;
-      background: rgba(255,79,163,.65);
-      transform: rotate(18deg);
-      opacity: .0;
-      transition: opacity .2s;
-    }
-    .cookieStage.playing .spr{ opacity:1; }
-
-    .cookieControls{
-      border-radius: var(--radius);
-      border: 1px solid rgba(255,255,255,.85);
-      background: rgba(255,255,255,.65);
-      box-shadow: var(--shadowSoft);
-      padding: 14px;
-    }
-    .ctrlRow{ display:flex; gap:10px; flex-wrap:wrap; margin-top: 10px; }
-    .smallBtn{
-      border: 1px solid rgba(255,79,163,.22);
-      background: rgba(255,79,163,.10);
-      color: #7a2a54;
-      font-weight:1000;
-      padding: 10px 12px;
-      border-radius: 16px;
-      cursor:pointer;
-      transition:.15s;
-    }
-    .smallBtn:hover{ transform: translateY(-1px); background: rgba(255,79,163,.14); }
-
-    .panelNav{
-      display:flex;
       justify-content:space-between;
       gap:12px;
+      border-bottom:1px solid var(--line);
+      background: rgba(255,255,255,.72);
+    }
+    .flowHead h2{margin:0; font-size:20px}
+    .steps{
+      display:flex; gap:8px; flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+    .step{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      width:32px; height:32px;
+      border-radius: 999px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.75);
+      color:var(--muted);
+      font-weight:900;
+      font-size:13px;
+    }
+    .step.active{
+      background: linear-gradient(135deg, var(--pink), var(--pink2));
+      border-color: rgba(255,79,163,.3);
+      color:#fff;
+      box-shadow: 0 10px 25px rgba(255,79,163,.20);
+    }
+
+    .panel{display:none; padding: 18px}
+    .panel.active{display:block}
+
+    .row{display:grid; grid-template-columns: 1fr 1fr; gap:12px}
+    @media (max-width: 760px){ .row{grid-template-columns:1fr} }
+
+    label.lbl{
+      display:block;
+      font-weight:800;
+      font-size:12.5px;
+      margin: 10px 0 6px;
+      color: var(--ink);
+    }
+    input, textarea, select{
+      width:100%;
+      border-radius: 16px;
+      border:1px solid var(--line);
+      padding: 12px 12px;
+      font-size: 14.5px;
+      background: rgba(255,255,255,.86);
+      outline:none;
+      transition:.12s ease;
+    }
+    textarea{min-height: 110px; resize: vertical}
+    input:focus, textarea:focus, select:focus{
+      border-color: rgba(255,79,163,.35);
+      box-shadow: 0 0 0 4px rgba(255,79,163,.10);
+      background: rgba(255,255,255,.98);
+    }
+
+    .helper{
+      font-size:12.5px;
+      color:var(--muted);
+      margin-top: 6px;
+      line-height:1.45;
+    }
+
+    .actions{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      justify-content:space-between;
       margin-top: 14px;
       flex-wrap:wrap;
     }
+    .actions .left, .actions .right{display:flex; gap:10px; align-items:center; flex-wrap:wrap}
+
+    .priceBox{
+      background: rgba(255,255,255,.78);
+      border:1px solid var(--line);
+      border-radius: 18px;
+      padding: 12px 12px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      width:100%;
+      max-width: 420px;
+    }
+    .priceBox b{font-size:14px}
+    .priceBox span{font-size:12px; color:var(--muted)}
+
+    /* Pack tiles */
+    .pack-tiles{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:10px;
+      margin-top: 10px;
+    }
+    @media (max-width: 760px){ .pack-tiles{grid-template-columns:1fr} }
+    .pack-tile{
+      text-align:left;
+      padding: 12px;
+      border-radius: 18px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.78);
+      cursor:pointer;
+      transition:.12s ease;
+      box-shadow: var(--shadow2);
+    }
+    .pack-tile:hover{transform: translateY(-1px)}
+    .pack-tile.active{
+      border-color: rgba(255,79,163,.35);
+      box-shadow: 0 16px 40px rgba(255,79,163,.12);
+      background: rgba(255,255,255,.92);
+    }
+    .pack-tile .tTop{
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
+      margin-bottom: 6px;
+    }
+    .pack-tile .tTop b{font-size:14px}
+    .pill{
+      font-size:11px;
+      font-weight:900;
+      border-radius:999px;
+      padding:6px 8px;
+      border:1px solid rgba(255,79,163,.18);
+      background: rgba(255,79,163,.08);
+      color: var(--ink);
+      white-space:nowrap;
+    }
+    .pack-tile p{
+      margin:0;
+      color:var(--muted);
+      font-size:12.5px;
+      line-height:1.45;
+    }
+
+    /* Extras toggles */
+    .toggles{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:10px;
+      margin-top: 10px;
+    }
+    @media (max-width: 760px){ .toggles{grid-template-columns:1fr} }
+    .toggle{
+      display:flex; align-items:flex-start; gap:10px;
+      padding: 12px;
+      border-radius: 18px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.78);
+      cursor:pointer;
+      user-select:none;
+      transition:.12s ease;
+    }
+    .toggle input{width:auto; margin-top: 3px}
+    .toggle b{font-size:13.5px}
+    .toggle span{display:block; font-size:12px; color:var(--muted); margin-top:3px}
+    .toggle.on{
+      border-color: rgba(255,79,163,.35);
+      box-shadow: 0 16px 40px rgba(255,79,163,.10);
+      background: rgba(255,255,255,.92);
+    }
 
     /* FAQ */
-    .faqGrid{ display:grid; grid-template-columns: 1fr 1fr; gap:14px; }
     details{
-      border-radius: var(--radius);
-      background: rgba(255,255,255,.70);
-      border: 1px solid rgba(255,255,255,.85);
-      box-shadow: var(--shadowSoft);
-      padding: 12px 14px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.72);
+      border-radius: 18px;
+      padding: 12px 12px;
+      box-shadow: var(--shadow2);
     }
-    summary{ font-weight:1000; cursor:pointer; list-style:none; }
-    summary::-webkit-details-marker{ display:none; }
-    details p{ margin: 10px 0 0; color: var(--muted); font-weight:700; line-height:1.45; }
-
-    footer{ padding: 28px 0 50px; color: var(--muted); }
-    .footGrid{ display:grid; grid-template-columns: 1.2fr .8fr; gap:14px; align-items:start; }
-    .footCard{ padding:16px; }
-    .footLinks{ display:flex; flex-wrap:wrap; gap:10px; margin-top: 10px; }
-    .footLinks a{
-      text-decoration:none;
-      padding:10px 12px;
-      border-radius: 16px;
-      background: rgba(255,255,255,.65);
-      border: 1px solid rgba(255,255,255,.85);
+    details + details{margin-top:10px}
+    summary{
+      cursor:pointer;
       font-weight:900;
     }
+    details p{
+      margin:10px 0 0;
+      color:var(--muted);
+      line-height:1.5;
+      font-size: 13.5px;
+    }
+
+    /* Footer */
+    footer{
+      margin-top: 18px;
+      padding: 18px 0 30px;
+      border-top:1px solid var(--line);
+      background: rgba(255,255,255,.55);
+    }
+    .footGrid{
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap: 14px;
+    }
+    @media (max-width: 920px){ .footGrid{grid-template-columns:1fr} }
+    .footLinks{
+      display:flex; flex-wrap:wrap; gap:10px;
+    }
+    .footLinks a{
+      font-size: 13px;
+      color: var(--muted);
+      text-decoration:none;
+      padding:8px 10px;
+      border-radius: 999px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.70);
+    }
+    .footLinks a:hover{background: rgba(255,255,255,.95); color: var(--ink)}
+    .small{font-size:12.5px; color:var(--muted); line-height:1.45}
+
+    /* Legal sections */
+    .legal{
+      scroll-margin-top: 84px;
+    }
+    .legal h3{margin:0 0 10px; font-size:18px}
+    .legal .small{margin:0}
 
     /* Cookie consent */
-    .consent{ position:fixed; left:14px; right:14px; bottom:14px; z-index:50; display:none; }
-    .consent.show{ display:block; }
-    .consentBox{
-      width:min(820px, 100%);
-      margin:0 auto;
-      border-radius: 24px;
-      background: rgba(255,255,255,.78);
-      border: 1px solid rgba(255,255,255,.9);
-      box-shadow: 0 24px 70px rgba(0,0,0,.18);
+    .consent{
+      position:fixed;
+      left: 14px; right: 14px; bottom: 14px;
+      z-index: 99;
+      display:none;
+    }
+    .consent.show{display:block}
+    .consentCard{
+      max-width: 980px;
+      margin: 0 auto;
+      background: rgba(255,255,255,.85);
+      border:1px solid var(--line);
+      border-radius: 22px;
+      box-shadow: 0 22px 60px rgba(11,27,42,.16);
       padding: 14px;
-      backdrop-filter: blur(10px);
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:12px;
+      backdrop-filter: blur(16px);
     }
-    .consentGrid{ display:grid; grid-template-columns: 1fr auto; gap:12px; align-items:center; }
-    .consentTitle{ font-weight:1000; margin:0; }
-    .consentText{
-      margin:6px 0 0;
-      color: var(--muted);
-      font-weight:700;
-      line-height:1.35;
-      font-size: 13px;
-    }
-    .consentActions{ display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end; }
-    .linkSoft{
-      font-weight:1000;
-      color:#7a2a54;
-      text-decoration:none;
-      border-bottom: 2px dotted rgba(255,79,163,.45);
+    .consentText b{display:block; margin-bottom:4px}
+    .consentText p{margin:0; color:var(--muted); font-size:13px; line-height:1.4}
+    .consentBtns{display:flex; gap:10px; align-items:center; flex-wrap:wrap; justify-content:flex-end}
+    .btnSmall{padding:10px 12px; font-weight:900; font-size:13px}
+    @media (max-width: 760px){
+      .consentCard{flex-direction:column; align-items:stretch}
+      .consentBtns{justify-content:flex-start}
     }
 
-    /* Hero fx canvas */
-    #heroFx{ position:absolute; inset:0; pointer-events:none; z-index:2; }
-
-    /* ===== Cookie Cursor ===== */
-    .cookieCursor{
-      position: fixed;
-      left: 0; top: 0;
-      width: 34px; height: 34px;
-      border-radius: 999px;
-      pointer-events: none;
-      z-index: 9999;
-      transform: translate(-50%,-50%) scale(0.0);
-      transition: transform 260ms ease, opacity 260ms ease;
-      opacity: 0;
-      background:
-        radial-gradient(circle at 35% 30%, rgba(255,255,255,.80), rgba(255,255,255,0) 60%),
-        linear-gradient(135deg, var(--cookie2), var(--cookie));
-      box-shadow: 0 16px 26px rgba(201,139,95,.25);
-      will-change: transform,left,top;
+    /* First-load animation: crumbs + bite */
+    .crumbLayer{
+      position:absolute; inset:0;
+      pointer-events:none;
+      overflow:hidden;
     }
-    .cookieCursor:after{
-      content:"";
-      position:absolute; inset:10px 10px auto auto;
-      width:7px; height:7px; border-radius:99px;
-      background: rgba(120,60,20,.22);
-      box-shadow:
-        -14px 6px 0 rgba(120,60,20,.20),
-        -8px 14px 0 rgba(120,60,20,.16),
-        -18px 18px 0 rgba(120,60,20,.18);
-    }
-    body.cursorOn *{ cursor: none !important; }
-    body.cursorOn .cookieCursor{
-      opacity: 1;
-      transform: translate(-50%,-50%) scale(1);
-    }
-    @media (pointer: coarse){
-      body.cursorOn *{ cursor: auto !important; }
-      .cookieCursor{ display:none !important; }
-    }
-
-    /* ===== Click Intro Overlay: roll -> bite -> QR ===== */
-    .introOverlay{
-      position: fixed; inset: 0;
-      z-index: 9998;
-      pointer-events: none;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      background: rgba(255,255,255,.45);
-      backdrop-filter: blur(6px);
-    }
-    .introOverlay.show{ display:flex; }
-    .introStage{
-      width: min(520px, calc(100% - 40px));
-      height: 220px;
-      border-radius: 26px;
-      border: 1px solid rgba(255,255,255,.85);
-      background: rgba(255,255,255,.70);
-      box-shadow: 0 26px 90px rgba(0,0,0,.20);
-      position: relative;
-      overflow: hidden;
-    }
-    .introCookie{
-      position: absolute;
-      left: -120px;
-      top: 50%;
-      width: 92px; height: 92px;
-      margin-top: -46px;
-      border-radius: 999px;
-      background:
-        radial-gradient(circle at 35% 30%, rgba(255,255,255,.80), rgba(255,255,255,0) 60%),
-        linear-gradient(135deg, var(--cookie2), var(--cookie));
-      box-shadow: 0 20px 40px rgba(201,139,95,.28);
-      transform: rotate(0deg);
-    }
-    .introCookie:after{
-      content:"";
-      position:absolute; inset:18px 18px auto auto;
-      width:10px; height:10px; border-radius:99px;
-      background: rgba(120,60,20,.22);
-      box-shadow:
-        -22px 10px 0 rgba(120,60,20,.18),
-        -12px 26px 0 rgba(120,60,20,.20),
-        -28px 38px 0 rgba(120,60,20,.16);
-    }
-    .biteMask{
+    .crumb{
       position:absolute;
-      right: 8px; top: 10px;
-      width: 44px; height: 44px;
+      width:8px; height:8px;
       border-radius: 999px;
-      background: rgba(255,255,255,.85);
-      transform: scale(0);
-      transform-origin: center;
-      box-shadow: inset 0 0 0 1px rgba(255,255,255,.65);
+      opacity:.9;
+      filter: blur(.1px);
+      animation: fall 900ms ease-in forwards;
     }
-    .introQR{
-      position:absolute;
-      right: 18px; bottom: 18px;
-      width: 72px; height: 72px;
-      border-radius: 16px;
-      background: rgba(255,255,255,.85);
-      border: 1px solid rgba(11,27,42,.10);
-      display:flex; align-items:center; justify-content:center;
-      opacity: 0;
-      transform: translateY(10px) scale(.96);
-      box-shadow: 0 18px 40px rgba(0,0,0,.12);
+    @keyframes fall{
+      0%{transform: translateY(-40px) rotate(0deg); opacity:0}
+      15%{opacity:1}
+      100%{transform: translateY(260px) rotate(220deg); opacity:0}
     }
-    .introText{
+    .cookieBite{
       position:absolute;
-      left: 18px; bottom: 18px;
-      font-weight: 1000;
-      color: #6b3a56;
-      background: rgba(255,255,255,.70);
-      border: 1px solid rgba(255,255,255,.85);
-      padding: 10px 12px;
-      border-radius: 999px;
-      box-shadow: 0 14px 28px rgba(0,0,0,.10);
+      right:-50px;
+      top:-40px;
+      width: 180px;
+      height: 180px;
+      opacity:0;
+      transform: rotate(10deg) scale(.9);
+      transition: opacity .35s ease, transform .35s ease;
+      pointer-events:none;
+    }
+    .cookieBite.show{
+      opacity:.92;
+      transform: rotate(-6deg) scale(1);
     }
 
-    @keyframes rollIn {
-      0%   { left:-120px; transform: rotate(0deg); }
-      70%  { left: 300px; transform: rotate(520deg); }
-      100% { left: 310px; transform: rotate(580deg); }
-    }
-    @keyframes bitePop {
-      0% { transform: scale(0); }
-      60%{ transform: scale(1.0); }
-      100%{ transform: scale(0.0); }
-    }
-    @keyframes qrShow {
-      0% { opacity:0; transform: translateY(10px) scale(.96); }
-      100% { opacity:1; transform: translateY(0) scale(1); }
-    }
-
+    /* Reduce motion */
     @media (prefers-reduced-motion: reduce){
-      #heroFx{ display:none !important; }
-      .introOverlay{ display:none !important; }
-      body.cursorOn *{ cursor:auto !important; }
-      .cookieCursor{ display:none !important; }
-    }
-
-    /* Mobile */
-    @media (max-width: 920px){
-      .heroGrid{ grid-template-columns: 1fr; }
-      .heroMedia img,.heroMedia video{ min-height: 260px; }
-      .trustBar{ grid-template-columns: 1fr 1fr; }
-      .grid3{ grid-template-columns: 1fr; }
-      .storyStrip{ grid-template-columns: 1fr; }
-      .faqGrid{ grid-template-columns: 1fr; }
-      .footGrid{ grid-template-columns: 1fr; }
-      .cookiePlay{ grid-template-columns: 1fr; }
-      .formRow{ grid-template-columns: 1fr; }
-
-      .consentText{ display:none; }
-      .consentGrid{ grid-template-columns: 1fr; }
-      .consentActions{ justify-content:stretch; }
-      .consentActions .btn{ width:100%; }
-
-      @keyframes rollIn {
-        0%   { left:-120px; transform: rotate(0deg); }
-        70%  { left: 220px; transform: rotate(520deg); }
-        100% { left: 230px; transform: rotate(580deg); }
-      }
+      .crumb{animation:none}
+      .cookieBite{transition:none}
     }
   </style>
 </head>
 
 <body>
-  <!-- Cursor -->
-  <div class="cookieCursor" id="cookieCursor" aria-hidden="true"></div>
+  <!-- TOPBAR -->
+  <header class="topbar">
+    <div class="wrap">
+      <div class="inner">
+        <a class="brand" href="#top" aria-label="OnlyKeks Start">
+          <!-- COOL COOKIE LOGO (SVG) -->
+          <svg class="brandMark" viewBox="0 0 64 64" role="img" aria-label="OnlyKeks Cookie Logo">
+            <defs>
+              <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#ff4fa3"/>
+                <stop offset="1" stop-color="#ff7cc5"/>
+              </linearGradient>
+              <filter id="s" x="-30%" y="-30%" width="160%" height="160%">
+                <feDropShadow dx="0" dy="10" stdDeviation="8" flood-color="rgba(11,27,42,.18)"/>
+              </filter>
+            </defs>
+            <circle cx="32" cy="32" r="22" fill="rgba(255,255,255,.9)" />
+            <path filter="url(#s)" d="M32 8c-9.4 0-17.6 5.6-21 13.7-2 4.7-2 10 0 14.7C14.4 44.4 22.6 50 32 50c11 0 20.4-7.7 22.6-18.1.8-3.7.4-7.5-1.2-10.9C49.6 13 41.4 8 32 8Z" fill="#f4c9a2" stroke="rgba(11,27,42,.12)" stroke-width="1.2"/>
+            <!-- bite -->
+            <circle cx="49" cy="18" r="7.2" fill="rgba(255,255,255,.96)"/>
+            <circle cx="53.8" cy="22.6" r="5.3" fill="rgba(255,255,255,.96)"/>
+            <!-- sprinkles -->
+            <circle cx="24" cy="24" r="2.4" fill="url(#g1)"/>
+            <circle cx="37" cy="26.5" r="2.2" fill="rgba(11,27,42,.28)"/>
+            <circle cx="28.5" cy="36" r="2.1" fill="rgba(255,79,163,.65)"/>
+            <circle cx="40.5" cy="37.5" r="2.6" fill="rgba(11,27,42,.22)"/>
+            <circle cx="20.5" cy="32" r="1.9" fill="rgba(255,124,197,.75)"/>
+          </svg>
 
-  <!-- Click Intro Overlay -->
-  <div class="introOverlay" id="introOverlay" aria-hidden="true">
-    <div class="introStage">
-      <div class="introCookie" id="introCookie">
-        <div class="biteMask" id="biteMask"></div>
-      </div>
+          <div class="brandText">
+            <strong>OnlyKeks</strong>
+            <span>Post, die schmeckt</span>
+          </div>
+        </a>
 
-      <div class="introQR" id="introQR">
-        <svg viewBox="0 0 24 24" width="44" height="44" fill="none" stroke="currentColor" stroke-width="2" opacity=".85">
-          <path d="M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3z"/>
-          <path d="M14 14h3v3h-3zM19 14h2v2h-2zM14 19h2v2h-2zM18 18h3v3h-3z"/>
-        </svg>
-      </div>
-      <div class="introText">Keks rollt rein → Biss → QR ✨</div>
-    </div>
-  </div>
+        <nav aria-label="Navigation">
+          <a href="#how">So läuft’s</a>
+          <a href="#flow">Reply-Flow</a>
+          <a href="#faq">FAQ</a>
+          <a href="#versand">Versand</a>
+        </nav>
 
-  <header>
-    <div class="wrap top">
-      <div class="brand">
-        <div class="logo" aria-hidden="true"></div>
-        <div>
-          <div>OnlyKeks</div>
-          <small>Post, die schmeckt</small>
+        <div class="topCta">
+          <a class="btn btnGhost hideSm" href="#flow">Keks gestalten</a>
+          <a class="btn btnPrimary" href="#flow" aria-label="Jetzt starten">
+            <span>Jetzt starten</span>
+            <span aria-hidden="true">→</span>
+          </a>
         </div>
-      </div>
-
-      <nav class="nav" aria-label="Navigation">
-        <a href="#flow">Gestalten</a>
-        <a href="#faq">FAQ</a>
-        <a href="#versand">Versand</a>
-      </nav>
-
-      <div class="ctaTop">
-        <span class="pill">Kein Account</span>
-        <a class="btn btnPrimary" href="#flow">Jetzt Keks gestalten</a>
       </div>
     </div>
   </header>
 
-  <main>
+  <main id="top">
+    <!-- HERO -->
     <section class="hero">
-      <div class="wrap heroGrid">
-        <div class="card heroText">
-          <canvas id="heroFx"></canvas>
+      <div class="wrap">
+        <div class="heroGrid">
+          <div class="heroCard">
+            <div class="crumbLayer" id="crumbLayer"></div>
 
-          <h1>Schick ’ne süße Botschaft – und hol dir ’ne QR-Antwort zurück.</h1>
-          <p class="sub">Du schickst einen Keks mit Message + QR. Die Person scannt, antwortet – und wir schicken den Reply-Keks direkt zurück. Schnell, süß, ohne Stress.</p>
+            <div class="kicker">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M4 12c0-4.4 3.6-8 8-8s8 3.6 8 8-3.6 8-8 8-8-3.6-8-8Z" stroke="currentColor" stroke-width="2" opacity=".9"/>
+                <path d="M8 12h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                <path d="M12 8v8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+              Kein Account · QR-Reply · echtes Post-Feeling
+            </div>
 
-          <div class="chipRow" aria-label="Vorlagen">
-            <button class="chip" type="button" data-msg="Ich vermiss dich.">Ich vermiss dich</button>
-            <button class="chip" type="button" data-msg="Glückwunsch! 🍪">Glückwunsch</button>
-            <button class="chip" type="button" data-msg="Beweg dein Arsch. 😄">Beweg dein Arsch</button>
-            <button class="chip" type="button" data-msg="Komm ran, wir müssen reden.">Komm ran</button>
+            <h1>Schicke süße Botschaften – und hol dir ’ne QR-Antwort zurück.</h1>
+            <p class="sub">
+              Du schickst einen Keks mit Message + QR-Code. Empfänger*in scannt, antwortet – wir backen den Reply-Keks und schicken ihn zurück. Einfach, emotional, kein Tech-Gefrickel.
+            </p>
+
+            <div class="miniFlow" aria-label="Vorlagen">
+              <button class="chip" type="button" data-msg="Ich denk an dich. 🍪">Ich denk an dich</button>
+              <button class="chip" type="button" data-msg="Beweg dein Arsch – du packst das! ✨">Motivation</button>
+              <button class="chip" type="button" data-msg="Happy Birthday! 🎉">Geburtstag</button>
+              <button class="chip" type="button" data-msg="Vermiss dich. 💗">Vermissen</button>
+            </div>
+
+            <div class="actions">
+              <div class="left">
+                <a class="btn btnPrimary" href="#flow">Keks jetzt gestalten →</a>
+                <a class="btn btnGhost" href="#how">Erst kurz checken</a>
+              </div>
+
+              <div class="right">
+                <div class="priceBox" aria-label="Hinweis">
+                  <div>
+                    <b>Reply-Loop</b><br/>
+                    <span>Empfänger*in antwortet in Sekunden · wir kümmern uns um den Rest</span>
+                  </div>
+                  <div style="font-weight:900">🍪</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- "Bite" overlay for first-load -->
+            <svg class="cookieBite" id="cookieBite" viewBox="0 0 240 240" aria-hidden="true">
+              <defs>
+                <linearGradient id="cb" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0" stop-color="#f6d2b5"/>
+                  <stop offset="1" stop-color="#e9b88e"/>
+                </linearGradient>
+              </defs>
+              <path d="M120 30c-49.7 0-90 40.3-90 90s40.3 90 90 90 90-40.3 90-90-40.3-90-90-90Z" fill="url(#cb)" stroke="rgba(11,27,42,.10)" stroke-width="2"/>
+              <!-- bite -->
+              <circle cx="188" cy="62" r="28" fill="rgba(255,255,255,.92)"/>
+              <circle cx="210" cy="84" r="20" fill="rgba(255,255,255,.92)"/>
+              <!-- chips -->
+              <circle cx="88" cy="96" r="10" fill="rgba(11,27,42,.25)"/>
+              <circle cx="132" cy="82" r="8" fill="rgba(255,79,163,.55)"/>
+              <circle cx="104" cy="150" r="9" fill="rgba(11,27,42,.22)"/>
+              <circle cx="150" cy="150" r="11" fill="rgba(255,124,197,.65)"/>
+            </svg>
+
+            <div class="trustbar" aria-label="Trust Bar">
+              <div class="trustItem">
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M3 12l2-2 4 4L19 4l2 2L9 18 3 12Z" fill="currentColor" opacity=".85"/>
+                </svg>
+                <div><b>Ohne Account</b><span>Empfänger*in scannt & antwortet</span></div>
+              </div>
+              <div class="trustItem">
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M12 2l8 4v6c0 5-3.4 9.7-8 10-4.6-.3-8-5-8-10V6l8-4Z" stroke="currentColor" stroke-width="2" opacity=".9"/>
+                  <path d="M9 12l2 2 4-5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+                <div><b>Sauber bezahlt</b><span>Stripe Payment Link</span></div>
+              </div>
+              <div class="trustItem">
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M3 7h18v10H3V7Z" stroke="currentColor" stroke-width="2" opacity=".9"/>
+                  <path d="M3 7l9 6 9-6" stroke="currentColor" stroke-width="2" opacity=".9"/>
+                </svg>
+                <div><b>Briefkasten-Mood</b><span>Wie früher – nur smarter</span></div>
+              </div>
+              <div class="trustItem">
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M12 2c3.9 3 6 6.2 6 9.5A6 6 0 1 1 6 11.5C6 8.2 8.1 5 12 2Z" stroke="currentColor" stroke-width="2" opacity=".9"/>
+                </svg>
+                <div><b>Allergene klar</b><span>Transparenz in den Infos</span></div>
+              </div>
+            </div>
           </div>
 
-          <div class="heroActions">
-            <a class="btn btnPrimary" href="#flow">Keks gestalten</a>
-            <a class="btn" href="#faq">Erst kurz checken</a>
-            <span class="pill">Reply-Loop</span>
-          </div>
-
-          <div class="trustBar" role="group" aria-label="Trust">
-            <div class="trustItem">
-              <div class="ico" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7h18v10H3z"/><path d="M3 7l9 6 9-6"/></svg>
+          <aside class="heroMedia" aria-label="Hero Media">
+            <div class="mediaInner">
+              <div class="mediaFrame">
+                <!-- Video optional (falls vorhanden), sonst zeigt Poster/Bild -->
+                <video id="heroVideo" autoplay muted playsinline loop preload="metadata" poster="assets/img/1000149739.jpg" aria-label="Kurzes Hero Video">
+                  <source src="assets/img/grok_video_2025-12-13-20-49-35.mp4" type="video/mp4"/>
+                </video>
+                <!-- Backup image (JS blendet ggf. Video aus) -->
+                <img id="heroImg" src="assets/img/1000149739.jpg" alt="Jemand hält einen Keks, scannt den QR-Code und lächelt" loading="eager" decoding="async" />
               </div>
-              <div>Briefkasten-Lieferung</div>
-            </div>
-            <div class="trustItem">
-              <div class="ico" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1v22"/><path d="M5 6l7-5 7 5"/><path d="M5 18l7 5 7-5"/></svg>
+              <div class="mediaBadge">
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M6 9l6-6 6 6v12a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V9Z" stroke="currentColor" stroke-width="2"/>
+                  <path d="M9 22v-8h6v8" stroke="currentColor" stroke-width="2"/>
+                </svg>
+                Geschenk-Mood · Pastell · Echt
               </div>
-              <div>QR-Antwort in Minuten</div>
-            </div>
-            <div class="trustItem">
-              <div class="ico" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              <div class="mediaNote">
+                Tipp: Wenn Video nicht lädt, wird automatisch das Foto genutzt.
               </div>
-              <div>Sicher bezahlen (Stripe)</div>
             </div>
-            <div class="trustItem">
-              <div class="ico" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 100 20 10 10 0 000-20z"/><path d="M8 12h8"/></svg>
-              </div>
-              <div>Allergene transparent</div>
-            </div>
-          </div>
+          </aside>
         </div>
 
-        <div class="card heroMedia" aria-label="Hero Bild/Video">
-          <div class="mediaInner">
-            <video id="heroVideo" autoplay muted playsinline loop preload="metadata" poster="">
-              <source id="heroSrc" src="" type="video/mp4">
-            </video>
-            <img id="heroImg" src="" alt="Hände halten einen Keks, QR wird gescannt, Geschenk-Mood" loading="eager" decoding="async" style="display:none;" />
+        <!-- Story strip -->
+        <div class="strip" aria-label="Story Bilder">
+          <div class="shot">
+            <img src="assets/img/1000149740.jpg" alt="Keks mit Karte in der Hand" loading="lazy" decoding="async"/>
+            <span>1) Keks + Message</span>
           </div>
-          <div class="mediaBadge" aria-hidden="true">
-            <span class="badge">Weiches Tageslicht</span>
-            <span class="badge">Keks + Karte + Handy</span>
-            <span class="badge">QR sichtbar</span>
+          <div class="shot">
+            <img src="assets/img/1000149741.jpg" alt="QR wird gescannt" loading="lazy" decoding="async"/>
+            <span>2) QR scannen</span>
+          </div>
+          <div class="shot">
+            <img src="assets/img/1000149742.jpg" alt="Reply kommt zurück" loading="lazy" decoding="async"/>
+            <span>3) Reply-Keks zurück</span>
           </div>
         </div>
       </div>
     </section>
 
-    <section>
-      <div class="wrap grid3">
-        <div class="card mini">
-          <h3>1) Du schickst den Keks</h3>
-          <p>Message drauf, QR drauf, ab in den Briefkasten – fertig.</p>
-        </div>
-        <div class="card mini">
-          <h3>2) Scan & Antwort</h3>
-          <p>Empfänger scannt den QR-Code und tippt eine Antwort – ohne Login.</p>
-        </div>
-        <div class="card mini">
-          <h3>3) Reply-Keks zurück</h3>
-          <p>Wir backen den Reply-Keks mit der Antwort und schicken ihn zurück zu dir.</p>
+    <!-- HOW -->
+    <section class="section" id="how">
+      <div class="wrap">
+        <div class="grid2">
+          <div class="card">
+            <h2>So läuft’s</h2>
+            <ul class="bullets">
+              <li><b>Du schreibst</b> eine kurze Message und wählst ein Paket.</li>
+              <li><b>Wir verschicken</b> den Keks + QR-Karte an die Person.</li>
+              <li><b>Empfänger*in scannt</b> den QR-Code und antwortet ohne Account.</li>
+              <li><b>Wir backen den Reply-Keks</b> und schicken ihn zu dir zurück.</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h2>Warum das zieht</h2>
+            <ul class="bullets">
+              <li>Emotionaler als ’ne WhatsApp – aber genauso schnell.</li>
+              <li>Der QR-Reply macht’s spielerisch: <b>Reply-Loop</b> statt Einweg-Post.</li>
+              <li>Minimaler Flow: kein Shop-Chaos, kein Konto-Theater.</li>
+              <li>Design: deko-soft, clean, vertrauenswürdig.</li>
+            </ul>
+          </div>
         </div>
       </div>
     </section>
 
-    <section>
-      <div class="wrap storyStrip" aria-label="Story Bilder">
-        <article class="storyCard">
-          <img id="story1" src="" alt="Keks + Karte in der Hand, pinker Himmel" loading="lazy" decoding="async" />
-          <div class="storyCap">
-            <strong>Geschenk-Moment</strong>
-            <span>Sieht aus wie Deko – fühlt sich an wie „ich denk an dich“.</span>
+    <!-- FLOW -->
+    <section class="section" id="flow">
+      <div class="wrap">
+        <div class="flow">
+          <div class="flowHead">
+            <h2>Reply-Flow</h2>
+            <div class="steps" aria-label="Schritte">
+              <div class="step active" data-step="1">1</div>
+              <div class="step" data-step="2">2</div>
+              <div class="step" data-step="3">3</div>
+              <div class="step" data-step="4">4</div>
+              <div class="step" data-step="5">5</div>
+            </div>
           </div>
-        </article>
 
-        <article class="storyCard">
-          <video id="storyVideo2" muted playsinline loop preload="metadata" poster="">
-            <source id="story2Src" src="" type="video/mp4">
-          </video>
-          <div class="storyCap">
-            <strong>QR-Scan</strong>
-            <span>Handy drauf, zack – Antwort schreiben, fertig.</span>
-          </div>
-        </article>
-
-        <article class="storyCard">
-          <img id="story3" src="" alt="Antwort kommt an, Keks wird geöffnet" loading="lazy" decoding="async" />
-          <div class="storyCap">
-            <strong>Reply-Loop</strong>
-            <span>Du bekommst echte Post zurück – nur eben… lecker.</span>
-          </div>
-        </article>
-      </div>
-    </section>
-
-    <section id="flow">
-      <div class="wrap flow">
-        <div class="flowHead">
-          <div>
-            <h2>Jetzt gestalten</h2>
-            <p>Ein Fokus. Ein Flow. Eine süße Mission.</p>
-          </div>
-          <div class="steps" aria-label="Schritte">
-            <span class="step active" data-step="1">1 Message</span>
-            <span class="step" data-step="2">2 Veredeln</span>
-            <span class="step" data-step="3">3 Extras</span>
-            <span class="step" data-step="4">4 Adresse</span>
-            <span class="step" data-step="5">5 Bezahlen</span>
-          </div>
-        </div>
-
-        <div class="card">
+          <!-- PANEL 1 -->
           <div class="panel active" id="p1">
-            <h3 style="margin:0 0 6px;">1) Message schreiben</h3>
-            <p class="hint" style="margin-top:0;">Kurz, sweet, ehrlich. Bis 500 Zeichen.</p>
-
             <label class="lbl" for="msg">Deine Message</label>
-            <textarea id="msg" maxlength="500" placeholder="z.B. „Ich denk an dich. Scan das Ding. 😄“"></textarea>
-            <div class="hint"><span id="count">0</span>/500 Zeichen</div>
+            <textarea id="msg" maxlength="500" placeholder="Schreib was Süßes… (max. 500 Zeichen)"></textarea>
+            <div class="helper" id="count">0 / 500</div>
 
             <label class="lbl" for="pack">Paket</label>
             <select id="pack" name="pack">
@@ -851,274 +885,304 @@
             </select>
 
             <div class="pack-tiles" id="packTiles" role="radiogroup" aria-label="Paket wählen">
-              <button class="packTile" type="button" data-pack="Quick" role="radio" aria-checked="false">
-                <div class="t"><b>Quick</b><em>easy</em></div>
-                <div class="d">Standard-Deko, schnell raus. Perfekt für „kurz mal lieb“.</div>
-                <div class="k">
-                  <span class="tag">1 Keks</span><span class="tag">QR-Reply</span><span class="tag">Basic</span>
-                </div>
+              <button class="pack-tile" type="button" data-pack="Quick" role="radio" aria-checked="false">
+                <div class="tTop"><b>Quick</b><span class="pill">simpel & sweet</span></div>
+                <p>Eine klare Message, klassisch verpackt. Perfekt für “einfach mal so”.</p>
               </button>
-              <button class="packTile active" type="button" data-pack="Custom" role="radio" aria-checked="true">
-                <div class="t"><b>Custom</b><em>sweet spot</em></div>
-                <div class="d">Mehr Deko, mehr „wow“. Genau die Deko-Frau-Zone.</div>
-                <div class="k">
-                  <span class="tag">1 Keks</span><span class="tag">Mehr Deko</span><span class="tag">QR-Reply</span>
-                </div>
+              <button class="pack-tile" type="button" data-pack="Custom" role="radio" aria-checked="true">
+                <div class="tTop"><b>Custom</b><span class="pill">mehr Deko</span></div>
+                <p>Mehr “wow”: Deko-Finish (z. B. Sprinkles/Sticker-Look) und nicerer Auftritt.</p>
               </button>
-              <button class="packTile" type="button" data-pack="Premium" role="radio" aria-checked="false">
-                <div class="t"><b>Premium</b><em>box</em></div>
-                <div class="d">Edle Box + Upgrade-Feeling. Für Geburtstag, Liebe, Drama.</div>
-                <div class="k">
-                  <span class="tag">Box</span><span class="tag">Wow-Optik</span><span class="tag">QR-Reply</span>
-                </div>
+              <button class="pack-tile" type="button" data-pack="Premium" role="radio" aria-checked="false">
+                <div class="tTop"><b>Premium</b><span class="pill">Box-Vibe</span></div>
+                <p>Edle Box, maximaler Geschenk-Moment. Wenn’s richtig knallen soll.</p>
               </button>
             </div>
 
-            <div class="panelNav">
-              <span></span>
-              <button class="btn btnPrimary" type="button" data-next="2">Weiter</button>
+            <div class="actions">
+              <div class="left">
+                <button class="btn btnPrimary" type="button" id="next1">Weiter →</button>
+                <a class="btn btnGhost" href="#faq">Fragen?</a>
+              </div>
+              <div class="right">
+                <div class="priceBox">
+                  <div><b id="priceTitle">Custom</b><br/><span id="priceNote">Beliebt · Deko-Finish</span></div>
+                  <div style="font-weight:900" id="priceVal">—</div>
+                </div>
+              </div>
             </div>
           </div>
 
+          <!-- PANEL 2 -->
           <div class="panel" id="p2">
-            <h3 style="margin:0 0 6px;">2) Keks veredeln</h3>
-            <p class="hint" style="margin-top:0;">Hier ist der „Spiel-Faktor“: rumklicken, ausprobieren, hübsch machen.</p>
+            <h3 style="margin:0 0 8px;">Veredeln & Extras</h3>
+            <div class="helper">Optional – aber macht’s “süßer”.</div>
 
-            <div class="cookiePlay">
-              <div class="cookieStage" id="cookieStage">
-                <div class="cookieCanvas" aria-label="Keks Vorschau">
-                  <div class="cookieDisc" aria-hidden="true"></div>
-                  <div class="sprinkles" id="sprinkles" aria-hidden="true"></div>
-                </div>
-                <p class="hint">Tipp: „Streusel an“ macht direkt Geschenk-Mood.</p>
-              </div>
-
-              <div class="cookieControls">
-                <label class="lbl" for="theme">Stil</label>
-                <select id="theme">
-                  <option value="classic" selected>Klassisch (Vanille)</option>
-                  <option value="pink">Pink-Sprinkle</option>
-                  <option value="choco">Schoko-Mood</option>
-                </select>
-
-                <div class="ctrlRow">
-                  <button class="smallBtn" type="button" data-action="sprinkle">Streusel an/aus</button>
-                  <button class="smallBtn" type="button" data-action="random">Random Deko</button>
-                  <button class="smallBtn" type="button" data-action="reset">Reset</button>
-                </div>
-
-                <p class="hint" style="margin-top:12px;">
-                  Später ausbaubar: Sticker, Icing-Schrift, Undo/Redo, „Entdecken“-Randomizer.
-                </p>
-              </div>
+            <div class="toggles" id="toggles">
+              <label class="toggle" data-key="sprinkles">
+                <input type="checkbox" id="xSprinkles" />
+                <div><b>Sprinkles-Look</b><span>Mehr “Deko-Chichi” auf dem Keks-Design.</span></div>
+              </label>
+              <label class="toggle" data-key="sticker">
+                <input type="checkbox" id="xSticker" />
+                <div><b>Karten-Sticker</b><span>Kleines Sticker-Element auf der Reply-Karte.</span></div>
+              </label>
+              <label class="toggle" data-key="storyurl">
+                <input type="checkbox" id="xStory" />
+                <div><b>Mini-Story-URL</b><span>Kurzer Link, der den Moment erklärt (viral-friendly).</span></div>
+              </label>
+              <label class="toggle" data-key="photo">
+                <input type="checkbox" id="xPhoto" />
+                <div><b>Foto-Upload (später)</b><span>Platzhalter im MVP – vorbereitet fürs Upgrade.</span></div>
+              </label>
             </div>
 
-            <div class="panelNav">
-              <button class="btn" type="button" data-prev="1">Zurück</button>
-              <button class="btn btnPrimary" type="button" data-next="3">Weiter</button>
+            <div class="actions">
+              <div class="left">
+                <button class="btn btnGhost" type="button" id="back2">← Zurück</button>
+              </div>
+              <div class="right">
+                <button class="btn btnPrimary" type="button" id="next2">Weiter →</button>
+              </div>
             </div>
           </div>
 
+          <!-- PANEL 3 -->
           <div class="panel" id="p3">
-            <h3 style="margin:0 0 6px;">3) Extras</h3>
-            <p class="hint" style="margin-top:0;">Optional. Kein Overkill. Nur das, was wirklich kickt.</p>
+            <h3 style="margin:0 0 8px;">Adresse</h3>
+            <div class="helper">Wir brauchen Empfänger*in + deine Adresse für den Reply-Keks.</div>
 
-            <div class="grid3">
-              <div class="card mini">
-                <h3>Foto-Upload (optional)</h3>
-                <p>Ein Bild für die Mini-Story-Seite (wenn du willst).</p>
-                <label class="lbl" for="photo">Foto</label>
-                <input id="photo" type="file" accept="image/*" />
+            <div class="row">
+              <div>
+                <label class="lbl" for="toName">Empfänger*in – Name</label>
+                <input id="toName" autocomplete="name" placeholder="z. B. Lisa" />
               </div>
-              <div class="card mini">
-                <h3>Handschrift-Look</h3>
-                <p>Wir setzen deine Message in „süß“ statt „Tech“.</p>
-                <label class="lbl" for="hand">Look</label>
-                <select id="hand">
-                  <option value="soft" selected>Soft (empfohlen)</option>
-                  <option value="bold">Bold</option>
-                  <option value="cute">Cute</option>
-                </select>
-              </div>
-              <div class="card mini">
-                <h3>Mini-Trigger</h3>
-                <p>Ein kleiner Zusatz-Spruch als „Kick“.</p>
-                <label class="lbl" for="trigger">Trigger</label>
-                <select id="trigger">
-                  <option value="">Keiner</option>
-                  <option value="move">Beweg dein Arsch 😄</option>
-                  <option value="work">Geh arbeiten 🙃</option>
-                  <option value="party">Party machen 🥳</option>
-                </select>
+              <div>
+                <label class="lbl" for="fromName">Dein Name</label>
+                <input id="fromName" autocomplete="name" placeholder="z. B. Schmidti" />
               </div>
             </div>
 
-            <div class="panelNav">
-              <button class="btn" type="button" data-prev="2">Zurück</button>
-              <button class="btn btnPrimary" type="button" data-next="4">Weiter</button>
-            </div>
-          </div>
+            <label class="lbl" for="toStreet">Empfänger*in – Straße & Hausnummer</label>
+            <input id="toStreet" autocomplete="street-address" placeholder="Musterstraße 12" />
 
-          <div class="panel" id="p4">
-            <h3 style="margin:0 0 6px;">4) Adresse</h3>
-            <p class="hint" style="margin-top:0;">Sauber, klar, damit die Post nicht rumzickt.</p>
-
-            <div class="formRow">
+            <div class="row">
               <div>
-                <label class="lbl" for="toName">Empfänger Name</label>
-                <input id="toName" placeholder="z.B. Lena" />
-              </div>
-              <div>
-                <label class="lbl" for="fromName">Dein Name (für Reply)</label>
-                <input id="fromName" placeholder="z.B. Schmidti" />
-              </div>
-            </div>
-
-            <label class="lbl" for="toStreet">Straße & Hausnummer</label>
-            <input id="toStreet" placeholder="Musterstraße 12" />
-
-            <div class="formRow">
-              <div>
-                <label class="lbl" for="toZip">PLZ</label>
+                <label class="lbl" for="toZip">Empfänger*in – PLZ</label>
                 <input id="toZip" inputmode="numeric" placeholder="10115" />
               </div>
               <div>
-                <label class="lbl" for="toCity">Ort</label>
+                <label class="lbl" for="toCity">Empfänger*in – Ort</label>
                 <input id="toCity" placeholder="Berlin" />
               </div>
             </div>
 
-            <div class="panelNav">
-              <button class="btn" type="button" data-prev="3">Zurück</button>
-              <button class="btn btnPrimary" type="button" data-next="5">Weiter</button>
+            <label class="lbl" for="fromStreet">Deine Straße & Hausnummer</label>
+            <input id="fromStreet" autocomplete="street-address" placeholder="Deine Straße 3" />
+
+            <div class="row">
+              <div>
+                <label class="lbl" for="fromZip">Deine PLZ</label>
+                <input id="fromZip" inputmode="numeric" placeholder="12345" />
+              </div>
+              <div>
+                <label class="lbl" for="fromCity">Dein Ort</label>
+                <input id="fromCity" placeholder="Berlin" />
+              </div>
+            </div>
+
+            <div class="actions">
+              <div class="left">
+                <button class="btn btnGhost" type="button" id="back3">← Zurück</button>
+              </div>
+              <div class="right">
+                <button class="btn btnPrimary" type="button" id="next3">Weiter →</button>
+              </div>
             </div>
           </div>
 
+          <!-- PANEL 4 -->
+          <div class="panel" id="p4">
+            <h3 style="margin:0 0 8px;">Check & Zusammenfassung</h3>
+            <div class="card" style="margin-top:10px;">
+              <div class="small" id="summary"></div>
+            </div>
+
+            <div class="actions">
+              <div class="left">
+                <button class="btn btnGhost" type="button" id="back4">← Zurück</button>
+              </div>
+              <div class="right">
+                <button class="btn btnPrimary" type="button" id="next4">Weiter zum Bezahlen →</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- PANEL 5 -->
           <div class="panel" id="p5">
-            <h3 style="margin:0 0 6px;">5) Bezahlen</h3>
-            <p class="hint" style="margin-top:0;">Du wirst zu Stripe weitergeleitet. Wir speichern nur das Nötigste für deinen Keks-Entwurf.</p>
+            <h3 style="margin:0 0 8px;">Bezahlen</h3>
+            <div class="helper">Du wirst über Stripe weitergeleitet. Danach speichern wir deinen Entwurf + OrderID lokal (MVP).</div>
 
-            <div class="grid3">
-              <div class="card mini">
-                <h3>Dein Entwurf</h3>
-                <p class="hint" id="summary" style="margin:8px 0 0;">—</p>
-              </div>
-              <div class="card mini">
-                <h3>Reply-Code</h3>
-                <p class="hint" id="replyCode" style="margin:8px 0 0;">—</p>
-              </div>
-              <div class="card mini">
-                <h3>Bezahlen</h3>
-                <p>Ein Klick – dann ist das Ding raus.</p>
-                <a class="btn btnPrimary" id="payBtn" href="#" target="_blank" rel="noopener">Weiter zu Stripe</a>
-                <p class="hint">Hinweis: Für den MVP ist das ein Payment-Link. Später Checkout-Session + Webhook.</p>
+            <div class="card" style="margin-top:10px;">
+              <div class="small">
+                <b>OrderID:</b> <span id="oid">—</span><br/>
+                <b>Paket:</b> <span id="sPack">—</span><br/>
+                <b>Message:</b> <span id="sMsg">—</span><br/>
+                <b>Extras:</b> <span id="sExtras">—</span>
               </div>
             </div>
 
-            <div class="panelNav">
-              <button class="btn" type="button" data-prev="4">Zurück</button>
-              <a class="btn" href="#versand">Versand/Allergene</a>
+            <div class="actions">
+              <div class="left">
+                <button class="btn btnGhost" type="button" id="back5">← Zurück</button>
+              </div>
+              <div class="right">
+                <a class="btn btnPrimary" id="payBtn" href="#" rel="noopener">Jetzt mit Stripe bezahlen →</a>
+              </div>
+            </div>
+
+            <div class="helper" style="margin-top:12px;">
+              Hinweis: Allergene/AGB/Versand findest du unten im Footer. Wir verkaufen keine Daten.
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="section" id="faq">
+      <div class="wrap">
+        <div class="grid2">
+          <div class="card">
+            <h2>FAQ</h2>
+            <details>
+              <summary>Wie antwortet die Empfänger*in?</summary>
+              <p>Über den QR-Code auf der Karte. Kein Konto, keine App. Scan → Text tippen → absenden.</p>
+            </details>
+            <details>
+              <summary>Was passiert nach der Antwort?</summary>
+              <p>Wir backen den Reply-Keks mit der Antwort-Message und schicken ihn an deine Adresse zurück.</p>
+            </details>
+            <details>
+              <summary>Kann ich Vorlagen nutzen?</summary>
+              <p>Ja – oben im Hero gibt’s schnelle Trigger. Mehr Vorlagen kannst du später als Themes/Randomizer ausbauen.</p>
+            </details>
+            <details>
+              <summary>Welche Daten speichert ihr?</summary>
+              <p>Im MVP speichern wir lokal im Browser deinen Entwurf, damit du nicht neu tippen musst. Optionales Tracking ist aus.</p>
+            </details>
+          </div>
+
+          <div class="card" id="versand">
+            <h2>Versand & Infos</h2>
+            <ul class="bullets">
+              <li><b>Versand:</b> Brief/Warensendung (je nach Setup).</li>
+              <li><b>Tracking:</b> optional (später), im MVP minimal.</li>
+              <li><b>Allergene:</b> klar ausgewiesen in den Infos unten.</li>
+              <li><b>Support:</b> über Kontakt/Impressum.</li>
+            </ul>
+            <div style="margin-top:12px;">
+              <video muted playsinline loop preload="metadata" style="width:100%; border-radius:18px; border:1px solid var(--line); background:rgba(255,255,255,.7)" poster="assets/img/1000149743.jpg">
+                <source src="assets/img/grok_video_2025-12-13-20-51-18.mp4" type="video/mp4"/>
+              </video>
+              <div class="helper">Kurzes Mood-Video (optional).</div>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <section id="faq">
+    <!-- LEGAL SECTIONS -->
+    <section class="section legal" id="impressum">
       <div class="wrap">
-        <h2 style="margin:0 0 12px;">FAQ</h2>
-        <div class="faqGrid">
-          <details>
-            <summary>Wie schnell kommt die QR-Antwort?</summary>
-            <p>Die Antwort ist digital sofort nach Scan möglich. Der Reply-Keks ist dann physisch per Versand unterwegs.</p>
-          </details>
-          <details>
-            <summary>Muss die Person einen Account erstellen?</summary>
-            <p>Nein. QR scannen, Text tippen, abschicken. Fertig.</p>
-          </details>
-          <details>
-            <summary>Was speichert ihr?</summary>
-            <p>Notwendig: deinen Keks-Entwurf (damit du nicht alles neu tippen musst). Optional: anonyme Nutzungsdaten, um zu verstehen, welche Kekse gefallen. Wir verkaufen keine Daten.</p>
-          </details>
-          <details>
-            <summary>Allergene?</summary>
-            <p>Im Bereich „Allergene“ findest du die Angaben. Wenn du besondere Anforderungen hast, schreib uns.</p>
-          </details>
-        </div>
-      </div>
-    </section>
-
-    <section id="versand">
-      <div class="wrap">
-        <div class="card mini">
-          <h3 style="margin:0 0 6px;">Versand & Allergene</h3>
-          <p class="hint" style="margin-top:0;">
-            Versand per Briefkasten-tauglicher Sendung. Allergene werden transparent ausgewiesen (Platzhalter im MVP).
+        <div class="card">
+          <h3>Impressum</h3>
+          <p class="small">
+            Platzhalter (MVP): Betreiber, Anschrift, Kontakt, Umsatzsteuer etc. hier eintragen.
           </p>
         </div>
       </div>
     </section>
 
-    <footer>
-      <div class="wrap footGrid">
-        <div class="card footCard">
-          <div style="font-weight:1000;">OnlyKeks</div>
-          <p class="hint" style="margin:8px 0 0;">Geschenk-Mood statt Tech-Kram. Ein Keks, eine Message, ein Reply-Loop.</p>
-          <div class="footLinks">
-            <a href="#impressum">Impressum</a>
-            <a href="#datenschutz">Wie wir mit Daten umgehen</a>
-            <a href="#agb">AGB</a>
-            <a href="#allergene">Allergene</a>
-          </div>
-        </div>
-
-        <div class="card footCard">
-          <div style="font-weight:1000;">Kontakt</div>
-          <p class="hint" style="margin:8px 0 0;">MVP: Kontaktangaben hier ergänzen.</p>
-        </div>
-      </div>
-
-      <div class="wrap" style="margin-top:14px;">
-        <div class="card mini" id="impressum">
-          <h3 style="margin:0 0 6px;">Impressum</h3>
-          <p class="hint" style="margin-top:0;">Platzhalter – hier deine Daten rein.</p>
-        </div>
-
-        <div class="card mini" id="datenschutz" style="margin-top:14px;">
-          <h3 style="margin:0 0 6px;">Wie wir mit Daten umgehen</h3>
-          <p class="hint" style="margin-top:0;">
-            Notwendig: Entwurf speichern (damit du nicht neu anfangen musst). Optional: anonyme Analyse, um zu verstehen, was gut ankommt.
-            Wir verkaufen keine Daten.
+    <section class="section legal" id="datenschutz">
+      <div class="wrap">
+        <div class="card">
+          <h3>Wie wir mit Daten umgehen</h3>
+          <p class="small">
+            Notwendig: Speichern deines Keks-Entwurfs (lokal im Browser). Optional: Verständnis, welche Kekse gefallen (derzeit aus). Wir verkaufen keine Daten.
           </p>
         </div>
+      </div>
+    </section>
 
-        <div class="card mini" id="agb" style="margin-top:14px;">
-          <h3 style="margin:0 0 6px;">AGB</h3>
-          <p class="hint" style="margin-top:0;">Platzhalter – später ausformulieren.</p>
-        </div>
-
-        <div class="card mini" id="allergene" style="margin-top:14px;">
-          <h3 style="margin:0 0 6px;">Allergene</h3>
-          <p class="hint" style="margin-top:0;">Platzhalter – Zutaten/Allergene hier ausweisen.</p>
+    <section class="section legal" id="agb">
+      <div class="wrap">
+        <div class="card">
+          <h3>AGB</h3>
+          <p class="small">Platzhalter (MVP): Bedingungen, Widerruf, Lieferzeiten, Haftung.</p>
         </div>
       </div>
-    </footer>
+    </section>
+
+    <section class="section legal" id="allergene">
+      <div class="wrap">
+        <div class="card">
+          <h3>Allergene</h3>
+          <p class="small">Platzhalter (MVP): Zutaten, Allergene, Spurenhinweise, Nährwerte.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section legal" id="versandinfo">
+      <div class="wrap">
+        <div class="card">
+          <h3>Versand</h3>
+          <p class="small">Platzhalter (MVP): Versandarten, Kosten, Liefergebiet, Laufzeiten.</p>
+        </div>
+      </div>
+    </section>
+
   </main>
 
-  <div class="consent" id="consent">
-    <div class="consentBox">
-      <div class="consentGrid">
+  <!-- FOOTER -->
+  <footer>
+    <div class="wrap">
+      <div class="footGrid">
         <div>
-          <p class="consentTitle">Kurzer Keks-Hinweis 🍪</p>
-          <p class="consentText">
-            Wir nutzen <b>notwendige Cookies</b>, damit dein Keks-Entwurf gespeichert bleibt. Optional helfen uns anonyme Daten zu verstehen, welche Kekse gefallen.
-            <a class="linkSoft" href="#datenschutz">Wie wir mit Daten umgehen</a>.
+          <div style="display:flex; align-items:center; gap:10px;">
+            <span style="font-size:18px; font-weight:900;">OnlyKeks</span>
+            <span class="small">Post, die schmeckt</span>
+          </div>
+          <p class="small" style="margin:10px 0 0;">
+            MVP: One-Page-Landing + Reply-Flow. Fokus auf Conversion, Vertrauen und Geschenk-Mood.
           </p>
         </div>
-        <div class="consentActions">
-          <button class="btn btnPrimary" id="consentAll" type="button">Alles klar 🍪</button>
-          <button class="btn" id="consentNeed" type="button">Nur das Nötigste</button>
+        <div class="footLinks" aria-label="Footer Links">
+          <a href="#impressum">Impressum</a>
+          <a href="#datenschutz">Wie wir mit Daten umgehen</a>
+          <a href="#agb">AGB</a>
+          <a href="#versandinfo">Versand</a>
+          <a href="#allergene">Allergene</a>
         </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- COOKIE CONSENT -->
+  <div class="consent" id="consent">
+    <div class="consentCard" role="dialog" aria-label="Cookie Hinweis" aria-modal="true">
+      <div class="consentText">
+        <b>Cookie-Krümel 🍪</b>
+        <p>
+          Wir nutzen <b>Notwendiges</b>, damit dein Keks-Entwurf gespeichert bleibt.
+          Optional hilft uns zu verstehen, welche Kekse gefallen. <b>Wir verkaufen keine Daten.</b>
+        </p>
+      </div>
+      <div class="consentBtns">
+        <button class="btn btnPrimary btnSmall" type="button" id="consentAll">Alles klar 🍪</button>
+        <button class="btn btnGhost btnSmall" type="button" id="consentNeed">Nur das Nötigste</button>
+        <a class="btn btnGhost btnSmall" href="#datenschutz">Details</a>
       </div>
     </div>
   </div>
@@ -1127,498 +1191,322 @@
     /*** CONFIG: NUR HIER STRIPE EINTRAGEN ***/
     const STRIPE_PAYMENT_LINK = "https://buy.stripe.com/aBcDeFgHiJkLmNoPqR";
 
-    // Auto-Base für GitHub Pages Project Site (/keksms)
-    const BASE = location.pathname.includes("/keksms/") ? "/keksms" : "";
-    const A = (p) => (BASE ? (BASE.replace(/\/$/,"") + "/" + p.replace(/^\//,"")) : p);
+    /* ===== Helpers ===== */
+    const $ = (id)=>document.getElementById(id);
+    const qsa = (sel,root=document)=>Array.from(root.querySelectorAll(sel));
 
-    // ===== DEINE REPO-DATEIEN (passen zu deinem Listing) =====
-    const HERO_IMG   = "assets/1000149739.jpg";
-    const STORY1_IMG = "assets/1000149740.jpg";
-    const STORY2_IMG = "assets/1000149741.jpg";
-    const STORY3_IMG = "assets/1000149742.jpg";
-
-    // Videos liegen bei dir unter: keksms/assets/video/...
-    const HERO_MP4   = "keksms/assets/video/grok_video_2025-12-13-20-49-35.mp4";
-    const STORY2_MP4 = "keksms/assets/video/grok_video_2025-12-13-20-51-18.mp4";
-
-    /* =======================
-       ELEMENTS
-    ======================= */
-    const msg       = document.getElementById("msg");
-    const count     = document.getElementById("count");
-    const packSel   = document.getElementById("pack");
-    const packTiles = document.getElementById("packTiles");
-    const steps     = document.querySelectorAll(".step");
-
-    const panels = {
-      1: document.getElementById("p1"),
-      2: document.getElementById("p2"),
-      3: document.getElementById("p3"),
-      4: document.getElementById("p4"),
-      5: document.getElementById("p5"),
-    };
-
-    const heroVideo = document.getElementById("heroVideo");
-    const heroImg   = document.getElementById("heroImg");
-    const storyVideo2 = document.getElementById("storyVideo2");
-
-    const story1 = document.getElementById("story1");
-    const story3 = document.getElementById("story3");
-
-    const cookieStage = document.getElementById("cookieStage");
-    const sprinkles   = document.getElementById("sprinkles");
-    const themeSel    = document.getElementById("theme");
-
-    const summaryEl   = document.getElementById("summary");
-    const replyEl     = document.getElementById("replyCode");
-    const payBtn      = document.getElementById("payBtn");
-
-    /* =======================
-       MEDIA: sources setzen (keine 404 mehr)
-    ======================= */
-    // HERO
-    heroImg.src = A(HERO_IMG);
-    heroVideo.poster = A(HERO_IMG);
-    heroVideo.querySelector("source").src = A(HERO_MP4);
-    heroVideo.load();
-
-    // STORY
-    story1.src = A(STORY1_IMG);
-    story3.src = A(STORY3_IMG);
-
-    if(storyVideo2){
-      storyVideo2.poster = A(STORY2_IMG);
-      storyVideo2.querySelector("source").src = A(STORY2_MP4);
-      storyVideo2.load();
+    function uid(){
+      // short, readable, good enough for MVP (not cryptographic)
+      const a = Math.random().toString(36).slice(2,8).toUpperCase();
+      const b = Date.now().toString(36).slice(-6).toUpperCase();
+      return `OK-${b}-${a}`;
     }
 
-    /* =======================
-       HERO VIDEO FALLBACK
-    ======================= */
-    (function heroFallback(){
+    /* ===== Hero: video fallback ===== */
+    (function heroMedia(){
+      const v = $("heroVideo");
+      const img = $("heroImg");
+      if(!v || !img) return;
+
+      // If video can play, show it and hide image; else show image.
+      const showVideo = ()=>{
+        img.style.display = "none";
+        v.style.display = "block";
+      };
       const showImg = ()=>{
-        heroVideo.style.display="none";
-        heroImg.style.display="block";
+        v.style.display = "none";
+        img.style.display = "block";
       };
-      heroVideo.addEventListener("error", showImg);
-      heroVideo.addEventListener("stalled", showImg);
-      setTimeout(()=>{
-        const playing = !!(heroVideo.currentTime > 0 && !heroVideo.paused && !heroVideo.ended);
-        if(!playing) showImg();
-      }, 900);
+
+      // Default to image until video is ready
+      showImg();
+
+      v.addEventListener("canplay", showVideo, {once:true});
+      v.addEventListener("error", showImg, {once:true});
+
+      // If autoplay blocked, keep image
+      const p = v.play();
+      if(p && typeof p.catch === "function") p.catch(()=>showImg());
     })();
 
-    /* =======================
-       STORY VIDEO FALLBACK
-    ======================= */
-    (function storyFallback(){
-      if(!storyVideo2) return;
-      storyVideo2.addEventListener("error", ()=>{
-        storyVideo2.style.display = "none";
-        const host = storyVideo2.parentElement;
-        const img = document.createElement("img");
-        img.src = A(STORY2_IMG);
-        img.alt = "QR-Scan – Handy scannt den QR-Code";
-        img.loading = "lazy";
-        img.decoding = "async";
-        host.insertBefore(img, host.firstChild);
-      });
+    /* ===== First-load animation: crumbs + bite (once) ===== */
+    (function firstLoadAnim(){
+      const key = "onlykeks_anim_played_v1";
+      const reduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if(reduced) return;
+
+      if(localStorage.getItem(key)) return;
+      localStorage.setItem(key, "1");
+
+      const layer = $("crumbLayer");
+      const bite = $("cookieBite");
+      if(!layer || !bite) return;
+
+      const isMobile = window.matchMedia && window.matchMedia("(max-width: 760px)").matches;
+      const n = isMobile ? 10 : 22;
+
+      // crumbs
+      for(let i=0;i<n;i++){
+        const c = document.createElement("div");
+        c.className = "crumb";
+        // random position & color
+        const left = Math.random()*92 + 2;
+        const top = Math.random()*20;
+        const size = (Math.random()*6 + 5) + "px";
+        const delay = Math.random()*220 + "ms";
+        const hue = Math.random() > .5 ? "rgba(255,79,163,.85)" : (Math.random() > .5 ? "rgba(255,124,197,.85)" : "rgba(11,27,42,.22)");
+        c.style.left = left + "%";
+        c.style.top = top + "px";
+        c.style.width = size;
+        c.style.height = size;
+        c.style.background = hue;
+        c.style.animationDelay = delay;
+        layer.appendChild(c);
+
+        setTimeout(()=>c.remove(), 1400);
+      }
+
+      // bite pop
+      setTimeout(()=>bite.classList.add("show"), isMobile ? 220 : 160);
+      setTimeout(()=>bite.classList.remove("show"), isMobile ? 900 : 1100);
     })();
 
-    /* =======================
-       CHIP TEMPLATES
-    ======================= */
-    document.querySelectorAll(".chip").forEach(ch=>{
-      ch.addEventListener("click", ()=>{
-        msg.value = ch.dataset.msg;
-        msg.dispatchEvent(new Event("input"));
-        document.getElementById("flow").scrollIntoView({behavior:"smooth", block:"start"});
-      });
-    });
+    /* ===== FLOW LOGIC ===== */
+    const panels = { 1: $("p1"), 2: $("p2"), 3: $("p3"), 4: $("p4"), 5: $("p5") };
+    const steps  = qsa(".step");
 
-    /* =======================
-       DRAFT
-    ======================= */
-    function collectDraft(){
-      return {
-        msg: msg.value || "",
-        pack: packSel.value || "Custom",
-        theme: themeSel?.value || "classic",
-        hand: document.getElementById("hand")?.value || "soft",
-        trigger: document.getElementById("trigger")?.value || "",
-        toName: document.getElementById("toName")?.value || "",
-        fromName: document.getElementById("fromName")?.value || "",
-        toStreet: document.getElementById("toStreet")?.value || "",
-        toZip: document.getElementById("toZip")?.value || "",
-        toCity: document.getElementById("toCity")?.value || "",
-        sprinklesOn: cookieStage.classList.contains("playing")
-      };
-    }
-    function saveDraft(){
-      try{ localStorage.setItem("ok_draft", JSON.stringify(collectDraft())); }catch(e){}
-    }
-
-    msg.addEventListener("input", ()=>{
-      count.textContent = String(msg.value.length);
-      saveDraft();
-    });
-
-    /* =======================
-       PACK TILES
-    ======================= */
-    function setActivePack(pack){
-      packSel.value = pack;
-      document.querySelectorAll(".packTile").forEach(t=>{
-        const on = t.dataset.pack === pack;
-        t.classList.toggle("active", on);
-        t.setAttribute("aria-checked", on ? "true" : "false");
-      });
-      saveDraft();
-    }
-    packTiles.querySelectorAll(".packTile").forEach(tile=>{
-      tile.addEventListener("click", ()=> setActivePack(tile.dataset.pack));
-    });
-    packSel.addEventListener("change", ()=> setActivePack(packSel.value));
-
-    /* =======================
-       FLOW NAV
-    ======================= */
     function go(n){
       Object.values(panels).forEach(p=>p.classList.remove("active"));
       panels[n].classList.add("active");
-      steps.forEach(s=> s.classList.toggle("active", +s.dataset.step === n));
+      steps.forEach(s=>s.classList.toggle("active", +s.dataset.step === n));
 
       if(n === 5){
+        // Stripe link
+        const payBtn = $("payBtn");
         payBtn.href = STRIPE_PAYMENT_LINK;
-        const draft = collectDraft();
-        const code  = getOrCreateReplyCode();
-        replyEl.textContent = code;
-        summaryEl.textContent =
-          `Paket: ${draft.pack} • Message: „${(draft.msg || "").slice(0, 90)}${(draft.msg||"").length>90?"…":""}“ • Stil: ${draft.theme} • Trigger: ${draft.trigger || "—"}`;
+
+        // Populate final summary
+        const state = readState();
+        $("oid").textContent = state.orderId || "—";
+        $("sPack").textContent = state.pack || "—";
+        $("sMsg").textContent = state.msg ? state.msg.slice(0,120) + (state.msg.length>120?"…":"") : "—";
+        $("sExtras").textContent = (state.extras && state.extras.length) ? state.extras.join(", ") : "—";
       }
-      saveDraft();
-      document.getElementById("flow").scrollIntoView({behavior:"smooth", block:"start"});
+      // keep view stable
+      document.querySelector("#flow").scrollIntoView({behavior:"smooth", block:"start"});
     }
-    document.querySelectorAll("[data-next]").forEach(b=>{
-      b.addEventListener("click", ()=> go(+b.dataset.next));
-    });
-    document.querySelectorAll("[data-prev]").forEach(b=>{
-      b.addEventListener("click", ()=> go(+b.dataset.prev));
-    });
 
-    /* =======================
-       COOKIE PLAY
-    ======================= */
-    function seedSprinkles(){
-      sprinkles.innerHTML = "";
-      const n = 18;
-      for(let i=0;i<n;i++){
-        const el = document.createElement("div");
-        el.className = "spr";
-        el.style.left = (10 + Math.random()*80) + "%";
-        el.style.top  = (12 + Math.random()*72) + "%";
-        el.style.transform = `rotate(${Math.random()*180}deg)`;
-        el.style.opacity = "0";
-        sprinkles.appendChild(el);
-      }
-    }
-    function toggleSprinkles(){
-      cookieStage.classList.toggle("playing");
-      const on = cookieStage.classList.contains("playing");
-      sprinkles.querySelectorAll(".spr").forEach((el, i)=>{
-        setTimeout(()=> el.style.opacity = on ? "1" : "0", i*12);
-      });
-      saveDraft();
-    }
-    function randomize(){
-      seedSprinkles();
-      cookieStage.classList.add("playing");
-      sprinkles.querySelectorAll(".spr").forEach((el, i)=>{
-        setTimeout(()=> el.style.opacity = "1", i*10);
-      });
-      saveDraft();
-    }
-    function resetPlay(){
-      cookieStage.classList.remove("playing");
-      seedSprinkles();
-      saveDraft();
-    }
-    document.querySelectorAll("[data-action]").forEach(b=>{
-      b.addEventListener("click", ()=>{
-        const a = b.dataset.action;
-        if(a==="sprinkle") toggleSprinkles();
-        if(a==="random") randomize();
-        if(a==="reset") resetPlay();
-      });
-    });
-    themeSel.addEventListener("change", saveDraft);
+    /* ===== State ===== */
+    const LS_KEY = "onlykeks_order_v1";
 
-    /* =======================
-       RESTORE
-    ======================= */
-    function restoreDraft(){
+    function readState(){
       try{
-        const raw = localStorage.getItem("ok_draft");
-        if(!raw) return;
-        const d = JSON.parse(raw);
-
-        if(d.msg){ msg.value = d.msg; }
-        if(d.pack){ setActivePack(d.pack); }
-        if(d.theme){ themeSel.value = d.theme; }
-
-        const hand = document.getElementById("hand");
-        const trig = document.getElementById("trigger");
-        if(hand && d.hand){ hand.value = d.hand; }
-        if(trig && d.trigger !== undefined){ trig.value = d.trigger; }
-
-        ["toName","fromName","toStreet","toZip","toCity"].forEach(id=>{
-          const el = document.getElementById(id);
-          if(el && d[id]) el.value = d[id];
-        });
-
-        seedSprinkles();
-        if(d.sprinklesOn){
-          cookieStage.classList.add("playing");
-          sprinkles.querySelectorAll(".spr").forEach(el=> el.style.opacity = "1");
-        }
-
-        msg.dispatchEvent(new Event("input"));
-      }catch(e){}
-    }
-
-    /* =======================
-       REPLY CODE
-    ======================= */
-    function getOrCreateReplyCode(){
-      let code = "";
-      try{ code = localStorage.getItem("ok_reply_code") || ""; }catch(e){}
-      if(code) return code;
-      code = "OK-" + Math.random().toString(36).slice(2, 6).toUpperCase() + "-" + Date.now().toString(36).toUpperCase();
-      try{ localStorage.setItem("ok_reply_code", code); }catch(e){}
-      return code;
-    }
-
-    /* =======================
-       COOKIE CONSENT
-    ======================= */
-    const consent = document.getElementById("consent");
-    const consentAll  = document.getElementById("consentAll");
-    const consentNeed = document.getElementById("consentNeed");
-
-    function showConsentIfNeeded(){
-      try{
-        const c = localStorage.getItem("ok_consent");
-        if(!c){ consent.classList.add("show"); }
+        return JSON.parse(localStorage.getItem(LS_KEY) || "{}");
       }catch(e){
-        consent.classList.add("show");
+        return {};
       }
+    }
+    function writeState(patch){
+      const cur = readState();
+      const next = Object.assign({}, cur, patch);
+      localStorage.setItem(LS_KEY, JSON.stringify(next));
+      return next;
+    }
+
+    function computePricing(pack){
+      // MVP: placeholder numbers (change later)
+      if(pack === "Quick")   return {title:"Quick",   note:"Schnell & sweet", val:"ab 9,90 €"};
+      if(pack === "Premium") return {title:"Premium", note:"Box-Vibe",        val:"ab 19,90 €"};
+      return {title:"Custom", note:"Beliebt · Deko-Finish", val:"ab 14,90 €"};
+    }
+
+    /* ===== Message count & chips ===== */
+    const msg = $("msg");
+    const count = $("count");
+    function updateCount(){
+      count.textContent = `${msg.value.length} / 500`;
+      writeState({msg: msg.value});
+    }
+    msg.addEventListener("input", updateCount);
+
+    qsa(".chip").forEach(ch=>{
+      ch.addEventListener("click", ()=>{
+        msg.value = ch.dataset.msg || "";
+        updateCount();
+        // push user into flow
+        document.querySelector("#flow").scrollIntoView({behavior:"smooth", block:"start"});
+      });
+    });
+
+    /* ===== Pack tiles bind to select ===== */
+    const packSel = $("pack");
+    const tiles = qsa(".pack-tile", $("packTiles"));
+    function setActivePack(pack){
+      packSel.value = pack;
+      tiles.forEach(t=>{
+        const on = t.dataset.pack === pack;
+        t.classList.toggle("active", on);
+        t.setAttribute("aria-checked", on ? "true":"false");
+      });
+      const p = computePricing(pack);
+      $("priceTitle").textContent = p.title;
+      $("priceNote").textContent = p.note;
+      $("priceVal").textContent = p.val;
+      writeState({pack});
+    }
+
+    tiles.forEach(t=>{
+      t.addEventListener("click", ()=>setActivePack(t.dataset.pack));
+    });
+    packSel.addEventListener("change", ()=>setActivePack(packSel.value));
+
+    /* ===== Extras toggles ===== */
+    const extrasMap = [
+      {id:"xSprinkles", label:"Sprinkles-Look"},
+      {id:"xSticker",   label:"Karten-Sticker"},
+      {id:"xStory",     label:"Mini-Story-URL"},
+      {id:"xPhoto",     label:"Foto-Upload (später)"}
+    ];
+
+    function readExtras(){
+      const out = [];
+      for(const x of extrasMap){
+        const el = $(x.id);
+        if(el && el.checked) out.push(x.label);
+      }
+      return out;
+    }
+    function syncToggleStyles(){
+      qsa(".toggle").forEach(t=>{
+        const input = t.querySelector("input");
+        t.classList.toggle("on", !!(input && input.checked));
+      });
+    }
+    qsa(".toggle input").forEach(inp=>{
+      inp.addEventListener("change", ()=>{
+        syncToggleStyles();
+        writeState({extras: readExtras()});
+      });
+    });
+
+    /* ===== Address fields ===== */
+    const fields = ["toName","fromName","toStreet","toZip","toCity","fromStreet","fromZip","fromCity"];
+    fields.forEach(id=>{
+      const el = $(id);
+      el.addEventListener("input", ()=>{
+        writeState({[id]: el.value});
+      });
+    });
+
+    /* ===== Summary render ===== */
+    function renderSummary(){
+      const s = readState();
+      const extras = (s.extras && s.extras.length) ? s.extras.join(", ") : "—";
+      const p = computePricing(s.pack || "Custom");
+
+      const lines = [
+        `<b>Paket:</b> ${escapeHtml(s.pack || "Custom")} <span style="color:var(--muted)">(${escapeHtml(p.val)})</span>`,
+        `<b>Message:</b><br/>${escapeHtml(s.msg || "—")}`,
+        `<b>Extras:</b> ${escapeHtml(extras)}`,
+        `<hr style="border:0;border-top:1px solid var(--line);margin:10px 0;">`,
+        `<b>Empfänger*in:</b> ${escapeHtml(s.toName || "—")}, ${escapeHtml(s.toStreet || "—")}, ${escapeHtml((s.toZip||"—")+" "+(s.toCity||"—"))}`,
+        `<b>Reply an:</b> ${escapeHtml(s.fromName || "—")}, ${escapeHtml(s.fromStreet || "—")}, ${escapeHtml((s.fromZip||"—")+" "+(s.fromCity||"—"))}`
+      ];
+      $("summary").innerHTML = lines.join("<br/>");
+    }
+
+    function escapeHtml(str){
+      return String(str ?? "")
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
+    }
+
+    /* ===== Buttons ===== */
+    $("next1").addEventListener("click", ()=>{
+      const txt = (msg.value || "").trim();
+      if(!txt){
+        msg.focus();
+        msg.style.boxShadow = "0 0 0 4px rgba(255,79,163,.16)";
+        setTimeout(()=>msg.style.boxShadow="", 400);
+        return;
+      }
+      go(2);
+    });
+
+    $("back2").addEventListener("click", ()=>go(1));
+    $("next2").addEventListener("click", ()=>go(3));
+
+    $("back3").addEventListener("click", ()=>go(2));
+    $("next3").addEventListener("click", ()=>{
+      // basic required fields (MVP)
+      const s = readState();
+      const need = ["toName","toStreet","toZip","toCity","fromName","fromStreet","fromZip","fromCity"];
+      const missing = need.filter(k=>!String(s[k]||"").trim());
+      if(missing.length){
+        // focus first missing
+        const first = $(missing[0]);
+        if(first) first.focus();
+        return;
+      }
+      renderSummary();
+      go(4);
+    });
+
+    $("back4").addEventListener("click", ()=>go(3));
+    $("next4").addEventListener("click", ()=>{
+      // ensure orderId
+      const s = readState();
+      if(!s.orderId) writeState({orderId: uid()});
+      go(5);
+    });
+
+    $("back5").addEventListener("click", ()=>go(4));
+
+    /* ===== Load saved state on start ===== */
+    (function boot(){
+      const s = readState();
+
+      // message
+      if(s.msg){ msg.value = s.msg; }
+      updateCount();
+
+      // pack
+      setActivePack(s.pack || "Custom");
+
+      // extras
+      for(const x of extrasMap){
+        const el = $(x.id);
+        if(el && s.extras && s.extras.includes(x.label)) el.checked = true;
+      }
+      syncToggleStyles();
+
+      // addresses
+      fields.forEach(id=>{
+        if(s[id]) $(id).value = s[id];
+      });
+
+      // orderId
+      if(s.orderId) $("oid").textContent = s.orderId;
+    })();
+
+    /* ===== Consent (A warm default) ===== */
+    const CONSENT_KEY = "onlykeks_consent_v1";
+    const consentEl = $("consent");
+    function showConsent(){
+      const c = localStorage.getItem(CONSENT_KEY);
+      if(!c) consentEl.classList.add("show");
     }
     function setConsent(mode){
-      try{ localStorage.setItem("ok_consent", mode); }catch(e){}
-      consent.classList.remove("show");
+      // mode: "all" | "need"
+      localStorage.setItem(CONSENT_KEY, mode);
+      consentEl.classList.remove("show");
     }
-    consentAll.addEventListener("click", ()=> setConsent("all"));
-    consentNeed.addEventListener("click", ()=> setConsent("need"));
-
-    /* =======================
-       HERO INTRO CANVAS (1x)
-       roundRect polyfill included
-    ======================= */
-    const INTRO_KEY = "ok_intro_played_v2";
-    function isMobile(){ return window.matchMedia && window.matchMedia("(max-width: 920px)").matches; }
-    function reduceMotion(){ return window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches; }
-
-    function rr(ctx, x, y, w, h, r){
-      r = Math.min(r, w/2, h/2);
-      ctx.beginPath();
-      ctx.moveTo(x+r, y);
-      ctx.arcTo(x+w, y, x+w, y+h, r);
-      ctx.arcTo(x+w, y+h, x, y+h, r);
-      ctx.arcTo(x, y+h, x, y, r);
-      ctx.arcTo(x, y, x+w, y, r);
-      ctx.closePath();
-    }
-
-    function playIntroOnce(){
-      if(reduceMotion()) return;
-      let played = false;
-      try{ played = localStorage.getItem(INTRO_KEY) === "1"; }catch(e){}
-      if(played) return;
-      try{ localStorage.setItem(INTRO_KEY, "1"); }catch(e){}
-      runCrumbRain({ subtle: isMobile() });
-    }
-
-    function runCrumbRain({subtle=false}={}){
-      const canvas = document.getElementById("heroFx");
-      const ctx = canvas.getContext("2d");
-      const host = canvas.parentElement;
-
-      function resize(){
-        const r = host.getBoundingClientRect();
-        canvas.width = Math.floor(r.width * devicePixelRatio);
-        canvas.height = Math.floor(r.height * devicePixelRatio);
-        canvas.style.width = r.width + "px";
-        canvas.style.height = r.height + "px";
-        ctx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);
-      }
-      resize();
-      window.addEventListener("resize", resize, {passive:true});
-
-      const w = () => canvas.getBoundingClientRect().width;
-      const h = () => canvas.getBoundingClientRect().height;
-
-      const colors = [
-        "rgba(255,79,163,.85)",
-        "rgba(255,124,197,.85)",
-        "rgba(201,139,95,.70)",
-        "rgba(255,255,255,.85)"
-      ];
-
-      const N = subtle ? 26 : 70;
-      const parts = Array.from({length:N}).map((_,i)=>({
-        x: Math.random()*w(),
-        y: -20 - Math.random()*140,
-        vx: (Math.random()-.5) * (subtle? .4 : 1.1),
-        vy: (subtle? 1.1 : 2.4) + Math.random()* (subtle? .8 : 1.8),
-        s: (subtle? 2.2 : 3.4) + Math.random()* (subtle? 1.2 : 2.0),
-        r: Math.random()*Math.PI,
-        vr: (Math.random()-.5) * 0.08,
-        c: colors[i % colors.length],
-        life: 0
-      }));
-
-      const cookieCenter = { x: w()*0.62, y: h()*0.44, rad: subtle? 42 : 58 };
-      let t0 = performance.now();
-      const tStart = performance.now();
-
-      function drawCookieGhost(alpha){
-        ctx.save();
-        ctx.globalAlpha = alpha;
-        ctx.beginPath();
-        ctx.arc(cookieCenter.x, cookieCenter.y, cookieCenter.rad, 0, Math.PI*2);
-        ctx.fillStyle = "rgba(201,139,95,.10)";
-        ctx.fill();
-        ctx.restore();
-      }
-
-      function tick(now){
-        const dt = Math.min(32, now - t0);
-        t0 = now;
-
-        ctx.clearRect(0,0,w(),h());
-
-        const elapsed = now - tStart;
-        const ghostA = elapsed < 900 ? (0.55 - (elapsed/900)*0.45) : 0;
-        if(ghostA > 0) drawCookieGhost(ghostA);
-
-        parts.forEach(p=>{
-          p.life += dt;
-
-          if(!subtle && p.life > 350 && p.life < 1100){
-            const dx = cookieCenter.x - p.x;
-            const dy = cookieCenter.y - p.y;
-            const dist = Math.max(40, Math.sqrt(dx*dx + dy*dy));
-            const pull = 0.10;
-            p.vx += (dx/dist) * pull;
-            p.vy += (dy/dist) * pull * 0.45;
-          }
-
-          p.x += p.vx;
-          p.y += p.vy;
-          p.r += p.vr;
-
-          ctx.save();
-          ctx.translate(p.x, p.y);
-          ctx.rotate(p.r);
-          ctx.fillStyle = p.c;
-          rr(ctx, -p.s/2, -p.s/2, p.s, p.s*0.55, 3);
-          ctx.fill();
-          ctx.restore();
-        });
-
-        if(now - tStart < (subtle ? 1200 : 1800)){
-          requestAnimationFrame(tick);
-        }else{
-          ctx.clearRect(0,0,w(),h());
-          window.removeEventListener("resize", resize);
-        }
-      }
-      requestAnimationFrame(tick);
-    }
-
-    /* =======================
-       CLICK INTRO (roll -> bite -> QR) 1x
-    ======================= */
-    const CLICK_KEY = "ok_click_intro_v1";
-    const overlay = document.getElementById("introOverlay");
-    const introCookie = document.getElementById("introCookie");
-    const biteMask = document.getElementById("biteMask");
-    const introQR = document.getElementById("introQR");
-
-    function playClickIntroOnce(){
-      if(reduceMotion()) return;
-      let done = false;
-      try{ done = localStorage.getItem(CLICK_KEY) === "1"; }catch(e){}
-      if(done) return;
-
-      const onFirst = ()=>{
-        try{ localStorage.setItem(CLICK_KEY, "1"); }catch(e){}
-        overlay.classList.add("show");
-
-        introCookie.style.animation = "none";
-        biteMask.style.animation = "none";
-        introQR.style.animation = "none";
-        introQR.style.opacity = "0";
-
-        requestAnimationFrame(()=>{
-          introCookie.style.animation = "rollIn 900ms cubic-bezier(.2,.9,.2,1) forwards";
-        });
-
-        setTimeout(()=>{
-          biteMask.style.animation = "bitePop 520ms cubic-bezier(.2,.9,.2,1) forwards";
-        }, 720);
-
-        setTimeout(()=>{
-          introQR.style.animation = "qrShow 360ms ease forwards";
-        }, 980);
-
-        setTimeout(()=>{
-          overlay.classList.remove("show");
-        }, 1550);
-      };
-
-      document.addEventListener("pointerdown", onFirst, {capture:true, once:true});
-    }
-
-    /* =======================
-       COOKIE CURSOR
-    ======================= */
-    const cursorEl = document.getElementById("cookieCursor");
-    function enableCookieCursor(){
-      if(reduceMotion()) return;
-      document.body.classList.add("cursorOn");
-      const move = (e)=>{
-        cursorEl.style.left = e.clientX + "px";
-        cursorEl.style.top  = e.clientY + "px";
-      };
-      window.addEventListener("mousemove", move, {passive:true});
-      window.addEventListener("mousedown", ()=>{
-        cursorEl.style.transform = "translate(-50%,-50%) scale(1.08)";
-        setTimeout(()=> cursorEl.style.transform = "translate(-50%,-50%) scale(1)", 120);
-      }, {passive:true});
-    }
-
-    /* =======================
-       INIT
-    ======================= */
-    seedSprinkles();
-    restoreDraft();
-    showConsentIfNeeded();
-    setActivePack(packSel.value || "Custom");
-
-    playIntroOnce();
-    playClickIntroOnce();
-    enableCookieCursor();
+    $("consentAll").addEventListener("click", ()=>setConsent("all"));
+    $("consentNeed").addEventListener("click", ()=>setConsent("need"));
+    showConsent();
   </script>
 </body>
 </html>

@@ -15,70 +15,92 @@
       --line: rgba(11,27,42,.10);
 
       /* Deko-Chichi palette */
-      --sky1:#ffe6f1;
-      --sky2:#ffd2ea;
+      --sky1:#ffe6f2;
+      --sky2:#ffd3ea;
+      --sky3:#fff4ea;
       --pink:#ff4fa3;
-      --pink2:#ff77bf;
+      --pink2:#ff7cc5;
+      --pinkSoft: rgba(255,79,163,.14);
       --vanilla:#fff6ea;
-      --cookie:#c48752;
-      --cookie2:#e7b892;
 
-      --card:#ffffffcc;
+      --cookie:#c48752;
+      --cookie2:#e9c1a0;
+
       --glass: rgba(255,255,255,.72);
+      --card: rgba(255,255,255,.82);
       --shadow: 0 18px 60px rgba(11,27,42,.12);
 
-      --radius: 22px;
-      --radius2: 28px;
+      --radius: 18px;
+      --radius2: 26px;
 
       --focus: 0 0 0 4px rgba(255,79,163,.22);
-      --max: 1100px;
+      --max: 1120px;
 
       --t: 220ms;
     }
 
-    *{ box-sizing: border-box; }
+    *{ box-sizing:border-box; }
     html,body{ height:100%; }
     body{
       margin:0;
       color:var(--ink);
       font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji","Segoe UI Emoji";
       background:
-        radial-gradient(900px 500px at 20% -10%, rgba(255,79,163,.25), transparent 60%),
-        radial-gradient(900px 600px at 80% 0%, rgba(255,210,234,.65), transparent 60%),
-        linear-gradient(180deg, var(--sky1), var(--bg) 46%, var(--vanilla));
+        radial-gradient(900px 520px at 18% -10%, rgba(255,79,163,.20), transparent 62%),
+        radial-gradient(900px 600px at 82% 0%, rgba(255,210,234,.55), transparent 62%),
+        linear-gradient(180deg, var(--sky1), var(--bg) 46%, var(--sky3));
       overflow-x:hidden;
     }
 
-    a{ color: inherit; text-decoration: none; }
-    .wrap{ max-width: var(--max); margin:0 auto; padding: 22px; }
+    a{ color: inherit; text-decoration:none; }
+    .wrap{ max-width:var(--max); margin:0 auto; padding: 22px; }
 
-    /* Topbar */
+    /* Soft cloud blobs */
+    .clouds{
+      position: fixed; inset:0; pointer-events:none; z-index:0;
+      opacity: .9;
+    }
+    .cloud{
+      position:absolute; border-radius: 999px;
+      filter: blur(26px);
+      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.80), rgba(255,255,255,0) 62%),
+                  radial-gradient(circle at 70% 60%, rgba(255,79,163,.18), rgba(255,79,163,0) 64%);
+      mix-blend-mode: screen;
+      transform: translateZ(0);
+    }
+    .cloud.c1{ width: 520px; height: 260px; left:-140px; top: 90px; opacity:.75; }
+    .cloud.c2{ width: 620px; height: 320px; right:-210px; top: 180px; opacity:.65; }
+    .cloud.c3{ width: 520px; height: 280px; left: 22%; bottom: -120px; opacity:.55; }
+
+    /* Topbar (OnlyFans-clean) */
     .topbar{
-      position: sticky; top: 0; z-index: 20;
+      position: sticky; top:0; z-index:30;
       backdrop-filter: blur(10px);
-      background: rgba(255,255,255,.68);
+      background: rgba(255,255,255,.70);
       border-bottom: 1px solid var(--line);
     }
     .topbar .wrap{
       display:flex; align-items:center; justify-content:space-between; gap: 14px;
       padding: 14px 22px;
     }
+
     .brand{
-      display:flex; align-items:center; gap: 10px; font-weight: 800; letter-spacing: .2px;
+      display:flex; align-items:center; gap: 10px;
+      font-weight: 900;
+      letter-spacing: .2px;
     }
     .logo{
       width: 38px; height: 38px; border-radius: 14px;
       background:
-        radial-gradient(14px 14px at 35% 35%, rgba(255,255,255,.8), transparent 60%),
+        radial-gradient(14px 14px at 35% 35%, rgba(255,255,255,.85), transparent 60%),
         radial-gradient(18px 18px at 70% 60%, rgba(255,255,255,.55), transparent 60%),
         linear-gradient(180deg, var(--cookie2), var(--cookie));
       box-shadow: 0 10px 30px rgba(196,135,82,.35);
-      position: relative;
+      position:relative;
     }
     .logo:after{
       content:"";
-      position:absolute; inset: 9px 8px 10px 10px;
-      border-radius: 999px;
+      position:absolute; inset: 9px 8px 10px 10px; border-radius:999px;
       background:
         radial-gradient(3px 3px at 25% 35%, rgba(11,27,42,.18), transparent 60%),
         radial-gradient(3px 3px at 55% 30%, rgba(11,27,42,.18), transparent 60%),
@@ -86,100 +108,200 @@
         radial-gradient(3px 3px at 35% 70%, rgba(11,27,42,.18), transparent 60%);
       opacity:.9;
     }
-    .brand small{ display:block; font-weight:600; color:var(--muted); letter-spacing:0; margin-top: -2px; }
+    .brand small{
+      display:block; font-weight:700; color:var(--muted); margin-top:-2px;
+      letter-spacing:0;
+    }
+
     .pill{
       font-size: 12px;
       padding: 8px 10px;
       border-radius: 999px;
       border: 1px solid var(--line);
-      background: rgba(255,255,255,.7);
+      background: rgba(255,255,255,.75);
       color: var(--muted);
       display:inline-flex; align-items:center; gap:8px;
       white-space: nowrap;
     }
-    .dot{ width: 8px; height:8px; border-radius:999px; background: var(--pink); box-shadow: 0 0 0 4px rgba(255,79,163,.18); }
+    .dot{ width:8px; height:8px; border-radius:999px; background:var(--pink); box-shadow: 0 0 0 4px rgba(255,79,163,.16); }
 
     .btn{
       appearance:none; border:0;
-      padding: 12px 16px;
+      padding: 12px 18px;
       border-radius: 999px;
-      font-weight: 800;
+      font-weight: 900;
       cursor:pointer;
-      transition: transform var(--t) ease, box-shadow var(--t) ease, filter var(--t) ease;
+      transition: transform var(--t) ease, box-shadow var(--t) ease, filter var(--t) ease, background var(--t) ease;
       display:inline-flex; align-items:center; justify-content:center; gap:10px;
       user-select:none;
+      line-height: 1;
     }
     .btn:focus{ outline:none; box-shadow: var(--focus); }
     .btn-primary{
       background: linear-gradient(180deg, var(--pink2), var(--pink));
-      color: #fff;
+      color:#fff;
       box-shadow: 0 14px 40px rgba(255,79,163,.30);
     }
     .btn-primary:hover{ transform: translateY(-1px); filter: brightness(1.02); }
     .btn-ghost{
-      background: rgba(255,255,255,.7);
+      background: rgba(255,255,255,.78);
       border: 1px solid var(--line);
       color: var(--ink);
     }
-    .btn-ghost:hover{ transform: translateY(-1px); }
+    .btn-ghost:hover{ transform: translateY(-1px); background: rgba(255,255,255,.90); }
 
-    /* Hero */
-    .hero{
-      padding: 36px 0 10px;
-    }
-    .heroGrid{
-      display:grid;
-      grid-template-columns: 1.2fr .8fr;
-      gap: 22px;
-      align-items: stretch;
-    }
-    @media (max-width: 920px){
-      .heroGrid{ grid-template-columns: 1fr; }
-    }
-
+    /* Cards */
     .card{
       background: var(--glass);
       border: 1px solid rgba(11,27,42,.08);
       border-radius: var(--radius2);
       box-shadow: var(--shadow);
+      position:relative;
+      z-index: 1;
     }
 
-    .heroLeft{ padding: 26px; position: relative; overflow:hidden; }
+    /* Sections + Premium spacing */
+    section{ padding: 28px 0; position:relative; z-index:1; }
+    .sectionTitle{
+      font-size: 20px;
+      margin: 0 0 12px;
+      letter-spacing: -.2px;
+    }
+    .muted{ color: var(--muted); }
+
+    /* Scroll animation */
+    .reveal{ opacity:0; transform: translateY(10px); }
+    .reveal.in{ opacity:1; transform: translateY(0); transition: opacity 520ms ease, transform 520ms ease; }
+
+    /* HERO */
+    .hero{ padding-top: 34px; }
+    .heroGrid{
+      display:grid;
+      grid-template-columns: 1.12fr .88fr;
+      gap: 18px;
+      align-items: stretch;
+    }
+    @media (max-width: 940px){
+      .heroGrid{ grid-template-columns: 1fr; }
+    }
+
+    .heroLeft{ padding: 26px; overflow:hidden; }
     .heroLeft:before{
       content:"";
-      position:absolute; inset:-80px -120px auto auto; width: 340px; height: 340px; border-radius: 999px;
+      position:absolute; inset:-90px -140px auto auto;
+      width: 360px; height: 360px; border-radius: 999px;
       background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.65), transparent 60%),
-                  radial-gradient(circle at 65% 70%, rgba(255,79,163,.25), transparent 62%),
-                  linear-gradient(180deg, rgba(255,210,234,.9), rgba(255,255,255,.0));
-      filter: blur(1px);
-      opacity: .9;
-      transform: rotate(8deg);
+                  radial-gradient(circle at 65% 70%, rgba(255,79,163,.22), transparent 62%),
+                  linear-gradient(180deg, rgba(255,210,234,.95), rgba(255,255,255,0));
+      opacity:.9;
+      transform: rotate(10deg);
     }
 
     h1{
-      margin: 0 0 8px;
-      font-size: clamp(30px, 3.3vw, 46px);
+      margin:0 0 10px;
+      font-size: clamp(32px, 3.4vw, 48px);
       line-height: 1.05;
-      letter-spacing: -.6px;
+      letter-spacing: -.8px;
     }
     .sub{
-      margin: 0 0 18px;
+      margin:0 0 18px;
+      font-size: 17px;
+      line-height: 1.48;
       color: var(--muted);
-      font-size: 16px;
-      line-height: 1.45;
       max-width: 60ch;
     }
 
-    .trustRow{
-      display:flex; flex-wrap:wrap; gap: 10px;
-      margin: 14px 0 0;
-    }
-    .trust{
-      display:flex; align-items:center; gap: 10px;
-      padding: 10px 12px;
-      border-radius: 16px;
+    .ctaRow{ display:flex; gap:10px; flex-wrap:wrap; }
+
+    /* Hero Visual Mock (Keks + Karte + QR) */
+    .heroRight{ padding: 20px; display:grid; gap: 12px; align-content:start; }
+    .visual{
+      border-radius: var(--radius2);
+      background:
+        radial-gradient(240px 140px at 25% 10%, rgba(255,255,255,.85), transparent 60%),
+        radial-gradient(260px 170px at 80% 25%, rgba(255,79,163,.18), transparent 60%),
+        linear-gradient(180deg, rgba(255,255,255,.78), rgba(255,255,255,.40));
       border: 1px solid rgba(11,27,42,.08);
-      background: rgba(255,255,255,.64);
+      overflow:hidden;
+      padding: 18px;
+      position: relative;
+      min-height: 280px;
+    }
+
+    .cookieBlob{
+      position:absolute; right: 14px; bottom: 16px;
+      width: 220px; height: 220px; border-radius: 999px;
+      background:
+        radial-gradient(30px 30px at 35% 30%, rgba(255,255,255,.65), transparent 60%),
+        radial-gradient(20px 20px at 70% 55%, rgba(255,255,255,.45), transparent 60%),
+        linear-gradient(180deg, var(--cookie2), var(--cookie));
+      box-shadow: 0 22px 70px rgba(196,135,82,.30);
+      border: 1px solid rgba(11,27,42,.10);
+    }
+
+    .cookieCard{
+      position:absolute; left: 16px; top: 18px;
+      width: 64%;
+      max-width: 340px;
+      background: rgba(255,255,255,.84);
+      border: 1px solid rgba(11,27,42,.10);
+      border-radius: 22px;
+      padding: 14px;
+      box-shadow: 0 18px 60px rgba(11,27,42,.10);
+      transform: rotate(-1.4deg);
+    }
+    .cookieCard b{ display:block; margin-bottom: 6px; }
+    .cookieCard p{ margin:0; color: var(--muted); font-size: 13px; line-height: 1.35; }
+
+    .qr{
+      width: 66px; height: 66px; border-radius: 16px;
+      background:
+        linear-gradient(90deg, rgba(11,27,42,.10) 1px, transparent 1px) 0 0/10px 10px,
+        linear-gradient(0deg, rgba(11,27,42,.10) 1px, transparent 1px) 0 0/10px 10px,
+        rgba(255,255,255,.92);
+      border: 1px solid rgba(11,27,42,.10);
+      margin-left:auto;
+      flex:0 0 auto;
+    }
+
+    .chips{
+      position:absolute; right: 22px; top: 18px;
+      display:grid; gap: 8px;
+    }
+    .chip{
+      font-size: 12px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(11,27,42,.10);
+      background: rgba(255,255,255,.75);
+      color: var(--muted);
+      cursor:pointer;
+      transition: transform var(--t) ease, background var(--t) ease;
+      user-select:none;
+      text-align:center;
+      white-space:nowrap;
+    }
+    .chip:hover{ transform: translateY(-1px); background: rgba(255,255,255,.90); }
+
+    /* TRUST BAR (4 mini-cards) */
+    .trustBar{
+      display:grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-top: 18px;
+    }
+    @media (max-width: 940px){
+      .trustBar{ grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 520px){
+      .trustBar{ grid-template-columns: 1fr; }
+    }
+    .trustCard{
+      padding: 12px 12px;
+      border-radius: 18px;
+      background: rgba(255,255,255,.72);
+      border: 1px solid rgba(11,27,42,.08);
+      display:flex; gap: 10px; align-items:center;
       color: var(--muted);
       font-size: 13px;
       white-space: nowrap;
@@ -193,105 +315,18 @@
       color: var(--pink);
       flex: 0 0 auto;
     }
+    .trustCard b{ color: var(--ink); font-weight: 900; }
 
-    /* Right visual */
-    .heroRight{
-      padding: 22px;
-      display:grid;
-      gap: 12px;
-      align-content: start;
-    }
-    .visual{
-      border-radius: var(--radius2);
-      background:
-        radial-gradient(240px 140px at 25% 10%, rgba(255,255,255,.85), transparent 60%),
-        radial-gradient(260px 170px at 80% 25%, rgba(255,79,163,.18), transparent 60%),
-        linear-gradient(180deg, rgba(255,255,255,.72), rgba(255,255,255,.35));
-      border: 1px solid rgba(11,27,42,.08);
-      overflow:hidden;
-      padding: 18px;
-      position: relative;
-      min-height: 260px;
-    }
-    .cookieCard{
-      position:absolute; left: 16px; top: 18px;
-      width: 62%;
-      max-width: 320px;
-      background: rgba(255,255,255,.82);
-      border: 1px solid rgba(11,27,42,.10);
-      border-radius: 22px;
-      padding: 14px;
-      box-shadow: 0 18px 60px rgba(11,27,42,.10);
-      transform: rotate(-1.2deg);
-    }
-    .cookieCard .qr{
-      width: 64px; height: 64px; border-radius: 16px;
-      background:
-        linear-gradient(90deg, rgba(11,27,42,.10) 1px, transparent 1px) 0 0/10px 10px,
-        linear-gradient(0deg, rgba(11,27,42,.10) 1px, transparent 1px) 0 0/10px 10px,
-        rgba(255,255,255,.9);
-      border: 1px solid rgba(11,27,42,.10);
-      margin-left:auto;
-    }
-    .cookieCard b{ display:block; margin-bottom:6px; }
-    .cookieCard p{ margin:0; color: var(--muted); font-size: 13px; line-height: 1.35; }
-
-    .cookieBlob{
-      position:absolute; right: 12px; bottom: 18px;
-      width: 210px; height: 210px; border-radius: 999px;
-      background:
-        radial-gradient(30px 30px at 35% 30%, rgba(255,255,255,.65), transparent 60%),
-        radial-gradient(20px 20px at 70% 55%, rgba(255,255,255,.45), transparent 60%),
-        linear-gradient(180deg, var(--cookie2), var(--cookie));
-      box-shadow: 0 20px 60px rgba(196,135,82,.30);
-      border: 1px solid rgba(11,27,42,.10);
-    }
-    .chips{
-      position:absolute; right: 26px; top: 22px;
-      display:grid; gap: 8px;
-    }
-    .chip{
-      font-size: 12px;
-      padding: 8px 10px;
-      border-radius: 999px;
-      border: 1px solid rgba(11,27,42,.10);
-      background: rgba(255,255,255,.7);
-      color: var(--muted);
-      cursor:pointer;
-      transition: transform var(--t) ease, background var(--t) ease;
-      user-select:none;
-      text-align:center;
-      white-space:nowrap;
-    }
-    .chip:hover{ transform: translateY(-1px); background: rgba(255,255,255,.85); }
-
-    .miniNote{
-      font-size: 12px; color: var(--muted);
-      padding: 10px 12px;
-      border-radius: 16px;
-      border: 1px solid rgba(11,27,42,.08);
-      background: rgba(255,255,255,.65);
-    }
-
-    /* Sections */
-    section{ padding: 18px 0; }
-    .sectionTitle{
-      font-size: 20px;
-      margin: 0 0 10px;
-      letter-spacing: -.2px;
-    }
-
-    .how{
+    /* HOW IT WORKS (3 cards) */
+    .howGrid{
       display:grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 14px;
     }
-    @media (max-width: 920px){
-      .how{ grid-template-columns: 1fr; }
+    @media (max-width: 940px){
+      .howGrid{ grid-template-columns: 1fr; }
     }
-    .stepCard{ padding: 16px; border-radius: var(--radius2); }
-    .stepCard h3{ margin: 0 0 6px; font-size: 16px; }
-    .stepCard p{ margin: 0; color: var(--muted); line-height: 1.45; font-size: 14px; }
+    .stepCard{ padding: 16px; }
     .stepNum{
       width: 38px; height: 38px; border-radius: 14px;
       display:grid; place-items:center;
@@ -301,40 +336,49 @@
       box-shadow: 0 14px 34px rgba(255,79,163,.22);
       margin-bottom: 10px;
     }
+    .stepCard h3{ margin: 0 0 6px; font-size: 16px; }
+    .stepCard p{ margin: 0; color: var(--muted); line-height: 1.45; font-size: 14px; }
 
-    /* Configurator */
+    /* CONFIGURATOR */
     .config{ padding: 18px; }
+    .configTop{
+      display:flex; align-items:flex-end; justify-content:space-between;
+      gap: 12px; flex-wrap:wrap;
+      margin-bottom: 12px;
+    }
+
+    /* Stepper pills */
+    .steps{
+      display:flex; gap: 8px; flex-wrap:wrap;
+      margin: 10px 0 14px;
+    }
+    .stepPill{
+      padding: 10px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(11,27,42,.10);
+      background: rgba(255,255,255,.72);
+      color: var(--muted);
+      cursor:pointer;
+      font-weight: 900;
+      font-size: 13px;
+      transition: transform var(--t) ease, background var(--t) ease;
+      user-select:none;
+    }
+    .stepPill:hover{ transform: translateY(-1px); }
+    .stepPill.active{
+      background: rgba(255,79,163,.12);
+      border-color: rgba(255,79,163,.25);
+      color: var(--ink);
+    }
+
     .configGrid{
       display:grid;
-      grid-template-columns: 1.1fr .9fr;
+      grid-template-columns: 1.12fr .88fr;
       gap: 14px;
       align-items:start;
     }
     @media (max-width: 980px){
       .configGrid{ grid-template-columns: 1fr; }
-    }
-
-    .tabs{
-      display:flex; gap: 8px; flex-wrap: wrap;
-      margin-bottom: 12px;
-    }
-    .tab{
-      padding: 10px 12px;
-      border-radius: 999px;
-      border: 1px solid rgba(11,27,42,.10);
-      background: rgba(255,255,255,.65);
-      color: var(--muted);
-      cursor:pointer;
-      font-weight: 800;
-      font-size: 13px;
-      transition: transform var(--t) ease, background var(--t) ease;
-      user-select:none;
-    }
-    .tab:hover{ transform: translateY(-1px); }
-    .tab.active{
-      background: rgba(255,79,163,.12);
-      border-color: rgba(255,79,163,.25);
-      color: var(--ink);
     }
 
     .panel{ display:none; }
@@ -344,58 +388,47 @@
       to{ transform: translateY(0); opacity: 1; }
     }
 
-    .field{
-      display:grid; gap: 8px;
-      margin: 10px 0 14px;
-    }
-    label{ font-size: 13px; color: var(--muted); font-weight: 800; }
+    /* Inputs: big, round, padded */
+    .field{ display:grid; gap: 8px; margin: 10px 0 14px; }
+    label{ font-size: 13px; color: var(--muted); font-weight: 900; }
     input, textarea, select{
       width:100%;
-      border-radius: 16px;
+      border-radius: 18px;
       border: 1px solid rgba(11,27,42,.12);
-      background: rgba(255,255,255,.78);
-      padding: 12px 12px;
+      background: rgba(255,255,255,.82);
+      padding: 14px 14px;
       font: inherit;
-      outline: none;
+      outline:none;
       transition: box-shadow var(--t) ease, border-color var(--t) ease;
     }
-    textarea{ min-height: 92px; resize: vertical; }
-    input:focus, textarea:focus, select:focus{
-      box-shadow: var(--focus);
-      border-color: rgba(255,79,163,.38);
-    }
+    textarea{ min-height: 104px; resize: vertical; }
+    input:focus, textarea:focus, select:focus{ box-shadow: var(--focus); border-color: rgba(255,79,163,.38); }
 
-    .templates{
-      display:flex; flex-wrap: wrap; gap: 8px;
-      margin-bottom: 8px;
-    }
+    /* Templates as sweet chips */
+    .templates{ display:flex; flex-wrap:wrap; gap: 8px; margin-bottom: 10px; }
     .tpl{
       padding: 9px 10px;
       border-radius: 999px;
       border: 1px solid rgba(11,27,42,.10);
-      background: rgba(255,255,255,.68);
+      background: rgba(255,255,255,.74);
       color: var(--muted);
       cursor:pointer;
       font-size: 12px;
       user-select:none;
+      transition: background var(--t) ease, transform var(--t) ease;
     }
-    .tpl:hover{ background: rgba(255,255,255,.88); }
+    .tpl:hover{ background: rgba(255,255,255,.92); transform: translateY(-1px); }
 
-    .twocol{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-    }
-    @media (max-width: 560px){
-      .twocol{ grid-template-columns: 1fr; }
-    }
+    /* Veredeln: swatches */
+    .twocol{ display:grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    @media (max-width: 560px){ .twocol{ grid-template-columns: 1fr; } }
 
     .swatches{ display:flex; gap: 10px; flex-wrap:wrap; }
     .sw{
-      width: 42px; height: 42px; border-radius: 16px;
+      width: 44px; height: 44px; border-radius: 18px;
       border: 1px solid rgba(11,27,42,.12);
       cursor:pointer;
-      position: relative;
+      position:relative;
       box-shadow: 0 10px 26px rgba(11,27,42,.08);
     }
     .sw.active:after{
@@ -407,87 +440,47 @@
       text-shadow: 0 2px 10px rgba(11,27,42,.35);
     }
 
-    /* Preview / Summary */
-    .preview{
-      padding: 16px;
-      border-radius: var(--radius2);
+    /* Extras collapsible */
+    details.extras{
+      margin-top: 10px;
+      border-radius: 18px;
       border: 1px solid rgba(11,27,42,.10);
-      background: rgba(255,255,255,.7);
-      position: sticky;
-      top: 88px;
-    }
-    @media (max-width: 980px){
-      .preview{ position: static; }
-    }
-    .keksPreview{
-      border-radius: 999px;
-      width: 180px; height: 180px;
-      margin: 6px auto 14px;
-      border: 1px solid rgba(11,27,42,.12);
-      box-shadow: 0 18px 50px rgba(196,135,82,.25);
-      position: relative;
+      background: rgba(255,255,255,.74);
       overflow:hidden;
     }
-    .stamp{
-      position:absolute;
-      right: 18px; bottom: 18px;
-      width: 52px; height: 52px;
-      border-radius: 18px;
+    details.extras summary{
+      list-style:none;
+      cursor:pointer;
+      padding: 12px 12px;
+      display:flex; align-items:center; justify-content:space-between; gap: 10px;
+      font-weight: 900; color: var(--ink);
+    }
+    details.extras summary::-webkit-details-marker{ display:none; }
+    .chev{
+      width: 28px; height: 28px; border-radius: 12px;
+      border: 1px solid rgba(11,27,42,.10);
+      background: rgba(255,255,255,.78);
       display:grid; place-items:center;
-      font-weight: 900;
-      color: rgba(11,27,42,.72);
-      background: rgba(255,255,255,.60);
-      border: 1px dashed rgba(11,27,42,.20);
-      transform: rotate(8deg);
-      opacity: .0;
-      transition: opacity var(--t) ease;
-    }
-    .stamp.on{ opacity: 1; }
-
-    .summary{
-      display:grid; gap: 10px;
-      font-size: 13px;
       color: var(--muted);
+      transition: transform var(--t) ease;
+      flex: 0 0 auto;
     }
-    .sumRow{
-      display:flex; justify-content:space-between; gap: 10px;
-      border-bottom: 1px dashed rgba(11,27,42,.12);
-      padding-bottom: 8px;
-    }
-    .sumRow b{ color: var(--ink); }
+    details[open] .chev{ transform: rotate(180deg); }
 
-    .bigPrice{
-      font-size: 24px; font-weight: 900; color: var(--ink);
-      letter-spacing: -.3px;
-    }
-
-    .note{
-      font-size: 12px; color: var(--muted);
-      line-height: 1.4;
-    }
-
-    /* Extras */
-    .extrasRow{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-    }
-    @media (max-width: 720px){
-      .extrasRow{ grid-template-columns: 1fr; }
-    }
+    .extrasBody{ padding: 0 12px 12px; display:grid; gap: 10px; }
     .check{
       display:flex; align-items:flex-start; gap: 10px;
       padding: 12px 12px;
       border-radius: 18px;
       border: 1px solid rgba(11,27,42,.10);
-      background: rgba(255,255,255,.66);
+      background: rgba(255,255,255,.80);
       cursor:pointer;
       user-select:none;
     }
     .box{
       width: 18px; height: 18px; border-radius: 6px;
       border: 1px solid rgba(11,27,42,.20);
-      background: rgba(255,255,255,.8);
+      background: rgba(255,255,255,.88);
       flex: 0 0 auto;
       margin-top: 2px;
       display:grid; place-items:center;
@@ -499,17 +492,16 @@
     .check small{ display:block; color: var(--muted); margin-top: 2px; line-height: 1.35; }
     .check b{ display:block; }
 
-    /* Offer band */
+    /* Bundle row */
     .offer{
-      margin-top: 12px;
       padding: 12px 12px;
       border-radius: 18px;
       background: linear-gradient(180deg, rgba(255,79,163,.14), rgba(255,79,163,.06));
       border: 1px solid rgba(255,79,163,.22);
       display:flex; align-items:center; justify-content:space-between; gap: 12px;
       flex-wrap:wrap;
+      margin-top: 10px;
     }
-    .offer b{ letter-spacing: -.2px; }
     .qty{
       display:flex; align-items:center; gap: 8px;
     }
@@ -517,40 +509,87 @@
       width: 40px; height: 40px;
       border-radius: 14px;
       border: 1px solid rgba(11,27,42,.12);
-      background: rgba(255,255,255,.75);
+      background: rgba(255,255,255,.80);
       cursor:pointer;
       font-weight: 900;
     }
     .qty input{
-      width: 60px;
+      width: 64px;
       text-align:center;
       padding: 10px 8px;
       border-radius: 14px;
     }
 
-    /* Footer */
-    footer{
-      padding: 26px 0 40px;
-      color: var(--muted);
-      font-size: 13px;
+    /* Sticky summary (OnlyFans vibe) */
+    .summary{
+      padding: 16px;
+      border-radius: var(--radius2);
+      border: 1px solid rgba(11,27,42,.10);
+      background: rgba(255,255,255,.74);
+      position: sticky;
+      top: 88px;
     }
+    @media (max-width: 980px){
+      .summary{ position: static; }
+    }
+
+    .keksPreview{
+      border-radius: 999px;
+      width: 184px; height: 184px;
+      margin: 6px auto 14px;
+      border: 1px solid rgba(11,27,42,.12);
+      box-shadow: 0 18px 50px rgba(196,135,82,.25);
+      position: relative;
+      overflow:hidden;
+      background: linear-gradient(180deg, var(--cookie2), var(--cookie));
+    }
+    .stamp{
+      position:absolute;
+      right: 18px; bottom: 18px;
+      width: 52px; height: 52px;
+      border-radius: 18px;
+      display:grid; place-items:center;
+      font-weight: 900;
+      color: rgba(11,27,42,.72);
+      background: rgba(255,255,255,.62);
+      border: 1px dashed rgba(11,27,42,.20);
+      transform: rotate(8deg);
+      opacity: 0;
+      transition: opacity var(--t) ease;
+    }
+    .stamp.on{ opacity: 1; }
+
+    .sumGrid{ display:grid; gap: 10px; font-size: 13px; color: var(--muted); }
+    .sumRow{
+      display:flex; justify-content:space-between; gap: 10px;
+      border-bottom: 1px dashed rgba(11,27,42,.12);
+      padding-bottom: 8px;
+    }
+    .sumRow b{ color: var(--ink); font-weight: 900; }
+    .bigPrice{ font-size: 24px; font-weight: 900; color: var(--ink); letter-spacing: -.3px; }
+    .note{ font-size: 12px; color: var(--muted); line-height: 1.4; }
+
+    /* Footer */
+    footer{ padding: 28px 0 44px; color: var(--muted); font-size: 13px; }
     .footerGrid{
-      display:flex; flex-wrap: wrap; gap: 10px 16px;
-      align-items:center;
+      display:flex; flex-wrap:wrap; gap: 10px 16px; align-items:center;
       border-top: 1px solid rgba(11,27,42,.10);
       padding-top: 16px;
     }
-    .footerGrid a{
-      text-decoration: underline;
-      text-underline-offset: 3px;
-    }
+    .footerGrid a{ text-decoration: underline; text-underline-offset: 3px; }
 
-    /* Tiny helper */
-    .hidden{ display:none !important; }
+    /* utility */
+    .sr{ position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden; }
   </style>
 </head>
 
 <body>
+  <div class="clouds" aria-hidden="true">
+    <div class="cloud c1"></div>
+    <div class="cloud c2"></div>
+    <div class="cloud c3"></div>
+  </div>
+
   <!-- TOPBAR -->
   <div class="topbar">
     <div class="wrap">
@@ -570,32 +609,32 @@
   </div>
 
   <main class="wrap">
-
     <!-- HERO -->
     <section class="hero">
       <div class="heroGrid">
-        <div class="card heroLeft">
+        <div class="card heroLeft reveal">
           <h1>Gestalte einen Keks mit deiner Message.</h1>
           <p class="sub">
-            Verschicken. Essen. Zurückantworten per QR — ohne Account, ohne Stress.
+            Eine kleine Überraschung im Briefkasten — süß, persönlich und mit Reply-Loop per QR.
           </p>
 
-          <div style="display:flex; gap:10px; flex-wrap:wrap;">
+          <div class="ctaRow">
             <button class="btn btn-primary" id="startBtn">Keks gestalten</button>
-            <button class="btn btn-ghost" id="howBtn">So läuft’s</button>
+            <button class="btn btn-ghost" id="howBtn">Kurz erklärt</button>
           </div>
 
-          <div class="trustRow" role="list" aria-label="Trust Signals">
-            <div class="trust" role="listitem"><span class="icon">✓</span> sicher bezahlen</div>
-            <div class="trust" role="listitem"><span class="icon">⏱</span> schnell fertig</div>
-            <div class="trust" role="listitem"><span class="icon">♡</span> liebevoll verpackt</div>
-            <div class="trust" role="listitem"><span class="icon">QR</span> Reply-Loop</div>
+          <!-- TRUST BAR -->
+          <div class="trustBar" aria-label="Trust Bar">
+            <div class="trustCard"><span class="icon">⏱</span> <b>2–3</b>&nbsp;Werktage</div>
+            <div class="trustCard"><span class="icon">↻</span> <b>Trackbar</b>&nbsp;Reply</div>
+            <div class="trustCard"><span class="icon">✓</span> <b>Sicher</b>&nbsp;bezahlen</div>
+            <div class="trustCard"><span class="icon">i</span> <b>Allergene</b>&nbsp;& Zutaten</div>
           </div>
         </div>
 
-        <div class="card heroRight">
-          <div class="visual" aria-label="Produkt Visual">
-            <div class="chips" aria-label="Template Vorschläge">
+        <div class="card heroRight reveal">
+          <div class="visual" aria-label="Hero Visual Mock">
+            <div class="chips" aria-label="Message-Ideen">
               <div class="chip" data-msg="Hab an dich gedacht ♡">Hab an dich gedacht</div>
               <div class="chip" data-msg="Du schaffst das. Ich glaub an dich.">Motivation</div>
               <div class="chip" data-msg="Heute bist du dran: Pause machen ☁️">Self-Care</div>
@@ -603,8 +642,8 @@
             </div>
 
             <div class="cookieCard">
-              <b>Dein Keks kommt mit Karte + QR</b>
-              <p>Empfänger scannt, antwortet in 20 Sekunden und du bekommst Post zurück.</p>
+              <b>Keks + Karte + QR</b>
+              <p>Empfänger scannt, antwortet schnell — du bekommst Post zurück.</p>
               <div style="display:flex; align-items:flex-end; gap: 10px; margin-top: 10px;">
                 <div style="flex:1; font-size:12px; color:var(--muted);">
                   Reply-Code wird automatisch erstellt.
@@ -616,68 +655,69 @@
             <div class="cookieBlob" aria-hidden="true"></div>
           </div>
 
-          <div class="miniNote">
-            Fokus: <b>einfach</b> · deko-hübsch · klarer Flow. Extras sind optional — Hauptsache: <b>Keks gestalten</b>.
+          <div class="pill" style="justify-content:center;">
+            Fokus: <b style="color:var(--ink);">super einfach</b> · deko-hübsch · clean
           </div>
         </div>
       </div>
     </section>
 
-    <!-- HOW IT WORKS -->
+    <!-- HOW -->
     <section id="how">
-      <h2 class="sectionTitle">So läuft’s (kurz & süß)</h2>
-      <div class="how">
-        <div class="card stepCard">
-          <div class="stepNum">1</div>
-          <h3>Message schreiben</h3>
-          <p>Vorlage wählen oder frei tippen. Kurz reicht.</p>
-        </div>
-        <div class="card stepCard">
-          <div class="stepNum">2</div>
-          <h3>Keks veredeln</h3>
-          <p>Farbe + Stempel. Fertig. Kein Gefrickel.</p>
-        </div>
-        <div class="card stepCard">
-          <div class="stepNum">3</div>
-          <h3>Abschicken & Reply kriegen</h3>
-          <p>Empfänger scannt QR und antwortet. Du bekommst den Reply.</p>
+      <div class="reveal">
+        <h2 class="sectionTitle">So läuft’s (kurz & süß)</h2>
+        <div class="howGrid">
+          <div class="card stepCard reveal">
+            <div class="stepNum">1</div>
+            <h3>Message wählen</h3>
+            <p>Vorlage antippen oder frei tippen. Kurz reicht.</p>
+          </div>
+          <div class="card stepCard reveal">
+            <div class="stepNum">2</div>
+            <h3>Keks veredeln</h3>
+            <p>Farbe + Stempel. Fertig. Kein Gefrickel.</p>
+          </div>
+          <div class="card stepCard reveal">
+            <div class="stepNum">3</div>
+            <h3>Abschicken & Reply</h3>
+            <p>QR wird gescannt, Antwort kommt zurück zu dir.</p>
+          </div>
         </div>
       </div>
     </section>
 
     <!-- CONFIGURATOR -->
     <section id="config">
-      <div class="card config">
-        <div style="display:flex; align-items:flex-end; justify-content:space-between; gap: 12px; flex-wrap:wrap;">
+      <div class="card config reveal">
+        <div class="configTop">
           <div>
             <h2 class="sectionTitle" style="margin:0;">Gestalte deinen Keks</h2>
-            <div style="color:var(--muted); font-size:13px; margin-top:6px;">
-              3 Steps. Clean. Deko-chichi. Fertig.
+            <div class="muted" style="font-size:13px; margin-top:6px;">
+              3 Steps · clean · deko-chichi · fertig.
             </div>
           </div>
-
           <div class="pill" title="Optional später aktivierbar">
-            <span class="dot"></span> Extras: Bro-Kekse, Token-Stempel, Bundles
+            <span class="dot"></span> Extras später: „Bro/Moin“, digitale Stempel, Bundles
           </div>
         </div>
 
-        <div class="configGrid" style="margin-top:14px;">
-          <!-- LEFT: Flow -->
-          <div>
-            <div class="tabs" role="tablist" aria-label="Konfigurator Steps">
-              <button class="tab active" data-tab="p1" role="tab" aria-selected="true">1) Message</button>
-              <button class="tab" data-tab="p2" role="tab" aria-selected="false">2) Veredeln</button>
-              <button class="tab" data-tab="p3" role="tab" aria-selected="false">3) Versand & Pay</button>
-            </div>
+        <div class="steps" role="tablist" aria-label="Stepper">
+          <button class="stepPill active" data-tab="p1" role="tab" aria-selected="true">1&nbsp;Message</button>
+          <button class="stepPill" data-tab="p2" role="tab" aria-selected="false">2&nbsp;Veredeln</button>
+          <button class="stepPill" data-tab="p3" role="tab" aria-selected="false">3&nbsp;Versand & Pay</button>
+        </div>
 
+        <div class="configGrid">
+          <!-- LEFT -->
+          <div>
             <!-- PANEL 1 -->
             <div class="panel active" id="p1" role="tabpanel">
               <div class="templates" aria-label="Templates">
-                <div class="tpl" data-tpl="Danke, dass du da bist. ♡">Danke</div>
-                <div class="tpl" data-tpl="Du schaffst das. Ich glaub an dich. ☁️">Motivation</div>
+                <div class="tpl" data-tpl="Danke, dass du da bist. ♡">Danke ♡</div>
+                <div class="tpl" data-tpl="Du schaffst das. Ich glaub an dich. ☁️">Du schaffst das ☁️</div>
                 <div class="tpl" data-tpl="Ich vermiss dich. Wann sehen wir uns?">Vermissen</div>
                 <div class="tpl" data-tpl="Heute: Pause. Tee. Du. ♡">Self-Care</div>
-                <div class="tpl" data-tpl="Kurzer Reminder: Du bist großartig.">Sweet</div>
+                <div class="tpl" data-tpl="Kurzer Reminder: Du bist großartig.">Reminder</div>
               </div>
 
               <div class="field">
@@ -691,7 +731,7 @@
 
               <div style="display:flex; gap:10px; flex-wrap:wrap;">
                 <button class="btn btn-primary" id="toP2">Weiter: Veredeln</button>
-                <button class="btn btn-ghost" id="quickFill">Nimm ein Template</button>
+                <button class="btn btn-ghost" id="quickFill">Template nehmen</button>
               </div>
             </div>
 
@@ -706,11 +746,11 @@
                     <div class="sw" data-color="pink" title="Rosé" style="background: linear-gradient(180deg, #ffd1e8, #ff93c8);"></div>
                     <div class="sw" data-color="choco" title="Schoko" style="background: linear-gradient(180deg, #a06a55, #6f3f33);"></div>
                   </div>
-                  <div class="note">Minimal: nur 4 Styles. Mehr später.</div>
+                  <div class="note">Minimal: 4 Styles. Mehr später.</div>
                 </div>
 
                 <div class="field">
-                  <label for="stampSel">Stempel (digital)</label>
+                  <label for="stampSel">Stempel</label>
                   <select id="stampSel">
                     <option value="none">Kein Stempel</option>
                     <option value="♡">Herz ♡</option>
@@ -718,14 +758,14 @@
                     <option value="☺">Smile ☺</option>
                     <option value="✿">Blume ✿</option>
                   </select>
-                  <div class="note">Stempel ist optional. Kein Stress.</div>
+                  <div class="note">Optional. Kein Stress.</div>
                 </div>
               </div>
 
               <div class="offer" aria-label="Bundle Angebot">
                 <div>
                   <b>Bundle-Deal:</b> Kauf 3, erhalte 25% Rabatt
-                  <div class="note">Pilot-Logik eingebaut. UI bleibt clean.</div>
+                  <div class="note">Rabatt wird automatisch gerechnet.</div>
                 </div>
                 <div class="qty" aria-label="Menge">
                   <button id="minus" aria-label="Menge reduzieren">−</button>
@@ -734,53 +774,42 @@
                 </div>
               </div>
 
+              <details class="extras">
+                <summary>
+                  Extras (optional)
+                  <span class="chev" aria-hidden="true">⌄</span>
+                </summary>
+                <div class="extrasBody">
+                  <div class="check" id="giftWrap" role="checkbox" aria-checked="false" tabindex="0">
+                    <div class="box" aria-hidden="true"></div>
+                    <div>
+                      <b>Geschenk-Verpackung</b>
+                      <small>Extra hübsch, extra safe. (+2,50€)</small>
+                    </div>
+                  </div>
+
+                  <div class="check" id="futureFun" role="checkbox" aria-checked="false" tabindex="0" title="Feature-Flag später">
+                    <div class="box" aria-hidden="true"></div>
+                    <div>
+                      <b>„Bro / Was geht / Moin“ Kekse (später)</b>
+                      <small>Als Zusatzfeature, ohne den Hauptflow zu stören.</small>
+                    </div>
+                  </div>
+                </div>
+              </details>
+
               <div style="margin-top:12px; display:flex; gap:10px; flex-wrap:wrap;">
                 <button class="btn btn-primary" id="toP3">Weiter: Versand & Pay</button>
                 <button class="btn btn-ghost" id="backP1">Zurück</button>
-              </div>
-
-              <div style="margin-top:14px;">
-                <div class="note">
-                  Optional später (Feature-Flags): „Bro/Was geht/Moin“ Kekse als eigene Kategorie, ohne den Hauptflow zu stören.
-                </div>
               </div>
             </div>
 
             <!-- PANEL 3 -->
             <div class="panel" id="p3" role="tabpanel">
-              <div class="extrasRow">
-                <div class="field">
-                  <label for="name">Absender-Name (optional)</label>
-                  <input id="name" placeholder="z.B. Lisa" />
-                </div>
-                <div class="field">
-                  <label for="toName">Empfänger-Name (optional)</label>
-                  <input id="toName" placeholder="z.B. Mia" />
-                </div>
-              </div>
-
               <div class="field">
                 <label for="addr">Versandadresse</label>
                 <input id="addr" placeholder="Straße & Hausnr., PLZ Ort" />
-                <div class="note">Bitte so, dass Postbotin direkt lächelt.</div>
-              </div>
-
-              <div class="extrasRow">
-                <div class="check" id="giftWrap" role="checkbox" aria-checked="false" tabindex="0">
-                  <div class="box" aria-hidden="true"></div>
-                  <div>
-                    <b>Geschenk-Verpackung</b>
-                    <small>Extra hübsch, extra safe. (+2,50€)</small>
-                  </div>
-                </div>
-
-                <div class="check" id="photoOpt" role="checkbox" aria-checked="false" tabindex="0">
-                  <div class="box" aria-hidden="true"></div>
-                  <div>
-                    <b>Mini-Foto (später)</b>
-                    <small>Feature-Flag. UI ist schon vorbereitet.</small>
-                  </div>
-                </div>
+                <div class="note">Neutral & sauber: keine Warn-Optik hier.</div>
               </div>
 
               <div style="margin-top:12px; display:flex; gap:10px; flex-wrap:wrap;">
@@ -789,18 +818,18 @@
               </div>
 
               <div style="margin-top:12px;" class="note">
-                Allergene/Details kommen nach Checkout oder im Footer. Pilot-Charge: begrenzt.
+                Allergene & Zutaten findest du im Footer + in der Trust-Bar.
               </div>
             </div>
           </div>
 
-          <!-- RIGHT: Preview / Summary -->
-          <aside class="preview" aria-label="Vorschau & Zusammenfassung">
+          <!-- RIGHT: Sticky Summary -->
+          <aside class="summary" aria-label="Zusammenfassung">
             <div class="keksPreview" id="keksPreview" aria-label="Keks Vorschau">
               <div class="stamp" id="stamp">♡</div>
             </div>
 
-            <div class="summary">
+            <div class="sumGrid">
               <div class="sumRow"><span>Produkt</span><b>Reply-Keks</b></div>
               <div class="sumRow"><span>Menge</span><b id="sumQty">1</b></div>
               <div class="sumRow"><span>Bundle</span><b id="sumBundle">–</b></div>
@@ -808,12 +837,12 @@
               <div class="sumRow"><span>Extras</span><b id="sumExtras">–</b></div>
 
               <div style="display:flex; align-items:baseline; justify-content:space-between; gap:10px; margin-top:4px;">
-                <span style="color:var(--muted);">Gesamt</span>
+                <span class="muted">Gesamt</span>
                 <span class="bigPrice" id="sumTotal">9,90€</span>
               </div>
 
               <div class="note" id="sumNote">
-                Preislogik ist MVP-ready. Stripe-Link wird in CONFIG gesetzt.
+                Tipp: Ab 3 Stück gibt’s 25% Bundle-Rabatt.
               </div>
             </div>
           </aside>
@@ -821,21 +850,21 @@
       </div>
     </section>
 
-    <footer>
+    <footer class="reveal">
       <div class="footerGrid">
         <span>© <span id="y"></span> OnlyKeks</span>
-        <a href="#0" aria-label="Impressum">Impressum</a>
-        <a href="#0" aria-label="Datenschutz">Datenschutz</a>
-        <a href="#0" aria-label="AGB">AGB</a>
-        <a href="#0" aria-label="Versand">Versand</a>
-        <a href="#0" aria-label="Allergene">Allergene</a>
+        <a href="#0">Impressum</a>
+        <a href="#0">Datenschutz</a>
+        <a href="#0">AGB</a>
+        <a href="#0">Versand</a>
+        <a href="#0">Allergene & Zutaten</a>
       </div>
     </footer>
   </main>
 
   <script>
     /*** CONFIG: NUR HIER STRIPE EINTRAGEN ***/
-    const STRIPE_PAYMENT_LINK = "https://buy.stripe.com/aBcDeFgHiJkLmNoPqR"; // <- dein Link
+    const STRIPE_PAYMENT_LINK = "https://buy.stripe.com/aBcDeFgHiJkLmNoPqR"; // <- HIER DEIN STRIPE LINK
 
     /*** PRICING (MVP) ***/
     const BASE_PRICE = 9.90;
@@ -843,47 +872,90 @@
     const BUNDLE_QTY = 3;
     const BUNDLE_DISCOUNT = 0.25; // 25%
 
-    // Elements
-    const y = document.getElementById("y");
-    y.textContent = new Date().getFullYear();
+    // Year
+    document.getElementById("y").textContent = new Date().getFullYear();
 
+    // Nav
     const startBtn = document.getElementById("startBtn");
     const howBtn = document.getElementById("howBtn");
     const jumpToConfig = document.getElementById("jumpToConfig");
+    function scrollToId(id){
+      const el = document.getElementById(id);
+      if(el) el.scrollIntoView({behavior:"smooth", block:"start"});
+    }
+    startBtn.addEventListener("click", () => scrollToId("config"));
+    jumpToConfig.addEventListener("click", () => scrollToId("config"));
+    howBtn.addEventListener("click", () => scrollToId("how"));
 
-    const tabs = Array.from(document.querySelectorAll(".tab"));
-    const panels = {
-      p1: document.getElementById("p1"),
-      p2: document.getElementById("p2"),
-      p3: document.getElementById("p3")
-    };
+    // Stepper
+    const pills = Array.from(document.querySelectorAll(".stepPill"));
+    const panels = { p1: document.getElementById("p1"), p2: document.getElementById("p2"), p3: document.getElementById("p3") };
+    const payBtn = document.getElementById("payBtn");
 
+    function setPanel(id){
+      pills.forEach(p => {
+        const on = p.dataset.tab === id;
+        p.classList.toggle("active", on);
+        p.setAttribute("aria-selected", on ? "true" : "false");
+      });
+      Object.values(panels).forEach(p => p.classList.remove("active"));
+      panels[id].classList.add("active");
+      if(id === "p3") payBtn.href = STRIPE_PAYMENT_LINK;
+    }
+    pills.forEach(p => p.addEventListener("click", () => setPanel(p.dataset.tab)));
+
+    // Message
     const msg = document.getElementById("msg");
     const count = document.getElementById("count");
     const templates = Array.from(document.querySelectorAll(".tpl"));
     const chips = Array.from(document.querySelectorAll(".chip"));
-
-    const toP2 = document.getElementById("toP2");
-    const toP3 = document.getElementById("toP3");
-    const backP1 = document.getElementById("backP1");
-    const backP2 = document.getElementById("backP2");
     const quickFill = document.getElementById("quickFill");
 
+    templates.forEach(t => t.addEventListener("click", () => {
+      msg.value = t.dataset.tpl || "";
+      msg.dispatchEvent(new Event("input"));
+    }));
+    chips.forEach(c => c.addEventListener("click", () => {
+      msg.value = c.dataset.msg || "";
+      msg.dispatchEvent(new Event("input"));
+      scrollToId("config");
+    }));
+    quickFill.addEventListener("click", () => {
+      const t = templates[Math.floor(Math.random() * templates.length)];
+      msg.value = t.dataset.tpl || "Hab an dich gedacht ♡";
+      msg.dispatchEvent(new Event("input"));
+    });
+
+    msg.addEventListener("input", () => {
+      count.textContent = String((msg.value || "").length);
+      updateSummary();
+    });
+
+    // Next/back buttons
+    document.getElementById("toP2").addEventListener("click", () => {
+      if((msg.value || "").trim().length < 2){ msg.focus(); return; }
+      setPanel("p2");
+    });
+    document.getElementById("toP3").addEventListener("click", () => setPanel("p3"));
+    document.getElementById("backP1").addEventListener("click", () => setPanel("p1"));
+    document.getElementById("backP2").addEventListener("click", () => setPanel("p2"));
+
+    // Veredeln
     const swatches = Array.from(document.querySelectorAll(".sw"));
     const keksPreview = document.getElementById("keksPreview");
-
     const stampSel = document.getElementById("stampSel");
     const stamp = document.getElementById("stamp");
 
+    // Quantity + pricing
     const qty = document.getElementById("qty");
     const plus = document.getElementById("plus");
     const minus = document.getElementById("minus");
 
+    // Extras
     const giftWrap = document.getElementById("giftWrap");
-    const photoOpt = document.getElementById("photoOpt"); // feature flag placeholder
-    const payBtn = document.getElementById("payBtn");
+    const futureFun = document.getElementById("futureFun"); // UI placeholder
 
-    // Summary
+    // Summary els
     const sumQty = document.getElementById("sumQty");
     const sumBundle = document.getElementById("sumBundle");
     const sumStamp = document.getElementById("sumStamp");
@@ -891,61 +963,18 @@
     const sumTotal = document.getElementById("sumTotal");
     const sumNote = document.getElementById("sumNote");
 
-    // State
     const state = {
-      panel: "p1",
-      msg: "",
       color: "classic",
       stamp: "none",
       qty: 1,
       giftWrap: false,
-      photo: false
+      futureFun: false
     };
 
-    // Helpers
-    function euro(n){
-      // keep German format
-      return n.toFixed(2).replace(".", ",") + "€";
-    }
-
-    function scrollToId(id){
-      const el = document.getElementById(id);
-      if(!el) return;
-      el.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
-
-    function setPanel(id){
-      state.panel = id;
-      tabs.forEach(t => {
-        const on = t.dataset.tab === id;
-        t.classList.toggle("active", on);
-        t.setAttribute("aria-selected", on ? "true" : "false");
-      });
-      Object.values(panels).forEach(p => p.classList.remove("active"));
-      panels[id].classList.add("active");
-
-      if(id === "p3"){
-        payBtn.href = STRIPE_PAYMENT_LINK;
-      }
-    }
-
+    function euro(n){ return n.toFixed(2).replace(".", ",") + "€"; }
     function clampInt(v, min, max){
       const n = Math.max(min, Math.min(max, parseInt(v || "0", 10)));
       return isFinite(n) ? n : min;
-    }
-
-    function computeTotal(){
-      const q = state.qty;
-      let subtotal = BASE_PRICE * q;
-
-      const bundleEligible = q >= BUNDLE_QTY;
-      const bundleDiscount = bundleEligible ? subtotal * BUNDLE_DISCOUNT : 0;
-
-      let extras = 0;
-      if(state.giftWrap) extras += GIFT_WRAP;
-
-      const total = subtotal - bundleDiscount + extras;
-      return { subtotal, bundleEligible, bundleDiscount, extras, total };
     }
 
     function paintCookie(){
@@ -968,79 +997,30 @@
       }
     }
 
+    function computeTotal(){
+      const q = state.qty;
+      const subtotal = BASE_PRICE * q;
+      const bundleEligible = q >= BUNDLE_QTY;
+      const bundleDiscount = bundleEligible ? subtotal * BUNDLE_DISCOUNT : 0;
+      const extras = state.giftWrap ? GIFT_WRAP : 0;
+      const total = subtotal - bundleDiscount + extras;
+      return { subtotal, bundleEligible, bundleDiscount, extras, total };
+    }
+
     function updateSummary(){
-      state.msg = (msg.value || "").trim();
       sumQty.textContent = String(state.qty);
 
-      const { bundleEligible, bundleDiscount, extras, total } = computeTotal();
-
+      const { bundleEligible, bundleDiscount, total } = computeTotal();
       sumBundle.textContent = bundleEligible ? ("−" + euro(bundleDiscount) + " (3+ Deal)") : "–";
 
       const ex = [];
       if(state.giftWrap) ex.push("Geschenk");
-      if(state.photo) ex.push("Foto (später)");
+      if(state.futureFun) ex.push("Slang (später)");
       sumExtras.textContent = ex.length ? ex.join(", ") : "–";
 
       sumTotal.textContent = euro(total);
-
-      // note
-      if(bundleEligible){
-        sumNote.textContent = "Bundle aktiv. Du sparst automatisch ab 3 Stück.";
-      } else {
-        sumNote.textContent = "Tipp: Ab 3 Stück gibt’s 25% Bundle-Rabatt.";
-      }
+      sumNote.textContent = bundleEligible ? "Bundle aktiv. Du sparst automatisch ab 3 Stück." : "Tipp: Ab 3 Stück gibt’s 25% Bundle-Rabatt.";
     }
-
-    function toggleCheck(el, key){
-      state[key] = !state[key];
-      el.classList.toggle("active", state[key]);
-      el.setAttribute("aria-checked", state[key] ? "true" : "false");
-      el.querySelector(".box").textContent = state[key] ? "✓" : "";
-      updateSummary();
-    }
-
-    // Wire: top CTAs
-    startBtn.addEventListener("click", () => { scrollToId("config"); });
-    jumpToConfig.addEventListener("click", () => { scrollToId("config"); });
-    howBtn.addEventListener("click", () => { scrollToId("how"); });
-
-    // Wire: chips/templates fill message
-    templates.forEach(t => t.addEventListener("click", () => {
-      msg.value = t.dataset.tpl || "";
-      msg.dispatchEvent(new Event("input"));
-    }));
-    chips.forEach(c => c.addEventListener("click", () => {
-      msg.value = c.dataset.msg || "";
-      msg.dispatchEvent(new Event("input"));
-      scrollToId("config");
-    }));
-
-    quickFill.addEventListener("click", () => {
-      const t = templates[Math.floor(Math.random() * templates.length)];
-      msg.value = t.dataset.tpl || "Hab an dich gedacht ♡";
-      msg.dispatchEvent(new Event("input"));
-    });
-
-    msg.addEventListener("input", () => {
-      count.textContent = String((msg.value || "").length);
-      updateSummary();
-    });
-
-    // Tabs
-    tabs.forEach(t => t.addEventListener("click", () => setPanel(t.dataset.tab)));
-
-    // Navigation buttons
-    toP2.addEventListener("click", () => {
-      if((msg.value || "").trim().length < 2){
-        msg.focus();
-        msg.scrollIntoView({behavior:"smooth", block:"center"});
-        return;
-      }
-      setPanel("p2");
-    });
-    toP3.addEventListener("click", () => setPanel("p3"));
-    backP1.addEventListener("click", () => setPanel("p1"));
-    backP2.addEventListener("click", () => setPanel("p2"));
 
     // Swatches
     swatches.forEach(s => s.addEventListener("click", () => {
@@ -1069,16 +1049,35 @@
     qty.addEventListener("input", () => setQty(qty.value));
     qty.addEventListener("blur", () => setQty(qty.value));
 
-    // Extras
+    // Extras toggles
+    function toggleCheck(el, key){
+      state[key] = !state[key];
+      el.classList.toggle("active", state[key]);
+      el.setAttribute("aria-checked", state[key] ? "true" : "false");
+      el.querySelector(".box").textContent = state[key] ? "✓" : "";
+      updateSummary();
+    }
     giftWrap.addEventListener("click", () => toggleCheck(giftWrap, "giftWrap"));
-    photoOpt.addEventListener("click", () => toggleCheck(photoOpt, "photo"));
-    giftWrap.addEventListener("keydown", (e) => { if(e.key === "Enter" || e.key === " "){ e.preventDefault(); toggleCheck(giftWrap, "giftWrap"); }});
-    photoOpt.addEventListener("keydown", (e) => { if(e.key === "Enter" || e.key === " "){ e.preventDefault(); toggleCheck(photoOpt, "photo"); }});
+    futureFun.addEventListener("click", () => toggleCheck(futureFun, "futureFun"));
+    giftWrap.addEventListener("keydown", (e)=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); toggleCheck(giftWrap,"giftWrap"); }});
+    futureFun.addEventListener("keydown", (e)=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); toggleCheck(futureFun,"futureFun"); }});
+
+    // Scroll reveal (fade-up)
+    const io = new IntersectionObserver((entries)=>{
+      entries.forEach(en=>{
+        if(en.isIntersecting){
+          en.target.classList.add("in");
+          io.unobserve(en.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    document.querySelectorAll(".reveal").forEach(el => io.observe(el));
 
     // Init
     paintCookie();
     updateSummary();
     setPanel("p1");
+    payBtn.href = STRIPE_PAYMENT_LINK;
   </script>
 </body>
 </html>

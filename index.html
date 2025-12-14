@@ -4,30 +4,36 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>OnlyKeks – Post, die schmeckt</title>
-  <meta name="description" content="Schicke süße Botschaften mit direkter QR-Antwort. QR-Antwort-Keks ohne Account – in wenigen Klicks." />
+  <meta name="description" content="Schicke süße Botschaften mit direkter QR-Antwort. Gestalte deinen Keks, verschick ihn – und bekomm ’nen Antwort-Keks zurück." />
   <link rel="canonical" href="https://infojanschmidt-debug.github.io/keksms/" />
   <meta name="robots" content="index,follow" />
   <meta name="theme-color" content="#ff4fa3" />
 
   <meta property="og:title" content="OnlyKeks – Post, die schmeckt" />
-  <meta property="og:description" content="Schicke süße Botschaften mit direkter QR-Antwort. QR-Antwort-Keks ohne Account – in wenigen Klicks." />
+  <meta property="og:description" content="Gestalte deinen Keks + QR-Antwort. Kein Account. Schnell. Süß." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://infojanschmidt-debug.github.io/keksms/" />
   <meta property="og:image" content="https://infojanschmidt-debug.github.io/keksms/assets/img/1000149739.jpg" />
 
   <style>
     :root{
-      --bg:#fff;
+      --bg:#ffffff;
       --ink:#0b1b2a;
       --muted:#5b6a79;
       --line: rgba(11,27,42,.10);
 
       --pink:#ff4fa3;
+      --pink2:#ff7cc5;
       --pinkSoft: rgba(255,79,163,.10);
+      --mint:#27d6a4;
+      --amber:#ffb020;
 
       --shadow: 0 10px 25px rgba(11,27,42,.06);
+      --shadow2: 0 14px 34px rgba(11,27,42,.10);
       --radius: 16px;
       --max: 1040px;
+
+      --ease: cubic-bezier(.2,.9,.2,1);
     }
 
     *{box-sizing:border-box}
@@ -43,6 +49,7 @@
     .wrap{max-width:var(--max); margin:0 auto; padding:0 18px}
     .muted{color:var(--muted)}
     .hr{height:1px;background:var(--line);border:0;margin:18px 0}
+    .sr{position:absolute;left:-9999px}
 
     /* Gate: Seite erst sichtbar wenn Intro done */
     html:not(.appReady) body > *:not(#intro) { visibility: hidden; }
@@ -53,7 +60,18 @@
       background:#000;
       display:grid; place-items:center;
     }
-    .introVid{width:100%;height:100%;object-fit:cover}
+    .introVid{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+      background:#000;
+    }
+    .introTop{
+      position:absolute; inset:0;
+      pointer-events:none;
+      background: radial-gradient(1200px 600px at 50% 70%, rgba(255,79,163,.14), transparent 55%);
+    }
     .introSkip{
       position:absolute; right:14px; top:14px;
       border:1px solid rgba(255,255,255,.25);
@@ -61,10 +79,31 @@
       color:#fff;
       padding:10px 14px;
       border-radius:999px;
-      font-weight:800;
+      font-weight:900;
       backdrop-filter: blur(10px);
       cursor:pointer;
+      pointer-events:auto;
+      transition: transform .12s var(--ease);
     }
+    .introSkip:active{transform: translateY(1px)}
+    .introPlay{
+      position:absolute; left:50%; top:50%;
+      transform: translate(-50%,-50%);
+      border:1px solid rgba(255,255,255,.25);
+      background: rgba(0,0,0,.35);
+      color:#fff;
+      padding:14px 18px;
+      border-radius:999px;
+      font-weight:900;
+      cursor:pointer;
+      display:none;
+      align-items:center;
+      gap:10px;
+      pointer-events:auto;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 18px 60px rgba(0,0,0,.35);
+    }
+    .introPlay.show{display:inline-flex}
     .intro.hide{opacity:0; pointer-events:none; transition: opacity .22s ease}
 
     /* Topbar */
@@ -75,27 +114,29 @@
       backdrop-filter: blur(14px);
     }
     .topbar .inner{
-      height:64px;
+      height:66px;
       display:flex; align-items:center; justify-content:space-between;
       gap:12px;
     }
     .brand{
       display:flex; align-items:center; gap:10px;
       text-decoration:none;
-      min-width: 170px;
+      min-width: 190px;
     }
-    .mark{width:44px;height:44px; filter: drop-shadow(0 8px 14px rgba(11,27,42,.10));}
-    .brand strong{display:block; font-size:16px; line-height:1}
-    .brand span{display:block; font-size:12.5px; color:var(--muted); margin-top:2px}
-    nav{display:flex; gap:10px; align-items:center}
+    .mark{width:52px;height:52px; filter: drop-shadow(0 10px 18px rgba(11,27,42,.12));}
+    .brand strong{display:block; font-size:18px; line-height:1; letter-spacing:-.2px}
+    .brand span{display:block; font-size:12.5px; color:var(--muted); margin-top:3px}
+    nav{display:flex; gap:8px; align-items:center}
     nav a{
       text-decoration:none;
       font-size:13.5px;
       color:var(--muted);
       padding:10px 10px;
       border-radius:999px;
+      transition: background .16s var(--ease), color .16s var(--ease), transform .12s var(--ease);
     }
     nav a:hover{background: rgba(255,79,163,.08); color:var(--ink)}
+    nav a:active{transform: translateY(1px)}
     .btn{
       border:1px solid var(--line);
       background:#fff;
@@ -107,34 +148,34 @@
       display:inline-flex; align-items:center; justify-content:center;
       gap:10px;
       box-shadow: var(--shadow);
-      transition:.12s ease;
+      transition: transform .12s var(--ease), filter .12s var(--ease), background .12s var(--ease);
       user-select:none;
+      -webkit-tap-highlight-color: transparent;
     }
     .btn:active{transform: translateY(1px)}
+    .btn:hover{filter: brightness(.99)}
     .btnPrimary{
-      background: linear-gradient(135deg, var(--pink), #ff7cc5);
+      background: linear-gradient(135deg, var(--pink), var(--pink2));
       border-color: rgba(255,79,163,.20);
       color:#fff;
+      box-shadow: var(--shadow2);
     }
     .btnGhost{background:#fff}
     .btnGhost:hover{background: rgba(0,0,0,.02)}
+    .btnSmall{padding:10px 12px; font-size:13px}
     @media (max-width: 820px){
       nav{display:none}
     }
 
-    /* Layout */
-    .hero{
-      padding: 18px 0 6px;
-    }
+    /* Hero */
+    .hero{padding: 18px 0 6px}
     .heroGrid{
       display:grid;
       grid-template-columns: 1.1fr .9fr;
       gap: 18px;
       align-items:start;
     }
-    @media (max-width: 920px){
-      .heroGrid{grid-template-columns:1fr; gap:14px}
-    }
+    @media (max-width: 920px){ .heroGrid{grid-template-columns:1fr; gap:14px} }
 
     .panel{
       border:1px solid var(--line);
@@ -156,16 +197,34 @@
       margin:12px 0 10px;
       font-size:38px;
       line-height:1.05;
-      letter-spacing:-.6px;
+      letter-spacing:-.7px;
     }
     @media (max-width: 520px){ h1{font-size:32px} }
-
     .sub{
       margin:0 0 14px;
       color:var(--muted);
       line-height:1.55;
       font-size:15.5px;
-      max-width: 58ch;
+      max-width: 60ch;
+    }
+
+    .trustBar{
+      display:flex; gap:10px; flex-wrap:wrap;
+      margin-top: 12px;
+    }
+    .trustItem{
+      display:inline-flex; align-items:center; gap:8px;
+      font-size:12.8px;
+      color:var(--muted);
+      border:1px solid var(--line);
+      border-radius:999px;
+      padding:9px 10px;
+      background:#fff;
+    }
+    .dot{
+      width:9px; height:9px; border-radius:50%;
+      background: rgba(39,214,164,.95);
+      box-shadow: 0 0 0 4px rgba(39,214,164,.14);
     }
 
     .chips{display:flex; flex-wrap:wrap; gap:10px; margin: 10px 0 14px}
@@ -176,10 +235,10 @@
       border-radius:999px;
       font-size:13px;
       cursor:pointer;
-      box-shadow: none;
+      transition: background .12s var(--ease), transform .12s var(--ease);
     }
     .chip:hover{background: rgba(0,0,0,.02)}
-
+    .chip:active{transform: translateY(1px)}
     .heroActions{display:flex; gap:10px; flex-wrap:wrap; margin-top: 10px}
 
     /* Media */
@@ -189,7 +248,7 @@
       box-shadow: var(--shadow);
       overflow:hidden;
       background:#fff;
-      min-height: 360px;
+      min-height: 380px;
       position:relative;
     }
     .media img, .media video{width:100%; height:100%; object-fit:cover; display:block}
@@ -201,6 +260,7 @@
       padding:8px 10px;
       font-weight:900;
       font-size:12.5px;
+      backdrop-filter: blur(10px);
     }
 
     /* Sections */
@@ -263,7 +323,7 @@
       margin-top: 14px;
     }
 
-    /* Pack tiles: simpler */
+    /* Pack tiles */
     .packTiles{display:grid; gap:10px; margin-top:10px}
     .tile{
       border:1px solid var(--line);
@@ -271,7 +331,9 @@
       background:#fff;
       padding:12px;
       cursor:pointer;
+      transition: transform .12s var(--ease), background .12s var(--ease), border-color .12s var(--ease);
     }
+    .tile:active{transform: translateY(1px)}
     .tile.active{
       border-color: rgba(255,79,163,.35);
       background: rgba(255,79,163,.05);
@@ -286,17 +348,69 @@
       color: var(--ink);
       white-space:nowrap;
     }
+    .pillDeal{
+      border-color: rgba(255,176,32,.28);
+      background: rgba(255,176,32,.10);
+    }
     .tile p{margin:8px 0 0; color:var(--muted); font-size:12.8px; line-height:1.45}
 
-    .priceLine{
-      display:flex; justify-content:space-between; align-items:center; gap:10px;
+    /* Quantity / Deal */
+    .qtyRow{display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-top:10px}
+    .qtyBtn{
+      display:inline-flex; align-items:center; gap:8px;
+      border:1px solid var(--line);
+      border-radius:999px;
+      padding:10px 12px;
+      background:#fff;
+      cursor:pointer;
+      font-weight:900;
+      font-size:13px;
+      transition: transform .12s var(--ease), background .12s var(--ease), border-color .12s var(--ease);
+      user-select:none;
+    }
+    .qtyBtn.active{
+      border-color: rgba(255,79,163,.35);
+      background: rgba(255,79,163,.05);
+    }
+    .qtyBtn:active{transform: translateY(1px)}
+    .dealBadge{
+      display:none;
+      border:1px solid rgba(255,176,32,.28);
+      background: rgba(255,176,32,.10);
+      color: var(--ink);
+      border-radius:999px;
+      padding:10px 12px;
+      font-weight:900;
+      font-size:12.5px;
+    }
+    .dealBadge.show{display:inline-flex}
+
+    /* Price breakdown */
+    .priceBox{
       border-top:1px solid var(--line);
       padding-top: 12px;
       margin-top: 12px;
-      color: var(--muted);
-      font-size:13px;
     }
-    .priceLine b{color:var(--ink)}
+    .priceGrid{
+      display:grid;
+      grid-template-columns: 1fr auto;
+      gap:8px 12px;
+      align-items:center;
+      font-size:13px;
+      color:var(--muted);
+    }
+    .priceGrid b{color:var(--ink)}
+    .priceTotal{
+      margin-top:10px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:12px 12px;
+      border:1px solid rgba(255,79,163,.22);
+      background: rgba(255,79,163,.06);
+      border-radius: 14px;
+      font-weight:900;
+    }
 
     /* Konfigurator */
     .configRow{display:flex;gap:10px;flex-wrap:wrap}
@@ -308,7 +422,10 @@
       background:#fff;
       font-size:13px;
       user-select:none;
+      cursor:pointer;
+      transition: transform .12s var(--ease), background .12s var(--ease);
     }
+    .pick:active{transform: translateY(1px)}
     .pick input{accent-color: var(--pink)}
     .cookiePreview{
       width:100%;
@@ -318,7 +435,106 @@
       border:1px dashed rgba(11,27,42,.18);
       border-radius: 14px;
       background: rgba(255,79,163,.03);
+      overflow:hidden;
+      position:relative;
     }
+    .previewHint{
+      position:absolute; left:12px; bottom:12px;
+      font-size:12px;
+      color: rgba(11,27,42,.55);
+      background: rgba(255,255,255,.80);
+      border:1px solid rgba(11,27,42,.10);
+      border-radius:999px;
+      padding:8px 10px;
+      backdrop-filter: blur(10px);
+    }
+    .miniBtns{display:flex; gap:10px; flex-wrap:wrap; margin-top:12px}
+
+    /* Tabs */
+    .tabs{display:flex; gap:8px; flex-wrap:wrap; margin-top:10px}
+    .tab{
+      border:1px solid var(--line);
+      border-radius:999px;
+      padding:10px 12px;
+      cursor:pointer;
+      background:#fff;
+      font-weight:900;
+      font-size:13px;
+      transition: transform .12s var(--ease), background .12s var(--ease), border-color .12s var(--ease);
+    }
+    .tab.active{
+      border-color: rgba(255,79,163,.35);
+      background: rgba(255,79,163,.05);
+    }
+    .tab:active{transform: translateY(1px)}
+
+    /* Recipients list */
+    .recCard{
+      border:1px solid var(--line);
+      border-radius: 14px;
+      padding:12px;
+      background:#fff;
+      margin-top:10px;
+    }
+    .recHead{
+      display:flex; justify-content:space-between; align-items:center; gap:10px;
+      margin-bottom:8px;
+    }
+    .recTag{
+      display:inline-flex; align-items:center; gap:8px;
+      font-size:12px;
+      font-weight:900;
+      border:1px solid rgba(11,27,42,.10);
+      border-radius:999px;
+      padding:8px 10px;
+      background: rgba(0,0,0,.02);
+      color: var(--muted);
+    }
+    .btnDanger{
+      border-color: rgba(255,79,163,.18);
+      background: rgba(255,79,163,.06);
+      color: var(--ink);
+    }
+
+    /* Stamp card */
+    .stampWrap{
+      border:1px solid rgba(39,214,164,.22);
+      background: rgba(39,214,164,.08);
+      border-radius: 14px;
+      padding:12px;
+      margin-top:12px;
+    }
+    .stampTop{display:flex;justify-content:space-between;align-items:center;gap:10px}
+    .stampGrid{
+      display:grid;
+      grid-template-columns: repeat(10, 1fr);
+      gap:8px;
+      margin-top:10px;
+    }
+    .stamp{
+      height:26px;
+      border-radius: 10px;
+      border:1px solid rgba(11,27,42,.10);
+      background: rgba(255,255,255,.75);
+      display:grid;
+      place-items:center;
+      font-size:14px;
+      user-select:none;
+    }
+    .stamp.on{
+      background: rgba(39,214,164,.20);
+      border-color: rgba(39,214,164,.28);
+    }
+    .rewardBadge{
+      display:none;
+      border:1px solid rgba(39,214,164,.28);
+      background: rgba(39,214,164,.14);
+      border-radius:999px;
+      padding:9px 10px;
+      font-weight:900;
+      font-size:12.5px;
+    }
+    .rewardBadge.show{display:inline-flex}
 
     /* FAQ */
     details{
@@ -349,8 +565,10 @@
       border:1px solid var(--line);
       border-radius:999px;
       background:#fff;
+      transition: background .12s var(--ease), transform .12s var(--ease);
     }
     .footLinks a:hover{background: rgba(0,0,0,.02); color:var(--ink)}
+    .footLinks a:active{transform: translateY(1px)}
 
     /* Consent */
     .consent{
@@ -370,10 +588,9 @@
     }
     .consentCard b{display:block; margin-bottom:4px}
     .consentCard p{margin:0; color:var(--muted); font-size:13px; line-height:1.45}
-    .btnSmall{padding:10px 12px; font-size:13px}
 
-    /* --- GENESIS REVEAL OVERLAY --- */
-    .revealOverlay{
+    /* Overlay (rewards/reveal) */
+    .overlay{
       position:fixed; inset:0;
       background: rgba(11,27,42,.55);
       display:none;
@@ -381,7 +598,8 @@
       padding:18px;
       z-index:9999;
     }
-    .revealCard{
+    .overlay.show{display:flex}
+    .card{
       width:min(560px, 100%);
       background:#fff;
       border-radius:18px;
@@ -389,45 +607,23 @@
       box-shadow: 0 18px 60px rgba(11,27,42,.22);
       overflow:hidden;
     }
-    .revealTop{
+    .cardTop{
       padding:16px 16px 12px;
       background: linear-gradient(180deg, rgba(255,79,163,.12), rgba(255,79,163,.03));
       border-bottom:1px solid var(--line);
     }
-    .revealTitle{
-      margin:0;
-      font-size:16px;
-      letter-spacing:.2px;
-    }
-    .revealBody{ padding:14px 16px 16px; }
-    .revealBadge{
-      display:inline-flex; align-items:center; gap:8px;
-      padding:10px 12px;
-      border-radius:999px;
-      border:1px solid rgba(255,79,163,.35);
-      background: rgba(255,79,163,.06);
-      font-weight:700;
-    }
-    .revealHint{
-      margin:10px 0 0;
-      font-size:13px;
-      line-height:1.45;
-    }
-    .revealActions{
+    .cardBody{ padding:14px 16px 16px; }
+    .cardActions{
       display:flex; gap:10px; justify-content:flex-end;
       padding:12px 16px 16px;
     }
-    .revealSmall{
-      font-size:12px;
-      opacity:.8;
-    }
 
-    /* Optional: ultra-leichtes Cookie-Rain */
+    /* Cookie Rain */
     .cookieDrop{
       position:fixed;
       top:-40px;
       font-size:18px;
-      opacity:.25;
+      opacity:.22;
       pointer-events:none;
       z-index:1;
       animation: drop linear forwards;
@@ -445,10 +641,14 @@
 <body>
   <!-- INTRO OVERLAY -->
   <div id="intro" class="intro" aria-hidden="false">
-    <video id="introVid" class="introVid" autoplay muted playsinline preload="auto">
+    <video id="introVid" class="introVid" autoplay muted playsinline preload="auto" poster="assets/img/1000149739.jpg">
       <source src="assets/video/intro.mp4" type="video/mp4">
     </video>
+    <div class="introTop" aria-hidden="true"></div>
     <button id="skipIntro" class="introSkip" type="button">Skip</button>
+    <button id="playIntro" class="introPlay" type="button" aria-label="Intro abspielen">
+      ▶︎ Intro starten
+    </button>
   </div>
 
   <!-- TOPBAR -->
@@ -479,7 +679,7 @@
 
         <nav aria-label="Navigation">
           <a href="#how">So läuft’s</a>
-          <a href="#flow">QR-Antwort-Flow</a>
+          <a href="#flow">Konfigurator</a>
           <a href="#faq">FAQ</a>
         </nav>
 
@@ -496,16 +696,23 @@
           <div class="panel">
             <div class="kicker">Kein Account · QR-Antwort · echtes Post-Feeling</div>
 
-            <h1>Schicke süße Botschaften – und hol dir ’ne QR-Antwort zurück.</h1>
+            <h1>Gestalte deinen Keks – und hol dir ’nen Antwort-Keks zurück.</h1>
             <p class="sub">
               Du schickst einen <b>QR-Antwort-Keks</b> mit Message + QR-Code. Empfänger*in scannt, antwortet – wir backen den <b>Antwort-Keks</b> und schicken ihn zu dir zurück.
             </p>
+
+            <div class="trustBar" aria-label="Trust">
+              <span class="trustItem"><span class="dot"></span> Versand & Tracking (MVP-Logik)</span>
+              <span class="trustItem">🔒 Zahlung über Stripe</span>
+              <span class="trustItem">🍪 Keine Datenverkäufe</span>
+            </div>
 
             <div class="chips" aria-label="Vorlagen">
               <button class="chip" type="button" data-msg="Ich denk an dich. 🍪">Ich denk an dich</button>
               <button class="chip" type="button" data-msg="Beweg dein Arsch – du packst das! ✨">Motivation</button>
               <button class="chip" type="button" data-msg="Happy Birthday! 🎉">Geburtstag</button>
               <button class="chip" type="button" data-msg="Vermiss dich. 💗">Vermissen</button>
+              <button class="chip" type="button" data-msg="Heute Energy-Mode: Kopf hoch, Brust raus. ⚡️">Energy</button>
             </div>
 
             <div class="heroActions">
@@ -516,7 +723,7 @@
             <hr class="hr" />
 
             <div class="muted" style="font-size:13.5px; line-height:1.45;">
-              <b style="color:var(--ink)">Loop:</b> Empfänger*in antwortet in Sekunden – wir kümmern uns um den Rest.
+              <b style="color:var(--ink)">Loop:</b> Scan → Antwort in Sekunden. Wir machen den Rest (Post-Magic).
             </div>
           </div>
 
@@ -539,18 +746,18 @@
           <div class="panel">
             <h2>So läuft’s</h2>
             <ul>
-              <li><b>Du schreibst</b> eine Message und wählst ein Paket.</li>
-              <li><b>Wir verschicken</b> QR-Antwort-Keks + QR-Karte.</li>
-              <li><b>Scan → Antwort</b> (ohne Account).</li>
-              <li><b>Antwort-Keks</b> kommt zu dir zurück.</li>
+              <li><b>Du schreibst</b> eine Message, wählst Paket & Anzahl.</li>
+              <li><b>Du gestaltest</b> den Keks (Form, Deko, Style).</li>
+              <li><b>Wir verschicken</b> Keks + QR-Karte.</li>
+              <li><b>Scan → Antwort</b> (ohne Konto). Danach kommt dein <b>Antwort-Keks</b>.</li>
             </ul>
           </div>
           <div class="panel">
             <h2>Warum das zieht</h2>
             <ul>
-              <li>Emotionaler als Chat, aber genauso schnell.</li>
-              <li>Minimaler Flow: kein Shop-Chaos, kein Konto-Theater.</li>
-              <li>Clean & vertrauenswürdig (Stripe), klarer Footer.</li>
+              <li>Wie Social – aber als echtes Geschenk im Briefkasten.</li>
+              <li><b>Konfigurator-Spieltrieb</b>: “Noch eins… nur kurz testen…”</li>
+              <li><b>Viral</b>: Share-Link + Einladungen + Belohnungen.</li>
             </ul>
           </div>
         </div>
@@ -562,7 +769,7 @@
       <div class="wrap">
         <div class="panel">
           <div class="flowHead">
-            <h2 style="margin:0">QR-Antwort-Flow</h2>
+            <h2 style="margin:0">Konfigurator-Flow</h2>
             <div class="steps" aria-label="Schritte">
               <div class="step active" data-step="1">1</div>
               <div class="step" data-step="2">2</div>
@@ -578,31 +785,62 @@
             <textarea id="msg" maxlength="500" placeholder="Schreib was Süßes… (max. 500 Zeichen)"></textarea>
             <div class="helper" id="count">0 / 500</div>
 
-            <label class="lbl" for="pack">Paket</label>
-            <select id="pack" name="pack">
-              <option value="Quick">Quick</option>
-              <option value="Custom" selected>Custom</option>
-              <option value="Premium">Premium</option>
-            </select>
+            <div class="row">
+              <div>
+                <label class="lbl" for="pack">Paket</label>
+                <select id="pack" name="pack">
+                  <option value="Quick">Quick</option>
+                  <option value="Custom" selected>Custom</option>
+                  <option value="Premium">Premium</option>
+                </select>
 
-            <div class="packTiles" id="packTiles" role="radiogroup" aria-label="Paket wählen">
-              <div class="tile" role="radio" aria-checked="false" data-pack="Quick">
-                <div class="tileTop"><b>Quick</b><span class="pill">simpel & sweet</span></div>
-                <p>Eine klare Message, klassisch verpackt.</p>
+                <div class="packTiles" id="packTiles" role="radiogroup" aria-label="Paket wählen">
+                  <div class="tile" role="radio" aria-checked="false" data-pack="Quick">
+                    <div class="tileTop"><b>Quick</b><span class="pill">simpel & sweet</span></div>
+                    <p>Fixer Keks, klare Message, sauber verpackt.</p>
+                  </div>
+                  <div class="tile" role="radio" aria-checked="true" data-pack="Custom">
+                    <div class="tileTop"><b>Custom</b><span class="pill">mehr Deko</span></div>
+                    <p>Beliebt: Deko-Finish + nicerer Auftritt.</p>
+                  </div>
+                  <div class="tile" role="radio" aria-checked="false" data-pack="Premium">
+                    <div class="tileTop"><b>Premium</b><span class="pill">Box-Vibe</span></div>
+                    <p>Edle Box, maximaler Geschenk-Moment.</p>
+                  </div>
+                </div>
               </div>
-              <div class="tile" role="radio" aria-checked="true" data-pack="Custom">
-                <div class="tileTop"><b>Custom</b><span class="pill">mehr Deko</span></div>
-                <p>Mehr “wow”: Deko-Finish und nicerer Auftritt.</p>
-              </div>
-              <div class="tile" role="radio" aria-checked="false" data-pack="Premium">
-                <div class="tileTop"><b>Premium</b><span class="pill">Box-Vibe</span></div>
-                <p>Edle Box, maximaler Geschenk-Moment.</p>
-              </div>
-            </div>
 
-            <div class="priceLine">
-              <div><b id="priceTitle">Custom</b> <span class="muted" id="priceNote">Beliebt · Deko-Finish</span></div>
-              <div><b id="priceVal">ab 14,90 €</b></div>
+              <div>
+                <label class="lbl">Anzahl</label>
+                <div class="qtyRow" role="radiogroup" aria-label="Anzahl wählen">
+                  <div class="qtyBtn active" data-qty="1" role="radio" aria-checked="true">1 Keks</div>
+                  <div class="qtyBtn" data-qty="3" role="radio" aria-checked="false">3er Pack</div>
+                  <div class="qtyBtn" data-qty="5" role="radio" aria-checked="false">5er Pack</div>
+                  <span class="dealBadge" id="dealBadge">🔥 3er-Deal: −25%</span>
+                </div>
+
+                <div class="priceBox">
+                  <div class="priceGrid" aria-label="Preisübersicht">
+                    <div><b id="priceTitle">Custom</b> <span class="muted" id="priceNote">Beliebt · Deko-Finish</span></div>
+                    <div style="text-align:right" id="unitPrice">14,90 € / Stück</div>
+
+                    <div>Zwischensumme</div>
+                    <div style="text-align:right" id="subtotal">14,90 €</div>
+
+                    <div>Rabatt</div>
+                    <div style="text-align:right" id="discount">—</div>
+                  </div>
+
+                  <div class="priceTotal">
+                    <span>Gesamt</span>
+                    <span id="total">14,90 €</span>
+                  </div>
+
+                  <div class="helper" style="margin-top:8px">
+                    <b>Multi-Empfänger:</b> Bei Pack > 1 kannst du an mehrere Personen schicken – jede Person kriegt ihren eigenen Keks.
+                  </div>
+                </div>
+              </div>
             </div>
 
             <div class="actions">
@@ -615,16 +853,25 @@
           <div class="flowPanel" id="p2" style="display:none">
             <h2 style="font-size:16px;margin:0 0 6px;">Keks gestalten</h2>
             <p class="muted" style="margin:0 0 10px;font-size:13.5px">
-              Wähl Form & Deko. Der QR-Antwort-Keks sieht dann genau so aus.
+              Wähl Form, Deko und Theme. Dit ist dein Spielplatz.
             </p>
 
             <div class="row">
               <div class="tile" style="cursor:default">
-                <b>Form</b>
-                <div class="configRow" style="margin-top:10px">
-                  <label class="pick"><input type="radio" name="shape" value="round" checked> Rund</label>
-                  <label class="pick"><input type="radio" name="shape" value="heart"> Herz</label>
-                  <label class="pick"><input type="radio" name="shape" value="mouse"> Maus-Keks 🐭🍪</label>
+                <b>Theme (Preset)</b>
+                <div class="tabs" id="themeTabs" aria-label="Themes">
+                  <button class="tab active" type="button" data-theme="sweet">Süß</button>
+                  <button class="tab" type="button" data-theme="frech">Frech</button>
+                  <button class="tab" type="button" data-theme="energy">Energy ⚡️</button>
+                </div>
+
+                <div style="margin-top:12px">
+                  <b>Form</b>
+                  <div class="configRow" style="margin-top:10px">
+                    <label class="pick"><input type="radio" name="shape" value="round" checked> Rund</label>
+                    <label class="pick"><input type="radio" name="shape" value="heart"> Herz</label>
+                    <label class="pick"><input type="radio" name="shape" value="mouse"> Maus-Keks 🐭🍪</label>
+                  </div>
                 </div>
 
                 <div style="margin-top:12px">
@@ -633,6 +880,7 @@
                     <label class="pick"><input type="checkbox" id="dSprinkles"> Sprinkles</label>
                     <label class="pick"><input type="checkbox" id="dSmiley"> Smiley</label>
                     <label class="pick"><input type="checkbox" id="dKiss"> Kuss-Stempel</label>
+                    <label class="pick"><input type="checkbox" id="dBolt"> Blitz ⚡️</label>
                   </div>
                 </div>
 
@@ -644,24 +892,35 @@
                   </div>
                 </div>
 
-                <div style="margin-top:12px; display:flex; gap:10px; flex-wrap:wrap">
+                <div class="miniBtns">
+                  <button class="btn btnGhost" type="button" id="undoBtn">↶ Undo</button>
+                  <button class="btn btnGhost" type="button" id="redoBtn">↷ Redo</button>
                   <button class="btn btnGhost" type="button" id="surpriseBtn">Überrasch mich 🍪</button>
                 </div>
 
                 <p class="muted" style="margin:10px 0 0;font-size:12.8px;line-height:1.45">
-                  Das ist die Optik-Simulation fürs MVP (später: echte Sticker/Undo/Teilen).
+                  MVP-Preview (Vorschau-Simulation). Später: echte Sticker, Teilen, Drops.
                 </p>
               </div>
 
               <div class="tile" style="cursor:default">
                 <b>Vorschau</b>
-                <div id="cookiePreview" class="cookiePreview" style="margin-top:10px"></div>
-                <div class="tile" id="earlyTeaser" style="display:none; margin-top:12px; cursor:default">
-                  <b>🍪 Belohnungen</b>
-                  <p class="muted" style="margin:6px 0 0">
-                    Manche Kekse haben <b>mehr</b> drauf. Details werden beim Scan sichtbar.
-                  </p>
+                <div id="cookiePreview" class="cookiePreview" style="margin-top:10px">
+                  <span class="previewHint">Live-Vorschau</span>
                 </div>
+
+                <div class="tile" style="margin-top:12px; cursor:default">
+                  <b>Teilen (Viral)</b>
+                  <p class="muted" style="margin:6px 0 10px;font-size:13px;line-height:1.45">
+                    Schick deinen Konfigurator-Entwurf als Link. Wer über deinen Link startet, zählt als Einladung.
+                  </p>
+                  <div style="display:flex;gap:10px;flex-wrap:wrap">
+                    <button class="btn btnGhost" type="button" id="copyShare">Link kopieren</button>
+                    <button class="btn btnPrimary" type="button" id="nativeShare">Teilen →</button>
+                  </div>
+                  <div class="helper" id="shareHint" style="margin-top:8px">—</div>
+                </div>
+
               </div>
             </div>
 
@@ -671,38 +930,23 @@
             </div>
           </div>
 
-          <!-- Step 3 -->
+          <!-- Step 3 (Multi-Empfänger) -->
           <div class="flowPanel" id="p3" style="display:none">
-            <h2 style="font-size:16px;margin:0 0 6px;">Adresse</h2>
-            <p class="muted" style="margin:0 0 10px;font-size:13.5px">Empfänger*in + deine Adresse (für den Antwort-Keks).</p>
+            <h2 style="font-size:16px;margin:0 0 6px;">Adressen</h2>
+            <p class="muted" style="margin:0 0 10px;font-size:13.5px">
+              Empfänger*in(nen) + deine Adresse (für den Antwort-Keks). Bei Packs > 1: mehrere Empfänger möglich.
+            </p>
 
             <div class="row">
-              <div>
-                <label class="lbl" for="toName">Empfänger*in – Name</label>
-                <input id="toName" placeholder="z. B. Lisa" />
-              </div>
               <div>
                 <label class="lbl" for="fromName">Dein Name</label>
                 <input id="fromName" placeholder="z. B. Schmidti" />
               </div>
-            </div>
-
-            <label class="lbl" for="toStreet">Empfänger*in – Straße & Hausnummer</label>
-            <input id="toStreet" placeholder="Musterstraße 12" />
-
-            <div class="row">
               <div>
-                <label class="lbl" for="toZip">Empfänger*in – PLZ</label>
-                <input id="toZip" inputmode="numeric" placeholder="10115" />
-              </div>
-              <div>
-                <label class="lbl" for="toCity">Empfänger*in – Ort</label>
-                <input id="toCity" placeholder="Berlin" />
+                <label class="lbl" for="fromStreet">Deine Straße & Hausnummer</label>
+                <input id="fromStreet" placeholder="Deine Straße 3" />
               </div>
             </div>
-
-            <label class="lbl" for="fromStreet">Deine Straße & Hausnummer</label>
-            <input id="fromStreet" placeholder="Deine Straße 3" />
 
             <div class="row">
               <div>
@@ -714,6 +958,18 @@
                 <input id="fromCity" placeholder="Berlin" />
               </div>
             </div>
+
+            <hr class="hr"/>
+
+            <div style="display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap; align-items:center">
+              <b>Empfänger</b>
+              <div style="display:flex; gap:10px; flex-wrap:wrap">
+                <span class="recTag" id="recCountTag">0 / 1</span>
+                <button class="btn btnGhost" type="button" id="addRecipient">+ Empfänger hinzufügen</button>
+              </div>
+            </div>
+
+            <div id="recipients"></div>
 
             <div class="actions">
               <button class="btn btnGhost" type="button" id="back3">← Zurück</button>
@@ -735,16 +991,30 @@
           <!-- Step 5 -->
           <div class="flowPanel" id="p5" style="display:none">
             <h2 style="font-size:16px;margin:0 0 6px;">Bezahlen</h2>
-            <p class="muted" style="margin:0 0 10px;font-size:13.5px">Weiterleitung über Stripe.</p>
+            <p class="muted" style="margin:0 0 10px;font-size:13.5px">Weiterleitung über Stripe (MVP-Link).</p>
 
             <div class="tile" style="cursor:default">
               <div class="muted" style="font-size:13.5px; line-height:1.55">
                 <b style="color:var(--ink)">OrderID:</b> <span id="oid">(wird erstellt)</span><br/>
                 <b style="color:var(--ink)">Paket:</b> <span id="sPack">Custom</span><br/>
+                <b style="color:var(--ink)">Anzahl:</b> <span id="sQty">1</span><br/>
+                <b style="color:var(--ink)">Gesamt:</b> <span id="sTotal">—</span><br/>
                 <b style="color:var(--ink)">Message:</b> <span id="sMsg">(deine Message)</span><br/>
                 <b style="color:var(--ink)">Design:</b> <span id="sDesign">—</span><br/>
-                <b style="color:var(--ink)">Extras:</b> <span id="sExtras">—</span>
+                <b style="color:var(--ink)">Empfänger:</b> <span id="sRecs">—</span>
               </div>
+            </div>
+
+            <div class="stampWrap">
+              <div class="stampTop">
+                <b>🍪 Stempelkarte</b>
+                <span class="rewardBadge" id="rewardBadge">🎁 Belohnung ready</span>
+              </div>
+              <div class="muted" style="font-size:13px; margin-top:6px; line-height:1.45">
+                Pro gekauftem Keks 1 Stempel. Ab 10: Belohnung (Gratis-Keks oder Rabatt).
+              </div>
+              <div class="stampGrid" id="stampGrid" aria-label="Stempelkarte"></div>
+              <div class="helper" id="stampHint" style="margin-top:10px">—</div>
             </div>
 
             <div class="actions">
@@ -772,12 +1042,15 @@
           </details>
           <details>
             <summary>Welche Daten speichert ihr?</summary>
-            <p>Im MVP speichern wir lokal im Browser deinen Entwurf. Optionales Tracking ist standardmäßig aus.</p>
+            <p>Im MVP speichern wir deinen Entwurf lokal im Browser. Optionales Tracking ist standardmäßig aus.</p>
+          </details>
+          <details>
+            <summary>Mehrere Empfänger – wie funktioniert das?</summary>
+            <p>Du wählst z. B. ein 3er-Pack und legst bis zu 3 Empfänger-Adressen an. Jeder Empfänger bekommt seinen eigenen Keks. (MVP-Light: Message & Design gelten für alle.)</p>
           </details>
         </div>
       </div>
     </section>
-
   </main>
 
   <footer>
@@ -789,7 +1062,7 @@
             <span class="muted" style="font-size:13px">Post, die schmeckt</span>
           </div>
           <p class="muted" style="margin:10px 0 0; font-size:13px; line-height:1.45">
-            MVP: One-Page + QR-Antwort-Flow. Clean, schnell, vertrauenswürdig.
+            MVP: One-Page + Konfigurator-Flow + QR-Antwort-Loop. Clean, schnell, vertrauenswürdig.
           </p>
         </div>
         <div class="footLinks" aria-label="Footer Links">
@@ -817,24 +1090,28 @@
     </div>
   </div>
 
-  <!-- GENESIS REVEAL OVERLAY (hidden) -->
-  <div class="revealOverlay" id="revealOverlay" aria-hidden="true">
-    <div class="revealCard" role="dialog" aria-modal="true" aria-label="Keks Reveal">
-      <div class="revealTop">
-        <h3 class="revealTitle">🍪 Scan-Ergebnis</h3>
-        <div class="revealSmall muted" id="revealSub"></div>
+  <!-- Reward Overlay -->
+  <div class="overlay" id="rewardOverlay" aria-hidden="true">
+    <div class="card" role="dialog" aria-modal="true" aria-label="Belohnung">
+      <div class="cardTop">
+        <h3 style="margin:0;font-size:16px">🎁 Belohnung freigeschaltet</h3>
+        <div class="muted" style="margin-top:6px;font-size:12.5px" id="rewardSub">—</div>
       </div>
-      <div class="revealBody">
-        <div class="revealBadge" id="revealBadge">✨ Special Keks</div>
-        <p class="revealHint muted" id="revealText"></p>
+      <div class="cardBody">
+        <p class="muted" style="margin:0;line-height:1.55">
+          Du hast 10 Stempel voll. Dit ist der Moment, wo Leute screenshots machen – und zack: Viral.
+        </p>
         <div class="tile" style="margin-top:12px; cursor:default">
-          <b>Dein Status</b>
-          <div class="muted" style="margin-top:6px;font-size:13px" id="revealStatus"></div>
+          <b>Deine Optionen (MVP-Copy)</b>
+          <p class="muted" style="margin:6px 0 0;line-height:1.55">
+            • <b>Gratis-Keks</b> beim nächsten Kauf<br/>
+            • oder <b>Rabatt</b> auf Premium-Box
+          </p>
         </div>
       </div>
-      <div class="revealActions">
-        <button class="btn btnGhost" type="button" id="revealClose">Später</button>
-        <button class="btn btnPrimary" type="button" id="revealGo">Antwort schreiben →</button>
+      <div class="cardActions">
+        <button class="btn btnGhost" type="button" id="rewardClose">Später</button>
+        <button class="btn btnPrimary" type="button" id="rewardShare">Teilen →</button>
       </div>
     </div>
   </div>
@@ -849,17 +1126,41 @@
     window.addEventListener("error", (e)=>console.warn("OnlyKeks JS error:", e.message));
     window.addEventListener("unhandledrejection", (e)=>console.warn("OnlyKeks promise error:", e.reason));
 
+    /* Utils */
+    const money = (n)=> new Intl.NumberFormat("de-DE",{style:"currency",currency:"EUR"}).format(n);
+    function esc(str){
+      return String(str ?? "")
+        .replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;").replaceAll("'","&#039;");
+    }
+
+    /* State */
+    const LS_KEY = "onlykeks_state_master_v1";
+    function readState(){ try{return JSON.parse(localStorage.getItem(LS_KEY)||"{}");}catch(e){return{};} }
+    function writeState(patch){
+      const cur = readState();
+      const next = Object.assign({}, cur, patch);
+      localStorage.setItem(LS_KEY, JSON.stringify(next));
+      return next;
+    }
+    function uid(){
+      const a = Math.random().toString(36).slice(2,8).toUpperCase();
+      const b = Date.now().toString(36).slice(-6).toUpperCase();
+      return `OK-${b}-${a}`;
+    }
+
     /* Intro Gate (Fullscreen Video before app) */
     (function introGate(){
-      const KEY = "onlykeks_intro_seen_v1";
+      const KEY = "onlykeks_intro_seen_v2";
       const intro = $("intro");
       const vid   = $("introVid");
       const skip  = $("skipIntro");
+      const play  = $("playIntro");
 
       const showApp = ()=>{
         document.documentElement.classList.add("appReady");
         if(intro) intro.classList.add("hide");
-        setTimeout(()=> intro && intro.remove(), 250);
+        setTimeout(()=> intro && intro.remove(), 260);
       };
 
       if(localStorage.getItem(KEY)){
@@ -873,20 +1174,32 @@
         showApp();
       };
 
-      const failsafe = setTimeout(done, 3500);
+      // failsafe: wenn Video nicht will → App zeigen
+      const failsafe = setTimeout(done, 3600);
 
-      skip?.addEventListener("click", ()=>{
-        clearTimeout(failsafe);
-        done();
-      });
+      skip?.addEventListener("click", ()=>{ clearTimeout(failsafe); done(); });
 
       vid?.addEventListener("ended", ()=>{ clearTimeout(failsafe); done(); });
       vid?.addEventListener("error", ()=>{ clearTimeout(failsafe); done(); });
 
-      const p = vid?.play?.();
-      if(p && typeof p.catch === "function"){
-        p.catch(()=>{ clearTimeout(failsafe); done(); });
-      }
+      // Autoplay attempt; wenn blocked → Play Button zeigen
+      const tryPlay = ()=>{
+        const p = vid?.play?.();
+        if(p && typeof p.catch === "function"){
+          p.catch(()=>{
+            play?.classList.add("show");
+          });
+        }
+      };
+
+      play?.addEventListener("click", ()=>{
+        play.classList.remove("show");
+        tryPlay();
+        // wenn nach Click trotzdem nix → nach kurzer Zeit App zeigen
+        setTimeout(()=>{ /* keep intro a moment */ }, 350);
+      });
+
+      tryPlay();
     })();
 
     /* Hero media fallback */
@@ -903,36 +1216,26 @@
       if(p && typeof p.catch === "function") p.catch(()=>showImg());
     })();
 
-    /* State */
-    const LS_KEY = "onlykeks_order_v2";
-    function readState(){ try{return JSON.parse(localStorage.getItem(LS_KEY)||"{}");}catch(e){return{};} }
-    function writeState(patch){
-      const cur = readState();
-      const next = Object.assign({}, cur, patch);
-      localStorage.setItem(LS_KEY, JSON.stringify(next));
-      return next;
-    }
-    function uid(){
-      const a = Math.random().toString(36).slice(2,8).toUpperCase();
-      const b = Date.now().toString(36).slice(-6).toUpperCase();
-      return `OK-${b}-${a}`;
-    }
-    function esc(str){
-      return String(str ?? "")
-        .replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;")
-        .replaceAll('"',"&quot;").replaceAll("'","&#039;");
+    /* Pricing */
+    const BASE = { Quick: 9.90, Custom: 14.90, Premium: 19.90 };
+    const DEALS = {
+      3: { pct: 0.25, label: "3er-Deal −25%" },
+      5: { pct: 0.30, label: "5er-Deal −30%" }
+    };
+
+    function pricing(pack, qty){
+      const unit = BASE[pack] ?? BASE.Custom;
+      const sub = unit * qty;
+      const deal = DEALS[qty] || null;
+      const disc = deal ? (sub * deal.pct) : 0;
+      const total = Math.max(0, sub - disc);
+      return { unit, sub, disc, total, deal };
     }
 
-    function pricing(pack){
-      if(pack==="Quick")   return {title:"Quick",   note:"Schnell & sweet", val:"ab 9,90 €"};
-      if(pack==="Premium") return {title:"Premium", note:"Box-Vibe",        val:"ab 19,90 €"};
-      return {title:"Custom", note:"Beliebt · Deko-Finish", val:"ab 14,90 €"};
-    }
-    function setPriceUI(pack){
-      const p = pricing(pack);
-      $("priceTitle") && ($("priceTitle").textContent = p.title);
-      $("priceNote")  && ($("priceNote").textContent  = p.note);
-      $("priceVal")   && ($("priceVal").textContent   = p.val);
+    function packMeta(pack){
+      if(pack==="Quick")   return {title:"Quick",   note:"Schnell & sweet"};
+      if(pack==="Premium") return {title:"Premium", note:"Box-Vibe"};
+      return {title:"Custom", note:"Beliebt · Deko-Finish"};
     }
 
     /* Flow panels */
@@ -942,16 +1245,7 @@
       Object.entries(panels).forEach(([k,p])=>{ if(p) p.style.display = (+k===n) ? "block":"none"; });
       steps.forEach(s=>s.classList.toggle("active", +s.dataset.step===n));
       document.querySelector("#flow").scrollIntoView({behavior:"smooth", block:"start"});
-
-      if(n===5){
-        $("payBtn").href = STRIPE_PAYMENT_LINK;
-        const s = readState();
-        $("oid").textContent = s.orderId || "(wird erstellt)";
-        $("sPack").textContent = s.pack || "Custom";
-        $("sMsg").textContent = s.msg ? (s.msg.slice(0,120)+(s.msg.length>120?"…":"")) : "(deine Message)";
-        $("sExtras").textContent = (s.extras && s.extras.length) ? s.extras.join(", ") : "—";
-        $("sDesign").textContent = designLabel(s.design);
-      }
+      if(n===5) syncPayPanel();
     }
 
     /* Message + chips */
@@ -973,78 +1267,105 @@
       });
     });
 
-    /* Pack select + tiles */
+    /* Pack tiles */
     const packSel = $("pack");
-    const tiles = qsa(".tile", $("packTiles") || document);
+    const packTiles = qsa(".tile", $("packTiles") || document);
     function setPack(pack){
       packSel && (packSel.value = pack);
-      tiles.forEach(t=>{
+      packTiles.forEach(t=>{
         const on = (t.dataset.pack === pack);
         t.classList.toggle("active", on);
         t.setAttribute("aria-checked", on ? "true":"false");
       });
-      setPriceUI(pack);
       writeState({pack});
+      refreshPriceUI();
     }
-    tiles.forEach(t=>t.addEventListener("click", ()=>setPack(t.dataset.pack)));
+    packTiles.forEach(t=>t.addEventListener("click", ()=>setPack(t.dataset.pack)));
     packSel?.addEventListener("change", ()=>setPack(packSel.value));
 
-    /* Extras (Step 2 ist jetzt Konfigurator – Extras bleiben im State möglich, aber UI ist Konfig) */
-    const extrasMap = [
-      {id:"xSprinkles", label:"Sprinkles-Look"},
-      {id:"xStory", label:"Mini-Story-URL"},
-    ];
-    function readExtras(){
-      const out=[];
-      for(const x of extrasMap){
-        const el = $(x.id);
-        if(el && el.checked) out.push(x.label);
-      }
-      return out;
+    /* Qty */
+    const qtyBtns = qsa(".qtyBtn");
+    function setQty(qty){
+      qty = Number(qty || 1);
+      qtyBtns.forEach(b=>{
+        const on = Number(b.dataset.qty) === qty;
+        b.classList.toggle("active", on);
+        b.setAttribute("aria-checked", on ? "true":"false");
+      });
+      writeState({qty});
+      refreshPriceUI();
+      ensureRecipientsForQty();
     }
+    qtyBtns.forEach(b=>b.addEventListener("click", ()=>setQty(b.dataset.qty)));
 
-    /* Address fields */
-    const fields = ["toName","fromName","toStreet","toZip","toCity","fromStreet","fromZip","fromCity"];
-    fields.forEach(id=>{
-      $(id)?.addEventListener("input", ()=>writeState({[id]: $(id).value}));
-    });
-
-    /* Summary */
-    function renderSummary(){
+    function refreshPriceUI(){
       const s = readState();
-      const p = pricing(s.pack || "Custom");
-      const extras = (s.extras && s.extras.length) ? s.extras.join(", ") : "—";
-      $("summary").innerHTML = `
-        <b>Paket:</b> ${esc(s.pack||"Custom")} <span class="muted">(${esc(p.val)})</span><br/>
-        <b>Message:</b><br/>${esc(s.msg||"—")}<br/><br/>
-        <b>Design:</b> ${esc(designLabel(s.design))}<br/>
-        <b>Extras:</b> ${esc(extras)}<br/><br/>
-        <b>Empfänger*in:</b> ${esc(s.toName||"—")}, ${esc(s.toStreet||"—")}, ${esc((s.toZip||"—")+" "+(s.toCity||"—"))}<br/>
-        <b>Antwort-Keks an:</b> ${esc(s.fromName||"—")}, ${esc(s.fromStreet||"—")}, ${esc((s.fromZip||"—")+" "+(s.fromCity||"—"))}
-      `;
+      const pack = s.pack || "Custom";
+      const qty = Number(s.qty || 1);
+      const pm = packMeta(pack);
+      const p = pricing(pack, qty);
+
+      $("priceTitle") && ($("priceTitle").textContent = pm.title);
+      $("priceNote")  && ($("priceNote").textContent  = pm.note);
+      $("unitPrice")  && ($("unitPrice").textContent  = `${money(p.unit)} / Stück`);
+      $("subtotal")   && ($("subtotal").textContent   = money(p.sub));
+      $("discount")   && ($("discount").textContent   = p.deal ? `−${money(p.disc)} (${p.deal.label})` : "—");
+      $("total")      && ($("total").textContent      = money(p.total));
+
+      const dealBadge = $("dealBadge");
+      if(dealBadge){
+        dealBadge.classList.toggle("show", !!p.deal);
+        dealBadge.textContent = p.deal ? `🔥 ${p.deal.label}` : "";
+      }
     }
 
     /* =========================
-       KONFIGURATOR (Design State + Preview)
+       KONFIGURATOR (Design + History)
     ========================= */
+    const HISTORY_MAX = 30;
 
     function getDesign(){
       const s = readState();
-      return s.design || { shape:"round", sprinkles:false, smiley:false, kiss:false, icing:"#ff4fa3" };
+      return s.design || { theme:"sweet", shape:"round", sprinkles:false, smiley:false, kiss:false, bolt:false, icing:"#ff4fa3" };
     }
-    function setDesign(patch){
-      const d = Object.assign(getDesign(), patch);
-      writeState({design:d});
+    function pushHistory(nextDesign){
+      const s = readState();
+      const hist = Array.isArray(s.hist) ? s.hist : [];
+      const idx = typeof s.histIdx === "number" ? s.histIdx : (hist.length - 1);
+
+      const pruned = hist.slice(0, idx + 1);
+      pruned.push(nextDesign);
+      const clipped = pruned.slice(-HISTORY_MAX);
+      const newIdx = clipped.length - 1;
+
+      writeState({ hist: clipped, histIdx: newIdx, design: nextDesign });
+    }
+    function setDesign(patch, {skipHist=false} = {}){
+      const cur = getDesign();
+      const next = Object.assign({}, cur, patch);
+      if(skipHist){
+        writeState({design: next});
+      }else{
+        pushHistory(next);
+      }
+      syncConfiguratorUI();
       renderPreview();
+      updateShareHint();
     }
 
     function svgCookie(d){
       const icing = d.icing || "#ff4fa3";
+      const bolt = d.bolt ? `
+        <path d="M170 85 L145 135 L170 135 L150 185 L200 120 L175 120 Z"
+          fill="rgba(255,176,32,.95)" stroke="rgba(11,27,42,.10)" stroke-width="2" />
+      ` : "";
+
       const spr = d.sprinkles ? `
         <circle cx="95" cy="90" r="4" fill="${icing}" opacity=".85"/>
         <circle cx="150" cy="130" r="3" fill="rgba(11,27,42,.25)"/>
         <circle cx="120" cy="160" r="4" fill="${icing}" opacity=".85"/>
         <circle cx="180" cy="165" r="3" fill="rgba(11,27,42,.22)"/>
+        <circle cx="210" cy="120" r="3" fill="${icing}" opacity=".75"/>
       ` : "";
 
       const smile = d.smiley ? `
@@ -1077,10 +1398,36 @@
 
       const shapeSvg = (d.shape==="heart") ? heart : (d.shape==="mouse") ? mouse : round;
 
+      const themeGlow = d.theme==="energy"
+        ? `<defs>
+            <radialGradient id="glow" cx="50%" cy="45%" r="70%">
+              <stop offset="0" stop-color="rgba(255,176,32,.35)"/>
+              <stop offset="1" stop-color="rgba(255,255,255,0)"/>
+            </radialGradient>
+          </defs>
+          <circle cx="160" cy="140" r="120" fill="url(#glow)"/>`
+        : d.theme==="frech"
+          ? `<defs>
+              <radialGradient id="glow2" cx="45%" cy="45%" r="70%">
+                <stop offset="0" stop-color="rgba(255,79,163,.28)"/>
+                <stop offset="1" stop-color="rgba(255,255,255,0)"/>
+              </radialGradient>
+            </defs>
+            <circle cx="160" cy="140" r="120" fill="url(#glow2)"/>`
+          : `<defs>
+              <radialGradient id="glow3" cx="50%" cy="50%" r="70%">
+                <stop offset="0" stop-color="rgba(255,79,163,.18)"/>
+                <stop offset="1" stop-color="rgba(255,255,255,0)"/>
+              </radialGradient>
+            </defs>
+            <circle cx="160" cy="140" r="120" fill="url(#glow3)"/>`;
+
       return `
       <svg viewBox="0 0 320 280" width="100%" height="220" role="img" aria-label="Keks Vorschau">
+        ${themeGlow}
         ${shapeSvg}
         ${spr}
+        ${bolt}
         ${kiss}
         ${smile}
         <circle cx="120" cy="120" r="5" fill="${icing}" opacity=".65"/>
@@ -1092,52 +1439,34 @@
       const box = $("cookiePreview");
       if(!box) return;
       const d = getDesign();
-      box.innerHTML = svgCookie(d);
+      box.innerHTML = svgCookie(d) + `<span class="previewHint">Live-Vorschau</span>`;
     }
 
-    function wireConfigurator(){
-      // radio shape
-      document.querySelectorAll('input[name="shape"]').forEach(r=>{
-        r.addEventListener("change", ()=> setDesign({shape: r.value}));
+    function syncConfiguratorUI(){
+      const d = getDesign();
+
+      // tabs
+      qsa(".tab", $("themeTabs") || document).forEach(t=>{
+        const on = t.dataset.theme === d.theme;
+        t.classList.toggle("active", on);
       });
 
-      const spr = $("dSprinkles");
-      const smi = $("dSmiley");
-      const kis = $("dKiss");
-      const ic  = $("dIcing");
-
-      spr && spr.addEventListener("change", ()=> setDesign({sprinkles: spr.checked}));
-      smi && smi.addEventListener("change", ()=> setDesign({smiley: smi.checked}));
-      kis && kis.addEventListener("change", ()=> setDesign({kiss: kis.checked}));
-      ic  && ic.addEventListener("input",  ()=> setDesign({icing: ic.value}));
-
-      // restore UI from state
-      const d = getDesign();
+      // shape radios
       const r = document.querySelector(`input[name="shape"][value="${d.shape}"]`);
-      r && (r.checked = true);
-      spr && (spr.checked = !!d.sprinkles);
-      smi && (smi.checked = !!d.smiley);
-      kis && (kis.checked = !!d.kiss);
-      ic  && (ic.value = d.icing || "#ff4fa3");
+      if(r) r.checked = true;
 
-      renderPreview();
-    }
+      $("dSprinkles") && ($("dSprinkles").checked = !!d.sprinkles);
+      $("dSmiley")    && ($("dSmiley").checked = !!d.smiley);
+      $("dKiss")      && ($("dKiss").checked = !!d.kiss);
+      $("dBolt")      && ($("dBolt").checked = !!d.bolt);
+      $("dIcing")     && ($("dIcing").value = d.icing || "#ff4fa3");
 
-    function randomDesignPreset(){
-      const presets = [
-        {shape:"round", sprinkles:true,  smiley:true,  kiss:false, icing:"#ff4fa3"}, // Süß
-        {shape:"mouse", sprinkles:true,  smiley:false, kiss:true,  icing:"#ff7cc5"}, // Frech
-        {shape:"heart", sprinkles:false, smiley:false, kiss:true,  icing:"#ff4fa3"}, // Elegant
-      ];
-      const p = presets[Math.floor(Math.random()*presets.length)];
-      setDesign(p);
-      // sync inputs
-      const r = document.querySelector(`input[name="shape"][value="${p.shape}"]`);
-      r && (r.checked = true);
-      $("dSprinkles") && ($("dSprinkles").checked = !!p.sprinkles);
-      $("dSmiley")    && ($("dSmiley").checked = !!p.smiley);
-      $("dKiss")      && ($("dKiss").checked = !!p.kiss);
-      $("dIcing")     && ($("dIcing").value = p.icing || "#ff4fa3");
+      // undo/redo availability
+      const s = readState();
+      const hist = Array.isArray(s.hist) ? s.hist : [];
+      const idx = typeof s.histIdx === "number" ? s.histIdx : (hist.length - 1);
+      $("undoBtn") && ($("undoBtn").disabled = !(idx > 0));
+      $("redoBtn") && ($("redoBtn").disabled = !(idx < hist.length - 1));
     }
 
     function designLabel(d){
@@ -1147,200 +1476,436 @@
       if(d.sprinkles) parts.push("Sprinkles");
       if(d.smiley) parts.push("Smiley");
       if(d.kiss) parts.push("Kuss");
-      return parts.length ? parts.join(" · ") : "—";
+      if(d.bolt) parts.push("Blitz");
+      parts.push(d.theme==="energy" ? "Energy" : d.theme==="frech" ? "Frech" : "Süß");
+      return parts.join(" · ");
     }
 
-    $("surpriseBtn")?.addEventListener("click", randomDesignPreset);
+    function applyTheme(theme){
+      // presets (energie: bolt + amber, frech: kiss + pink2, süß: smiley+sprinkles)
+      if(theme==="energy"){
+        setDesign({theme:"energy", bolt:true, sprinkles:true, smiley:false, kiss:false, icing:"#ffb020"});
+        return;
+      }
+      if(theme==="frech"){
+        setDesign({theme:"frech", kiss:true, sprinkles:true, smiley:false, bolt:false, icing:"#ff7cc5"});
+        return;
+      }
+      setDesign({theme:"sweet", smiley:true, sprinkles:true, kiss:false, bolt:false, icing:"#ff4fa3"});
+    }
+
+    function randomPreset(){
+      const presets = [
+        {theme:"sweet", shape:"round", sprinkles:true,  smiley:true,  kiss:false, bolt:false, icing:"#ff4fa3"},
+        {theme:"frech", shape:"mouse", sprinkles:true,  smiley:false, kiss:true,  bolt:false, icing:"#ff7cc5"},
+        {theme:"energy",shape:"heart", sprinkles:true,  smiley:false, kiss:false, bolt:true,  icing:"#ffb020"},
+      ];
+      const p = presets[Math.floor(Math.random()*presets.length)];
+      setDesign(p);
+    }
+
+    function undo(){
+      const s = readState();
+      const hist = Array.isArray(s.hist) ? s.hist : [];
+      let idx = typeof s.histIdx === "number" ? s.histIdx : (hist.length - 1);
+      if(idx <= 0) return;
+      idx -= 1;
+      const d = hist[idx];
+      writeState({histIdx: idx, design: d});
+      syncConfiguratorUI();
+      renderPreview();
+      updateShareHint();
+    }
+    function redo(){
+      const s = readState();
+      const hist = Array.isArray(s.hist) ? s.hist : [];
+      let idx = typeof s.histIdx === "number" ? s.histIdx : (hist.length - 1);
+      if(idx >= hist.length - 1) return;
+      idx += 1;
+      const d = hist[idx];
+      writeState({histIdx: idx, design: d});
+      syncConfiguratorUI();
+      renderPreview();
+      updateShareHint();
+    }
+
+    function wireConfigurator(){
+      // tabs
+      qsa(".tab", $("themeTabs") || document).forEach(t=>{
+        t.addEventListener("click", ()=>applyTheme(t.dataset.theme));
+      });
+
+      // shape
+      document.querySelectorAll('input[name="shape"]').forEach(r=>{
+        r.addEventListener("change", ()=> setDesign({shape: r.value}));
+      });
+
+      // toggles
+      $("dSprinkles")?.addEventListener("change", (e)=> setDesign({sprinkles: e.target.checked}));
+      $("dSmiley")?.addEventListener("change", (e)=> setDesign({smiley: e.target.checked}));
+      $("dKiss")?.addEventListener("change", (e)=> setDesign({kiss: e.target.checked}));
+      $("dBolt")?.addEventListener("change", (e)=> setDesign({bolt: e.target.checked}));
+      $("dIcing")?.addEventListener("input", (e)=> setDesign({icing: e.target.value}));
+
+      $("surpriseBtn")?.addEventListener("click", randomPreset);
+      $("undoBtn")?.addEventListener("click", undo);
+      $("redoBtn")?.addEventListener("click", redo);
+
+      // init history if empty
+      const s = readState();
+      if(!Array.isArray(s.hist) || s.hist.length === 0){
+        const base = getDesign();
+        writeState({hist:[base], histIdx:0, design: base});
+      }
+      syncConfiguratorUI();
+      renderPreview();
+    }
 
     /* =========================
-       EARLY / GENESIS / INVITES + REWARDS (HIDDEN)
+       Viral: Invite/Share Link
     ========================= */
-
     function getUID(){
       const s = readState();
       if(s.uid) return s.uid;
-      const uid = "u_" + Math.random().toString(16).slice(2) + Date.now().toString(16);
-      writeState({uid});
-      return uid;
+      const id = "u_" + Math.random().toString(16).slice(2) + Date.now().toString(16);
+      writeState({uid: id});
+      return id;
     }
-
-    const EARLY_CUTOFF_ISO = "2026-03-31T23:59:59.000Z"; // später anpassen
-    const GENESIS_MAX_ORDERS = 1000; // placeholder (später server truth)
-
-    function ensureEarlyProfile(){
-      const s0 = readState();
-      const now = new Date().toISOString();
-      if(!s0.firstSeen) writeState({firstSeen: now});
-
+    function encodeStateForShare(){
       const s = readState();
-      const firstSeen = new Date(s.firstSeen || now);
-      const isEarlyByDate = firstSeen <= new Date(EARLY_CUTOFF_ISO);
-
-      const orderCount = +(s.orderCount || 0);
-
-      const earlyMember = (s.earlyMember === true) || isEarlyByDate;
-      const genesis = (s.genesis === true) || (earlyMember && orderCount < GENESIS_MAX_ORDERS);
-      const inviteSlots = (typeof s.inviteSlots === "number") ? s.inviteSlots : (earlyMember ? 3 : 0);
-
-      writeState({
-        earlyMember,
-        genesis,
-        inviteSlots,
-        kt: +(s.kt || 0),
-        level: s.level || 1
-      });
-
-      return readState();
+      const d = getDesign();
+      // keep small (no addresses!)
+      const payload = {
+        uid: getUID(),
+        pack: s.pack || "Custom",
+        qty: Number(s.qty||1),
+        msg: (s.msg || "").slice(0, 240),
+        design: {theme:d.theme, shape:d.shape, sprinkles:!!d.sprinkles, smiley:!!d.smiley, kiss:!!d.kiss, bolt:!!d.bolt, icing:d.icing}
+      };
+      const json = JSON.stringify(payload);
+      // base64url
+      const b64 = btoa(unescape(encodeURIComponent(json))).replaceAll("+","-").replaceAll("/","_").replaceAll("=","");
+      return b64;
     }
+    function shareUrl(){
+      const b64 = encodeStateForShare();
+      const ref = getUID();
+      const url = new URL(location.href);
+      url.searchParams.set("ref", ref);
+      url.searchParams.set("draft", b64);
+      return url.toString();
+    }
+    async function copyText(t){
+      try{
+        await navigator.clipboard.writeText(t);
+        return true;
+      }catch(e){
+        // fallback
+        const ta = document.createElement("textarea");
+        ta.value = t;
+        document.body.appendChild(ta);
+        ta.select();
+        try{ document.execCommand("copy"); }catch(_){}
+        ta.remove();
+        return true;
+      }
+    }
+    function updateShareHint(){
+      const hint = $("shareHint");
+      if(!hint) return;
+      hint.textContent = `Dein Link ist ready. (Keine Adressen drin.)`;
+    }
+    $("copyShare")?.addEventListener("click", async ()=>{
+      const url = shareUrl();
+      await copyText(url);
+      const hint = $("shareHint");
+      if(hint) hint.textContent = "Link kopiert. Jetzt ab in WhatsApp/IG/TikTok-DM. 😈";
+    });
+    $("nativeShare")?.addEventListener("click", async ()=>{
+      const url = shareUrl();
+      const text = "Guck mal: Ich hab ’nen Keks gestaltet. 😄🍪";
+      try{
+        if(navigator.share){
+          await navigator.share({title:"OnlyKeks", text, url});
+        }else{
+          await copyText(url);
+        }
+      }catch(e){}
+      const hint = $("shareHint");
+      if(hint) hint.textContent = "Teilen ready. Wenn’s nicht ging: Link ist kopiert.";
+    });
 
-    function applyReferralFromUrl(){
+    /* Apply draft from URL (prefill) */
+    (function applyDraftFromUrl(){
       const p = new URLSearchParams(location.search);
+      const draft = p.get("draft");
       const ref = p.get("ref");
-      if(!ref) return;
+      if(ref){
+        const s = readState();
+        if(!s.referredBy){
+          writeState({referredBy: ref, referredAt: new Date().toISOString()});
+        }
+      }
+      if(!draft) return;
+      try{
+        const b64 = draft.replaceAll("-","+").replaceAll("_","/");
+        const pad = b64.length % 4 ? "=".repeat(4 - (b64.length % 4)) : "";
+        const json = decodeURIComponent(escape(atob(b64 + pad)));
+        const data = JSON.parse(json);
+
+        if(data?.msg && msg){ msg.value = data.msg; }
+        writeState({msg: msg?.value || ""});
+        updateCount();
+
+        if(data?.pack) setPack(data.pack);
+        if(data?.qty) setQty(data.qty);
+
+        if(data?.design) setDesign(data.design, {skipHist:true});
+      }catch(e){}
+    })();
+
+    /* =========================
+       Multi-Empfänger (MVP-light)
+    ========================= */
+    function getRecipients(){
       const s = readState();
-      if(s.referredBy) return; // only once
-      writeState({referredBy: ref, referredAt: new Date().toISOString()});
-      grantKT("REF_JOIN", 1);
+      return Array.isArray(s.recipients) ? s.recipients : [];
+    }
+    function setRecipients(recipients){
+      writeState({recipients});
+      renderRecipients();
     }
 
-    function getInviteLink(){
-      const uid = getUID();
-      return `${location.origin}${location.pathname}?ref=${encodeURIComponent(uid)}`;
-    }
-
-    const KT_RULES = {
-      BUY: 1,
-      BUY_PREMIUM: 2,
-      QR_ANSWER_SENT: 1,
-      ANSWER_WITH_IMAGE: 1,
-      REFERRED_CONVERT: 3,
-      REF_JOIN: 1
-    };
-
-    const REWARD_MULT = {
-      STANDARD: 1.0,
-      EARLY: 1.8,
-      GENESIS: 3.0
-    };
-
-    function levelBoost(level){
-      if(level >= 5) return 1.35;
-      if(level >= 4) return 1.25;
-      if(level >= 3) return 1.15;
-      if(level >= 2) return 1.08;
-      return 1.0;
-    }
-
-    function userStatus(s){
-      if(s && s.genesis) return "GENESIS";
-      if(s && s.earlyMember) return "EARLY";
-      return "STANDARD";
-    }
-
-    function updateLevel(){
+    function ensureRecipientsForQty(){
       const s = readState();
-      const kt = +(s.kt||0);
-      let level = 1;
-      if(kt >= 10) level = 2;
-      if(kt >= 25) level = 3;
-      if(kt >= 50) level = 4;
-      if(kt >= 100) level = 5;
-      writeState({level});
+      const qty = Number(s.qty || 1);
+      let recs = getRecipients();
+
+      // always keep at least 1
+      if(recs.length === 0){
+        recs = [{toName:"", toStreet:"", toZip:"", toCity:""}];
+      }
+      // clamp to qty
+      if(recs.length > qty) recs = recs.slice(0, qty);
+      // no auto-expand to qty (user adds via button), BUT show cap info
+      setRecipients(recs);
     }
 
-    function calcReward(reason){
+    function renderRecipients(){
+      const box = $("recipients");
+      if(!box) return;
+
       const s = readState();
-      const base = KT_RULES[reason] || 0;
-      const stat = userStatus(s);
-      const mult = REWARD_MULT[stat] || 1.0;
-      const boost = levelBoost(+(s.level||1));
-      return Math.round(base * mult * boost);
-    }
+      const qty = Number(s.qty || 1);
+      const recs = getRecipients();
 
-    function grantKT(reason, amount){
-      const s = readState();
-      const log = Array.isArray(s.ktLog) ? s.ktLog : [];
-      const now = Date.now();
-      const last = log[log.length-1];
-      if(last && last.r === reason && (now - last.t) < 3000) return;
+      const tag = $("recCountTag");
+      if(tag) tag.textContent = `${recs.length} / ${qty}`;
 
-      const kt = Math.max(0, +(s.kt||0) + (amount||0));
-      log.push({t: now, r: reason, a: amount||0});
-      writeState({kt, ktLog: log.slice(-200)});
-      updateLevel();
-    }
-
-    function showReveal(){
-      const ov = $("revealOverlay");
-      if(!ov) return;
-
-      const s = ensureEarlyProfile();
-      const badge = $("revealBadge");
-      const sub   = $("revealSub");
-      const txt   = $("revealText");
-      const st    = $("revealStatus");
-
-      const isGenesis = !!s.genesis;
-      const isEarly = !!s.earlyMember;
-
-      sub.textContent = `Status: ${isGenesis ? "Genesis" : (isEarly ? "Early" : "Standard")} · Level ${s.level} · Stempel: ${s.kt}`;
-
-      if(isGenesis){
-        badge.textContent = "✨ Genesis-Keks";
-        txt.innerHTML =
-          `Du hältst einen <b>Genesis-Keks</b>. Die gibt’s nicht mehr, wenn sie weg sind. ` +
-          `Manche Details sind absichtlich <b>nicht nachbaubar</b> – genau darum ist er besonders.`;
-      }else if(isEarly){
-        badge.textContent = "🌙 Early-Keks";
-        txt.innerHTML =
-          `Du bist im <b>Early Circle</b>. Manche Drops und Belohnungen sind nur für euch – ` +
-          `und werden später nie wieder so fett.`;
-      }else{
-        badge.textContent = "🍪 Special möglich";
-        txt.innerHTML =
-          `Manche Kekse haben versteckte Extras. Sammel Stempel – dann geht’s auf.`;
+      const addBtn = $("addRecipient");
+      if(addBtn){
+        addBtn.disabled = recs.length >= qty;
+        addBtn.style.opacity = addBtn.disabled ? ".55" : "1";
       }
 
-      const link = getInviteLink();
-      st.innerHTML =
-        `Einladungen: <b>${s.inviteSlots||0}</b><br>` +
-        (s.earlyMember
-          ? `Dein Invite-Link: <span class="muted">${link}</span>`
-          : `Hol dir Stempel durch Antworten und Käufe – dann kommste hoch.`);
+      box.innerHTML = recs.map((r,i)=>`
+        <div class="recCard" data-i="${i}">
+          <div class="recHead">
+            <b>Empfänger #${i+1}</b>
+            <div style="display:flex;gap:10px;align-items:center">
+              <span class="recTag">${qty>1 ? "Multi-Empfänger" : "Single"}</span>
+              ${recs.length>1 ? `<button class="btn btnSmall btnDanger" type="button" data-del="${i}">Entfernen</button>` : ``}
+            </div>
+          </div>
 
-      ov.style.display = "flex";
-      ov.setAttribute("aria-hidden","false");
+          <div class="row">
+            <div>
+              <label class="lbl">Name</label>
+              <input data-k="toName" value="${esc(r.toName||"")}" placeholder="z. B. Lisa" />
+            </div>
+            <div>
+              <label class="lbl">Straße & Hausnummer</label>
+              <input data-k="toStreet" value="${esc(r.toStreet||"")}" placeholder="Musterstraße 12" />
+            </div>
+          </div>
 
-      $("revealClose") && ($("revealClose").onclick = ()=>{
-        ov.style.display = "none";
-        ov.setAttribute("aria-hidden","true");
+          <div class="row">
+            <div>
+              <label class="lbl">PLZ</label>
+              <input data-k="toZip" value="${esc(r.toZip||"")}" inputmode="numeric" placeholder="10115" />
+            </div>
+            <div>
+              <label class="lbl">Ort</label>
+              <input data-k="toCity" value="${esc(r.toCity||"")}" placeholder="Berlin" />
+            </div>
+          </div>
+        </div>
+      `).join("");
+
+      // wire inputs
+      qsa(".recCard", box).forEach(card=>{
+        const i = Number(card.dataset.i);
+        qsa("input", card).forEach(inp=>{
+          inp.addEventListener("input", ()=>{
+            const recs2 = getRecipients();
+            const k = inp.dataset.k;
+            recs2[i] = Object.assign({}, recs2[i], {[k]: inp.value});
+            writeState({recipients: recs2});
+            // update tag fast
+            const tag = $("recCountTag");
+            if(tag){
+              const qty = Number(readState().qty || 1);
+              tag.textContent = `${recs2.length} / ${qty}`;
+            }
+          });
+        });
       });
 
-      $("revealGo") && ($("revealGo").onclick = ()=>{
-        ov.style.display = "none";
-        ov.setAttribute("aria-hidden","true");
-        // optional: direkt in Flow springen
-        document.querySelector("#flow").scrollIntoView({behavior:"smooth", block:"start"});
+      // wire delete
+      qsa("button[data-del]", box).forEach(btn=>{
+        btn.addEventListener("click", ()=>{
+          const i = Number(btn.dataset.del);
+          const recs2 = getRecipients().filter((_,idx)=>idx!==i);
+          setRecipients(recs2.length ? recs2 : [{toName:"",toStreet:"",toZip:"",toCity:""}]);
+        });
       });
     }
 
-    function bootRevealIfScan(){
-      const p = new URLSearchParams(location.search);
-      if(p.get("scan") === "1") showReveal();
+    $("addRecipient")?.addEventListener("click", ()=>{
+      const s = readState();
+      const qty = Number(s.qty || 1);
+      const recs = getRecipients();
+      if(recs.length >= qty) return;
+      recs.push({toName:"", toStreet:"", toZip:"", toCity:""});
+      setRecipients(recs);
+      // scroll to new card
+      setTimeout(()=> document.querySelector(".recCard:last-child")?.scrollIntoView({behavior:"smooth", block:"start"}), 60);
+    });
+
+    /* Sender fields */
+    ["fromName","fromStreet","fromZip","fromCity"].forEach(id=>{
+      $(id)?.addEventListener("input", ()=>writeState({[id]: $(id).value}));
+    });
+
+    /* Summary */
+    function renderSummary(){
+      const s = readState();
+      const pack = s.pack || "Custom";
+      const qty = Number(s.qty||1);
+      const p = pricing(pack, qty);
+      const d = getDesign();
+      const recs = getRecipients();
+
+      const recLines = recs.map((r,i)=>`#${i+1} ${esc(r.toName||"—")}, ${esc(r.toStreet||"—")}, ${esc((r.toZip||"—")+" "+(r.toCity||"—"))}`).join("<br/>");
+
+      $("summary").innerHTML = `
+        <b>Paket:</b> ${esc(pack)}<br/>
+        <b>Anzahl:</b> ${qty} ${p.deal ? `<span class="muted">(${esc(p.deal.label)})</span>` : ""}<br/>
+        <b>Preis:</b> ${esc(money(p.total))}<br/><br/>
+
+        <b>Message:</b><br/>${esc(s.msg||"—")}<br/><br/>
+
+        <b>Design:</b> ${esc(designLabel(d))}<br/><br/>
+
+        <b>Empfänger:</b><br/>${recLines}<br/><br/>
+
+        <b>Antwort-Keks an:</b> ${esc(s.fromName||"—")}, ${esc(s.fromStreet||"—")}, ${esc((s.fromZip||"—")+" "+(s.fromCity||"—"))}
+      `;
     }
 
-    function bootEarlyLayer(){
-      getUID();
-      ensureEarlyProfile();
-      applyReferralFromUrl();
-      bootRevealIfScan();
+    /* Step 5 sync */
+    function syncPayPanel(){
+      const s = readState();
+      const pack = s.pack || "Custom";
+      const qty = Number(s.qty||1);
+      const p = pricing(pack, qty);
+      const recs = getRecipients();
+
+      $("payBtn").href = STRIPE_PAYMENT_LINK;
+
+      $("oid").textContent = s.orderId || "(wird erstellt)";
+      $("sPack").textContent = pack;
+      $("sQty").textContent = String(qty);
+      $("sTotal").textContent = money(p.total);
+      $("sMsg").textContent = s.msg ? (s.msg.slice(0,120)+(s.msg.length>120?"…":"")) : "(deine Message)";
+      $("sDesign").textContent = designLabel(getDesign());
+      $("sRecs").textContent = recs.length ? `${recs.length} Empfänger` : "—";
+
+      renderStampUI();
+    }
+
+    /* =========================
+       Stempelkarte (10 = Reward)
+    ========================= */
+    function getStamps(){
+      const s = readState();
+      return {
+        stamps: Number(s.stamps || 0),
+        rewards: Number(s.rewards || 0)
+      };
+    }
+    function setStamps(next){
+      writeState(next);
+      renderStampUI();
+    }
+    function renderStampUI(){
+      const g = $("stampGrid");
+      if(!g) return;
+
+      const {stamps, rewards} = getStamps();
+      const mod = stamps % 10;
+      const filled = mod === 0 && stamps > 0 ? 10 : mod;
+
+      g.innerHTML = Array.from({length:10}).map((_,i)=>{
+        const on = i < filled;
+        return `<div class="stamp ${on ? "on":""}" title="${on?"Stempel":"—"}">${on ? "🍪" : "·"}</div>`;
+      }).join("");
+
+      const hint = $("stampHint");
+      if(hint){
+        const left = (10 - filled) % 10;
+        hint.textContent = filled === 10 ? `Belohnung freigeschaltet. (Gesammelt: ${stamps}, Belohnungen: ${rewards})`
+                                         : `Noch ${left} Stempel bis zur Belohnung. (Gesammelt: ${stamps})`;
+      }
+
+      const badge = $("rewardBadge");
+      if(badge){
+        badge.classList.toggle("show", filled === 10);
+      }
+    }
+    function maybeRewardOverlay(){
+      const {stamps} = getStamps();
+      if(stamps <= 0) return;
+      const mod = stamps % 10;
+      if(mod !== 0) return;
+
+      const ov = $("rewardOverlay");
+      if(!ov) return;
 
       const s = readState();
-      const teaser = $("earlyTeaser");
-      if(teaser && (s.earlyMember || s.genesis)) teaser.style.display = "";
+      $("rewardSub") && ($("rewardSub").textContent = `Stempel: ${s.stamps} · Belohnungen: ${s.rewards||0}`);
+      ov.classList.add("show");
+      ov.setAttribute("aria-hidden","false");
     }
+    $("rewardClose")?.addEventListener("click", ()=>{
+      $("rewardOverlay")?.classList.remove("show");
+      $("rewardOverlay")?.setAttribute("aria-hidden","true");
+    });
+    $("rewardShare")?.addEventListener("click", async ()=>{
+      const url = shareUrl();
+      const text = "Ich hab ’ne Belohnung bei OnlyKeks freigeschaltet. 🍪🎁";
+      try{
+        if(navigator.share){
+          await navigator.share({title:"OnlyKeks", text, url});
+        }else{
+          await copyText(url);
+        }
+      }catch(e){}
+      $("rewardOverlay")?.classList.remove("show");
+      $("rewardOverlay")?.setAttribute("aria-hidden","true");
+    });
 
-    /* Optional: Cookie Rain (dezent, inkl. Maus) */
+    /* Cookie Rain (dezent, inkl. Maus) */
     function startCookieRain(){
       if(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
       let n = 0;
@@ -1373,9 +1938,31 @@
     $("back3")?.addEventListener("click", ()=>go(2));
     $("next3")?.addEventListener("click", ()=>{
       const s = readState();
-      const need = ["toName","toStreet","toZip","toCity","fromName","fromStreet","fromZip","fromCity"];
-      const missing = need.filter(k=>!String(s[k]||"").trim());
-      if(missing.length){ $(missing[0])?.focus(); return; }
+
+      // validate sender
+      const needSender = ["fromName","fromStreet","fromZip","fromCity"];
+      const missS = needSender.filter(k=>!String(s[k]||"").trim());
+      if(missS.length){ $(missS[0])?.focus(); return; }
+
+      // validate recipients count
+      const qty = Number(s.qty||1);
+      const recs = getRecipients();
+      if(recs.length < qty){
+        // allow underfill but must be at least 1
+        if(recs.length < 1) return;
+      }
+      // validate each recipient minimal
+      for(let i=0;i<recs.length;i++){
+        const r = recs[i];
+        const miss = ["toName","toStreet","toZip","toCity"].find(k=>!String(r[k]||"").trim());
+        if(miss){
+          // focus first missing field
+          const card = document.querySelector(`.recCard[data-i="${i}"]`);
+          card?.querySelector(`input[data-k="${miss}"]`)?.focus();
+          return;
+        }
+      }
+
       renderSummary();
       go(4);
     });
@@ -1387,50 +1974,72 @@
     });
     $("back5")?.addEventListener("click", ()=>go(4));
 
-    /* Pay click (hidden rewards placeholder: zählt als Kauf-Intent) */
+    /* Pay click: add stamps (qty) + reward logic */
     $("payBtn")?.addEventListener("click", ()=>{
       const s = readState();
-      const pack = s.pack || "Custom";
-      const reason = (pack==="Premium") ? "BUY_PREMIUM" : "BUY";
-      grantKT(reason, calcReward(reason));
-      writeState({orderCount: +(s.orderCount||0) + 1});
-      ensureEarlyProfile();
+      const qty = Number(s.qty || 1);
+
+      const cur = getStamps();
+      const nextStamps = cur.stamps + qty;
+
+      // count reward when crossing multiples of 10 (simple: if new stamps % 10 == 0)
+      let rewards = cur.rewards;
+      if(nextStamps > 0 && (nextStamps % 10 === 0)) rewards += 1;
+
+      setStamps({stamps: nextStamps, rewards});
+
+      // show reward overlay if exactly multiple of 10
+      setTimeout(maybeRewardOverlay, 350);
+
+      // also remember orderCount (business metric)
+      writeState({orderCount: Number(s.orderCount||0) + 1});
     });
 
-    /* Boot restore */
-    (function boot(){
-      const s = readState();
-
-      if(msg && s.msg){ msg.value = s.msg; }
-      updateCount();
-
-      const initialPack = s.pack || "Custom";
-      setPack(initialPack);
-
-      // restore addresses
-      fields.forEach(id=>{
-        const el = $(id);
-        if(el && s[id]) el.value = s[id];
-      });
-
-      // wire configurator + restore UI
-      wireConfigurator();
-
-      // hidden layer
-      bootEarlyLayer();
-
-      // optional rain after ready (intro gate)
-      setTimeout(startCookieRain, 600);
-    })();
-
     /* Consent */
-    const CONSENT_KEY = "onlykeks_consent_v1";
+    const CONSENT_KEY = "onlykeks_consent_v2";
     const consentEl = $("consent");
     function showConsent(){ if(!localStorage.getItem(CONSENT_KEY)) consentEl?.classList.add("show"); }
     function setConsent(mode){ localStorage.setItem(CONSENT_KEY, mode); consentEl?.classList.remove("show"); }
     $("consentAll")?.addEventListener("click", ()=>setConsent("all"));
     $("consentNeed")?.addEventListener("click", ()=>setConsent("need"));
     showConsent();
+
+    /* Boot */
+    (function boot(){
+      // ensure uid
+      getUID();
+
+      // restore message
+      const s = readState();
+      if(msg && s.msg){ msg.value = s.msg; }
+      updateCount();
+
+      // restore pack/qty
+      setPack(s.pack || "Custom");
+      setQty(s.qty || 1);
+
+      // restore sender
+      ["fromName","fromStreet","fromZip","fromCity"].forEach(id=>{
+        const el = $(id);
+        if(el && s[id]) el.value = s[id];
+      });
+
+      // recipients
+      ensureRecipientsForQty();
+      renderRecipients();
+
+      // configurator
+      wireConfigurator();
+
+      // share hint
+      updateShareHint();
+
+      // cookie rain after intro done
+      setTimeout(startCookieRain, 650);
+
+      // initial stamps render
+      renderStampUI();
+    })();
   </script>
 </body>
-</html>
+              </html>

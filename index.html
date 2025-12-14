@@ -28,6 +28,16 @@
       --h2: clamp(20px, 3.4vw, 30px);
       --fz: 16px;
       --focus: 0 0 0 4px rgba(255,79,163,.22);
+
+      /* Rarity System (fix) */
+      --r-common-bg:#fffaf3; --r-common-bd:rgba(0,0,0,.10);
+      --r-uncommon:#37c871; --r-rare:#2a7bff; --r-epic:#8a3ffc;
+      --r-legendary:#d6a100; --r-mythic-bg:#0b0b0e; --r-mythic-gold:#d6a100;
+
+      --glow-rare:0 0 0 3px rgba(42,123,255,.22),0 10px 30px rgba(42,123,255,.15);
+      --glow-epic:0 0 0 3px rgba(138,63,252,.22),0 10px 30px rgba(138,63,252,.15);
+      --glow-leg: 0 0 0 3px rgba(214,161,0,.25), 0 12px 34px rgba(214,161,0,.18);
+      --glow-myth:0 0 0 3px rgba(214,161,0,.30), 0 14px 42px rgba(0,0,0,.55);
     }
 
     *{ box-sizing:border-box; }
@@ -197,7 +207,7 @@
       background: rgba(255,255,255,.75);
       border-radius: var(--r2);
       padding: 12px;
-      overflow: visible; /* wichtig: nichts abschneiden */
+      overflow: visible;
     }
     .previewStage{
       border-radius: var(--r2);
@@ -304,6 +314,87 @@
       cursor:pointer;
     }
 
+    /* Rarity UI */
+    .rarityRow{display:flex;align-items:center;gap:.75rem;flex-wrap:wrap;margin:.5rem 0 0}
+    .rarityHint{opacity:.8;font-size:.92rem}
+    .rarityBadge{
+      display:inline-flex;align-items:center;gap:.5rem;
+      padding:.35rem .65rem;border-radius:999px;
+      font-weight:1000;font-size:.85rem;
+      border:1px solid rgba(0,0,0,.12);
+      background:var(--r-common-bg);
+    }
+    .rarity-common{border-color:var(--r-common-bd)}
+    .rarity-uncommon{border-color:rgba(55,200,113,.45)}
+    .rarity-rare{border-color:rgba(42,123,255,.55);box-shadow:var(--glow-rare)}
+    .rarity-epic{border-color:rgba(138,63,252,.55);box-shadow:var(--glow-epic)}
+    .rarity-legendary{border-color:rgba(214,161,0,.75);box-shadow:var(--glow-leg)}
+    .rarity-mythic{
+      background:linear-gradient(180deg,rgba(11,11,14,1),rgba(11,11,14,.92));
+      color:#fff;border-color:rgba(214,161,0,.90);box-shadow:var(--glow-myth)
+    }
+    .sweep{position:relative;overflow:hidden}
+    .sweep::after{
+      content:"";position:absolute;top:-30%;left:-60%;
+      width:50%;height:160%;
+      background:linear-gradient(90deg,transparent,rgba(214,161,0,.35),transparent);
+      transform:rotate(18deg);opacity:0
+    }
+    .sweep:hover::after{animation:sweep 1.2s ease;opacity:1}
+    @keyframes sweep{0%{left:-60%}100%{left:140%}}
+    .rarityProgress{margin:.4rem 0 0}
+    .rarityProgress .bar{height:10px;border-radius:999px;background:rgba(0,0,0,.08);overflow:hidden}
+    .rarityProgress .fill{height:100%;background:rgba(214,161,0,.45);width:0%}
+    .rarityProgress .next{margin-top:.35rem;font-size:.88rem;opacity:.8}
+
+    /* Hall of Keks (VIP Schwarz/Gold, nur Highlights) */
+    .hallVIP{
+      background: linear-gradient(180deg, rgba(11,11,14,1), rgba(11,11,14,.94));
+      color:#fff;
+      border: 1px solid rgba(214,161,0,.35);
+      box-shadow: 0 26px 90px rgba(0,0,0,.35);
+      position:relative;
+      overflow:hidden;
+    }
+    .hallVIP::after{
+      content:""; position:absolute; inset:-40%;
+      background: radial-gradient(closest-side, rgba(214,161,0,.18), transparent 60%);
+      transform: rotate(18deg);
+      pointer-events:none;
+    }
+    .hallGrid{display:grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 12px; margin-top: 12px;}
+    .hallCard{
+      border-radius: 20px;
+      border: 1px solid rgba(214,161,0,.28);
+      background: rgba(255,255,255,.06);
+      padding: 12px;
+      position:relative;
+      overflow:hidden;
+    }
+    .hallCardTop{display:flex; align-items:center; justify-content:space-between; gap:10px;}
+    .hallMsg{margin-top:10px; font-weight:950; opacity:.95}
+    .hallMeta{margin-top:8px; font-size:12.5px; opacity:.82; font-weight:850}
+    .btnGold{
+      background: linear-gradient(135deg, rgba(214,161,0,1), rgba(255,220,120,1));
+      color:#111;
+      box-shadow: 0 18px 50px rgba(214,161,0,.22);
+    }
+
+    /* Toast */
+    #keksToast{
+      position:fixed; left:50%; bottom:18px; transform:translateX(-50%);
+      padding:.75rem 1rem; border-radius:14px;
+      background:rgba(255,255,255,.92);
+      border:1px solid rgba(0,0,0,.10);
+      box-shadow:0 16px 50px rgba(0,0,0,.18);
+      font-weight:1000; z-index:99999;
+      opacity:0; pointer-events:none;
+      transition:opacity .18s ease, transform .18s ease;
+    }
+    #keksToast.show{ opacity:1; transform:translateX(-50%) translateY(-6px); }
+    .keksPulse{ animation:keksPulse .55s ease; }
+    @keyframes keksPulse{ 0%{transform:scale(1)} 45%{transform:scale(1.03)} 100%{transform:scale(1)} }
+
     /* Mobile */
     @media (max-width: 900px){
       nav{ display:none; }
@@ -311,6 +402,7 @@
       .cfg{ grid-template-columns: 1fr; }
       .trust{ grid-template-columns: 1fr 1fr; }
       .previewStage{ min-height: 220px; }
+      .hallGrid{grid-template-columns: 1fr;}
     }
     @media (max-width: 520px){
       .trust{ grid-template-columns: 1fr; }
@@ -319,13 +411,12 @@
 </head>
 
 <body id="top">
+  <div id="keksToast" aria-live="polite"></div>
 
   <!-- Intro -->
   <div id="intro" aria-label="Intro">
     <div id="introBox">
       <button id="skipIntro" type="button" aria-label="Intro überspringen">Skip</button>
-
-      <!-- WICHTIG: Exakter Pfad aus deinem Repo -->
       <video id="introVideo" muted playsinline preload="auto" autoplay>
         <source src="assets/video/grok_video_2025-12-14-00-41-51.mp4" type="video/mp4">
       </video>
@@ -345,6 +436,7 @@
       <nav aria-label="Navigation">
         <a href="#so-gehts">So geht’s</a>
         <a href="#konfigurator">Konfigurator</a>
+        <a href="#hall">Hall of Keks</a>
         <a href="#faq">FAQ</a>
       </nav>
 
@@ -399,7 +491,7 @@
         <div class="card">
           <h2>Wichtig</h2>
           <p class="muted">
-            MVP-Logik: Links und Entwürfe werden lokal gespeichert. Später kommt die echte Verarbeitung serverseitig dazu.
+            MVP-Logik: Entwürfe werden lokal gespeichert. Sharing/Ranking läuft über kleine Design-Codes (Link) – serverseitig später.
           </p>
         </div>
       </div>
@@ -432,7 +524,7 @@
               <div class="packTile active" data-pack="Custom">
                 <div>
                   <div style="font-weight:1100;">Custom</div>
-                  <div class="muted" style="font-size:13px;">Deko-Optionen + nicer Look. Bestseller.</div>
+                  <div class="muted" style="font-size:13px;">Deko-Feeling + nicer Look. Bestseller.</div>
                 </div>
                 <span class="badge badgeHot">3er-Deal: −15%</span>
               </div>
@@ -475,6 +567,11 @@
                   <button class="btn" type="button" id="toPay">Weiter zum Bezahlen</button>
                 </div>
 
+                <div class="row" style="margin-top:10px;">
+                  <button class="btn" type="button" id="addToHall">In die Hall of Keks</button>
+                  <button class="btn" type="button" id="shareDesign">Design teilen</button>
+                </div>
+
                 <div class="muted" style="font-size:12.5px; margin-top:10px;">
                   Hinweis: Zahlung ist im MVP aktuell Demo. Stripe-Link kannst du später direkt verdrahten.
                 </div>
@@ -487,7 +584,22 @@
             <div class="previewWrap">
               <div class="row" style="justify-content:space-between;">
                 <span class="badge">Live-Vorschau</span>
-                <button class="btn" type="button" id="randomize">Zufall</button>
+                <div class="row">
+                  <button class="btn btnGold" type="button" id="surprise" data-keks="surprise">Überrasch mich</button>
+                  <button class="btn" type="button" id="randomize">Zufall</button>
+                </div>
+              </div>
+
+              <!-- Rarity Mount (live) -->
+              <div class="rarityRow" id="rarityMount">
+                <span id="rarityBadge" class="rarityBadge rarity-common">
+                  <span>●</span><span id="rarityName">Gewöhnlich</span>
+                </span>
+                <div class="rarityHint" id="rarityHint">Mach’s persönlicher, dann wird’s seltener.</div>
+              </div>
+              <div class="rarityProgress">
+                <div class="bar"><div id="rarityFill" class="fill"></div></div>
+                <div id="rarityNext" class="next">Nächster Rang: Ungewöhnlich</div>
               </div>
 
               <div class="previewStage" style="margin-top:10px; position:relative;">
@@ -532,6 +644,28 @@
       </div>
     </section>
 
+    <!-- Hall of Keks -->
+    <section id="hall">
+      <div class="card hallVIP">
+        <div class="row" style="justify-content:space-between;">
+          <div>
+            <h2 style="margin:0;">Hall of Keks</h2>
+            <div style="opacity:.85;font-weight:900;">VIP-Auswahl. Schwarz/Gold. Nur Legendär & Mythisch.</div>
+          </div>
+          <div class="row">
+            <button class="btn btnGold" type="button" id="refreshHall">Aktualisieren</button>
+            <button class="btn" type="button" id="clearHall">Leeren</button>
+          </div>
+        </div>
+
+        <div class="hallGrid" id="hallGrid"></div>
+
+        <div class="muted" style="margin-top:12px; color:rgba(255,255,255,.75); font-weight:850;">
+          Ranking (MVP): Score aus Paket + Text + Form + Surprise-Boost. Später: Scans, Shares, Replies.
+        </div>
+      </div>
+    </section>
+
     <section id="faq">
       <h2>FAQ</h2>
 
@@ -564,12 +698,13 @@
           <div class="logo" aria-hidden="true" style="width:34px;height:34px;border-radius:14px;"></div>
           <div>
             <div style="font-weight:1100;">OnlyKeks</div>
-            <div class="muted" style="font-size:12.5px;">MVP: One-Page-Landing + Konfigurator. Geschenk-Mood, Vertrauen, QR-Rücksendung.</div>
+            <div class="muted" style="font-size:12.5px;">MVP: One-Page-Landing + Konfigurator. Geschenk-Mood, Vertrauen, QR-Rücksendung + VIP Hall.</div>
           </div>
         </div>
 
         <div class="footRow" style="margin-top:12px;">
           <a class="btn" href="privacy.html">Wie wir mit Daten umgehen</a>
+          <a class="btn" href="#hall">Hall of Keks</a>
           <a class="btn" href="#faq">FAQ</a>
           <a class="btn" href="#top">Nach oben</a>
         </div>
@@ -582,6 +717,16 @@
   <script src="https://cdn.jsdelivr.net/npm/qrious@4.0.2/dist/qrious.min.js"></script>
 
   <script>
+    /* ---------- Toast (einheitlich) ---------- */
+    function toast(msg){
+      const t = document.getElementById("keksToast");
+      if(!t) return;
+      t.textContent = msg;
+      t.classList.add("show");
+      clearTimeout(t._t);
+      t._t = setTimeout(()=> t.classList.remove("show"), 1900);
+    }
+
     /* ---------- Intro: absolut stabil (kein schwarzer Screen) ---------- */
     (function(){
       const intro = document.getElementById("intro");
@@ -596,7 +741,6 @@
 
       if(skip) skip.addEventListener("click", hideIntro);
 
-      // Failsafe: raus nach 4.5s, egal was passiert
       const failsafe = setTimeout(hideIntro, 4500);
 
       (async () => {
@@ -620,7 +764,13 @@
     /* ---------- App State ---------- */
     const LS = {
       draft: "ok_draft_v2",
-      draftId: "ok_draft_id_v1"
+      draftId: "ok_draft_id_v1",
+      hall: "ok_hall_v1",
+      surprise: {
+        decoBonus: "onlykeks_decoBonus",
+        golden: "onlykeks_golden",
+        mythicTicket: "onlykeks_mythicTicket"
+      }
     };
 
     function makeToken(len=18){
@@ -651,11 +801,7 @@
       return new Intl.NumberFormat("de-DE", { style:"currency", currency:"EUR" }).format(n);
     }
 
-    const PRICES = {
-      Quick: 9.90,
-      Custom: 14.90,
-      Premium: 24.90
-    };
+    const PRICES = { Quick: 9.90, Custom: 14.90, Premium: 24.90 };
     const DEAL_QTY = 3;
     const DEAL_OFF = 0.15;
 
@@ -674,12 +820,7 @@
       state.qty = n;
 
       while(state.items.length < n){
-        state.items.push({
-          name: "",
-          addr: "",
-          msg: "",
-          _token: makeToken(18)
-        });
+        state.items.push({ name:"", addr:"", msg:"", _token: makeToken(18) });
       }
       while(state.items.length > n) state.items.pop();
     }
@@ -724,6 +865,261 @@
       }catch(_){}
     }
 
+    /* ---------- Design-Code (Share) ---------- */
+    function encodeDesign(obj){
+      const json = JSON.stringify(obj);
+      return btoa(unescape(encodeURIComponent(json)));
+    }
+    function decodeDesign(code){
+      try{
+        const json = decodeURIComponent(escape(atob(code)));
+        return JSON.parse(json);
+      }catch(_){ return null; }
+    }
+    function getDesignUrl(code){
+      const u = new URL(location.href);
+      u.hash = `design=${encodeURIComponent(code)}`;
+      return u.toString();
+    }
+    function applyDesignFromHash(){
+      const h = (location.hash||"").replace(/^#/,"");
+      if(!h.startsWith("design=")) return;
+      const code = decodeURIComponent(h.slice("design=".length));
+      const d = decodeDesign(code);
+      if(!d) return;
+
+      // nur safe fields
+      if(d.pack && PRICES[d.pack]) state.pack = d.pack;
+      if(d.shape) state.shape = d.shape;
+      if(typeof d.previewText === "string") state.previewText = d.previewText.slice(0,80);
+
+      toast("Design aus Link geladen.");
+    }
+
+    /* ---------- Surprise Boost (persist) ---------- */
+    function getBoost(){
+      return {
+        decoBonus: parseInt(localStorage.getItem(LS.surprise.decoBonus)||"0",10) || 0,
+        golden: localStorage.getItem(LS.surprise.golden) === "1",
+        mythicTicket: localStorage.getItem(LS.surprise.mythicTicket) === "1"
+      };
+    }
+    function setBoost(b){
+      localStorage.setItem(LS.surprise.decoBonus, String(b.decoBonus||0));
+      localStorage.setItem(LS.surprise.golden, b.golden ? "1":"0");
+      localStorage.setItem(LS.surprise.mythicTicket, b.mythicTicket ? "1":"0");
+    }
+
+    function rollSurprise(){
+      const b = getBoost();
+      const roll = Math.random() * 100;
+
+      if(roll < 70){
+        b.decoBonus += 1; setBoost(b);
+        return { msg:"Extra-Deko freigeschaltet (+1 Bonus).", kind:"normal" };
+      }
+      if(roll < 90){
+        b.decoBonus += 2; setBoost(b);
+        return { msg:"Deko-Upgrade (+2 Bonus).", kind:"normal" };
+      }
+      if(roll < 99){
+        b.golden = true; b.decoBonus += 2; setBoost(b);
+        return { msg:"Gold-Sprinkle! Legendär-Boost aktiv.", kind:"gold" };
+      }
+      const isEarly = localStorage.getItem("onlykeks_early") === "1";
+      const isDrop  = localStorage.getItem("onlykeks_drop") === "1";
+      if(isEarly || isDrop){
+        b.mythicTicket = true; setBoost(b);
+        return { msg:"Mythisch-Ticket! Schwarz/Gold freigeschaltet.", kind:"mythic" };
+      }
+      return { msg:"Fast… Mythisch nur bei Early/Drop.", kind:"normal" };
+    }
+
+    /* ---------- Rarity System (live) ---------- */
+    const RARITY_META = {
+      common:    { name:"Gewöhnlich", cls:"rarity-common", hint:"Süß & simpel. Mach’s persönlicher.", next:"Ungewöhnlich" },
+      uncommon:  { name:"Ungewöhnlich", cls:"rarity-uncommon", hint:"Schon persönlicher. Text + Form pushen Richtung selten.", next:"Selten" },
+      rare:      { name:"Selten", cls:"rarity-rare", hint:"Nice. Premium oder Surprise-Boost = episch.", next:"Episch" },
+      epic:      { name:"Episch", cls:"rarity-epic", hint:"Wow. Gold-Sprinkle kann legendär knacken.", next:"Legendär" },
+      legendary: { name:"Legendär", cls:"rarity-legendary sweep", hint:"VIP-Level. Mythisch nur via Ticket/Early/Drop.", next:"Mythisch" },
+      mythic:    { name:"Mythisch", cls:"rarity-mythic sweep", hint:"Ultra-selten. Schwarz/Gold Prestige.", next:"—" }
+    };
+
+    function clamp(n,min,max){ return Math.max(min, Math.min(max,n)); }
+
+    function computeRarity(){
+      const boost = getBoost();
+      const msgLen = (state.previewText||"").trim().length;
+      const pack = (state.pack||"").toLowerCase();
+      const shape = (state.shape||"").toLowerCase();
+
+      let score = 0;
+
+      // Text
+      if(msgLen >= 10) score += 10;
+      if(msgLen >= 40) score += 12;
+      if(msgLen >= 70) score += 10;
+
+      // Form
+      if(shape && shape !== "circle") score += 12;
+
+      // Paket
+      if(pack === "custom") score += 10;
+      if(pack === "premium") score += 25;
+
+      // Multi (leicht)
+      if(state.qty >= 3) score += 8;
+
+      // Surprise
+      score += clamp((boost.decoBonus||0) * 8, 0, 32);
+      if(boost.golden) score += 18;
+      if(boost.mythicTicket) score += 30;
+
+      // Mythic Gate
+      const mythicGate = (boost.mythicTicket || localStorage.getItem("onlykeks_early")==="1" || localStorage.getItem("onlykeks_drop")==="1");
+
+      let tier = "common";
+      if(score >= 22) tier = "uncommon";
+      if(score >= 40) tier = "rare";
+      if(score >= 62) tier = "epic";
+      if(score >= 86) tier = "legendary";
+      if(score >= 98 && mythicGate) tier = "mythic";
+
+      return { tier, score: Math.round(score), mythicGate, boost };
+    }
+
+    function renderRarity(){
+      const r = computeRarity();
+      const meta = RARITY_META[r.tier];
+
+      const badge = document.getElementById("rarityBadge");
+      const name  = document.getElementById("rarityName");
+      const hint  = document.getElementById("rarityHint");
+      const fill  = document.getElementById("rarityFill");
+      const next  = document.getElementById("rarityNext");
+
+      if(badge) badge.className = "rarityBadge " + meta.cls;
+      if(name) name.textContent = meta.name;
+      if(hint) hint.textContent = meta.hint;
+      if(fill) fill.style.width = clamp(r.score,0,100) + "%";
+      if(next) next.textContent = "Nächster Rang: " + meta.next;
+
+      // Pulse
+      if(badge){
+        badge.classList.remove("keksPulse");
+        void badge.offsetWidth;
+        badge.classList.add("keksPulse");
+      }
+
+      window.__onlykeksRarity = r;
+      return r;
+    }
+
+    /* ---------- Hall of Keks (VIP) ---------- */
+    function loadHall(){
+      const raw = localStorage.getItem(LS.hall);
+      if(!raw) return [];
+      try{
+        const arr = JSON.parse(raw);
+        return Array.isArray(arr) ? arr : [];
+      }catch(_){ return []; }
+    }
+    function saveHall(arr){
+      localStorage.setItem(LS.hall, JSON.stringify(arr.slice(0,60)));
+    }
+
+    function hallPushCurrent(){
+      const r = computeRarity();
+      if(!(r.tier === "legendary" || r.tier === "mythic")){
+        toast("Hall of Keks ist VIP: nur Legendär/Mythisch.");
+        return;
+      }
+
+      const snap = {
+        id: makeToken(10),
+        ts: Date.now(),
+        pack: state.pack,
+        shape: state.shape,
+        previewText: (state.previewText||"").slice(0,80),
+        tier: r.tier,
+        score: r.score,
+        code: encodeDesign({ pack: state.pack, shape: state.shape, previewText: (state.previewText||"").slice(0,80) })
+      };
+
+      const hall = loadHall();
+      hall.unshift(snap);
+      // sort by score desc, then ts
+      hall.sort((a,b) => (b.score - a.score) || (b.ts - a.ts));
+      saveHall(hall);
+
+      toast("In die Hall of Keks aufgenommen.");
+      renderHall();
+    }
+
+    async function shareCode(code, label){
+      const url = getDesignUrl(code);
+      const title = "OnlyKeks – Design";
+      const text = label || "Mein OnlyKeks-Design";
+
+      try{
+        if(navigator.share){
+          await navigator.share({ title, text, url });
+          toast("Geteilt.");
+          return;
+        }
+      }catch(_){}
+
+      try{
+        await navigator.clipboard.writeText(url);
+        toast("Link kopiert.");
+      }catch(_){
+        toast("Kopieren ging nicht – Link oben in der URL-Leiste.");
+      }
+    }
+
+    function renderHall(){
+      const grid = document.getElementById("hallGrid");
+      if(!grid) return;
+      const hall = loadHall();
+
+      grid.innerHTML = "";
+      const vip = hall.filter(x => x.tier === "legendary" || x.tier === "mythic").slice(0,9);
+
+      if(vip.length === 0){
+        const d = document.createElement("div");
+        d.className = "hallCard";
+        d.style.gridColumn = "1 / -1";
+        d.innerHTML = `<div style="font-weight:1100;">Noch leer.</div><div class="hallMeta">Mach einen legendären/mythischen Keks und klick „In die Hall of Keks“.</div>`;
+        grid.appendChild(d);
+        return;
+      }
+
+      vip.forEach(v => {
+        const tierCls = v.tier === "mythic" ? "rarityBadge rarity-mythic sweep" : "rarityBadge rarity-legendary sweep";
+        const card = document.createElement("div");
+        card.className = "hallCard";
+        card.innerHTML = `
+          <div class="hallCardTop">
+            <span class="${tierCls}"><span>●</span><span>${v.tier === "mythic" ? "Mythisch" : "Legendär"}</span></span>
+            <button class="btn btnGold" type="button" data-share="${v.id}">Share</button>
+          </div>
+          <div class="hallMsg">„${escapeHtml(v.previewText || "—")}“</div>
+          <div class="hallMeta">Pack: ${escapeHtml(v.pack)} · Form: ${escapeHtml(v.shape)} · Score: ${v.score}</div>
+          <div class="hallMeta" style="opacity:.7;">${new Date(v.ts).toLocaleString("de-DE")}</div>
+        `;
+        card._code = v.code;
+        grid.appendChild(card);
+      });
+
+      grid.querySelectorAll("button[data-share]").forEach(btn => {
+        btn.addEventListener("click", async (e) => {
+          const card = e.target.closest(".hallCard");
+          if(!card || !card._code) return;
+          await shareCode(card._code, "Schau dir mein OnlyKeks-Design an");
+        });
+      });
+    }
+
     /* ---------- UI refs ---------- */
     const packSel = document.getElementById("pack");
     const packTiles = document.getElementById("packTiles");
@@ -736,43 +1132,18 @@
     const previewText = document.getElementById("previewText");
     const cookieSvg = document.getElementById("cookieSvg");
     const randomizeBtn = document.getElementById("randomize");
+    const surpriseBtn = document.getElementById("surprise");
     const saveBtn = document.getElementById("saveDraft");
     const payBtn = document.getElementById("toPay");
-
-    /* ---------- Toast ---------- */
-    function toast(msg){
-      let t = document.getElementById("toast");
-      if(!t){
-        t = document.createElement("div");
-        t.id = "toast";
-        t.style.position = "fixed";
-        t.style.left = "50%";
-        t.style.bottom = "18px";
-        t.style.transform = "translateX(-50%)";
-        t.style.background = "#111a24";
-        t.style.color = "#fff";
-        t.style.padding = "10px 12px";
-        t.style.borderRadius = "999px";
-        t.style.fontWeight = "1000";
-        t.style.opacity = "0";
-        t.style.pointerEvents = "none";
-        t.style.transition = "opacity .18s ease, transform .18s ease";
-        document.body.appendChild(t);
-      }
-      t.textContent = msg;
-      t.style.opacity = "1";
-      t.style.transform = "translateX(-50%) translateY(-6px)";
-      setTimeout(() => {
-        t.style.opacity = "0";
-        t.style.transform = "translateX(-50%)";
-      }, 2200);
-    }
+    const addToHallBtn = document.getElementById("addToHall");
+    const shareDesignBtn = document.getElementById("shareDesign");
+    const refreshHallBtn = document.getElementById("refreshHall");
+    const clearHallBtn = document.getElementById("clearHall");
 
     /* ---------- Render ---------- */
     function setShape(shape){
       state.shape = shape;
 
-      // sehr leichte „Form-Simulation“ über SVG-Anpassung
       const svg = cookieSvg;
       svg.innerHTML = `
         <defs>
@@ -809,20 +1180,13 @@
         `);
       }
 
-      // „Chocolate chips“ (random look)
-      const chips = [
-        [70,70,5],[130,80,6],[115,125,4],[80,125,5]
-      ];
+      const chips = [ [70,70,5],[130,80,6],[115,125,4],[80,125,5] ];
       chips.forEach(([x,y,r]) => {
         svg.insertAdjacentHTML("beforeend", `<circle cx="${x}" cy="${y}" r="${r}" fill="#c98945" opacity=".55"/>`);
       });
 
-      // Stern-Clipping-Fix: Textoverlay etwas kleiner
-      if(shape === "star"){
-        previewText.style.inset = "32%";
-      }else{
-        previewText.style.inset = "28%";
-      }
+      previewText.style.inset = (shape === "star") ? "32%" : "28%";
+      renderRarity();
     }
 
     function renderTotals(){
@@ -870,7 +1234,6 @@
         itemsEl.appendChild(card);
       });
 
-      // QR rendern
       state.items.forEach((_, idx) => {
         const url = replyUrlFor(idx);
         const urlEl = document.getElementById(`qrurl_${idx}`);
@@ -900,6 +1263,7 @@
       renderTotals();
       renderItems();
       syncPackTiles();
+      renderRarity();
     }
 
     function syncPackTiles(){
@@ -913,6 +1277,7 @@
       state.pack = packSel.value;
       renderTotals();
       syncPackTiles();
+      renderRarity();
     });
 
     packTiles.addEventListener("click", (e) => {
@@ -922,12 +1287,14 @@
       packSel.value = state.pack;
       renderTotals();
       syncPackTiles();
+      renderRarity();
     });
 
     qtyInp.addEventListener("input", () => {
       state.qty = parseInt(qtyInp.value,10) || 1;
       renderTotals();
       renderItems();
+      renderRarity();
     });
 
     senderName.addEventListener("input", () => state.senderName = senderName.value);
@@ -936,6 +1303,7 @@
     previewInput.addEventListener("input", () => {
       state.previewText = previewInput.value;
       previewText.textContent = (state.previewText || "Deine Botschaft").slice(0,80);
+      renderRarity();
     });
 
     document.querySelectorAll("[data-shape]").forEach(b => {
@@ -954,6 +1322,28 @@
       previewInput.value = state.previewText;
       previewText.textContent = state.previewText;
       toast("Vorschau zufällig gesetzt.");
+      renderRarity();
+    });
+
+    surpriseBtn.addEventListener("click", () => {
+      const r = rollSurprise();
+      // Bonus: manchmal Form/Message mitdrehen (Dopamin)
+      const shapes = ["circle","heart","star","smiley","tree"];
+      if(Math.random() < 0.35) setShape(shapes[Math.floor(Math.random()*shapes.length)]);
+      if(Math.random() < 0.45){
+        const spicy = [
+          "Beweg dich. Du schaffst dit.",
+          "Heute ist dein Tag.",
+          "Ich glaub an dich. Punkt.",
+          "Du bist Gold wert.",
+          "Ich bin bei dir."
+        ];
+        state.previewText = spicy[Math.floor(Math.random()*spicy.length)];
+        previewInput.value = state.previewText;
+        previewText.textContent = state.previewText;
+      }
+      toast(r.msg);
+      renderRarity();
     });
 
     itemsEl.addEventListener("input", (e) => {
@@ -993,6 +1383,7 @@
         qtyInp.value = state.qty;
         renderTotals();
         renderItems();
+        renderRarity();
         toast("Keks entfernt.");
       }
     });
@@ -1004,12 +1395,30 @@
       toast("MVP: Zahlung ist Demo. Stripe-Link später verdrahten.");
     });
 
+    addToHallBtn.addEventListener("click", () => {
+      saveDraft();
+      hallPushCurrent();
+    });
+
+    shareDesignBtn.addEventListener("click", async () => {
+      const code = encodeDesign({ pack: state.pack, shape: state.shape, previewText: (state.previewText||"").slice(0,80) });
+      await shareCode(code, "Mein OnlyKeks-Design");
+    });
+
+    refreshHallBtn.addEventListener("click", renderHall);
+    clearHallBtn.addEventListener("click", () => {
+      localStorage.removeItem(LS.hall);
+      toast("Hall geleert.");
+      renderHall();
+    });
+
     /* ---------- Init ---------- */
+    applyDesignFromHash();
     loadDraft();
     ensureItems();
     syncInputs();
     renderTotals();
-
+    renderHall();
   </script>
 </body>
-                                                   </html>
+                    </html>

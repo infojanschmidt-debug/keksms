@@ -4,13 +4,13 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>OnlyKeks – Post, die schmeckt</title>
-  <meta name="description" content="Schicke süße Botschaften mit direkter QR-Antwort. Reply-Keks ohne Account – in wenigen Klicks." />
+  <meta name="description" content="Schicke süße Botschaften mit direkter QR-Antwort. QR-Antwort-Keks ohne Account – in wenigen Klicks." />
   <link rel="canonical" href="https://infojanschmidt-debug.github.io/keksms/" />
   <meta name="robots" content="index,follow" />
   <meta name="theme-color" content="#ff4fa3" />
 
   <meta property="og:title" content="OnlyKeks – Post, die schmeckt" />
-  <meta property="og:description" content="Schicke süße Botschaften mit direkter QR-Antwort. Reply-Keks ohne Account – in wenigen Klicks." />
+  <meta property="og:description" content="Schicke süße Botschaften mit direkter QR-Antwort. QR-Antwort-Keks ohne Account – in wenigen Klicks." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://infojanschmidt-debug.github.io/keksms/" />
   <meta property="og:image" content="https://infojanschmidt-debug.github.io/keksms/assets/img/1000149739.jpg" />
@@ -298,6 +298,28 @@
     }
     .priceLine b{color:var(--ink)}
 
+    /* Konfigurator */
+    .configRow{display:flex;gap:10px;flex-wrap:wrap}
+    .pick{
+      display:inline-flex;gap:8px;align-items:center;
+      border:1px solid var(--line);
+      border-radius:999px;
+      padding:10px 12px;
+      background:#fff;
+      font-size:13px;
+      user-select:none;
+    }
+    .pick input{accent-color: var(--pink)}
+    .cookiePreview{
+      width:100%;
+      min-height: 240px;
+      display:grid;
+      place-items:center;
+      border:1px dashed rgba(11,27,42,.18);
+      border-radius: 14px;
+      background: rgba(255,79,163,.03);
+    }
+
     /* FAQ */
     details{
       border:1px solid var(--line);
@@ -349,6 +371,74 @@
     .consentCard b{display:block; margin-bottom:4px}
     .consentCard p{margin:0; color:var(--muted); font-size:13px; line-height:1.45}
     .btnSmall{padding:10px 12px; font-size:13px}
+
+    /* --- GENESIS REVEAL OVERLAY --- */
+    .revealOverlay{
+      position:fixed; inset:0;
+      background: rgba(11,27,42,.55);
+      display:none;
+      align-items:center; justify-content:center;
+      padding:18px;
+      z-index:9999;
+    }
+    .revealCard{
+      width:min(560px, 100%);
+      background:#fff;
+      border-radius:18px;
+      border:1px solid var(--line);
+      box-shadow: 0 18px 60px rgba(11,27,42,.22);
+      overflow:hidden;
+    }
+    .revealTop{
+      padding:16px 16px 12px;
+      background: linear-gradient(180deg, rgba(255,79,163,.12), rgba(255,79,163,.03));
+      border-bottom:1px solid var(--line);
+    }
+    .revealTitle{
+      margin:0;
+      font-size:16px;
+      letter-spacing:.2px;
+    }
+    .revealBody{ padding:14px 16px 16px; }
+    .revealBadge{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:10px 12px;
+      border-radius:999px;
+      border:1px solid rgba(255,79,163,.35);
+      background: rgba(255,79,163,.06);
+      font-weight:700;
+    }
+    .revealHint{
+      margin:10px 0 0;
+      font-size:13px;
+      line-height:1.45;
+    }
+    .revealActions{
+      display:flex; gap:10px; justify-content:flex-end;
+      padding:12px 16px 16px;
+    }
+    .revealSmall{
+      font-size:12px;
+      opacity:.8;
+    }
+
+    /* Optional: ultra-leichtes Cookie-Rain */
+    .cookieDrop{
+      position:fixed;
+      top:-40px;
+      font-size:18px;
+      opacity:.25;
+      pointer-events:none;
+      z-index:1;
+      animation: drop linear forwards;
+      filter: drop-shadow(0 10px 14px rgba(11,27,42,.12));
+    }
+    @keyframes drop{
+      to{ transform: translateY(calc(100vh + 60px)) rotate(120deg); }
+    }
+    @media (prefers-reduced-motion: reduce){
+      .cookieDrop{display:none}
+    }
   </style>
 </head>
 
@@ -389,7 +479,7 @@
 
         <nav aria-label="Navigation">
           <a href="#how">So läuft’s</a>
-          <a href="#flow">Reply-Flow</a>
+          <a href="#flow">QR-Antwort-Flow</a>
           <a href="#faq">FAQ</a>
         </nav>
 
@@ -404,11 +494,11 @@
       <div class="wrap">
         <div class="heroGrid">
           <div class="panel">
-            <div class="kicker">Kein Account · QR-Reply · echtes Post-Feeling</div>
+            <div class="kicker">Kein Account · QR-Antwort · echtes Post-Feeling</div>
 
             <h1>Schicke süße Botschaften – und hol dir ’ne QR-Antwort zurück.</h1>
             <p class="sub">
-              Du schickst einen Keks mit Message + QR-Code. Empfänger*in scannt, antwortet – wir backen den Reply-Keks und schicken ihn zurück.
+              Du schickst einen <b>QR-Antwort-Keks</b> mit Message + QR-Code. Empfänger*in scannt, antwortet – wir backen den <b>Antwort-Keks</b> und schicken ihn zu dir zurück.
             </p>
 
             <div class="chips" aria-label="Vorlagen">
@@ -426,7 +516,7 @@
             <hr class="hr" />
 
             <div class="muted" style="font-size:13.5px; line-height:1.45;">
-              <b style="color:var(--ink)">Reply-Loop:</b> Empfänger*in antwortet in Sekunden – wir kümmern uns um den Rest.
+              <b style="color:var(--ink)">Loop:</b> Empfänger*in antwortet in Sekunden – wir kümmern uns um den Rest.
             </div>
           </div>
 
@@ -450,9 +540,9 @@
             <h2>So läuft’s</h2>
             <ul>
               <li><b>Du schreibst</b> eine Message und wählst ein Paket.</li>
-              <li><b>Wir verschicken</b> Keks + QR-Karte.</li>
+              <li><b>Wir verschicken</b> QR-Antwort-Keks + QR-Karte.</li>
               <li><b>Scan → Antwort</b> (ohne Account).</li>
-              <li><b>Reply-Keks</b> kommt zu dir zurück.</li>
+              <li><b>Antwort-Keks</b> kommt zu dir zurück.</li>
             </ul>
           </div>
           <div class="panel">
@@ -472,7 +562,7 @@
       <div class="wrap">
         <div class="panel">
           <div class="flowHead">
-            <h2 style="margin:0">Reply-Flow</h2>
+            <h2 style="margin:0">QR-Antwort-Flow</h2>
             <div class="steps" aria-label="Schritte">
               <div class="step active" data-step="1">1</div>
               <div class="step" data-step="2">2</div>
@@ -521,20 +611,58 @@
             </div>
           </div>
 
-          <!-- Step 2 -->
+          <!-- Step 2 (Konfigurator) -->
           <div class="flowPanel" id="p2" style="display:none">
-            <h2 style="font-size:16px;margin:0 0 6px;">Extras (optional)</h2>
-            <p class="muted" style="margin:0 0 10px;font-size:13.5px">MVP: schlicht gehalten. Du kannst später Themes/Randomizer reinbauen.</p>
+            <h2 style="font-size:16px;margin:0 0 6px;">Keks gestalten</h2>
+            <p class="muted" style="margin:0 0 10px;font-size:13.5px">
+              Wähl Form & Deko. Der QR-Antwort-Keks sieht dann genau so aus.
+            </p>
 
             <div class="row">
-              <label class="tile" style="display:flex; gap:10px; align-items:flex-start; margin:0;">
-                <input type="checkbox" id="xSprinkles" style="width:auto;margin-top:2px">
-                <div><b>Sprinkles-Look</b><p style="margin:6px 0 0">Mehr Deko-Vibe.</p></div>
-              </label>
-              <label class="tile" style="display:flex; gap:10px; align-items:flex-start; margin:0;">
-                <input type="checkbox" id="xStory" style="width:auto;margin-top:2px">
-                <div><b>Mini-Story-URL</b><p style="margin:6px 0 0">Kurzer Link, der den Moment erklärt.</p></div>
-              </label>
+              <div class="tile" style="cursor:default">
+                <b>Form</b>
+                <div class="configRow" style="margin-top:10px">
+                  <label class="pick"><input type="radio" name="shape" value="round" checked> Rund</label>
+                  <label class="pick"><input type="radio" name="shape" value="heart"> Herz</label>
+                  <label class="pick"><input type="radio" name="shape" value="mouse"> Maus-Keks 🐭🍪</label>
+                </div>
+
+                <div style="margin-top:12px">
+                  <b>Deko</b>
+                  <div class="configRow" style="margin-top:10px">
+                    <label class="pick"><input type="checkbox" id="dSprinkles"> Sprinkles</label>
+                    <label class="pick"><input type="checkbox" id="dSmiley"> Smiley</label>
+                    <label class="pick"><input type="checkbox" id="dKiss"> Kuss-Stempel</label>
+                  </div>
+                </div>
+
+                <div style="margin-top:12px">
+                  <b>Farbe</b>
+                  <div style="display:flex;gap:10px;align-items:center;margin-top:10px">
+                    <input type="color" id="dIcing" value="#ff4fa3" style="width:54px;height:40px;padding:0;border-radius:12px">
+                    <span class="muted" style="font-size:13px">Icing-Akzent</span>
+                  </div>
+                </div>
+
+                <div style="margin-top:12px; display:flex; gap:10px; flex-wrap:wrap">
+                  <button class="btn btnGhost" type="button" id="surpriseBtn">Überrasch mich 🍪</button>
+                </div>
+
+                <p class="muted" style="margin:10px 0 0;font-size:12.8px;line-height:1.45">
+                  Das ist die Optik-Simulation fürs MVP (später: echte Sticker/Undo/Teilen).
+                </p>
+              </div>
+
+              <div class="tile" style="cursor:default">
+                <b>Vorschau</b>
+                <div id="cookiePreview" class="cookiePreview" style="margin-top:10px"></div>
+                <div class="tile" id="earlyTeaser" style="display:none; margin-top:12px; cursor:default">
+                  <b>🍪 Belohnungen</b>
+                  <p class="muted" style="margin:6px 0 0">
+                    Manche Kekse haben <b>mehr</b> drauf. Details werden beim Scan sichtbar.
+                  </p>
+                </div>
+              </div>
             </div>
 
             <div class="actions">
@@ -546,7 +674,7 @@
           <!-- Step 3 -->
           <div class="flowPanel" id="p3" style="display:none">
             <h2 style="font-size:16px;margin:0 0 6px;">Adresse</h2>
-            <p class="muted" style="margin:0 0 10px;font-size:13.5px">Empfänger*in + deine Adresse (für den Reply-Keks).</p>
+            <p class="muted" style="margin:0 0 10px;font-size:13.5px">Empfänger*in + deine Adresse (für den Antwort-Keks).</p>
 
             <div class="row">
               <div>
@@ -614,6 +742,7 @@
                 <b style="color:var(--ink)">OrderID:</b> <span id="oid">(wird erstellt)</span><br/>
                 <b style="color:var(--ink)">Paket:</b> <span id="sPack">Custom</span><br/>
                 <b style="color:var(--ink)">Message:</b> <span id="sMsg">(deine Message)</span><br/>
+                <b style="color:var(--ink)">Design:</b> <span id="sDesign">—</span><br/>
                 <b style="color:var(--ink)">Extras:</b> <span id="sExtras">—</span>
               </div>
             </div>
@@ -639,7 +768,7 @@
           </details>
           <details>
             <summary>Was passiert nach der Antwort?</summary>
-            <p>Wir backen den Reply-Keks mit der Antwort-Message und schicken ihn an deine Adresse zurück.</p>
+            <p>Wir backen den <b>Antwort-Keks</b> mit der Antwort-Message und schicken ihn an deine Adresse zurück.</p>
           </details>
           <details>
             <summary>Welche Daten speichert ihr?</summary>
@@ -660,13 +789,13 @@
             <span class="muted" style="font-size:13px">Post, die schmeckt</span>
           </div>
           <p class="muted" style="margin:10px 0 0; font-size:13px; line-height:1.45">
-            MVP: One-Page + Reply-Flow. Clean, schnell, vertrauenswürdig.
+            MVP: One-Page + QR-Antwort-Flow. Clean, schnell, vertrauenswürdig.
           </p>
         </div>
         <div class="footLinks" aria-label="Footer Links">
           <a href="#faq">FAQ</a>
           <a href="privacy.html">Wie wir mit Daten umgehen</a>
-          <a href="keks.html">QR-Reply Demo</a>
+          <a href="keks.html">QR-Antwort Demo</a>
           <a href="#top">Nach oben</a>
         </div>
       </div>
@@ -684,6 +813,28 @@
         <button class="btn btnPrimary btnSmall" type="button" id="consentAll">Alles klar 🍪</button>
         <button class="btn btnGhost btnSmall" type="button" id="consentNeed">Nur das Nötigste</button>
         <a class="btn btnGhost btnSmall" href="privacy.html">Details</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- GENESIS REVEAL OVERLAY (hidden) -->
+  <div class="revealOverlay" id="revealOverlay" aria-hidden="true">
+    <div class="revealCard" role="dialog" aria-modal="true" aria-label="Keks Reveal">
+      <div class="revealTop">
+        <h3 class="revealTitle">🍪 Scan-Ergebnis</h3>
+        <div class="revealSmall muted" id="revealSub"></div>
+      </div>
+      <div class="revealBody">
+        <div class="revealBadge" id="revealBadge">✨ Special Keks</div>
+        <p class="revealHint muted" id="revealText"></p>
+        <div class="tile" style="margin-top:12px; cursor:default">
+          <b>Dein Status</b>
+          <div class="muted" style="margin-top:6px;font-size:13px" id="revealStatus"></div>
+        </div>
+      </div>
+      <div class="revealActions">
+        <button class="btn btnGhost" type="button" id="revealClose">Später</button>
+        <button class="btn btnPrimary" type="button" id="revealGo">Antwort schreiben →</button>
       </div>
     </div>
   </div>
@@ -799,6 +950,7 @@
         $("sPack").textContent = s.pack || "Custom";
         $("sMsg").textContent = s.msg ? (s.msg.slice(0,120)+(s.msg.length>120?"…":"")) : "(deine Message)";
         $("sExtras").textContent = (s.extras && s.extras.length) ? s.extras.join(", ") : "—";
+        $("sDesign").textContent = designLabel(s.design);
       }
     }
 
@@ -837,7 +989,7 @@
     tiles.forEach(t=>t.addEventListener("click", ()=>setPack(t.dataset.pack)));
     packSel?.addEventListener("change", ()=>setPack(packSel.value));
 
-    /* Extras */
+    /* Extras (Step 2 ist jetzt Konfigurator – Extras bleiben im State möglich, aber UI ist Konfig) */
     const extrasMap = [
       {id:"xSprinkles", label:"Sprinkles-Look"},
       {id:"xStory", label:"Mini-Story-URL"},
@@ -850,9 +1002,6 @@
       }
       return out;
     }
-    extrasMap.forEach(x=>{
-      $(x.id)?.addEventListener("change", ()=>writeState({extras: readExtras()}));
-    });
 
     /* Address fields */
     const fields = ["toName","fromName","toStreet","toZip","toCity","fromStreet","fromZip","fromCity"];
@@ -868,10 +1017,349 @@
       $("summary").innerHTML = `
         <b>Paket:</b> ${esc(s.pack||"Custom")} <span class="muted">(${esc(p.val)})</span><br/>
         <b>Message:</b><br/>${esc(s.msg||"—")}<br/><br/>
+        <b>Design:</b> ${esc(designLabel(s.design))}<br/>
         <b>Extras:</b> ${esc(extras)}<br/><br/>
         <b>Empfänger*in:</b> ${esc(s.toName||"—")}, ${esc(s.toStreet||"—")}, ${esc((s.toZip||"—")+" "+(s.toCity||"—"))}<br/>
-        <b>Reply an:</b> ${esc(s.fromName||"—")}, ${esc(s.fromStreet||"—")}, ${esc((s.fromZip||"—")+" "+(s.fromCity||"—"))}
+        <b>Antwort-Keks an:</b> ${esc(s.fromName||"—")}, ${esc(s.fromStreet||"—")}, ${esc((s.fromZip||"—")+" "+(s.fromCity||"—"))}
       `;
+    }
+
+    /* =========================
+       KONFIGURATOR (Design State + Preview)
+    ========================= */
+
+    function getDesign(){
+      const s = readState();
+      return s.design || { shape:"round", sprinkles:false, smiley:false, kiss:false, icing:"#ff4fa3" };
+    }
+    function setDesign(patch){
+      const d = Object.assign(getDesign(), patch);
+      writeState({design:d});
+      renderPreview();
+    }
+
+    function svgCookie(d){
+      const icing = d.icing || "#ff4fa3";
+      const spr = d.sprinkles ? `
+        <circle cx="95" cy="90" r="4" fill="${icing}" opacity=".85"/>
+        <circle cx="150" cy="130" r="3" fill="rgba(11,27,42,.25)"/>
+        <circle cx="120" cy="160" r="4" fill="${icing}" opacity=".85"/>
+        <circle cx="180" cy="165" r="3" fill="rgba(11,27,42,.22)"/>
+      ` : "";
+
+      const smile = d.smiley ? `
+        <circle cx="140" cy="132" r="3.5" fill="rgba(11,27,42,.45)"/>
+        <circle cx="175" cy="132" r="3.5" fill="rgba(11,27,42,.45)"/>
+        <path d="M145 150 Q158 164 171 150" fill="none" stroke="rgba(11,27,42,.45)" stroke-width="5" stroke-linecap="round"/>
+      ` : "";
+
+      const kiss = d.kiss ? `
+        <path d="M150 115c10-8 22-8 32 0c-3 10-12 18-16 20c-4-2-13-10-16-20Z"
+          fill="${icing}" opacity=".9"/>
+      ` : "";
+
+      const round = `
+        <circle cx="160" cy="140" r="90" fill="#f4c9a2" stroke="rgba(11,27,42,.12)" stroke-width="2"/>
+      `;
+      const heart = `
+        <path d="M160 220
+          C90 170, 90 120, 125 105
+          C145 96, 158 108, 160 118
+          C162 108, 175 96, 195 105
+          C230 120, 230 170, 160 220Z"
+          fill="#f4c9a2" stroke="rgba(11,27,42,.12)" stroke-width="2"/>
+      `;
+      const mouse = `
+        <circle cx="160" cy="150" r="78" fill="#f4c9a2" stroke="rgba(11,27,42,.12)" stroke-width="2"/>
+        <circle cx="105" cy="95" r="28" fill="#f4c9a2" stroke="rgba(11,27,42,.12)" stroke-width="2"/>
+        <circle cx="215" cy="95" r="28" fill="#f4c9a2" stroke="rgba(11,27,42,.12)" stroke-width="2"/>
+      `;
+
+      const shapeSvg = (d.shape==="heart") ? heart : (d.shape==="mouse") ? mouse : round;
+
+      return `
+      <svg viewBox="0 0 320 280" width="100%" height="220" role="img" aria-label="Keks Vorschau">
+        ${shapeSvg}
+        ${spr}
+        ${kiss}
+        ${smile}
+        <circle cx="120" cy="120" r="5" fill="${icing}" opacity=".65"/>
+        <circle cx="205" cy="175" r="5" fill="rgba(11,27,42,.20)"/>
+      </svg>`;
+    }
+
+    function renderPreview(){
+      const box = $("cookiePreview");
+      if(!box) return;
+      const d = getDesign();
+      box.innerHTML = svgCookie(d);
+    }
+
+    function wireConfigurator(){
+      // radio shape
+      document.querySelectorAll('input[name="shape"]').forEach(r=>{
+        r.addEventListener("change", ()=> setDesign({shape: r.value}));
+      });
+
+      const spr = $("dSprinkles");
+      const smi = $("dSmiley");
+      const kis = $("dKiss");
+      const ic  = $("dIcing");
+
+      spr && spr.addEventListener("change", ()=> setDesign({sprinkles: spr.checked}));
+      smi && smi.addEventListener("change", ()=> setDesign({smiley: smi.checked}));
+      kis && kis.addEventListener("change", ()=> setDesign({kiss: kis.checked}));
+      ic  && ic.addEventListener("input",  ()=> setDesign({icing: ic.value}));
+
+      // restore UI from state
+      const d = getDesign();
+      const r = document.querySelector(`input[name="shape"][value="${d.shape}"]`);
+      r && (r.checked = true);
+      spr && (spr.checked = !!d.sprinkles);
+      smi && (smi.checked = !!d.smiley);
+      kis && (kis.checked = !!d.kiss);
+      ic  && (ic.value = d.icing || "#ff4fa3");
+
+      renderPreview();
+    }
+
+    function randomDesignPreset(){
+      const presets = [
+        {shape:"round", sprinkles:true,  smiley:true,  kiss:false, icing:"#ff4fa3"}, // Süß
+        {shape:"mouse", sprinkles:true,  smiley:false, kiss:true,  icing:"#ff7cc5"}, // Frech
+        {shape:"heart", sprinkles:false, smiley:false, kiss:true,  icing:"#ff4fa3"}, // Elegant
+      ];
+      const p = presets[Math.floor(Math.random()*presets.length)];
+      setDesign(p);
+      // sync inputs
+      const r = document.querySelector(`input[name="shape"][value="${p.shape}"]`);
+      r && (r.checked = true);
+      $("dSprinkles") && ($("dSprinkles").checked = !!p.sprinkles);
+      $("dSmiley")    && ($("dSmiley").checked = !!p.smiley);
+      $("dKiss")      && ($("dKiss").checked = !!p.kiss);
+      $("dIcing")     && ($("dIcing").value = p.icing || "#ff4fa3");
+    }
+
+    function designLabel(d){
+      d = d || getDesign();
+      const parts = [];
+      parts.push(d.shape==="heart" ? "Herz" : d.shape==="mouse" ? "Maus" : "Rund");
+      if(d.sprinkles) parts.push("Sprinkles");
+      if(d.smiley) parts.push("Smiley");
+      if(d.kiss) parts.push("Kuss");
+      return parts.length ? parts.join(" · ") : "—";
+    }
+
+    $("surpriseBtn")?.addEventListener("click", randomDesignPreset);
+
+    /* =========================
+       EARLY / GENESIS / INVITES + REWARDS (HIDDEN)
+    ========================= */
+
+    function getUID(){
+      const s = readState();
+      if(s.uid) return s.uid;
+      const uid = "u_" + Math.random().toString(16).slice(2) + Date.now().toString(16);
+      writeState({uid});
+      return uid;
+    }
+
+    const EARLY_CUTOFF_ISO = "2026-03-31T23:59:59.000Z"; // später anpassen
+    const GENESIS_MAX_ORDERS = 1000; // placeholder (später server truth)
+
+    function ensureEarlyProfile(){
+      const s0 = readState();
+      const now = new Date().toISOString();
+      if(!s0.firstSeen) writeState({firstSeen: now});
+
+      const s = readState();
+      const firstSeen = new Date(s.firstSeen || now);
+      const isEarlyByDate = firstSeen <= new Date(EARLY_CUTOFF_ISO);
+
+      const orderCount = +(s.orderCount || 0);
+
+      const earlyMember = (s.earlyMember === true) || isEarlyByDate;
+      const genesis = (s.genesis === true) || (earlyMember && orderCount < GENESIS_MAX_ORDERS);
+      const inviteSlots = (typeof s.inviteSlots === "number") ? s.inviteSlots : (earlyMember ? 3 : 0);
+
+      writeState({
+        earlyMember,
+        genesis,
+        inviteSlots,
+        kt: +(s.kt || 0),
+        level: s.level || 1
+      });
+
+      return readState();
+    }
+
+    function applyReferralFromUrl(){
+      const p = new URLSearchParams(location.search);
+      const ref = p.get("ref");
+      if(!ref) return;
+      const s = readState();
+      if(s.referredBy) return; // only once
+      writeState({referredBy: ref, referredAt: new Date().toISOString()});
+      grantKT("REF_JOIN", 1);
+    }
+
+    function getInviteLink(){
+      const uid = getUID();
+      return `${location.origin}${location.pathname}?ref=${encodeURIComponent(uid)}`;
+    }
+
+    const KT_RULES = {
+      BUY: 1,
+      BUY_PREMIUM: 2,
+      QR_ANSWER_SENT: 1,
+      ANSWER_WITH_IMAGE: 1,
+      REFERRED_CONVERT: 3,
+      REF_JOIN: 1
+    };
+
+    const REWARD_MULT = {
+      STANDARD: 1.0,
+      EARLY: 1.8,
+      GENESIS: 3.0
+    };
+
+    function levelBoost(level){
+      if(level >= 5) return 1.35;
+      if(level >= 4) return 1.25;
+      if(level >= 3) return 1.15;
+      if(level >= 2) return 1.08;
+      return 1.0;
+    }
+
+    function userStatus(s){
+      if(s && s.genesis) return "GENESIS";
+      if(s && s.earlyMember) return "EARLY";
+      return "STANDARD";
+    }
+
+    function updateLevel(){
+      const s = readState();
+      const kt = +(s.kt||0);
+      let level = 1;
+      if(kt >= 10) level = 2;
+      if(kt >= 25) level = 3;
+      if(kt >= 50) level = 4;
+      if(kt >= 100) level = 5;
+      writeState({level});
+    }
+
+    function calcReward(reason){
+      const s = readState();
+      const base = KT_RULES[reason] || 0;
+      const stat = userStatus(s);
+      const mult = REWARD_MULT[stat] || 1.0;
+      const boost = levelBoost(+(s.level||1));
+      return Math.round(base * mult * boost);
+    }
+
+    function grantKT(reason, amount){
+      const s = readState();
+      const log = Array.isArray(s.ktLog) ? s.ktLog : [];
+      const now = Date.now();
+      const last = log[log.length-1];
+      if(last && last.r === reason && (now - last.t) < 3000) return;
+
+      const kt = Math.max(0, +(s.kt||0) + (amount||0));
+      log.push({t: now, r: reason, a: amount||0});
+      writeState({kt, ktLog: log.slice(-200)});
+      updateLevel();
+    }
+
+    function showReveal(){
+      const ov = $("revealOverlay");
+      if(!ov) return;
+
+      const s = ensureEarlyProfile();
+      const badge = $("revealBadge");
+      const sub   = $("revealSub");
+      const txt   = $("revealText");
+      const st    = $("revealStatus");
+
+      const isGenesis = !!s.genesis;
+      const isEarly = !!s.earlyMember;
+
+      sub.textContent = `Status: ${isGenesis ? "Genesis" : (isEarly ? "Early" : "Standard")} · Level ${s.level} · Stempel: ${s.kt}`;
+
+      if(isGenesis){
+        badge.textContent = "✨ Genesis-Keks";
+        txt.innerHTML =
+          `Du hältst einen <b>Genesis-Keks</b>. Die gibt’s nicht mehr, wenn sie weg sind. ` +
+          `Manche Details sind absichtlich <b>nicht nachbaubar</b> – genau darum ist er besonders.`;
+      }else if(isEarly){
+        badge.textContent = "🌙 Early-Keks";
+        txt.innerHTML =
+          `Du bist im <b>Early Circle</b>. Manche Drops und Belohnungen sind nur für euch – ` +
+          `und werden später nie wieder so fett.`;
+      }else{
+        badge.textContent = "🍪 Special möglich";
+        txt.innerHTML =
+          `Manche Kekse haben versteckte Extras. Sammel Stempel – dann geht’s auf.`;
+      }
+
+      const link = getInviteLink();
+      st.innerHTML =
+        `Einladungen: <b>${s.inviteSlots||0}</b><br>` +
+        (s.earlyMember
+          ? `Dein Invite-Link: <span class="muted">${link}</span>`
+          : `Hol dir Stempel durch Antworten und Käufe – dann kommste hoch.`);
+
+      ov.style.display = "flex";
+      ov.setAttribute("aria-hidden","false");
+
+      $("revealClose") && ($("revealClose").onclick = ()=>{
+        ov.style.display = "none";
+        ov.setAttribute("aria-hidden","true");
+      });
+
+      $("revealGo") && ($("revealGo").onclick = ()=>{
+        ov.style.display = "none";
+        ov.setAttribute("aria-hidden","true");
+        // optional: direkt in Flow springen
+        document.querySelector("#flow").scrollIntoView({behavior:"smooth", block:"start"});
+      });
+    }
+
+    function bootRevealIfScan(){
+      const p = new URLSearchParams(location.search);
+      if(p.get("scan") === "1") showReveal();
+    }
+
+    function bootEarlyLayer(){
+      getUID();
+      ensureEarlyProfile();
+      applyReferralFromUrl();
+      bootRevealIfScan();
+
+      const s = readState();
+      const teaser = $("earlyTeaser");
+      if(teaser && (s.earlyMember || s.genesis)) teaser.style.display = "";
+    }
+
+    /* Optional: Cookie Rain (dezent, inkl. Maus) */
+    function startCookieRain(){
+      if(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      let n = 0;
+      const max = 18;
+      const types = ["smiley","classic","mouse"];
+      const tick = ()=>{
+        if(!document.documentElement.classList.contains("appReady")) return;
+        if(n++ > max) return;
+        const el = document.createElement("div");
+        el.className = "cookieDrop";
+        const t = types[Math.floor(Math.random()*types.length)];
+        el.textContent = (t==="mouse") ? "🐭🍪" : (t==="smiley") ? "🍪🙂" : "🍪";
+        el.style.left = Math.floor(Math.random()*100) + "vw";
+        el.style.animationDuration = (3.2 + Math.random()*2.6).toFixed(2) + "s";
+        document.body.appendChild(el);
+        setTimeout(()=>el.remove(), 8000);
+        setTimeout(tick, 180 + Math.random()*220);
+      };
+      setTimeout(tick, 450);
     }
 
     /* Buttons */
@@ -899,6 +1387,16 @@
     });
     $("back5")?.addEventListener("click", ()=>go(4));
 
+    /* Pay click (hidden rewards placeholder: zählt als Kauf-Intent) */
+    $("payBtn")?.addEventListener("click", ()=>{
+      const s = readState();
+      const pack = s.pack || "Custom";
+      const reason = (pack==="Premium") ? "BUY_PREMIUM" : "BUY";
+      grantKT(reason, calcReward(reason));
+      writeState({orderCount: +(s.orderCount||0) + 1});
+      ensureEarlyProfile();
+    });
+
     /* Boot restore */
     (function boot(){
       const s = readState();
@@ -909,19 +1407,20 @@
       const initialPack = s.pack || "Custom";
       setPack(initialPack);
 
-      // extras restore
-      if(Array.isArray(s.extras)){
-        extrasMap.forEach(x=>{
-          const el = $(x.id);
-          if(el) el.checked = s.extras.includes(x.label);
-        });
-      }
-
-      // addresses restore
+      // restore addresses
       fields.forEach(id=>{
         const el = $(id);
         if(el && s[id]) el.value = s[id];
       });
+
+      // wire configurator + restore UI
+      wireConfigurator();
+
+      // hidden layer
+      bootEarlyLayer();
+
+      // optional rain after ready (intro gate)
+      setTimeout(startCookieRain, 600);
     })();
 
     /* Consent */

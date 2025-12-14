@@ -4,13 +4,13 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>OnlyKeks – Post, die schmeckt</title>
-  <meta name="description" content="Schicke süße Botschaften mit direkter QR-Antwort. Gestalte deinen Keks, verschick ihn – und bekomm ’nen Antwort-Keks zurück." />
+  <meta name="description" content="Schicke süße Botschaften per QR – gestalte deinen Keks, verschick ihn – und bekomm ’nen Rücksend-Keks zurück." />
   <link rel="canonical" href="https://infojanschmidt-debug.github.io/keksms/" />
   <meta name="robots" content="index,follow" />
   <meta name="theme-color" content="#ff4fa3" />
 
   <meta property="og:title" content="OnlyKeks – Post, die schmeckt" />
-  <meta property="og:description" content="Gestalte deinen Keks + QR-Antwort. Kein Account. Schnell. Süß." />
+  <meta property="og:description" content="Gestalte deinen Keks + QR-Rücksendung. Kein Account. Schnell. Süß." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://infojanschmidt-debug.github.io/keksms/" />
   <meta property="og:image" content="https://infojanschmidt-debug.github.io/keksms/assets/img/1000149739.jpg" />
@@ -19,7 +19,7 @@
     :root{
       --bg:#ffffff;
       --ink:#0b1b2a;
-      --muted:#5b6a79;
+      --muted:#556575;
       --line: rgba(11,27,42,.10);
 
       --pink:#ff4fa3;
@@ -30,10 +30,14 @@
 
       --shadow: 0 10px 25px rgba(11,27,42,.06);
       --shadow2: 0 14px 34px rgba(11,27,42,.10);
-      --radius: 16px;
-      --max: 1040px;
+      --radius: 18px;
+      --max: 1080px;
 
       --ease: cubic-bezier(.2,.9,.2,1);
+
+      /* Typo: größer & fetter */
+      --fs: 18px;
+      --lh: 1.58;
     }
 
     *{box-sizing:border-box}
@@ -43,7 +47,11 @@
       background: var(--bg);
       color: var(--ink);
       font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      font-size: var(--fs);
+      line-height: var(--lh);
       overflow-x:hidden;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
     }
     a{color:inherit}
     .wrap{max-width:var(--max); margin:0 auto; padding:0 18px}
@@ -79,7 +87,7 @@
       color:#fff;
       padding:10px 14px;
       border-radius:999px;
-      font-weight:900;
+      font-weight:950;
       backdrop-filter: blur(10px);
       cursor:pointer;
       pointer-events:auto;
@@ -90,11 +98,11 @@
       position:absolute; left:50%; top:50%;
       transform: translate(-50%,-50%);
       border:1px solid rgba(255,255,255,.25);
-      background: rgba(0,0,0,.35);
+      background: rgba(0,0,0,.45);
       color:#fff;
       padding:14px 18px;
       border-radius:999px;
-      font-weight:900;
+      font-weight:950;
       cursor:pointer;
       display:none;
       align-items:center;
@@ -114,26 +122,27 @@
       backdrop-filter: blur(14px);
     }
     .topbar .inner{
-      height:66px;
+      height:70px;
       display:flex; align-items:center; justify-content:space-between;
       gap:12px;
     }
     .brand{
       display:flex; align-items:center; gap:10px;
       text-decoration:none;
-      min-width: 190px;
+      min-width: 200px;
     }
-    .mark{width:52px;height:52px; filter: drop-shadow(0 10px 18px rgba(11,27,42,.12));}
-    .brand strong{display:block; font-size:18px; line-height:1; letter-spacing:-.2px}
-    .brand span{display:block; font-size:12.5px; color:var(--muted); margin-top:3px}
+    .mark{width:54px;height:54px; filter: drop-shadow(0 10px 18px rgba(11,27,42,.12));}
+    .brand strong{display:block; font-size:19px; line-height:1; letter-spacing:-.2px; font-weight:950}
+    .brand span{display:block; font-size:13px; color:var(--muted); margin-top:4px}
     nav{display:flex; gap:8px; align-items:center}
     nav a{
       text-decoration:none;
-      font-size:13.5px;
+      font-size:14px;
       color:var(--muted);
       padding:10px 10px;
       border-radius:999px;
       transition: background .16s var(--ease), color .16s var(--ease), transform .12s var(--ease);
+      font-weight:850;
     }
     nav a:hover{background: rgba(255,79,163,.08); color:var(--ink)}
     nav a:active{transform: translateY(1px)}
@@ -141,8 +150,8 @@
       border:1px solid var(--line);
       background:#fff;
       border-radius:999px;
-      padding:12px 16px;
-      font-weight:900;
+      padding:13px 18px;
+      font-weight:950;
       cursor:pointer;
       text-decoration:none;
       display:inline-flex; align-items:center; justify-content:center;
@@ -151,6 +160,7 @@
       transition: transform .12s var(--ease), filter .12s var(--ease), background .12s var(--ease);
       user-select:none;
       -webkit-tap-highlight-color: transparent;
+      font-size:14px;
     }
     .btn:active{transform: translateY(1px)}
     .btn:hover{filter: brightness(.99)}
@@ -163,12 +173,10 @@
     .btnGhost{background:#fff}
     .btnGhost:hover{background: rgba(0,0,0,.02)}
     .btnSmall{padding:10px 12px; font-size:13px}
-    @media (max-width: 820px){
-      nav{display:none}
-    }
+    @media (max-width: 820px){ nav{display:none} }
 
     /* Hero */
-    .hero{padding: 18px 0 6px}
+    .hero{padding: 18px 0 8px}
     .heroGrid{
       display:grid;
       grid-template-columns: 1.1fr .9fr;
@@ -182,7 +190,7 @@
       border-radius: var(--radius);
       box-shadow: var(--shadow);
       background:#fff;
-      padding: 16px;
+      padding: 18px;
     }
     .kicker{
       display:inline-flex; gap:8px; align-items:center;
@@ -190,21 +198,22 @@
       border-radius:999px;
       border:1px solid rgba(255,79,163,.18);
       background: rgba(255,79,163,.06);
-      font-weight:900;
-      font-size:12.5px;
+      font-weight:950;
+      font-size:13px;
     }
     h1{
       margin:12px 0 10px;
-      font-size:38px;
-      line-height:1.05;
-      letter-spacing:-.7px;
+      font-size:48px;
+      line-height:1.02;
+      letter-spacing:-1px;
+      font-weight:950;
     }
-    @media (max-width: 520px){ h1{font-size:32px} }
+    @media (max-width: 520px){ h1{font-size:38px} }
     .sub{
       margin:0 0 14px;
       color:var(--muted);
-      line-height:1.55;
-      font-size:15.5px;
+      line-height:1.58;
+      font-size:16px;
       max-width: 60ch;
     }
 
@@ -214,12 +223,13 @@
     }
     .trustItem{
       display:inline-flex; align-items:center; gap:8px;
-      font-size:12.8px;
+      font-size:13px;
       color:var(--muted);
       border:1px solid var(--line);
       border-radius:999px;
       padding:9px 10px;
       background:#fff;
+      font-weight:850;
     }
     .dot{
       width:9px; height:9px; border-radius:50%;
@@ -233,9 +243,10 @@
       background:#fff;
       padding:10px 12px;
       border-radius:999px;
-      font-size:13px;
+      font-size:13.5px;
       cursor:pointer;
       transition: background .12s var(--ease), transform .12s var(--ease);
+      font-weight:850;
     }
     .chip:hover{background: rgba(0,0,0,.02)}
     .chip:active{transform: translateY(1px)}
@@ -248,7 +259,7 @@
       box-shadow: var(--shadow);
       overflow:hidden;
       background:#fff;
-      min-height: 380px;
+      min-height: 420px;
       position:relative;
     }
     .media img, .media video{width:100%; height:100%; object-fit:cover; display:block}
@@ -258,8 +269,8 @@
       border:1px solid var(--line);
       border-radius:999px;
       padding:8px 10px;
-      font-weight:900;
-      font-size:12.5px;
+      font-weight:950;
+      font-size:13px;
       backdrop-filter: blur(10px);
     }
 
@@ -267,8 +278,8 @@
     .section{padding: 10px 0}
     .grid2{display:grid; grid-template-columns:1fr 1fr; gap:14px}
     @media (max-width: 920px){ .grid2{grid-template-columns:1fr} }
-    h2{margin:0 0 8px; font-size:18px}
-    ul{margin:10px 0 0; padding-left: 18px; color:var(--muted); line-height:1.55}
+    h2{margin:0 0 8px; font-size:19px; font-weight:950}
+    ul{margin:10px 0 0; padding-left: 18px; color:var(--muted); line-height:1.58}
     li{margin:8px 0}
 
     /* Flow */
@@ -279,12 +290,12 @@
     }
     .steps{display:flex; gap:8px; align-items:center; flex-wrap:wrap}
     .step{
-      width:30px; height:30px;
+      width:32px; height:32px;
       display:grid; place-items:center;
       border-radius:999px;
       border:1px solid var(--line);
       color:var(--muted);
-      font-weight:900;
+      font-weight:950;
       font-size:13px;
     }
     .step.active{
@@ -295,25 +306,26 @@
 
     label.lbl{
       display:block;
-      font-weight:900;
-      font-size:12.5px;
+      font-weight:950;
+      font-size:13px;
       margin: 10px 0 6px;
+      letter-spacing:.2px;
     }
     input, textarea, select{
       width:100%;
       border:1px solid var(--line);
       border-radius: 14px;
-      padding: 12px 12px;
-      font-size: 14.5px;
+      padding: 13px 13px;
+      font-size: 15px;
       background:#fff;
       outline:none;
     }
-    textarea{min-height: 110px; resize: vertical}
+    textarea{min-height: 120px; resize: vertical}
     input:focus, textarea:focus, select:focus{
       border-color: rgba(255,79,163,.35);
       box-shadow: 0 0 0 4px rgba(255,79,163,.10);
     }
-    .helper{font-size:12.5px; color:var(--muted); margin-top:6px; line-height:1.45}
+    .helper{font-size:13px; color:var(--muted); margin-top:6px; line-height:1.45; font-weight:700}
     .row{display:grid; grid-template-columns:1fr 1fr; gap:12px}
     @media (max-width: 760px){ .row{grid-template-columns:1fr} }
 
@@ -327,11 +339,12 @@
     .packTiles{display:grid; gap:10px; margin-top:10px}
     .tile{
       border:1px solid var(--line);
-      border-radius: 14px;
+      border-radius: 16px;
       background:#fff;
-      padding:12px;
+      padding:14px;
       cursor:pointer;
       transition: transform .12s var(--ease), background .12s var(--ease), border-color .12s var(--ease);
+      box-shadow: 0 8px 18px rgba(11,27,42,.04);
     }
     .tile:active{transform: translateY(1px)}
     .tile.active{
@@ -340,7 +353,7 @@
     }
     .tileTop{display:flex; justify-content:space-between; align-items:center; gap:10px}
     .pill{
-      font-size:11px; font-weight:900;
+      font-size:11px; font-weight:950;
       padding:6px 8px;
       border-radius:999px;
       border:1px solid rgba(255,79,163,.18);
@@ -352,7 +365,7 @@
       border-color: rgba(255,176,32,.28);
       background: rgba(255,176,32,.10);
     }
-    .tile p{margin:8px 0 0; color:var(--muted); font-size:12.8px; line-height:1.45}
+    .tile p{margin:8px 0 0; color:var(--muted); font-size:13px; line-height:1.45; font-weight:650}
 
     /* Quantity / Deal */
     .qtyRow{display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-top:10px}
@@ -363,8 +376,8 @@
       padding:10px 12px;
       background:#fff;
       cursor:pointer;
-      font-weight:900;
-      font-size:13px;
+      font-weight:950;
+      font-size:13.5px;
       transition: transform .12s var(--ease), background .12s var(--ease), border-color .12s var(--ease);
       user-select:none;
     }
@@ -380,8 +393,8 @@
       color: var(--ink);
       border-radius:999px;
       padding:10px 12px;
-      font-weight:900;
-      font-size:12.5px;
+      font-weight:950;
+      font-size:12.8px;
     }
     .dealBadge.show{display:inline-flex}
 
@@ -396,10 +409,11 @@
       grid-template-columns: 1fr auto;
       gap:8px 12px;
       align-items:center;
-      font-size:13px;
+      font-size:13.5px;
       color:var(--muted);
+      font-weight:700;
     }
-    .priceGrid b{color:var(--ink)}
+    .priceGrid b{color:var(--ink); font-weight:950}
     .priceTotal{
       margin-top:10px;
       display:flex;
@@ -409,44 +423,52 @@
       border:1px solid rgba(255,79,163,.22);
       background: rgba(255,79,163,.06);
       border-radius: 14px;
-      font-weight:900;
+      font-weight:950;
     }
 
-    /* Konfigurator */
+    /* Konfigurator Controls */
     .configRow{display:flex;gap:10px;flex-wrap:wrap}
     .pick{
       display:inline-flex;gap:8px;align-items:center;
       border:1px solid var(--line);
       border-radius:999px;
-      padding:10px 12px;
+      padding:11px 12px;
       background:#fff;
-      font-size:13px;
+      font-size:13.5px;
       user-select:none;
       cursor:pointer;
       transition: transform .12s var(--ease), background .12s var(--ease);
+      font-weight:900;
+      box-shadow: 0 6px 16px rgba(11,27,42,.06);
     }
     .pick:active{transform: translateY(1px)}
     .pick input{accent-color: var(--pink)}
+
+    /* Vorschau: WebGL + Fallback */
     .cookiePreview{
       width:100%;
-      min-height: 240px;
-      display:grid;
-      place-items:center;
-      border:1px dashed rgba(11,27,42,.18);
-      border-radius: 14px;
-      background: rgba(255,79,163,.03);
+      min-height: 340px;
+      border: 1px solid rgba(11,27,42,.10);
+      border-radius: 16px;
+      background: radial-gradient(circle at 30% 20%, rgba(255,79,163,.08), transparent 55%),
+                  radial-gradient(circle at 70% 80%, rgba(0,0,0,.03), transparent 55%),
+                  #fff;
+      box-shadow: inset 0 0 0 1px rgba(11,27,42,.06);
       overflow:hidden;
       position:relative;
+      display:block;
     }
     .previewHint{
       position:absolute; left:12px; bottom:12px;
-      font-size:12px;
+      font-size:12.5px;
       color: rgba(11,27,42,.55);
-      background: rgba(255,255,255,.80);
+      background: rgba(255,255,255,.86);
       border:1px solid rgba(11,27,42,.10);
       border-radius:999px;
       padding:8px 10px;
       backdrop-filter: blur(10px);
+      font-weight:900;
+      z-index:2;
     }
     .miniBtns{display:flex; gap:10px; flex-wrap:wrap; margin-top:12px}
 
@@ -458,7 +480,7 @@
       padding:10px 12px;
       cursor:pointer;
       background:#fff;
-      font-weight:900;
+      font-weight:950;
       font-size:13px;
       transition: transform .12s var(--ease), background .12s var(--ease), border-color .12s var(--ease);
     }
@@ -471,10 +493,11 @@
     /* Recipients list */
     .recCard{
       border:1px solid var(--line);
-      border-radius: 14px;
-      padding:12px;
+      border-radius: 16px;
+      padding:14px;
       background:#fff;
       margin-top:10px;
+      box-shadow: 0 8px 18px rgba(11,27,42,.04);
     }
     .recHead{
       display:flex; justify-content:space-between; align-items:center; gap:10px;
@@ -482,8 +505,8 @@
     }
     .recTag{
       display:inline-flex; align-items:center; gap:8px;
-      font-size:12px;
-      font-weight:900;
+      font-size:12.5px;
+      font-weight:950;
       border:1px solid rgba(11,27,42,.10);
       border-radius:999px;
       padding:8px 10px;
@@ -500,8 +523,8 @@
     .stampWrap{
       border:1px solid rgba(39,214,164,.22);
       background: rgba(39,214,164,.08);
-      border-radius: 14px;
-      padding:12px;
+      border-radius: 16px;
+      padding:14px;
       margin-top:12px;
     }
     .stampTop{display:flex;justify-content:space-between;align-items:center;gap:10px}
@@ -512,7 +535,7 @@
       margin-top:10px;
     }
     .stamp{
-      height:26px;
+      height:28px;
       border-radius: 10px;
       border:1px solid rgba(11,27,42,.10);
       background: rgba(255,255,255,.75);
@@ -531,21 +554,22 @@
       background: rgba(39,214,164,.14);
       border-radius:999px;
       padding:9px 10px;
-      font-weight:900;
-      font-size:12.5px;
+      font-weight:950;
+      font-size:12.8px;
     }
     .rewardBadge.show{display:inline-flex}
 
     /* FAQ */
     details{
       border:1px solid var(--line);
-      border-radius: 14px;
-      padding: 12px;
+      border-radius: 16px;
+      padding: 14px;
       background:#fff;
+      box-shadow: 0 8px 18px rgba(11,27,42,.04);
     }
     details + details{margin-top:10px}
-    summary{cursor:pointer; font-weight:900}
-    details p{margin:10px 0 0; color:var(--muted); line-height:1.55; font-size:13.5px}
+    summary{cursor:pointer; font-weight:950}
+    details p{margin:10px 0 0; color:var(--muted); line-height:1.58; font-size:14px; font-weight:650}
 
     /* Footer */
     footer{
@@ -559,13 +583,14 @@
     .footLinks{display:flex; gap:10px; flex-wrap:wrap}
     .footLinks a{
       text-decoration:none;
-      font-size:13px;
+      font-size:13.5px;
       color:var(--muted);
       padding:10px 12px;
       border:1px solid var(--line);
       border-radius:999px;
       background:#fff;
       transition: background .12s var(--ease), transform .12s var(--ease);
+      font-weight:850;
     }
     .footLinks a:hover{background: rgba(0,0,0,.02); color:var(--ink)}
     .footLinks a:active{transform: translateY(1px)}
@@ -586,8 +611,8 @@
       display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap;
       backdrop-filter: blur(12px);
     }
-    .consentCard b{display:block; margin-bottom:4px}
-    .consentCard p{margin:0; color:var(--muted); font-size:13px; line-height:1.45}
+    .consentCard b{display:block; margin-bottom:4px; font-weight:950}
+    .consentCard p{margin:0; color:var(--muted); font-size:13.5px; line-height:1.45; font-weight:650}
 
     /* Overlay (rewards/reveal) */
     .overlay{
@@ -641,14 +666,12 @@
 <body>
   <!-- INTRO OVERLAY -->
   <div id="intro" class="intro" aria-hidden="false">
-    <video id="introVid" class="introVid" autoplay muted playsinline preload="auto" poster="assets/img/1000149739.jpg">
+    <video id="introVid" class="introVid" autoplay muted playsinline preload="metadata" poster="assets/img/1000149739.jpg">
       <source src="assets/video/intro.mp4" type="video/mp4">
     </video>
     <div class="introTop" aria-hidden="true"></div>
     <button id="skipIntro" class="introSkip" type="button">Skip</button>
-    <button id="playIntro" class="introPlay" type="button" aria-label="Intro abspielen">
-      ▶︎ Intro starten
-    </button>
+    <button id="playIntro" class="introPlay" type="button" aria-label="Intro abspielen">▶︎ Intro starten</button>
   </div>
 
   <!-- TOPBAR -->
@@ -694,11 +717,11 @@
       <div class="wrap">
         <div class="heroGrid">
           <div class="panel">
-            <div class="kicker">Kein Account · QR-Antwort · echtes Post-Feeling</div>
+            <div class="kicker">Kein Account · QR-Rücksendung · echtes Post-Feeling</div>
 
-            <h1>Gestalte deinen Keks – und hol dir ’nen Antwort-Keks zurück.</h1>
+            <h1>Gestalte deinen Keks – und hol dir ’nen Rücksend-Keks zurück.</h1>
             <p class="sub">
-              Du schickst einen <b>QR-Antwort-Keks</b> mit Message + QR-Code. Empfänger*in scannt, antwortet – wir backen den <b>Antwort-Keks</b> und schicken ihn zu dir zurück.
+              Du schickst einen <b>QR-Keks</b> mit Message + QR-Code. Empfänger*in scannt, antwortet – wir backen den <b>Rücksend-Keks</b> und schicken ihn zu dir zurück.
             </p>
 
             <div class="trustBar" aria-label="Trust">
@@ -722,7 +745,7 @@
 
             <hr class="hr" />
 
-            <div class="muted" style="font-size:13.5px; line-height:1.45;">
+            <div class="muted" style="font-size:14px; line-height:1.45; font-weight:700;">
               <b style="color:var(--ink)">Loop:</b> Scan → Antwort in Sekunden. Wir machen den Rest (Post-Magic).
             </div>
           </div>
@@ -749,14 +772,14 @@
               <li><b>Du schreibst</b> eine Message, wählst Paket & Anzahl.</li>
               <li><b>Du gestaltest</b> den Keks (Form, Deko, Style).</li>
               <li><b>Wir verschicken</b> Keks + QR-Karte.</li>
-              <li><b>Scan → Antwort</b> (ohne Konto). Danach kommt dein <b>Antwort-Keks</b>.</li>
+              <li><b>Scan → Antwort</b> (ohne Konto). Danach kommt dein <b>Rücksend-Keks</b>.</li>
             </ul>
           </div>
           <div class="panel">
             <h2>Warum das zieht</h2>
             <ul>
               <li>Wie Social – aber als echtes Geschenk im Briefkasten.</li>
-              <li><b>Konfigurator-Spieltrieb</b>: “Noch eins… nur kurz testen…”</li>
+              <li><b>Konfigurator-Spieltrieb</b>: „Noch eins… nur kurz testen…“</li>
               <li><b>Viral</b>: Share-Link + Einladungen + Belohnungen.</li>
             </ul>
           </div>
@@ -837,22 +860,22 @@
                   </div>
 
                   <div class="helper" style="margin-top:8px">
-                    <b>Multi-Empfänger:</b> Bei Pack > 1 kannst du an mehrere Personen schicken – jede Person kriegt ihren eigenen Keks.
+                    <b>Multi-Empfänger:</b> Bei Pack &gt; 1 kannst du an mehrere Personen schicken – jede Person kriegt ihren eigenen Keks.
                   </div>
                 </div>
               </div>
             </div>
 
             <div class="actions">
-              <span class="muted" style="font-size:13px">Schritt 1/5</span>
+              <span class="muted" style="font-size:13px; font-weight:800;">Schritt 1/5</span>
               <button class="btn btnPrimary" type="button" id="next1">Weiter →</button>
             </div>
           </div>
 
           <!-- Step 2 (Konfigurator) -->
           <div class="flowPanel" id="p2" style="display:none">
-            <h2 style="font-size:16px;margin:0 0 6px;">Keks gestalten</h2>
-            <p class="muted" style="margin:0 0 10px;font-size:13.5px">
+            <h2 style="font-size:18px;margin:0 0 6px;">Keks gestalten</h2>
+            <p class="muted" style="margin:0 0 10px;font-size:14px; font-weight:650;">
               Wähl Form, Deko und Theme. Dit ist dein Spielplatz.
             </p>
 
@@ -868,8 +891,12 @@
                 <div style="margin-top:12px">
                   <b>Form</b>
                   <div class="configRow" style="margin-top:10px">
-                    <label class="pick"><input type="radio" name="shape" value="round" checked> Rund</label>
+                    <label class="pick"><input type="radio" name="shape" value="classic" checked> Classic</label>
+                    <label class="pick"><input type="radio" name="shape" value="round"> Kreis</label>
                     <label class="pick"><input type="radio" name="shape" value="heart"> Herz</label>
+                    <label class="pick"><input type="radio" name="shape" value="star"> Stern</label>
+                    <label class="pick"><input type="radio" name="shape" value="smiley"> Smiley</label>
+                    <label class="pick"><input type="radio" name="shape" value="tree"> Tannenbaum</label>
                     <label class="pick"><input type="radio" name="shape" value="mouse"> Maus-Keks 🐭🍪</label>
                   </div>
                 </div>
@@ -878,7 +905,7 @@
                   <b>Deko</b>
                   <div class="configRow" style="margin-top:10px">
                     <label class="pick"><input type="checkbox" id="dSprinkles"> Sprinkles</label>
-                    <label class="pick"><input type="checkbox" id="dSmiley"> Smiley</label>
+                    <label class="pick"><input type="checkbox" id="dSmiley"> Smiley-Face</label>
                     <label class="pick"><input type="checkbox" id="dKiss"> Kuss-Stempel</label>
                     <label class="pick"><input type="checkbox" id="dBolt"> Blitz ⚡️</label>
                   </div>
@@ -888,7 +915,7 @@
                   <b>Farbe</b>
                   <div style="display:flex;gap:10px;align-items:center;margin-top:10px">
                     <input type="color" id="dIcing" value="#ff4fa3" style="width:54px;height:40px;padding:0;border-radius:12px">
-                    <span class="muted" style="font-size:13px">Icing-Akzent</span>
+                    <span class="muted" style="font-size:13.5px; font-weight:650;">Icing-Akzent</span>
                   </div>
                 </div>
 
@@ -898,20 +925,24 @@
                   <button class="btn btnGhost" type="button" id="surpriseBtn">Überrasch mich 🍪</button>
                 </div>
 
-                <p class="muted" style="margin:10px 0 0;font-size:12.8px;line-height:1.45">
-                  MVP-Preview (Vorschau-Simulation). Später: echte Sticker, Teilen, Drops.
+                <p class="muted" style="margin:10px 0 0;font-size:13.5px;line-height:1.45; font-weight:650">
+                  Boss-Preview (3D wenn möglich). Keine Adressen im Share-Link.
                 </p>
               </div>
 
               <div class="tile" style="cursor:default">
-                <b>Vorschau</b>
+                <b>Vorschau (3D)</b>
                 <div id="cookiePreview" class="cookiePreview" style="margin-top:10px">
-                  <span class="previewHint">Live-Vorschau</span>
+                  <canvas id="cookie3d" style="width:100%; height:340px; display:block;"></canvas>
+                  <div id="webglFallback" class="muted" style="position:absolute; inset:0; display:none; place-items:center; font-weight:850;">
+                    WebGL nicht verfügbar – Fallback aktiv.
+                  </div>
+                  <span class="previewHint">Drag = drehen</span>
                 </div>
 
                 <div class="tile" style="margin-top:12px; cursor:default">
                   <b>Teilen (Viral)</b>
-                  <p class="muted" style="margin:6px 0 10px;font-size:13px;line-height:1.45">
+                  <p class="muted" style="margin:6px 0 10px;font-size:14px;line-height:1.45; font-weight:650">
                     Schick deinen Konfigurator-Entwurf als Link. Wer über deinen Link startet, zählt als Einladung.
                   </p>
                   <div style="display:flex;gap:10px;flex-wrap:wrap">
@@ -932,9 +963,9 @@
 
           <!-- Step 3 (Multi-Empfänger) -->
           <div class="flowPanel" id="p3" style="display:none">
-            <h2 style="font-size:16px;margin:0 0 6px;">Adressen</h2>
-            <p class="muted" style="margin:0 0 10px;font-size:13.5px">
-              Empfänger*in(nen) + deine Adresse (für den Antwort-Keks). Bei Packs > 1: mehrere Empfänger möglich.
+            <h2 style="font-size:18px;margin:0 0 6px;">Adressen</h2>
+            <p class="muted" style="margin:0 0 10px;font-size:14px; font-weight:650;">
+              Empfänger*in(nen) + deine Adresse (für den Rücksend-Keks). Bei Packs &gt; 1: mehrere Empfänger möglich.
             </p>
 
             <div class="row">
@@ -979,8 +1010,8 @@
 
           <!-- Step 4 -->
           <div class="flowPanel" id="p4" style="display:none">
-            <h2 style="font-size:16px;margin:0 0 6px;">Check</h2>
-            <div class="muted" id="summary" style="font-size:13.5px; line-height:1.55;"></div>
+            <h2 style="font-size:18px;margin:0 0 6px;">Check</h2>
+            <div class="muted" id="summary" style="font-size:14px; line-height:1.58; font-weight:650;"></div>
 
             <div class="actions">
               <button class="btn btnGhost" type="button" id="back4">← Zurück</button>
@@ -990,11 +1021,11 @@
 
           <!-- Step 5 -->
           <div class="flowPanel" id="p5" style="display:none">
-            <h2 style="font-size:16px;margin:0 0 6px;">Bezahlen</h2>
-            <p class="muted" style="margin:0 0 10px;font-size:13.5px">Weiterleitung über Stripe (MVP-Link).</p>
+            <h2 style="font-size:18px;margin:0 0 6px;">Bezahlen</h2>
+            <p class="muted" style="margin:0 0 10px;font-size:14px; font-weight:650;">Weiterleitung über Stripe (MVP-Link).</p>
 
             <div class="tile" style="cursor:default">
-              <div class="muted" style="font-size:13.5px; line-height:1.55">
+              <div class="muted" style="font-size:14px; line-height:1.58; font-weight:650">
                 <b style="color:var(--ink)">OrderID:</b> <span id="oid">(wird erstellt)</span><br/>
                 <b style="color:var(--ink)">Paket:</b> <span id="sPack">Custom</span><br/>
                 <b style="color:var(--ink)">Anzahl:</b> <span id="sQty">1</span><br/>
@@ -1010,7 +1041,7 @@
                 <b>🍪 Stempelkarte</b>
                 <span class="rewardBadge" id="rewardBadge">🎁 Belohnung ready</span>
               </div>
-              <div class="muted" style="font-size:13px; margin-top:6px; line-height:1.45">
+              <div class="muted" style="font-size:13.5px; margin-top:6px; line-height:1.45; font-weight:650">
                 Pro gekauftem Keks 1 Stempel. Ab 10: Belohnung (Gratis-Keks oder Rabatt).
               </div>
               <div class="stampGrid" id="stampGrid" aria-label="Stempelkarte"></div>
@@ -1038,7 +1069,7 @@
           </details>
           <details>
             <summary>Was passiert nach der Antwort?</summary>
-            <p>Wir backen den <b>Antwort-Keks</b> mit der Antwort-Message und schicken ihn an deine Adresse zurück.</p>
+            <p>Wir backen den <b>Rücksend-Keks</b> mit der Antwort-Message und schicken ihn an deine Adresse zurück.</p>
           </details>
           <details>
             <summary>Welche Daten speichert ihr?</summary>
@@ -1058,17 +1089,17 @@
       <div class="footGrid">
         <div>
           <div style="display:flex;align-items:center;gap:10px;">
-            <b>OnlyKeks</b>
-            <span class="muted" style="font-size:13px">Post, die schmeckt</span>
+            <b style="font-weight:950">OnlyKeks</b>
+            <span class="muted" style="font-size:13.5px; font-weight:650">Post, die schmeckt</span>
           </div>
-          <p class="muted" style="margin:10px 0 0; font-size:13px; line-height:1.45">
-            MVP: One-Page + Konfigurator-Flow + QR-Antwort-Loop. Clean, schnell, vertrauenswürdig.
+          <p class="muted" style="margin:10px 0 0; font-size:13.5px; line-height:1.45; font-weight:650">
+            MVP: One-Page + Konfigurator-Flow + QR-Loop. Clean, schnell, vertrauenswürdig.
           </p>
         </div>
         <div class="footLinks" aria-label="Footer Links">
           <a href="#faq">FAQ</a>
           <a href="privacy.html">Wie wir mit Daten umgehen</a>
-          <a href="keks.html">QR-Antwort Demo</a>
+          <a href="keks.html">QR-Demo</a>
           <a href="#top">Nach oben</a>
         </div>
       </div>
@@ -1094,16 +1125,16 @@
   <div class="overlay" id="rewardOverlay" aria-hidden="true">
     <div class="card" role="dialog" aria-modal="true" aria-label="Belohnung">
       <div class="cardTop">
-        <h3 style="margin:0;font-size:16px">🎁 Belohnung freigeschaltet</h3>
-        <div class="muted" style="margin-top:6px;font-size:12.5px" id="rewardSub">—</div>
+        <h3 style="margin:0;font-size:16px; font-weight:950">🎁 Belohnung freigeschaltet</h3>
+        <div class="muted" style="margin-top:6px;font-size:12.8px; font-weight:650" id="rewardSub">—</div>
       </div>
       <div class="cardBody">
-        <p class="muted" style="margin:0;line-height:1.55">
-          Du hast 10 Stempel voll. Dit ist der Moment, wo Leute screenshots machen – und zack: Viral.
+        <p class="muted" style="margin:0;line-height:1.55; font-weight:650">
+          Du hast 10 Stempel voll. Dit ist der Moment, wo Leute Screenshots machen – und zack: Viral.
         </p>
         <div class="tile" style="margin-top:12px; cursor:default">
           <b>Deine Optionen (MVP-Copy)</b>
-          <p class="muted" style="margin:6px 0 0;line-height:1.55">
+          <p class="muted" style="margin:6px 0 0;line-height:1.55; font-weight:650">
             • <b>Gratis-Keks</b> beim nächsten Kauf<br/>
             • oder <b>Rabatt</b> auf Premium-Box
           </p>
@@ -1115,6 +1146,9 @@
       </div>
     </div>
   </div>
+
+  <!-- Three.js (WebGL Bossmode) -->
+  <script src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
 
   <script>
     /*** CONFIG: STRIPE ***/
@@ -1135,7 +1169,7 @@
     }
 
     /* State */
-    const LS_KEY = "onlykeks_state_master_v1";
+    const LS_KEY = "onlykeks_state_master_v2";
     function readState(){ try{return JSON.parse(localStorage.getItem(LS_KEY)||"{}");}catch(e){return{};} }
     function writeState(patch){
       const cur = readState();
@@ -1151,7 +1185,7 @@
 
     /* Intro Gate (Fullscreen Video before app) */
     (function introGate(){
-      const KEY = "onlykeks_intro_seen_v2";
+      const KEY = "onlykeks_intro_seen_v3";
       const intro = $("intro");
       const vid   = $("introVid");
       const skip  = $("skipIntro");
@@ -1174,29 +1208,28 @@
         showApp();
       };
 
-      // failsafe: wenn Video nicht will → App zeigen
-      const failsafe = setTimeout(done, 3600);
+      // failsafe: Mobile-Blocker / Slow load -> nicht nach 3.6s killen
+      const failsafe = setTimeout(done, 8000);
 
       skip?.addEventListener("click", ()=>{ clearTimeout(failsafe); done(); });
 
       vid?.addEventListener("ended", ()=>{ clearTimeout(failsafe); done(); });
       vid?.addEventListener("error", ()=>{ clearTimeout(failsafe); done(); });
 
-      // Autoplay attempt; wenn blocked → Play Button zeigen
-      const tryPlay = ()=>{
-        const p = vid?.play?.();
-        if(p && typeof p.catch === "function"){
-          p.catch(()=>{
-            play?.classList.add("show");
-          });
+      const tryPlay = async ()=>{
+        try{
+          vid.setAttribute("playsinline","");
+          vid.muted = true;
+          await vid.play();
+          play?.classList.remove("show");
+        }catch(e){
+          play?.classList.add("show");
         }
       };
 
-      play?.addEventListener("click", ()=>{
+      play?.addEventListener("click", async ()=>{
         play.classList.remove("show");
         tryPlay();
-        // wenn nach Click trotzdem nix → nach kurzer Zeit App zeigen
-        setTimeout(()=>{ /* keep intro a moment */ }, 350);
       });
 
       tryPlay();
@@ -1326,7 +1359,7 @@
 
     function getDesign(){
       const s = readState();
-      return s.design || { theme:"sweet", shape:"round", sprinkles:false, smiley:false, kiss:false, bolt:false, icing:"#ff4fa3" };
+      return s.design || { theme:"sweet", shape:"classic", sprinkles:false, smiley:false, kiss:false, bolt:false, icing:"#ff4fa3" };
     }
     function pushHistory(nextDesign){
       const s = readState();
@@ -1349,109 +1382,18 @@
         pushHistory(next);
       }
       syncConfiguratorUI();
-      renderPreview();
+      updateCookie3D(next);
       updateShareHint();
-    }
-
-    function svgCookie(d){
-      const icing = d.icing || "#ff4fa3";
-      const bolt = d.bolt ? `
-        <path d="M170 85 L145 135 L170 135 L150 185 L200 120 L175 120 Z"
-          fill="rgba(255,176,32,.95)" stroke="rgba(11,27,42,.10)" stroke-width="2" />
-      ` : "";
-
-      const spr = d.sprinkles ? `
-        <circle cx="95" cy="90" r="4" fill="${icing}" opacity=".85"/>
-        <circle cx="150" cy="130" r="3" fill="rgba(11,27,42,.25)"/>
-        <circle cx="120" cy="160" r="4" fill="${icing}" opacity=".85"/>
-        <circle cx="180" cy="165" r="3" fill="rgba(11,27,42,.22)"/>
-        <circle cx="210" cy="120" r="3" fill="${icing}" opacity=".75"/>
-      ` : "";
-
-      const smile = d.smiley ? `
-        <circle cx="140" cy="132" r="3.5" fill="rgba(11,27,42,.45)"/>
-        <circle cx="175" cy="132" r="3.5" fill="rgba(11,27,42,.45)"/>
-        <path d="M145 150 Q158 164 171 150" fill="none" stroke="rgba(11,27,42,.45)" stroke-width="5" stroke-linecap="round"/>
-      ` : "";
-
-      const kiss = d.kiss ? `
-        <path d="M150 115c10-8 22-8 32 0c-3 10-12 18-16 20c-4-2-13-10-16-20Z"
-          fill="${icing}" opacity=".9"/>
-      ` : "";
-
-      const round = `
-        <circle cx="160" cy="140" r="90" fill="#f4c9a2" stroke="rgba(11,27,42,.12)" stroke-width="2"/>
-      `;
-      const heart = `
-        <path d="M160 220
-          C90 170, 90 120, 125 105
-          C145 96, 158 108, 160 118
-          C162 108, 175 96, 195 105
-          C230 120, 230 170, 160 220Z"
-          fill="#f4c9a2" stroke="rgba(11,27,42,.12)" stroke-width="2"/>
-      `;
-      const mouse = `
-        <circle cx="160" cy="150" r="78" fill="#f4c9a2" stroke="rgba(11,27,42,.12)" stroke-width="2"/>
-        <circle cx="105" cy="95" r="28" fill="#f4c9a2" stroke="rgba(11,27,42,.12)" stroke-width="2"/>
-        <circle cx="215" cy="95" r="28" fill="#f4c9a2" stroke="rgba(11,27,42,.12)" stroke-width="2"/>
-      `;
-
-      const shapeSvg = (d.shape==="heart") ? heart : (d.shape==="mouse") ? mouse : round;
-
-      const themeGlow = d.theme==="energy"
-        ? `<defs>
-            <radialGradient id="glow" cx="50%" cy="45%" r="70%">
-              <stop offset="0" stop-color="rgba(255,176,32,.35)"/>
-              <stop offset="1" stop-color="rgba(255,255,255,0)"/>
-            </radialGradient>
-          </defs>
-          <circle cx="160" cy="140" r="120" fill="url(#glow)"/>`
-        : d.theme==="frech"
-          ? `<defs>
-              <radialGradient id="glow2" cx="45%" cy="45%" r="70%">
-                <stop offset="0" stop-color="rgba(255,79,163,.28)"/>
-                <stop offset="1" stop-color="rgba(255,255,255,0)"/>
-              </radialGradient>
-            </defs>
-            <circle cx="160" cy="140" r="120" fill="url(#glow2)"/>`
-          : `<defs>
-              <radialGradient id="glow3" cx="50%" cy="50%" r="70%">
-                <stop offset="0" stop-color="rgba(255,79,163,.18)"/>
-                <stop offset="1" stop-color="rgba(255,255,255,0)"/>
-              </radialGradient>
-            </defs>
-            <circle cx="160" cy="140" r="120" fill="url(#glow3)"/>`;
-
-      return `
-      <svg viewBox="0 0 320 280" width="100%" height="220" role="img" aria-label="Keks Vorschau">
-        ${themeGlow}
-        ${shapeSvg}
-        ${spr}
-        ${bolt}
-        ${kiss}
-        ${smile}
-        <circle cx="120" cy="120" r="5" fill="${icing}" opacity=".65"/>
-        <circle cx="205" cy="175" r="5" fill="rgba(11,27,42,.20)"/>
-      </svg>`;
-    }
-
-    function renderPreview(){
-      const box = $("cookiePreview");
-      if(!box) return;
-      const d = getDesign();
-      box.innerHTML = svgCookie(d) + `<span class="previewHint">Live-Vorschau</span>`;
     }
 
     function syncConfiguratorUI(){
       const d = getDesign();
 
-      // tabs
       qsa(".tab", $("themeTabs") || document).forEach(t=>{
         const on = t.dataset.theme === d.theme;
         t.classList.toggle("active", on);
       });
 
-      // shape radios
       const r = document.querySelector(`input[name="shape"][value="${d.shape}"]`);
       if(r) r.checked = true;
 
@@ -1461,7 +1403,6 @@
       $("dBolt")      && ($("dBolt").checked = !!d.bolt);
       $("dIcing")     && ($("dIcing").value = d.icing || "#ff4fa3");
 
-      // undo/redo availability
       const s = readState();
       const hist = Array.isArray(s.hist) ? s.hist : [];
       const idx = typeof s.histIdx === "number" ? s.histIdx : (hist.length - 1);
@@ -1472,7 +1413,10 @@
     function designLabel(d){
       d = d || getDesign();
       const parts = [];
-      parts.push(d.shape==="heart" ? "Herz" : d.shape==="mouse" ? "Maus" : "Rund");
+      const shapeLabel = ({
+        classic:"Classic", round:"Kreis", heart:"Herz", star:"Stern", smiley:"Smiley", tree:"Tannenbaum", mouse:"Maus"
+      })[d.shape] || "Classic";
+      parts.push(shapeLabel);
       if(d.sprinkles) parts.push("Sprinkles");
       if(d.smiley) parts.push("Smiley");
       if(d.kiss) parts.push("Kuss");
@@ -1482,7 +1426,6 @@
     }
 
     function applyTheme(theme){
-      // presets (energie: bolt + amber, frech: kiss + pink2, süß: smiley+sprinkles)
       if(theme==="energy"){
         setDesign({theme:"energy", bolt:true, sprinkles:true, smiley:false, kiss:false, icing:"#ffb020"});
         return;
@@ -1496,9 +1439,11 @@
 
     function randomPreset(){
       const presets = [
-        {theme:"sweet", shape:"round", sprinkles:true,  smiley:true,  kiss:false, bolt:false, icing:"#ff4fa3"},
-        {theme:"frech", shape:"mouse", sprinkles:true,  smiley:false, kiss:true,  bolt:false, icing:"#ff7cc5"},
-        {theme:"energy",shape:"heart", sprinkles:true,  smiley:false, kiss:false, bolt:true,  icing:"#ffb020"},
+        {theme:"sweet", shape:"classic", sprinkles:true,  smiley:true,  kiss:false, bolt:false, icing:"#ff4fa3"},
+        {theme:"frech", shape:"mouse",   sprinkles:true,  smiley:false, kiss:true,  bolt:false, icing:"#ff7cc5"},
+        {theme:"energy",shape:"heart",   sprinkles:true,  smiley:false, kiss:false, bolt:true,  icing:"#ffb020"},
+        {theme:"sweet", shape:"star",    sprinkles:true,  smiley:false, kiss:false, bolt:false, icing:"#ff4fa3"},
+        {theme:"energy",shape:"tree",    sprinkles:true,  smiley:false, kiss:false, bolt:true,  icing:"#ffb020"},
       ];
       const p = presets[Math.floor(Math.random()*presets.length)];
       setDesign(p);
@@ -1513,7 +1458,7 @@
       const d = hist[idx];
       writeState({histIdx: idx, design: d});
       syncConfiguratorUI();
-      renderPreview();
+      updateCookie3D(d);
       updateShareHint();
     }
     function redo(){
@@ -1525,22 +1470,19 @@
       const d = hist[idx];
       writeState({histIdx: idx, design: d});
       syncConfiguratorUI();
-      renderPreview();
+      updateCookie3D(d);
       updateShareHint();
     }
 
     function wireConfigurator(){
-      // tabs
       qsa(".tab", $("themeTabs") || document).forEach(t=>{
         t.addEventListener("click", ()=>applyTheme(t.dataset.theme));
       });
 
-      // shape
       document.querySelectorAll('input[name="shape"]').forEach(r=>{
         r.addEventListener("change", ()=> setDesign({shape: r.value}));
       });
 
-      // toggles
       $("dSprinkles")?.addEventListener("change", (e)=> setDesign({sprinkles: e.target.checked}));
       $("dSmiley")?.addEventListener("change", (e)=> setDesign({smiley: e.target.checked}));
       $("dKiss")?.addEventListener("change", (e)=> setDesign({kiss: e.target.checked}));
@@ -1551,14 +1493,281 @@
       $("undoBtn")?.addEventListener("click", undo);
       $("redoBtn")?.addEventListener("click", redo);
 
-      // init history if empty
       const s = readState();
       if(!Array.isArray(s.hist) || s.hist.length === 0){
         const base = getDesign();
         writeState({hist:[base], histIdx:0, design: base});
       }
+
       syncConfiguratorUI();
-      renderPreview();
+      updateCookie3D(getDesign());
+    }
+
+    /* =========================
+       WebGL Bossmode (Three.js)
+    ========================= */
+    let THREE_OK=false, scene, camera, renderer, cookieMesh, icingMesh, sprinklesGroup;
+    let dragging=false, lastX=0, lastY=0, rotX=0.22, rotY=-0.55;
+
+    function hasWebGL(){
+      try{
+        const c=document.createElement("canvas");
+        return !!(window.WebGLRenderingContext && (c.getContext("webgl") || c.getContext("experimental-webgl")));
+      }catch(e){ return false; }
+    }
+
+    function shapePath(name){
+      const s = new THREE.Shape();
+
+      if(name==="classic" || name==="round"){
+        s.absarc(0,0,1,0,Math.PI*2,false);
+        return s;
+      }
+
+      if(name==="heart"){
+        s.moveTo(0, 0.7);
+        s.bezierCurveTo(0, 1.2, -1.2, 1.2, -1.2, 0.2);
+        s.bezierCurveTo(-1.2, -0.6, -0.3, -1.0, 0, -0.5);
+        s.bezierCurveTo(0.3, -1.0, 1.2, -0.6, 1.2, 0.2);
+        s.bezierCurveTo(1.2, 1.2, 0, 1.2, 0, 0.7);
+        return s;
+      }
+
+      if(name==="star"){
+        const spikes=5, outer=1, inner=0.45;
+        let rot=Math.PI/2*3;
+        s.moveTo(0, outer);
+        for(let i=0;i<spikes;i++){
+          s.lineTo(Math.cos(rot)*outer, Math.sin(rot)*outer); rot+=Math.PI/spikes;
+          s.lineTo(Math.cos(rot)*inner, Math.sin(rot)*inner); rot+=Math.PI/spikes;
+        }
+        s.closePath();
+        return s;
+      }
+
+      if(name==="smiley"){
+        s.absarc(0,0,1,0,Math.PI*2,false);
+        return s;
+      }
+
+      if(name==="tree"){
+        s.moveTo(0,1.1);
+        s.lineTo(-0.9,0.2);
+        s.lineTo(-0.45,0.2);
+        s.lineTo(-1.0,-0.5);
+        s.lineTo(-0.35,-0.5);
+        s.lineTo(-0.8,-1.1);
+        s.lineTo(0.8,-1.1);
+        s.lineTo(0.35,-0.5);
+        s.lineTo(1.0,-0.5);
+        s.lineTo(0.45,0.2);
+        s.lineTo(0.9,0.2);
+        s.closePath();
+        return s;
+      }
+
+      if(name==="mouse"){
+        // Base circle; ears are just decals via sprinkles placement (MVP)
+        s.absarc(0,0,1,0,Math.PI*2,false);
+        return s;
+      }
+
+      s.absarc(0,0,1,0,Math.PI*2,false);
+      return s;
+    }
+
+    function disposeScene(){
+      try{
+        renderer?.dispose?.();
+      }catch(e){}
+      THREE_OK=false;
+      scene=camera=renderer=cookieMesh=icingMesh=sprinklesGroup=null;
+    }
+
+    function buildCookie3D(design){
+      const canvas = $("cookie3d");
+      const fb = $("webglFallback");
+      if(!canvas) return;
+
+      if(!window.THREE || !hasWebGL()){
+        if(fb) fb.style.display="grid";
+        return;
+      }
+      if(fb) fb.style.display="none";
+
+      const w = canvas.clientWidth || 420;
+      const h = 340;
+
+      renderer = new THREE.WebGLRenderer({canvas, antialias:true, alpha:true});
+      renderer.setPixelRatio(Math.min(2, window.devicePixelRatio||1));
+      renderer.setSize(w, h, false);
+
+      scene = new THREE.Scene();
+
+      camera = new THREE.PerspectiveCamera(38, w/h, 0.1, 100);
+      camera.position.set(0, 1.25, 4.4);
+
+      const key = new THREE.DirectionalLight(0xffffff, 1.25);
+      key.position.set(3,4,2);
+      scene.add(key);
+
+      const fill = new THREE.DirectionalLight(0xffffff, 0.55);
+      fill.position.set(-3,2,3);
+      scene.add(fill);
+
+      scene.add(new THREE.AmbientLight(0xffffff, 0.55));
+
+      const shadow = new THREE.Mesh(
+        new THREE.PlaneGeometry(6,6),
+        new THREE.MeshBasicMaterial({color:0x000000, transparent:true, opacity:0.06})
+      );
+      shadow.rotation.x = -Math.PI/2;
+      shadow.position.y = -1.25;
+      scene.add(shadow);
+
+      const sName = (design.shape==="round") ? "round" : design.shape;
+      const shape = shapePath(sName);
+      const extrude = new THREE.ExtrudeGeometry(shape, {
+        depth:0.35, bevelEnabled:true, bevelThickness:0.08, bevelSize:0.07, bevelSegments:8
+      });
+      extrude.center();
+
+      const cookieMat = new THREE.MeshStandardMaterial({
+        color: new THREE.Color("#f2c29a"),
+        roughness: 0.88,
+        metalness: 0.02
+      });
+
+      cookieMesh = new THREE.Mesh(extrude, cookieMat);
+      cookieMesh.position.y = -0.1;
+      scene.add(cookieMesh);
+
+      const icingMat = new THREE.MeshStandardMaterial({
+        color: new THREE.Color(design.icing || "#ff4fa3"),
+        roughness: 0.35,
+        metalness: 0.0
+      });
+
+      icingMesh = new THREE.Mesh(extrude.clone(), icingMat);
+      icingMesh.scale.set(0.98,0.98,0.98);
+      icingMesh.position.y = 0.02;
+      scene.add(icingMesh);
+
+      sprinklesGroup = new THREE.Group();
+      scene.add(sprinklesGroup);
+
+      function rebuildSprinkles(on){
+        sprinklesGroup.clear();
+        if(!on) return;
+        const sprGeo = new THREE.CapsuleGeometry(0.03, 0.08, 4, 8);
+        for(let i=0;i<28;i++){
+          const m = new THREE.MeshStandardMaterial({
+            color: new THREE.Color(i%2 ? "#ff4fa3" : "#ff7cc5"),
+            roughness: 0.4, metalness: 0
+          });
+          const s = new THREE.Mesh(sprGeo, m);
+          s.position.set((Math.random()-0.5)*1.6, 0.22, (Math.random()-0.5)*1.6);
+          s.rotation.set(Math.random()*Math.PI, Math.random()*Math.PI, Math.random()*Math.PI);
+          s.scale.setScalar(0.9 + Math.random()*0.5);
+          sprinklesGroup.add(s);
+        }
+      }
+      rebuildSprinkles(!!design.sprinkles);
+
+      function addEmblem(type){
+        const old = scene.getObjectByName("emblem");
+        if(old) scene.remove(old);
+        if(!type) return;
+
+        const texCanvas = document.createElement("canvas");
+        texCanvas.width=256; texCanvas.height=256;
+        const ctx = texCanvas.getContext("2d");
+
+        ctx.clearRect(0,0,256,256);
+        ctx.translate(128,128);
+
+        if(type==="smiley"){
+          ctx.fillStyle="rgba(11,27,42,.55)";
+          ctx.beginPath(); ctx.arc(-40,-20,12,0,Math.PI*2); ctx.fill();
+          ctx.beginPath(); ctx.arc(40,-20,12,0,Math.PI*2); ctx.fill();
+          ctx.strokeStyle="rgba(11,27,42,.55)";
+          ctx.lineWidth=10; ctx.lineCap="round";
+          ctx.beginPath(); ctx.arc(0,15,55,0.15*Math.PI,0.85*Math.PI); ctx.stroke();
+        }
+        if(type==="kiss"){
+          ctx.fillStyle = (design.icing || "#ff4fa3");
+          ctx.beginPath();
+          ctx.moveTo(-55,-10);
+          ctx.bezierCurveTo(-20,-55, 20,-55, 55,-10);
+          ctx.bezierCurveTo(25, 15, -25, 15, -55,-10);
+          ctx.fill();
+        }
+        if(type==="bolt"){
+          ctx.fillStyle="rgba(255,176,32,.95)";
+          ctx.beginPath();
+          ctx.moveTo(-10,-70); ctx.lineTo(-40,0); ctx.lineTo(-10,0); ctx.lineTo(-45,70); ctx.lineTo(45,-10); ctx.lineTo(10,-10);
+          ctx.closePath();
+          ctx.fill();
+        }
+
+        const texture = new THREE.CanvasTexture(texCanvas);
+        texture.needsUpdate = true;
+
+        const mat = new THREE.MeshStandardMaterial({map:texture, transparent:true, roughness:0.3});
+        const plane = new THREE.Mesh(new THREE.PlaneGeometry(1.35,1.35), mat);
+        plane.name="emblem";
+        plane.position.set(0,0.42,0.12);
+        plane.rotation.x = -0.55;
+        scene.add(plane);
+      }
+
+      let emblemType = null;
+      if(design.kiss) emblemType = "kiss";
+      else if(design.smiley || design.shape==="smiley") emblemType = "smiley";
+      else if(design.bolt) emblemType = "bolt";
+      addEmblem(emblemType);
+
+      canvas.onpointerdown = (e)=>{ dragging=true; lastX=e.clientX; lastY=e.clientY; };
+      canvas.onpointerup = ()=> dragging=false;
+      canvas.onpointerleave = ()=> dragging=false;
+      canvas.onpointermove = (e)=>{
+        if(!dragging) return;
+        const dx=(e.clientX-lastX)/240;
+        const dy=(e.clientY-lastY)/240;
+        rotY += dx;
+        rotX += dy;
+        lastX=e.clientX; lastY=e.clientY;
+      };
+
+      THREE_OK=true;
+
+      function animate(){
+        if(!renderer) return;
+        cookieMesh.rotation.x = rotX;
+        cookieMesh.rotation.y = rotY;
+        icingMesh.rotation.x  = rotX;
+        icingMesh.rotation.y  = rotY;
+        sprinklesGroup.rotation.y = rotY;
+        renderer.render(scene,camera);
+        requestAnimationFrame(animate);
+      }
+      animate();
+
+      // resize
+      window.addEventListener("resize", ()=>{
+        if(!renderer || !camera) return;
+        const w2 = canvas.clientWidth || 420;
+        const h2 = 340;
+        renderer.setSize(w2, h2, false);
+        camera.aspect = w2/h2;
+        camera.updateProjectionMatrix();
+      }, {passive:true});
+    }
+
+    function updateCookie3D(design){
+      // rebuild is simplest + robust
+      disposeScene();
+      buildCookie3D(design);
     }
 
     /* =========================
@@ -1574,7 +1783,6 @@
     function encodeStateForShare(){
       const s = readState();
       const d = getDesign();
-      // keep small (no addresses!)
       const payload = {
         uid: getUID(),
         pack: s.pack || "Custom",
@@ -1583,7 +1791,6 @@
         design: {theme:d.theme, shape:d.shape, sprinkles:!!d.sprinkles, smiley:!!d.smiley, kiss:!!d.kiss, bolt:!!d.bolt, icing:d.icing}
       };
       const json = JSON.stringify(payload);
-      // base64url
       const b64 = btoa(unescape(encodeURIComponent(json))).replaceAll("+","-").replaceAll("/","_").replaceAll("=","");
       return b64;
     }
@@ -1600,7 +1807,6 @@
         await navigator.clipboard.writeText(t);
         return true;
       }catch(e){
-        // fallback
         const ta = document.createElement("textarea");
         ta.value = t;
         document.body.appendChild(ta);
@@ -1619,7 +1825,7 @@
       const url = shareUrl();
       await copyText(url);
       const hint = $("shareHint");
-      if(hint) hint.textContent = "Link kopiert. Jetzt ab in WhatsApp/IG/TikTok-DM. 😈";
+      if(hint) hint.textContent = "Link kopiert. Ab in WhatsApp/IG-DM. 😈";
     });
     $("nativeShare")?.addEventListener("click", async ()=>{
       const url = shareUrl();
@@ -1681,13 +1887,10 @@
       const qty = Number(s.qty || 1);
       let recs = getRecipients();
 
-      // always keep at least 1
       if(recs.length === 0){
         recs = [{toName:"", toStreet:"", toZip:"", toCity:""}];
       }
-      // clamp to qty
       if(recs.length > qty) recs = recs.slice(0, qty);
-      // no auto-expand to qty (user adds via button), BUT show cap info
       setRecipients(recs);
     }
 
@@ -1742,7 +1945,6 @@
         </div>
       `).join("");
 
-      // wire inputs
       qsa(".recCard", box).forEach(card=>{
         const i = Number(card.dataset.i);
         qsa("input", card).forEach(inp=>{
@@ -1751,7 +1953,6 @@
             const k = inp.dataset.k;
             recs2[i] = Object.assign({}, recs2[i], {[k]: inp.value});
             writeState({recipients: recs2});
-            // update tag fast
             const tag = $("recCountTag");
             if(tag){
               const qty = Number(readState().qty || 1);
@@ -1761,7 +1962,6 @@
         });
       });
 
-      // wire delete
       qsa("button[data-del]", box).forEach(btn=>{
         btn.addEventListener("click", ()=>{
           const i = Number(btn.dataset.del);
@@ -1778,11 +1978,9 @@
       if(recs.length >= qty) return;
       recs.push({toName:"", toStreet:"", toZip:"", toCity:""});
       setRecipients(recs);
-      // scroll to new card
       setTimeout(()=> document.querySelector(".recCard:last-child")?.scrollIntoView({behavior:"smooth", block:"start"}), 60);
     });
 
-    /* Sender fields */
     ["fromName","fromStreet","fromZip","fromCity"].forEach(id=>{
       $(id)?.addEventListener("input", ()=>writeState({[id]: $(id).value}));
     });
@@ -1809,7 +2007,7 @@
 
         <b>Empfänger:</b><br/>${recLines}<br/><br/>
 
-        <b>Antwort-Keks an:</b> ${esc(s.fromName||"—")}, ${esc(s.fromStreet||"—")}, ${esc((s.fromZip||"—")+" "+(s.fromCity||"—"))}
+        <b>Rücksend-Keks an:</b> ${esc(s.fromName||"—")}, ${esc(s.fromStreet||"—")}, ${esc((s.fromZip||"—")+" "+(s.fromCity||"—"))}
       `;
     }
 
@@ -1839,10 +2037,7 @@
     ========================= */
     function getStamps(){
       const s = readState();
-      return {
-        stamps: Number(s.stamps || 0),
-        rewards: Number(s.rewards || 0)
-      };
+      return { stamps: Number(s.stamps || 0), rewards: Number(s.rewards || 0) };
     }
     function setStamps(next){
       writeState(next);
@@ -1869,15 +2064,12 @@
       }
 
       const badge = $("rewardBadge");
-      if(badge){
-        badge.classList.toggle("show", filled === 10);
-      }
+      if(badge) badge.classList.toggle("show", filled === 10);
     }
     function maybeRewardOverlay(){
       const {stamps} = getStamps();
       if(stamps <= 0) return;
-      const mod = stamps % 10;
-      if(mod !== 0) return;
+      if(stamps % 10 !== 0) return;
 
       const ov = $("rewardOverlay");
       if(!ov) return;
@@ -1895,11 +2087,8 @@
       const url = shareUrl();
       const text = "Ich hab ’ne Belohnung bei OnlyKeks freigeschaltet. 🍪🎁";
       try{
-        if(navigator.share){
-          await navigator.share({title:"OnlyKeks", text, url});
-        }else{
-          await copyText(url);
-        }
+        if(navigator.share) await navigator.share({title:"OnlyKeks", text, url});
+        else await copyText(url);
       }catch(e){}
       $("rewardOverlay")?.classList.remove("show");
       $("rewardOverlay")?.setAttribute("aria-hidden","true");
@@ -1938,25 +2127,17 @@
     $("back3")?.addEventListener("click", ()=>go(2));
     $("next3")?.addEventListener("click", ()=>{
       const s = readState();
-
-      // validate sender
       const needSender = ["fromName","fromStreet","fromZip","fromCity"];
       const missS = needSender.filter(k=>!String(s[k]||"").trim());
       if(missS.length){ $(missS[0])?.focus(); return; }
 
-      // validate recipients count
-      const qty = Number(s.qty||1);
       const recs = getRecipients();
-      if(recs.length < qty){
-        // allow underfill but must be at least 1
-        if(recs.length < 1) return;
-      }
-      // validate each recipient minimal
+      if(recs.length < 1) return;
+
       for(let i=0;i<recs.length;i++){
         const r = recs[i];
         const miss = ["toName","toStreet","toZip","toCity"].find(k=>!String(r[k]||"").trim());
         if(miss){
-          // focus first missing field
           const card = document.querySelector(`.recCard[data-i="${i}"]`);
           card?.querySelector(`input[data-k="${miss}"]`)?.focus();
           return;
@@ -1974,7 +2155,6 @@
     });
     $("back5")?.addEventListener("click", ()=>go(4));
 
-    /* Pay click: add stamps (qty) + reward logic */
     $("payBtn")?.addEventListener("click", ()=>{
       const s = readState();
       const qty = Number(s.qty || 1);
@@ -1982,16 +2162,11 @@
       const cur = getStamps();
       const nextStamps = cur.stamps + qty;
 
-      // count reward when crossing multiples of 10 (simple: if new stamps % 10 == 0)
       let rewards = cur.rewards;
       if(nextStamps > 0 && (nextStamps % 10 === 0)) rewards += 1;
 
       setStamps({stamps: nextStamps, rewards});
-
-      // show reward overlay if exactly multiple of 10
       setTimeout(maybeRewardOverlay, 350);
-
-      // also remember orderCount (business metric)
       writeState({orderCount: Number(s.orderCount||0) + 1});
     });
 
@@ -2006,40 +2181,30 @@
 
     /* Boot */
     (function boot(){
-      // ensure uid
       getUID();
 
-      // restore message
       const s = readState();
       if(msg && s.msg){ msg.value = s.msg; }
       updateCount();
 
-      // restore pack/qty
       setPack(s.pack || "Custom");
       setQty(s.qty || 1);
 
-      // restore sender
       ["fromName","fromStreet","fromZip","fromCity"].forEach(id=>{
         const el = $(id);
         if(el && s[id]) el.value = s[id];
       });
 
-      // recipients
       ensureRecipientsForQty();
       renderRecipients();
 
-      // configurator
       wireConfigurator();
-
-      // share hint
       updateShareHint();
 
-      // cookie rain after intro done
       setTimeout(startCookieRain, 650);
-
-      // initial stamps render
       renderStampUI();
     })();
   </script>
 </body>
-              </html>
+</html>
+```0

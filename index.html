@@ -1,1429 +1,290 @@
 <!doctype html>
 <html lang="de">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>OnlyKeks – Post, die schmeckt</title>
-  <meta name="description" content="Gestalte deinen Keks. Verschicken. QR-Rücksendung bekommen. Wir backen den Rücksend-Keks und schicken ihn dir." />
-  <meta name="theme-color" content="#ff4fa3" />
-  <meta name="robots" content="index,follow" />
-  <style>
-    :root{
-      --bg:#ffffff;
-      --ink:#0b1b2a;
-      --muted:#516173;
-      --line: rgba(11,27,42,.10);
-      --pink:#ff4fa3;
-      --pink2:#ff7cc5;
-      --soft: rgba(255,79,163,.12);
-      --soft2: rgba(255,124,197,.10);
-      --shadow: 0 16px 50px rgba(11,27,42,.10);
-      --r: 18px;
-      --r2: 26px;
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OnlyKeks – 3D Keks Konfigurator</title>
 
-      --max: 1040px;
-      --h1: clamp(28px, 5vw, 52px);
-      --h2: clamp(20px, 3.4vw, 30px);
-      --fz: 16px;
-      --focus: 0 0 0 4px rgba(255,79,163,.22);
+<style>
+:root{
+  --bg:#ffffff;
+  --ink:#0b1b2a;
+  --muted:#516173;
+  --pink:#ff4fa3;
+  --pink2:#ff7cc5;
+  --shadow:0 20px 60px rgba(0,0,0,.12);
+  --radius:22px;
+}
 
-      /* Rarity System (farben & glows) */
-      --r-common-bg:#fffaf3; --r-common-bd:rgba(0,0,0,.10);
-      --r-uncommon:#37c871; --r-rare:#2a7bff; --r-epic:#8a3ffc;
-      --r-legendary:#d6a100; --r-mythic-bg:#0b0b0e; --r-mythic-gold:#d6a100;
-      --glow-rare:0 0 0 3px rgba(42,123,255,.22),0 10px 30px rgba(42,123,255,.15);
-      --glow-epic:0 0 0 3px rgba(138,63,252,.22),0 10px 30px rgba(138,63,252,.15);
-      --glow-leg: 0 0 0 3px rgba(214,161,0,.25), 0 12px 34px rgba(214,161,0,.18);
-      --glow-myth:0 0 0 3px rgba(214,161,0,.30), 0 14px 42px rgba(0,0,0,.55);
-    }
+*{box-sizing:border-box;margin:0;padding:0}
 
-    *{ box-sizing:border-box; margin:0; padding:0; }
-    html,body{ height:100%; }
-    body{
-      font: 800 var(--fz)/1.55 system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", sans-serif;
-      color: var(--ink);
-      background: var(--bg);
-      overflow-x: hidden;
-    }
-    a{ color:inherit; text-decoration:none; }
-    button{ cursor:pointer; }
-    .wrap{ max-width: var(--max); margin:0 auto; padding: 16px 16px 60px; position:relative; }
+body{
+  font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+  background:var(--bg);
+  color:var(--ink);
+  overflow-x:hidden;
+}
 
-    /* Background cookie rain */
-    #keksRain{
-      position:fixed; inset:0; pointer-events:none; z-index:0;
-      opacity:.42;
-      background-image:
-        radial-gradient(circle at 20% 10%, rgba(255,79,163,.14), transparent 55%),
-        radial-gradient(circle at 80% 20%, rgba(255,124,197,.12), transparent 55%);
-    }
-    #keksRain::before, #keksRain::after{
-      content:"🍪   🍪    🍪  🍪   🍪    🍪";
-      position:absolute; left:-10%; top:-10%;
-      width:120%; height:120%;
-      font-size: 20px;
-      opacity:.35;
-      transform: rotate(-8deg);
-      animation: rain 14s linear infinite;
-      white-space: pre-wrap;
-      line-height: 3.2;
-    }
-    #keksRain::after{
-      font-size: 16px;
-      opacity:.26;
-      animation-duration: 18s;
-      transform: rotate(10deg);
-    }
-    @keyframes rain{
-      0%{ transform: translateY(-12%) rotate(var(--deg)); }
-      100%{ transform: translateY(18%) rotate(var(--deg)); }
-    }
+header{
+  position:sticky;
+  top:0;
+  z-index:10;
+  backdrop-filter:blur(12px);
+  background:rgba(255,255,255,.85);
+  border-bottom:1px solid rgba(0,0,0,.08);
+}
 
-    /* Header */
-    header{
-      position: sticky; top:0; z-index:50;
-      background: rgba(255,255,255,.78);
-      backdrop-filter: blur(10px);
-      border-bottom: 1px solid rgba(11,27,42,.06);
-    }
-    .head{
-      display:flex; align-items:center; justify-content:space-between; gap:12px;
-      padding: 10px 16px;
-      max-width: var(--max); margin:0 auto;
-    }
-    .brand{ display:flex; align-items:center; gap:12px; min-width: 180px; }
-    .logo{
-      width: 42px; height: 42px; border-radius: 16px;
-      background: radial-gradient(circle at 30% 25%, #fff 0 18%, #ffe7f3 19% 46%, #ff9ed0 47% 70%, #ff4fa3 71% 100%);
-      box-shadow: 0 10px 22px rgba(11,27,42,.10);
-      position:relative; overflow:hidden;
-    }
-    .logo:before{
-      content:""; position:absolute; inset:10px; border-radius:999px;
-      background: radial-gradient(circle at 35% 35%, #fff6e8 0 38%, #f6c07c 39% 100%);
-      opacity:.92;
-    }
-    .brandTitle{ line-height:1.05; font-weight:1000; }
-    .brandSub{ font-size:12px; color: var(--muted); font-weight:900; }
+.header-inner{
+  max-width:1100px;
+  margin:auto;
+  padding:14px 18px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
 
-    nav{ display:flex; align-items:center; gap:14px; }
-    nav a{ font-weight:1000; padding: 10px 10px; border-radius: 12px; color: rgba(11,27,42,.86); }
-    nav a:hover{ background: rgba(11,27,42,.05); }
+.logo{
+  font-weight:1000;
+  font-size:20px;
+}
 
-    .btn{
-      appearance:none; border:0;
-      padding: 12px 14px; border-radius: 14px;
-      font-weight:1000;
-      background: rgba(255,255,255,.85);
-      border:1px solid rgba(11,27,42,.08);
-      color: rgba(11,27,42,.88);
-      transition: transform .12s ease, box-shadow .12s ease;
-    }
-    .btn:hover{
-      transform: translateY(-1px);
-      box-shadow: 0 14px 40px rgba(11,27,42,.10);
-    }
-    .btn:active{ transform:translateY(0); }
-    .btnPrimary{
-      background: linear-gradient(135deg, var(--pink), var(--pink2));
-      color:#fff;
-      box-shadow: 0 12px 28px rgba(11,27,42,.12);
-    }
-    .btnGold{
-      background: linear-gradient(135deg, rgba(214,161,0,1), rgba(255,220,120,1));
-      color:#111;
-      box-shadow: 0 18px 50px rgba(214,161,0,.22);
-    }
+.hero{
+  max-width:1100px;
+  margin:40px auto 20px;
+  padding:0 18px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:24px;
+}
 
-    /* Hero */
-    .hero{
-      display:grid;
-      grid-template-columns: 1.2fr .8fr;
-      gap: 18px;
-      align-items: stretch;
-      padding: 22px 0 8px;
-    }
-    .card{
-      background:#fff;
-      border: 1px solid var(--line);
-      border-radius: var(--r2);
-      box-shadow: var(--shadow);
-      padding: 16px;
-    }
-    h1{ margin:0 0 10px; font-size: var(--h1); line-height:1.04; letter-spacing:-.6px; }
-    .sub{ margin:0 0 12px; color: var(--muted); font-weight:850; max-width: 60ch; }
-    .chips{ display:flex; flex-wrap:wrap; gap:10px; margin-top: 12px; }
-    .chip{
-      padding: 10px 12px;
-      border-radius: 999px;
-      border: 1px solid rgba(11,27,42,.10);
-      background: rgba(255,255,255,.85);
-      font-weight:1000;
-      color: rgba(11,27,42,.80);
-    }
-    .ctaRow{ display:flex; gap:10px; flex-wrap:wrap; margin-top: 14px; }
+.hero-card{
+  background:#fff;
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  padding:26px;
+}
 
-    .trust{
-      display:grid; grid-template-columns: repeat(2, minmax(0,1fr));
-      gap: 10px;
-    }
-    .trustItem{
-      border: 1px solid rgba(11,27,42,.08);
-      background: rgba(11,27,42,.03);
-      border-radius: var(--r);
-      padding: 12px;
-      font-weight: 950;
-    }
-    .trustItem small{ display:block; margin-top:4px; color: var(--muted); font-weight:850; }
+h1{
+  font-size:clamp(28px,4vw,46px);
+  line-height:1.05;
+  margin-bottom:12px;
+}
 
-    /* Sections */
-    section{ padding: 14px 0; }
-    h2{ margin: 0 0 10px; font-size: var(--h2); letter-spacing:-.3px; }
-    .grid2{ display:grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-    .muted{ color: var(--muted); font-weight:850; }
+.hero p{
+  color:var(--muted);
+  font-weight:600;
+  margin-bottom:18px;
+}
 
-    /* Configurator */
-    .cfg{
-      display:grid;
-      grid-template-columns: 1.1fr .9fr;
-      gap: 14px;
-      align-items:start;
-    }
-    label{ display:block; margin-top: 12px; font-weight:1000; }
-    input, textarea, select{
-      width:100%;
-      margin-top:8px;
-      padding: 12px 12px;
-      border-radius: 14px;
-      border: 1px solid rgba(11,27,42,.14);
-      font: inherit;
-      background:#fff;
-      color: var(--ink);
-      font-weight:900;
-    }
-    textarea{ min-height: 96px; resize: vertical; }
-    input:focus, textarea:focus, select:focus{
-      outline:none; box-shadow: var(--focus); border-color: rgba(255,79,163,.55);
-    }
+.hero .cta{
+  display:inline-block;
+  background:linear-gradient(135deg,var(--pink),var(--pink2));
+  color:#fff;
+  padding:18px 28px;
+  border-radius:999px;
+  font-weight:900;
+  text-decoration:none;
+  box-shadow:
+    0 18px 40px rgba(255,79,163,.35),
+    0 0 0 0 rgba(255,79,163,.45);
+  animation:pulse 2.4s ease-in-out infinite;
+}
 
-    .packRow{ display:grid; gap:10px; margin-top: 6px; }
-    .packTile{
-      display:flex; align-items:center; justify-content:space-between; gap:10px;
-      padding: 12px;
-      border-radius: var(--r);
-      border: 1px solid rgba(11,27,42,.10);
-      background:#fff;
-      cursor:pointer;
-      font-weight:1000;
-      transition: box-shadow .18s ease, border-color .18s ease;
-    }
-    .packTile:hover{
-      box-shadow: 0 12px 30px rgba(255,79,163,.10);
-    }
-    .packTile.active{
-      border-color: rgba(255,79,163,.45);
-      box-shadow: 0 12px 30px rgba(255,79,163,.12);
-      background: rgba(255,79,163,.06);
-    }
-    .badge{
-      padding: 8px 10px;
-      border-radius: 999px;
-      border: 1px solid rgba(11,27,42,.10);
-      background: rgba(255,255,255,.85);
-      font-weight:1000;
-    }
-    .badgeHot{ border-color: rgba(255,79,163,.35); background: rgba(255,79,163,.08); }
+@keyframes pulse{
+  0%{box-shadow:0 18px 40px rgba(255,79,163,.35),0 0 0 0 rgba(255,79,163,.4)}
+  70%{box-shadow:0 26px 60px rgba(255,79,163,.45),0 0 0 14px rgba(255,79,163,0)}
+  100%{box-shadow:0 18px 40px rgba(255,79,163,.35),0 0 0 0 rgba(255,79,163,0)}
+}
 
-    .row{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
-    .miniCard{
-      border: 1px solid rgba(11,27,42,.10);
-      border-radius: var(--r);
-      background: #fff;
-      padding: 12px;
-    }
+.price-hint{
+  margin-top:10px;
+  font-size:14px;
+  color:var(--muted);
+}
 
-    /* Preview */
-    .previewWrap{
-      border: 1px solid rgba(11,27,42,.10);
-      background: rgba(255,255,255,.75);
-      border-radius: var(--r2);
-      padding: 12px;
-      overflow: visible;
-    }
-    .previewStage{
-      border-radius: var(--r2);
-      border: 1px solid rgba(11,27,42,.10);
-      background: linear-gradient(180deg, rgba(255,255,255,.85), rgba(255,255,255,.62));
-      box-shadow: inset 0 1px 0 rgba(255,255,255,.7);
-      min-height: 240px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding: 16px;
-      overflow: visible;
-      position:relative;
-    }
-    .cookie{
-      width: min(240px, 70vw);
-      height: auto;
-      display:block;
-      overflow: visible;
-      filter: drop-shadow(0 18px 26px rgba(11,27,42,.10));
-    }
-    .msgOverlay{
-      position:absolute;
-      inset: 28%;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      text-align:center;
-      padding: 10px;
-      font-size: clamp(12px, 3.6vw, 16px);
-      line-height: 1.2;
-      font-weight: 1000;
-      color: rgba(11,27,42,.86);
-      border-radius: 16px;
-      background: rgba(255,255,255,.82);
-      border: 1px solid rgba(11,27,42,.10);
-      backdrop-filter: blur(8px);
-    }
-    .stickyPay{
-      position: sticky;
-      bottom: 10px;
-      z-index: 5;
-      margin-top: 14px;
-    }
+#config{
+  max-width:1100px;
+  margin:30px auto 80px;
+  padding:0 18px;
+}
 
-    /* Item list */
-    .items{ display:grid; gap: 12px; margin-top: 12px; }
-    .itemHead{
-      display:flex; alignments:center; justify-content:space-between; gap:10px;
-    }
+.config-card{
+  background:#fff;
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  padding:18px;
+  display:grid;
+  grid-template-columns:1.2fr .8fr;
+  gap:18px;
+}
 
-    /* FAQ */
-    details{
-      border: 1px solid rgba(11,27,42,.10);
-      border-radius: var(--r2);
-      background:#fff;
-      padding: 12px 14px;
-    }
-    summary{ cursor:pointer; font-weight:1000; }
-    details p{ margin: 10px 0 0; color: var(--muted); font-weight:850; }
+#keksStage{
+  width:100%;
+  height:420px;
+  border-radius:18px;
+  background:linear-gradient(180deg,#fff,#f6f6f6);
+  position:relative;
+  overflow:hidden;
+}
 
-    /* Footer */
-    footer{ padding: 24px 0 40px; color: rgba(11,27,42,.70); }
-    .footRow{ display:flex; gap:10px; flex-wrap:wrap; }
+.controls{
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+}
 
-    /* Rarity UI */
-    .rarityRow{display:flex;align-items:center;gap:.75rem;flex-wrap:wrap;margin:.5rem 0 0}
-    .rarityHint{opacity:.8;font-size:.92rem}
-    .rarityBadge{
-      display:inline-flex;align-items:center;gap:.5rem;
-      padding:.35rem .65rem;border-radius:999px;
-      font-weight:1000;font-size:.85rem;
-      border:1px solid rgba(0,0,0,.12);
-      background:var(--r-common-bg);
-    }
-    .rarity-common{border-color:var(--r-common-bd)}
-    .rarity-uncommon{border-color:rgba(55,200,113,.45)}
-    .rarity-rare{border-color:rgba(42,123,255,.55);box-shadow:var(--glow-rare)}
-    .rarity-epic{border-color:rgba(138,63,252,.55);box-shadow:var(--glow-epic)}
-    .rarity-legendary{border-color:rgba(214,161,0,.75);box-shadow:var(--glow-leg)}
-    .rarity-mythic{
-      background:linear-gradient(180deg,rgba(11,11,14,1),rgba(11,11,14,.92));
-      color:#fff;border-color:rgba(214,161,0,.90);box-shadow:var(--glow-myth)
-    }
-    .sweep{position:relative;overflow:hidden}
-    .sweep::after{
-      content:"";position:absolute;top:-30%;left:-60%;
-      width:50%;height:160%;
-      background:linear-gradient(90deg,transparent,rgba(214,161,0,.35),transparent);
-      transform:rotate(18deg);opacity:0
-    }
-    .sweep:hover::after{animation:sweep 1.2s ease;opacity:1}
-    @keyframes sweep{0%{left:-60%}100%{left:140%}}
-    .rarityProgress{margin:.4rem 0 0}
-    .rarityProgress .bar{height:10px;border-radius:999px;background:rgba(0,0,0,.08);overflow:hidden}
-    .rarityProgress .fill{height:100%;background:rgba(214,161,0,.45);width:0%}
-    .rarityProgress .next{margin-top:.35rem;font-size:.88rem;opacity:.8}
+.controls button{
+  padding:14px 16px;
+  border-radius:14px;
+  border:1px solid rgba(0,0,0,.12);
+  background:#fff;
+  font-weight:800;
+  cursor:pointer;
+}
 
-    /* Hall of Keks (VIP) */
-    .hallVIP{
-      background: linear-gradient(180deg, rgba(11,11,14,1), rgba(11,11,14,.94));
-      color:#fff;
-      border: 1px solid rgba(214,161,0,.35);
-      box-shadow: 0 26px 90px rgba(0,0,0,.35);
-      position:relative;
-      overflow:hidden;
-    }
-    .hallVIP::after{
-      content:""; position:absolute; inset:-40%;
-      background: radial-gradient(closest-side, rgba(214,161,0,.18), transparent 60%);
-      transform: rotate(18deg);
-      pointer-events:none;
-    }
-    .hallGrid{display:grid; grid-template-columns: repeat(auto-fit,minmax(260px,1fr)); gap: 12px; margin-top: 12px;}
-    .hallCard{
-      border-radius: 20px;
-      border: 1px solid rgba(214,161,0,.28);
-      background: rgba(255,255,255,.06);
-      padding: 12px;
-      position:relative;
-      overflow:hidden;
-    }
-    .hallCardTop{display:flex; align-items:center; justify-content:space-between; gap:10px;}
-    .hallMsg{margin-top:10px; font-weight:950; opacity:.95}
-    .hallMeta{margin-top:8px; font-size:12.5px; opacity:.82; font-weight:850}
+.controls button:hover{
+  background:rgba(255,79,163,.08);
+}
 
-    /* Cookie consent overlay (fullscreen gag) */
-    #cookieOverlay{
-      position:fixed; inset:0; z-index:10000;
-      background: rgba(0,0,0,.5);
-      display:none;
-      align-items:center;
-      justify-content:center;
-    }
-    .cookieContent{
-      max-width: 540px;
-      width:90%;
-      padding: 24px;
-      border-radius: 24px;
-      background: #fff;
-      box-shadow: 0 24px 60px rgba(11,27,42,.25);
-      text-align:center;
-    }
-    .cookieContent h3{
-      margin-top:0; font-size:24px; font-weight:1000; margin-bottom:6px;
-    }
-    .cookieContent p{
-      margin-top:0; font-size:15px; color: var(--muted); font-weight:850; line-height:1.4;
-    }
-    .cookieActions{
-      display:flex; gap:10px; flex-wrap:wrap; margin-top:18px; justify-content:center;
-    }
+footer{
+  text-align:center;
+  padding:40px 20px;
+  color:var(--muted);
+  font-size:14px;
+}
 
-    /* Toast */
-    #keksToast{
-      position:fixed; left:50%; bottom:18px; transform:translateX(-50%);
-      padding:.75rem 1rem; border-radius:14px;
-      background:rgba(255,255,255,.92);
-      border:1px solid rgba(0,0,0,.10);
-      box-shadow:0 16px 50px rgba(0,0,0,.18);
-      font-weight:1000; z-index:99999;
-      opacity:0; pointer-events:none;
-      transition:opacity .18s ease, transform .18s ease;
-    }
-    #keksToast.show{ opacity:1; transform:translateX(-50%) translateY(-6px); }
-
-    /* Media queries */
-    @media (max-width: 900px){
-      nav{ display:none; }
-      .hero{ grid-template-columns: 1fr; }
-      .cfg{ grid-template-columns: 1fr; }
-      .trust{ grid-template-columns: 1fr 1fr; }
-      .previewStage{ min-height: 220px; }
-      .hallGrid{ grid-template-columns: 1fr; }
-    }
-    @media (max-width: 520px){
-      .trust{ grid-template-columns: 1fr; }
-      .hallGrid{ grid-template-columns: 1fr; }
-    }
-  </style>
+@media(max-width:900px){
+  .hero{grid-template-columns:1fr}
+  .config-card{grid-template-columns:1fr}
+  #keksStage{height:360px}
+}
+</style>
 </head>
-<body id="top">
-  <!-- Cookie rain layer -->
-  <div id="keksRain" aria-hidden="true"></div>
 
-  <!-- Toast -->
-  <div id="keksToast" aria-live="polite"></div>
+<body>
 
-  <!-- Intro overlay -->
-  <div id="intro" aria-label="Intro">
-    <div id="introBox">
-      <button id="skipIntro" type="button" aria-label="Intro überspringen">Skip</button>
-      <video id="introVideo" muted playsinline preload="auto" autoplay>
-        <source src="assets/video/grok_video_2025-12-14-00-41-51.mp4" type="video/mp4">
-      </video>
+<header>
+  <div class="header-inner">
+    <div class="logo">OnlyKeks</div>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-card">
+    <h1>Gestalte einen echten 3D-Keks</h1>
+    <p>Keine App. Kein Account. Einfach drehen, klicken, verlieben.</p>
+    <a href="#config" class="cta">Keks gestalten</a>
+    <div class="price-hint">ab <b>9,90 €</b> · personalisiert · QR-Rücksendung</div>
+  </div>
+  <div class="hero-card">
+    <p><b>Warum 3D?</b></p>
+    <p>Weil Menschen kaufen, was sie anfassen können – auch digital.</p>
+  </div>
+</section>
+
+<section id="config">
+  <div class="config-card">
+    <div id="keksStage"></div>
+    <div class="controls">
+      <button id="color1">Klassisch 🍪</button>
+      <button id="color2">Schoko 🍫</button>
+      <button id="color3">Gold ✨</button>
+      <button id="spin">Spin!</button>
     </div>
   </div>
+</section>
+
+<footer>
+  © OnlyKeks · Post die schmeckt
+</footer>
+
+<!-- THREE.JS -->
+<script type="module">
+import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.module.js";
+import { OrbitControls } from "https://cdn.jsdelivr.net/npm/three@0.152.2/examples/jsm/controls/OrbitControls.js";
+
+const stage = document.getElementById("keksStage");
+
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0xf7f7f7);
+
+const camera = new THREE.PerspectiveCamera(
+  45,
+  stage.clientWidth / stage.clientHeight,
+  0.1,
+  100
+);
+camera.position.set(0,1.2,3);
+
+const renderer = new THREE.WebGLRenderer({antialias:true,alpha:true});
+renderer.setSize(stage.clientWidth, stage.clientHeight);
+renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
+renderer.shadowMap.enabled = true;
+stage.appendChild(renderer.domElement);
+
+// Licht
+scene.add(new THREE.HemisphereLight(0xffffff,0x444444,1.2));
+
+const sun = new THREE.DirectionalLight(0xffffff,1.2);
+sun.position.set(4,6,3);
+sun.castShadow = true;
+scene.add(sun);
+
+// Boden
+const floor = new THREE.Mesh(
+  new THREE.PlaneGeometry(10,10),
+  new THREE.ShadowMaterial({opacity:.25})
+);
+floor.rotation.x = -Math.PI/2;
+floor.position.y = -0.6;
+floor.receiveShadow = true;
+scene.add(floor);
+
+// Keks
+const geo = new THREE.CylinderGeometry(1,1,0.35,64);
+geo.rotateX(Math.PI/2);
+
+const mat = new THREE.MeshStandardMaterial({
+  color:0xd2b48c,
+  roughness:.85,
+  metalness:.05
+});
+
+const cookie = new THREE.Mesh(geo,mat);
+cookie.castShadow = true;
+scene.add(cookie);
+
+// Controls
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
+controls.enablePan = false;
+controls.minDistance = 2;
+controls.maxDistance = 5;
+
+// Animation
+function animate(){
+  requestAnimationFrame(animate);
+  controls.update();
+  renderer.render(scene,camera);
+}
+animate();
+
+// Buttons
+document.getElementById("color1").onclick = ()=>mat.color.set(0xd2b48c);
+document.getElementById("color2").onclick = ()=>mat.color.set(0x8b5a2b);
+document.getElementById("color3").onclick = ()=>mat.color.set(0xd6a100);
+
+document.getElementById("spin").onclick = ()=>{
+  cookie.rotation.z += Math.PI*2;
+};
+
+// Resize
+window.addEventListener("resize",()=>{
+  camera.aspect = stage.clientWidth/stage.clientHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(stage.clientWidth,stage.clientHeight);
+});
+</script>
 
-  <!-- Cookie consent overlay -->
-  <div id="cookieOverlay">
-    <div class="cookieContent">
-      <h3>Darf’s ein Keks sein?</h3>
-      <p>Wir backen ein paar digitale Cookies, damit dein Besuch knusprig bleibt. Keine Sorge, nur die nötigen Krümel und etwas Krümel-Magic – nie zu viel Zucker, versprochen.</p>
-      <div class="cookieActions">
-        <button class="btn btnPrimary" id="cookieAccept">Alles klar, her mit den Cookies 🍪</button>
-        <button class="btn" id="cookieEssential">Nur die Nötigsten</button>
-        <a class="btn" href="privacy.html">Wie wir mit Daten umgehen</a>
-      </div>
-    </div>
-  </div>
-
-  <header>
-    <div class="head">
-      <a class="brand" href="#top" aria-label="OnlyKeks Start">
-        <div class="logo" aria-hidden="true"></div>
-        <div>
-          <div class="brandTitle">OnlyKeks</div>
-          <div class="brandSub">Post, die schmeckt</div>
-        </div>
-      </a>
-
-      <nav aria-label="Navigation">
-        <a href="#so-gehts">So geht’s</a>
-        <a href="#konfigurator">Konfigurator</a>
-        <a href="#hall">Hall of Keks</a>
-        <a href="#faq">FAQ</a>
-      </nav>
-
-      <button class="btn btnPrimary" type="button" onclick="document.getElementById('konfigurator').scrollIntoView({behavior:'smooth'})">
-        Los, lass uns basteln →
-      </button>
-    </div>
-  </header>
-
-  <main class="wrap">
-    <section class="hero">
-      <div class="card">
-        <h1>Schick ’nen Keks. Hol dir ’nen Rücksend-Keks.</h1>
-        <p class="sub">
-          Du schickst eine süße Botschaft mit QR-Code. Die Empfängerin scannt, schreibt den Rücksend-Text –
-          und wir backen den Rücksend-Keks und schicken ihn dir zurück.
-        </p>
-        <div class="chips" aria-label="Ablauf">
-          <span class="chip">Keks wählen</span>
-          <span class="chip">Botschaft drauf</span>
-          <span class="chip">QR scannen</span>
-          <span class="chip">Rück-Keks kommt</span>
-        </div>
-        <div class="ctaRow">
-          <button class="btn btnPrimary" type="button" onclick="document.getElementById('konfigurator').scrollIntoView({behavior:'smooth'})">Jetzt personalisieren →</button>
-          <button class="btn" type="button" onclick="document.getElementById('so-gehts').scrollIntoView({behavior:'smooth'})">So funktioniert’s</button>
-        </div>
-      </div>
-      <div class="card">
-        <div class="trust">
-          <div class="trustItem">Versand mit Tracking<small>Du siehst, wo der Keks ist.</small></div>
-          <div class="trustItem">Sicher bezahlen<small>Zahlungslink (Stripe) möglich.</small></div>
-          <div class trustItem>Ohne Account<small>Scannen → tippen → absenden.</small></div>
-          <div class="trustItem">Allergene klar<small>Transparente Infos.</small></div>
-        </div>
-      </div>
-    </section>
-
-    <section id="so-gehts">
-      <div class="grid2">
-        <div class="card">
-          <h2>So geht’s</h2>
-          <p class="muted">
-            Du gestaltest deinen Keks und verschickst ihn. Auf dem Keks ist ein QR-Code.
-            Die Empfängerin scannt ihn, schreibt den Rücksend-Text – wir backen daraus den Rücksend-Keks und schicken ihn zurück.
-          </p>
-        </div>
-        <div class="card">
-          <h2>Wichtig</h2>
-          <p class="muted">
-            MVP-Logik: Entwürfe werden lokal gespeichert. Sharing/Ranking läuft über kleine Design-Codes (Link) – serverseitig später.
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <section id="konfigurator">
-      <div class="card">
-        <h2>Konfigurator</h2>
-        <p class="muted">Wähle Paket, Anzahl und gestalte pro Keks Empfänger + Botschaft. Der QR pro Keks ist sofort sichtbar.</p>
-
-        <!-- Fortschrittsbalken -->
-        <div class="row" style="align-items:center;margin-top:8px;">
-          <span class="badge">Schritt <span id="stepNo">1</span>/3</span>
-          <div class="rarityHint" id="stepLabel">Paket wählen</div>
-        </div>
-
-        <div class="cfg" style="margin-top:12px;">
-          <!-- Left: inputs -->
-          <div>
-            <label>Paket</label>
-            <select id="pack" aria-label="Paket wählen">
-              <option value="Quick">Quick</option>
-              <option value="Custom" selected>Custom</option>
-              <option value="Premium">Premium</option>
-            </select>
-            <div class="packRow" id="packTiles" aria-label="Pakete">
-              <div class="packTile" data-pack="Quick">
-                <div>
-                  <div style="font-weight:1100;">Quick</div>
-                  <div class="muted" style="font-size:13px;">Schnell & sweet. Für kurze Messages.</div>
-                </div>
-                <span class="badge">simple & sweet</span>
-              </div>
-              <div class="packTile active" data-pack="Custom">
-                <div>
-                  <div style="font-weight:1100;">Custom</div>
-                  <div class="muted" style="font-size:13px;">Deko-Feeling + nicer Look. Bestseller.</div>
-                </div>
-                <span class="badge badgeHot">3er-Deal: −15%</span>
-              </div>
-              <div class="packTile" data-pack="Premium">
-                <div>
-                  <div style="font-weight:1100;">Premium</div>
-                  <div class="muted" style="font-size:13px;">Box-Feeling + maximaler Wow-Effekt.</div>
-                </div>
-                <span class="badge">Box-Vibe</span>
-              </div>
-            </div>
-
-            <label>Wie viele Kekse willst du verschicken?</label>
-            <input id="qty" type="number" min="1" max="10" value="1" inputmode="numeric" />
-
-            <div class="miniCard" style="margin-top:12px;">
-              <div style="font-weight:1100;">Deal-Hinweis</div>
-              <div class="muted" style="font-size:13px;">Ab 3 Keksen ist der 3er-Deal aktiv.</div>
-            </div>
-
-            <label>Dein Name</label>
-            <input id="senderName" placeholder="z. B. Schmidti" autocomplete="name" />
-
-            <label>Deine Adresse (Rücksendung)</label>
-            <input id="senderAddr" placeholder="Straße & Hausnummer, PLZ Ort" autocomplete="street-address" />
-
-            <div class="stickyPay">
-              <div class="miniCard">
-                <div class="row" style="justify-content:space-between;">
-                  <div>
-                    <div style="font-weight:1100;">Gesamt</div>
-                    <div class="muted" style="font-size:13px;" id="priceNote">inkl. 3er-Deal falls aktiv</div>
-                  </div>
-                  <div style="font-weight:1200; font-size:20px;" id="total">—</div>
-                </div>
-                <div class="row" style="margin-top:10px;">
-                  <button class="btn btnPrimary" type="button" id="saveDraft">Entwurf speichern</button>
-                  <button class="btn" type="button" id="toPay">Weiter zum Bezahlen</button>
-                </div>
-                <div class="row" style="margin-top:10px;">
-                  <button class="btn" type="button" id="addToHall">In die Hall of Keks</button>
-                  <button class="btn" type="button" id="shareDesign">Design teilen</button>
-                </div>
-                <div class="muted" style="font-size:12.5px; margin-top:10px;">
-                  Hinweis: Zahlung ist im MVP aktuell Demo. Stripe-Link kannst du später direkt verdrahten.
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Right: preview + items -->
-          <div>
-            <div class="previewWrap">
-              <div class="row" style="justify-content:space-between;">
-                <span class="badge">Live-Vorschau</span>
-                <div class="row">
-                  <button class="btn btnGold" type="button" id="surprise">Überrasch mich</button>
-                  <button class="btn" type="button" id="randomize">Zufall</button>
-                </div>
-              </div>
-
-              <!-- Rarity Mount -->
-              <div class="rarityRow" id="rarityMount">
-                <span id="rarityBadge" class="rarityBadge rarity-common">
-                  <span>●</span><span id="rarityName">Gewöhnlich</span>
-                </span>
-                <div class="rarityHint" id="rarityHint">Mach’s persönlicher, dann wird’s seltener.</div>
-              </div>
-              <div class="rarityProgress">
-                <div class="bar"><div id="rarityFill" class="fill"></div></div>
-                <div id="rarityNext" class="next">Nächster Rang: Ungewöhnlich</div>
-              </div>
-
-              <div class="previewStage" style="margin-top:10px; position:relative;">
-                <svg id="cookieSvg" class="cookie" viewBox="0 0 200 200" aria-label="Keks Vorschau" role="img">
-                  <defs>
-                    <radialGradient id="g1" cx="35%" cy="35%">
-                      <stop offset="0%" stop-color="#fff2dc"/>
-                      <stop offset="45%" stop-color="#f6c07c"/>
-                      <stop offset="100%" stop-color="#e3a25a"/>
-                    </radialGradient>
-                  </defs>
-                  <circle cx="100" cy="100" r="78" fill="url(#g1)"/>
-                  <circle cx="70" cy="70" r="5" fill="#c98945" opacity=".55"/>
-                  <circle cx="130" cy="80" r="6" fill="#c98945" opacity=".55"/>
-                  <circle cx="115" cy="125" r="4" fill="#c98945" opacity=".55"/>
-                  <circle cx="80" cy="125" r="5" fill="#c98945" opacity=".55"/>
-                </svg>
-                <div class="msgOverlay" id="previewText">Deine Botschaft</div>
-              </div>
-
-              <div class="muted" style="font-size:12.5px; margin-top:10px;">
-                Tipp: Kurz schreiben. Knallt mehr. Und passt besser auf ’nen Keks.
-              </div>
-
-              <div class="row" style="margin-top:12px;">
-                <span class="badge">Keksform</span>
-                <button class="btn" type="button" data-shape="circle">Kreis</button>
-                <button class="btn" type="button" data-shape="heart">Herz</button>
-                <button class="btn" type="button" data-shape="star">Stern</button>
-                <button class="btn" type="button" data-shape="smiley">Smiley</button>
-                <button class="btn" type="button" data-shape="tree">Tannenbaum</button>
-              </div>
-
-              <label>Botschaft (für Vorschau)</label>
-              <input id="previewInput" maxlength="80" placeholder="z. B. Ich bin stolz auf dich." />
-            </div>
-
-            <div class="items" id="items"></div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Hall of Keks -->
-    <section id="hall">
-      <div class="card hallVIP">
-        <div class="row" style="justify-content:space-between;">
-          <div>
-            <h2 style="margin:0;">Hall of Keks</h2>
-            <div style="opacity:.85;font-weight:900;">VIP-Auswahl. Schwarz/Gold. Nur Legendär & Mythisch.</div>
-          </div>
-          <div class="row">
-            <button class="btn btnGold" type="button" id="refreshHall">Aktualisieren</button>
-            <button class="btn" type="button" id="clearHall">Leeren</button>
-          </div>
-        </div>
-
-        <div class="hallGrid" id="hallGrid"></div>
-
-        <div class="muted" style="margin-top:12px; color:rgba(255,255,255,.75); font-weight:850;">
-          Ranking (MVP): Score aus Paket + Text + Form + Surprise-Boost. Später: Scans, Shares, Replies.
-        </div>
-      </div>
-    </section>
-
-    <section id="faq">
-      <h2>FAQ</h2>
-
-      <div class="grid2">
-        <details class="card">
-          <summary>Muss die Empfängerin etwas installieren?</summary>
-          <p>Nein. QR scannen, Rücksend-Text tippen, absenden. Fertig.</p>
-        </details>
-        <details class="card">
-          <summary>Wie funktioniert der Rücksend-Keks genau?</summary>
-          <p>Der QR führt zu einer Rücksend-Seite. Der Rücksend-Text wird als neue Botschaft gebacken und an dich verschickt.</p>
-        </details>
-        <details class="card">
-          <summary>Mehrere Empfänger – wie funktioniert das?</summary>
-          <p>Du wählst die Anzahl. Jeder Keks hat eigene Botschaft und eigene Adresse. Jeder Keks bekommt seinen eigenen QR-Rücksend-Link.</p>
-        </details>
-        <details class="card">
-          <summary>Welche Daten speichert ihr?</summary>
-          <p>Notwendig: Entwurf lokal im Browser. Optional: später Auswertung, welche Kekse gefallen. Wir verkaufen keine Daten.</p>
-        </details>
-      </div>
-    </section>
-
-    <footer>
-      <div class="card">
-        <div style="display:flex; align-items:center; gap:10px;">
-          <div class="logo" aria-hidden="true" style="width:34px;height:34px;border-radius:14px;"></div>
-          <div>
-            <div style="font-weight:1100;">OnlyKeks</div>
-            <div class="muted" style="font-size:12.5px;">MVP: One-Page-Landing + Konfigurator. Geschenk-Mood, Vertrauen, QR-Rücksendung + VIP Hall.</div>
-          </div>
-        </div>
-
-        <div class="footRow" style="margin-top:12px;">
-          <a class="btn" href="privacy.html">Wie wir mit Daten umgehen</a>
-          <a class="btn" href="#hall">Hall of Keks</a>
-          <a class="btn" href="#faq">FAQ</a>
-          <a class="btn" href="#top">Nach oben</a>
-        </div>
-      </div>
-    </footer>
-
-  </main>
-
-  <!-- QR library -->
-  <script src="https://cdn.jsdelivr.net/npm/qrious@4.0.2/dist/qrious.min.js"></script>
-
-  <script>
-    /* ---------- Toast (einheitlich) ---------- */
-    function toast(msg){
-      const t = document.getElementById("keksToast");
-      if(!t) return;
-      t.textContent = msg;
-      t.classList.add("show");
-      clearTimeout(t._t);
-      t._t = setTimeout(()=> t.classList.remove("show"), 1900);
-    }
-
-    /* ---------- Intro: absolut stabil (kein schwarzer Screen) ---------- */
-    (function(){
-      const intro = document.getElementById("intro");
-      const v = document.getElementById("introVideo");
-      const skip = document.getElementById("skipIntro");
-
-      function hideIntro(){
-        if(!intro || intro.classList.contains("hidden")) return;
-        intro.classList.add("hidden");
-        try{ v.pause(); }catch(_){}
-        // nach Intro Cookie Overlay zeigen, falls noch keine Zustimmung
-        setTimeout(checkCookieConsent, 400);
-      }
-
-      if(skip) skip.addEventListener("click", hideIntro);
-      const failsafe = setTimeout(hideIntro, 4500);
-
-      (async () => {
-        try{
-          v.muted = true;
-          v.playsInline = true;
-          const p = v.play();
-          if(p && typeof p.then === "function") await p;
-          v.addEventListener("playing", () => clearTimeout(failsafe), { once:true });
-          v.addEventListener("ended", hideIntro, { once:true });
-          v.addEventListener("error", hideIntro, { once:true });
-          v.addEventListener("stalled", hideIntro, { once:true });
-        }catch(e){
-          hideIntro();
-        }
-      })();
-    })();
-
-    /* ---------- Cookie consent ---------- */
-    (function(){
-      const KEY = "onlykeks_cookie_choice_v1";
-      const overlay = document.getElementById("cookieOverlay");
-      const acceptBtn = document.getElementById("cookieAccept");
-      const essentialBtn = document.getElementById("cookieEssential");
-      function show(){ overlay.style.display="flex"; }
-      function hide(){ overlay.style.display="none"; }
-      function setChoice(v){ localStorage.setItem(KEY, v); hide(); }
-      window.checkCookieConsent = function(){
-        const chosen = localStorage.getItem(KEY);
-        if(!chosen){ show(); }
-      };
-      acceptBtn?.addEventListener("click", () => setChoice("all"));
-      essentialBtn?.addEventListener("click", () => setChoice("need"));
-    })();
-
-    /* ---------- App State ---------- */
-    const LS = {
-      draft: "ok_draft_v2",
-      draftId: "ok_draft_id_v1",
-      hall: "ok_hall_v1",
-      surprise: {
-        decoBonus: "onlykeks_decoBonus",
-        golden: "onlykeks_golden",
-        mythicTicket: "onlykeks_mythicTicket"
-      }
-    };
-
-    function makeToken(len=18){
-      const a = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
-      let s = "";
-      for(let i=0;i<len;i++) s += a[Math.floor(Math.random()*a.length)];
-      return s;
-    }
-
-    function getDraftId(){
-      let id = localStorage.getItem(LS.draftId);
-      if(!id){
-        id = "DRAFT-" + Date.now().toString(36).toUpperCase();
-        localStorage.setItem(LS.draftId, id);
-      }
-      return id;
-    }
-
-    function basePath(){
-      const u = new URL(location.href);
-      u.hash = "";
-      u.search = "";
-      u.pathname = u.pathname.replace(/index\.html$/, "");
-      return u.toString();
-    }
-
-    function euro(n){
-      return new Intl.NumberFormat("de-DE", { style:"currency", currency:"EUR" }).format(n);
-    }
-
-    const PRICES = { Quick: 9.90, Custom: 14.90, Premium: 24.90 };
-    const DEAL_QTY = 3;
-    const DEAL_OFF = 0.15;
-
-    let state = {
-      pack: "Custom",
-      qty: 1,
-      senderName: "",
-      senderAddr: "",
-      previewText: "",
-      shape: "circle",
-      items: []
-    };
-
-    function ensureItems(){
-      const n = Math.max(1, Math.min(10, parseInt(state.qty,10) || 1));
-      state.qty = n;
-
-      while(state.items.length < n){
-        state.items.push({ name:"", addr:"", msg:"", _token: makeToken(18) });
-      }
-      while(state.items.length > n) state.items.pop();
-      // ensure tokens exist
-      state.items.forEach(it => { if(!it._token) it._token = makeToken(18); });
-    }
-
-    function calcTotal(){
-      const base = PRICES[state.pack] * state.qty;
-      const disc = (state.qty >= DEAL_QTY) ? base * DEAL_OFF : 0;
-      return { base, disc, total: base - disc };
-    }
-
-    function replyUrlFor(idx){
-      const base = basePath();
-      const oid = encodeURIComponent(getDraftId());
-      const k = idx + 1;
-      const t = encodeURIComponent(state.items[idx]._token);
-      return `${base}keks.html?oid=${oid}&k=${k}&t=${t}`;
-    }
-
-    function saveDraft(){
-      const payload = {
-        ...state,
-        draftId: getDraftId(),
-        savedAt: new Date().toISOString()
-      };
-      localStorage.setItem(LS.draft, JSON.stringify(payload));
-      toast("Entwurf gespeichert.");
-    }
-
-    function loadDraft(){
-      const raw = localStorage.getItem(LS.draft);
-      if(!raw) return;
-      try{
-        const d = JSON.parse(raw);
-        if(!d) return;
-        state.pack = d.pack || state.pack;
-        state.qty = d.qty || state.qty;
-        state.senderName = d.senderName || "";
-        state.senderAddr = d.senderAddr || "";
-        state.previewText = d.previewText || "";
-        state.shape = d.shape || "circle";
-        state.items = Array.isArray(d.items) ? d.items : [];
-      }catch(_){}
-    }
-
-    /* ---------- Design-Code (Share) ---------- */
-    function encodeDesign(obj){
-      const json = JSON.stringify(obj);
-      return btoa(unescape(encodeURIComponent(json)));
-    }
-    function decodeDesign(code){
-      try{
-        const json = decodeURIComponent(escape(atob(code)));
-        return JSON.parse(json);
-      }catch(_){ return null; }
-    }
-    function getDesignUrl(code){
-      const u = new URL(location.href);
-      u.hash = `design=${encodeURIComponent(code)}`;
-      return u.toString();
-    }
-    function applyDesignFromHash(){
-      const h = (location.hash||"").replace(/^#/,"");
-      if(!h.startsWith("design=")) return;
-      const code = decodeURIComponent(h.slice("design=".length));
-      const d = decodeDesign(code);
-      if(!d) return;
-      if(d.pack && PRICES[d.pack]) state.pack = d.pack;
-      if(d.shape) state.shape = d.shape;
-      if(typeof d.previewText === "string") state.previewText = d.previewText.slice(0,80);
-      toast("Design aus Link geladen.");
-    }
-
-    /* ---------- Surprise Boost (persist) ---------- */
-    function getBoost(){
-      return {
-        decoBonus: parseInt(localStorage.getItem(LS.surprise.decoBonus)||"0",10) || 0,
-        golden: localStorage.getItem(LS.surprise.golden) === "1",
-        mythicTicket: localStorage.getItem(LS.surprise.mythicTicket) === "1"
-      };
-    }
-    function setBoost(b){
-      localStorage.setItem(LS.surprise.decoBonus, String(b.decoBonus||0));
-      localStorage.setItem(LS.surprise.golden, b.golden ? "1":"0");
-      localStorage.setItem(LS.surprise.mythicTicket, b.mythicTicket ? "1":"0");
-    }
-    function rollSurprise(){
-      const b = getBoost();
-      const roll = Math.random() * 100;
-      if(roll < 70){
-        b.decoBonus += 1; setBoost(b);
-        return { msg:"Extra-Deko freigeschaltet (+1 Bonus).", kind:"normal" };
-      }
-      if(roll < 90){
-        b.decoBonus += 2; setBoost(b);
-        return { msg:"Deko-Upgrade (+2 Bonus).", kind:"normal" };
-      }
-      if(roll < 99){
-        b.golden = true; b.decoBonus += 2; setBoost(b);
-        return { msg:"Gold-Sprinkle! Legendär-Boost aktiv.", kind:"gold" };
-      }
-      const isEarly = localStorage.getItem("onlykeks_early") === "1";
-      const isDrop  = localStorage.getItem("onlykeks_drop") === "1";
-      if(isEarly || isDrop){
-        b.mythicTicket = true; setBoost(b);
-        return { msg:"Mythisch-Ticket! Schwarz/Gold freigeschaltet.", kind:"mythic" };
-      }
-      return { msg:"Fast… Mythisch nur bei Early/Drop.", kind:"normal" };
-    }
-
-    /* ---------- Rarity System (live) ---------- */
-    const RARITY_META = {
-      common:    { name:"Gewöhnlich", cls:"rarity-common", hint:"Süß & simpel. Mach’s persönlicher.", next:"Ungewöhnlich" },
-      uncommon:  { name:"Ungewöhnlich", cls:"rarity-uncommon", hint:"Schon persönlicher. Text + Form pushen Richtung selten.", next:"Selten" },
-      rare:      { name:"Selten", cls:"rarity-rare", hint:"Nice. Premium oder Surprise-Boost = episch.", next:"Episch" },
-      epic:      { name:"Episch", cls:"rarity-epic", hint:"Wow. Gold-Sprinkle kann legendär knacken.", next:"Legendär" },
-      legendary: { name:"Legendär", cls:"rarity-legendary sweep", hint:"VIP-Level. Mythisch nur via Ticket/Early/Drop.", next:"Mythisch" },
-      mythic:    { name:"Mythisch", cls:"rarity-mythic sweep", hint:"Ultra-selten. Schwarz/Gold Prestige.", next:"—" }
-    };
-
-    function clamp(n,min,max){ return Math.max(min, Math.min(max,n)); }
-
-    function computeRarity(){
-      const boost = getBoost();
-      const msgLen = (state.previewText||"").trim().length;
-      const pack = (state.pack||"").toLowerCase();
-      const shape = (state.shape||"").toLowerCase();
-      let score = 0;
-      // Text
-      if(msgLen >= 10) score += 10;
-      if(msgLen >= 40) score += 12;
-      if(msgLen >= 70) score += 10;
-      // Form
-      if(shape && shape !== "circle") score += 12;
-      // Paket
-      if(pack === "custom") score += 10;
-      if(pack === "premium") score += 25;
-      // Multi
-      if(state.qty >= 3) score += 8;
-      // Surprise
-      score += clamp((boost.decoBonus||0) * 8, 0, 32);
-      if(boost.golden) score += 18;
-      if(boost.mythicTicket) score += 30;
-      // Mythic Gate
-      const mythicGate = (boost.mythicTicket || localStorage.getItem("onlykeks_early")==="1" || localStorage.getItem("onlykeks_drop")==="1");
-      let tier = "common";
-      if(score >= 22) tier = "uncommon";
-      if(score >= 40) tier = "rare";
-      if(score >= 62) tier = "epic";
-      if(score >= 86) tier = "legendary";
-      if(score >= 98 && mythicGate) tier = "mythic";
-      return { tier, score: Math.round(score), mythicGate, boost };
-    }
-
-    function renderRarity(){
-      const r = computeRarity();
-      const meta = RARITY_META[r.tier];
-      const badge = document.getElementById("rarityBadge");
-      const name  = document.getElementById("rarityName");
-      const hint  = document.getElementById("rarityHint");
-      const fill  = document.getElementById("rarityFill");
-      const next  = document.getElementById("rarityNext");
-      if(badge) badge.className = "rarityBadge " + meta.cls;
-      if(name) name.textContent = meta.name;
-      if(hint) hint.textContent = meta.hint;
-      if(fill) fill.style.width = clamp(r.score,0,100) + "%";
-      if(next) next.textContent = "Nächster Rang: " + meta.next;
-      // Pulse
-      if(badge){
-        badge.classList.remove("keksPulse");
-        void badge.offsetWidth;
-        badge.classList.add("keksPulse");
-      }
-      window.__onlykeksRarity = r;
-      return r;
-    }
-
-    /* ---------- Hall of Keks (VIP) ---------- */
-    function loadHall(){
-      const raw = localStorage.getItem(LS.hall);
-      if(!raw) return [];
-      try{
-        const arr = JSON.parse(raw);
-        return Array.isArray(arr) ? arr : [];
-      }catch(_){ return []; }
-    }
-    function saveHall(arr){
-      localStorage.setItem(LS.hall, JSON.stringify(arr.slice(0,60)));
-    }
-    function hallPushCurrent(){
-      const r = computeRarity();
-      if(!(r.tier === "legendary" || r.tier === "mythic")){
-        toast("Hall of Keks ist VIP: nur Legendär/Mythisch.");
-        return;
-      }
-      const snap = {
-        id: makeToken(10),
-        ts: Date.now(),
-        pack: state.pack,
-        shape: state.shape,
-        previewText: (state.previewText||"").slice(0,80),
-        tier: r.tier,
-        score: r.score,
-        code: encodeDesign({ pack: state.pack, shape: state.shape, previewText: (state.previewText||"").slice(0,80) })
-      };
-      const hall = loadHall();
-      hall.unshift(snap);
-      hall.sort((a,b) => (b.score - a.score) || (b.ts - a.ts));
-      saveHall(hall);
-      toast("In die Hall of Keks aufgenommen.");
-      renderHall();
-    }
-
-    async function shareCode(code, label){
-      const url = getDesignUrl(code);
-      const title = "OnlyKeks – Design";
-      const text = label || "Mein OnlyKeks-Design";
-      try{
-        if(navigator.share){
-          await navigator.share({ title, text, url });
-          toast("Geteilt.");
-          return;
-        }
-      }catch(_){}
-      try{
-        await navigator.clipboard.writeText(url);
-        toast("Link kopiert.");
-      }catch(_){
-        toast("Kopieren ging nicht – Link oben in der URL-Leiste.");
-      }
-    }
-
-    function renderHall(){
-      const grid = document.getElementById("hallGrid");
-      if(!grid) return;
-      const hall = loadHall();
-      grid.innerHTML = "";
-      const vip = hall.filter(x => x.tier === "legendary" || x.tier === "mythic").slice(0,9);
-      if(vip.length === 0){
-        const d = document.createElement("div");
-        d.className = "hallCard";
-        d.style.gridColumn = "1 / -1";
-        d.innerHTML = `<div style="font-weight:1100;">Noch leer.</div><div class="hallMeta">Mach einen legendären/mythischen Keks und klick „In die Hall of Keks“.</div>`;
-        grid.appendChild(d);
-        return;
-      }
-      vip.forEach(v => {
-        const tierCls = v.tier === "mythic" ? "rarityBadge rarity-mythic sweep" : "rarityBadge rarity-legendary sweep";
-        const card = document.createElement("div");
-        card.className = "hallCard";
-        card.innerHTML = `
-          <div class="hallCardTop">
-            <span class="${tierCls}"><span>●</span><span>${v.tier === "mythic" ? "Mythisch" : "Legendär"}</span></span>
-            <button class="btn btnGold" type="button" data-share="${v.id}">Share</button>
-          </div>
-          <div class="hallMsg">„${escapeHtml(v.previewText || "—")}“</div>
-          <div class="hallMeta">Pack: ${escapeHtml(v.pack)} · Form: ${escapeHtml(v.shape)} · Score: ${v.score}</div>
-          <div class="hallMeta" style="opacity:.7;">${new Date(v.ts).toLocaleString("de-DE")}</div>
-        `;
-        card._code = v.code;
-        grid.appendChild(card);
-      });
-      grid.querySelectorAll("button[data-share]").forEach(btn => {
-        btn.addEventListener("click", async (e) => {
-          const card = e.target.closest(".hallCard");
-          if(!card || !card._code) return;
-          await shareCode(card._code, "Schau dir mein OnlyKeks-Design an");
-        });
-      });
-    }
-
-    /* ---------- UI refs ---------- */
-    const packSel = document.getElementById("pack");
-    const packTiles = document.getElementById("packTiles");
-    const qtyInp = document.getElementById("qty");
-    const senderName = document.getElementById("senderName");
-    const senderAddr = document.getElementById("senderAddr");
-    const itemsEl = document.getElementById("items");
-    const totalEl = document.getElementById("total");
-    const previewInput = document.getElementById("previewInput");
-    const previewText = document.getElementById("previewText");
-    const cookieSvg = document.getElementById("cookieSvg");
-    const randomizeBtn = document.getElementById("randomize");
-    const surpriseBtn = document.getElementById("surprise");
-    const saveBtn = document.getElementById("saveDraft");
-    const payBtn = document.getElementById("toPay");
-    const addToHallBtn = document.getElementById("addToHall");
-    const shareDesignBtn = document.getElementById("shareDesign");
-    const refreshHallBtn = document.getElementById("refreshHall");
-    const clearHallBtn = document.getElementById("clearHall");
-    const stepNoEl = document.getElementById("stepNo");
-    const stepLabelEl = document.getElementById("stepLabel");
-
-    /* ---------- Render ---------- */
-    function setShape(shape){
-      state.shape = shape;
-      const svg = cookieSvg;
-      svg.innerHTML = `
-        <defs>
-          <radialGradient id="g1" cx="35%" cy="35%">
-            <stop offset="0%" stop-color="#fff2dc"/>
-            <stop offset="45%" stop-color="#f6c07c"/>
-            <stop offset="100%" stop-color="#e3a25a"/>
-          </radialGradient>
-        </defs>
-      `;
-      if(shape === "circle"){
-        svg.setAttribute("viewBox","0 0 200 200");
-        svg.insertAdjacentHTML("beforeend", `<circle cx="100" cy="100" r="78" fill="url(#g1)"/>`);
-      }else if(shape === "heart"){
-        svg.setAttribute("viewBox","0 0 200 200");
-        svg.insertAdjacentHTML("beforeend", `<path d="M100 160c-40-26-70-52-70-86 0-18 12-32 30-32 16 0 28 10 40 22 12-12 24-22 40-22 18 0 30 14 30 32 0 34-30 60-70 86z" fill="url(#g1)"/>`);
-      }else if(shape === "star"){
-        svg.setAttribute("viewBox","0 0 200 200");
-        svg.insertAdjacentHTML("beforeend", `<path d="M100 22l20 56h58l-47 34 18 56-49-35-49 35 18-56-47-34h58z" fill="url(#g1)"/>`);
-      }else if(shape === "smiley"){
-        svg.setAttribute("viewBox","0 0 200 200");
-        svg.insertAdjacentHTML("beforeend", `
-          <circle cx="100" cy="100" r="78" fill="url(#g1)"/>
-          <circle cx="76" cy="90" r="7" fill="#7a4c23" opacity=".55"/>
-          <circle cx="124" cy="90" r="7" fill="#7a4c23" opacity=".55"/>
-          <path d="M70 118c10 20 50 20 60 0" fill="none" stroke="#7a4c23" stroke-width="8" stroke-linecap="round" opacity=".55"/>
-        `);
-      }else if(shape === "tree"){
-        svg.setAttribute("viewBox","0 0 200 200");
-        svg.insertAdjacentHTML("beforeend", `
-          <path d="M100 22l36 40h-18l30 34h-18l28 34H42l28-34H52l30-34H64z" fill="url(#g1)"/>
-          <rect x="90" y="140" width="20" height="26" rx="6" fill="#c98945" opacity=".7"/>
-        `);
-      }
-      const chips = [ [70,70,5],[130,80,6],[115,125,4],[80,125,5] ];
-      chips.forEach(([x,y,r]) => {
-        svg.insertAdjacentHTML("beforeend", `<circle cx="${x}" cy="${y}" r="${r}" fill="#c98945" opacity=".55"/>`);
-      });
-      previewText.style.inset = (shape === "star") ? "32%" : "28%";
-      renderRarity();
-    }
-
-    function renderTotals(){
-      const c = calcTotal();
-      totalEl.textContent = euro(c.total);
-    }
-    function renderItems(){
-      ensureItems();
-      itemsEl.innerHTML = "";
-      state.items.forEach((it, idx) => {
-        const card = document.createElement("div");
-        card.className = "card";
-        card.innerHTML = `
-          <div class="itemHead">
-            <span class="badge">Keks ${idx+1}</span>
-            ${state.qty > 1 ? `<button class="btn" type="button" data-remove="${idx}">Entfernen</button>` : ``}
-          </div>
-          <label>Empfängername</label>
-          <input data-kname="${idx}" placeholder="z. B. Kayti" value="${escapeHtml(it.name)}" />
-          <label>Empfängeradresse</label>
-          <input data-kaddr="${idx}" placeholder="Straße & Hausnummer, PLZ Ort" value="${escapeHtml(it.addr)}" />
-          <label>Botschaft (Keks ${idx+1})</label>
-          <textarea data-kmsg="${idx}" maxlength="500" placeholder="Kurze Botschaft…">${escapeHtml(it.msg)}</textarea>
-          <div style="display:grid; gap:10px; margin-top:12px;">
-            <div style="display:flex; align-items:center; justify-content:space-between; gap:10px;">
-              <b>QR-Rücksendung</b>
-              <button class="btn" type="button" data-copyqr="${idx}">Link kopieren</button>
-            </div>
-            <div style="display:flex; gap:12px; align-items:center; flex-wrap:wrap;">
-              <canvas id="qr_${idx}" width="128" height="128"
-                style="border-radius:14px; border:1px solid rgba(11,27,42,.10); background:#fff;"></canvas>
-              <div class="muted" style="word-break:break-all; font-weight:850;">
-                <span id="qrurl_${idx}"></span>
-              </div>
-            </div>
-          </div>
-        `;
-        itemsEl.appendChild(card);
-      });
-      state.items.forEach((_, idx) => {
-        const url = replyUrlFor(idx);
-        const urlEl = document.getElementById(`qrurl_${idx}`);
-        if(urlEl) urlEl.textContent = url;
-        const c = document.getElementById(`qr_${idx}`);
-        if(c && window.QRious){
-          new QRious({ element: c, value: url, size: 128, level: "H" });
-        }
-      });
-    }
-    function escapeHtml(s){
-      return String(s ?? "").replace(/[&<>"']/g, (m) => ({
-        "&":"&amp;","<":"&lt;",">":"&gt;", "\"":"&quot;","'":"&#039;"
-      }[m]));
-    }
-    function syncInputs(){
-      packSel.value = state.pack;
-      qtyInp.value = state.qty;
-      senderName.value = state.senderName;
-      senderAddr.value = state.senderAddr;
-      previewInput.value = state.previewText;
-      previewText.textContent = (state.previewText || "Deine Botschaft").slice(0,80);
-      setShape(state.shape);
-      renderTotals();
-      renderItems();
-      syncPackTiles();
-      renderRarity();
-    }
-    function syncPackTiles(){
-      [...packTiles.querySelectorAll(".packTile")].forEach(t => {
-        t.classList.toggle("active", t.dataset.pack === state.pack);
-      });
-    }
-    /* Update progress indicator */
-    function updateStepIndicator(){
-      let step = 1;
-      let label = "";
-      const act = document.activeElement;
-      if(act === packSel || act.closest?.(".packTile")){
-        step = 1; label = "Paket wählen";
-      } else if(act === qtyInp || act === senderName || act === senderAddr){
-        step = 2; label = "Adresse & Anzahl";
-      } else if(act === previewInput || act.closest?.(".previewWrap") || act?.dataset?.kmsg != null){
-        step = 3; label = "Botschaft & Design";
-      } else {
-        step = 1; label = "Paket wählen";
-      }
-      stepNoEl.textContent = step;
-      stepLabelEl.textContent = label;
-    }
-
-    /* ---------- Events ---------- */
-    packSel.addEventListener("change", () => {
-      state.pack = packSel.value;
-      renderTotals();
-      syncPackTiles();
-      renderRarity();
-    });
-    packTiles.addEventListener("click", (e) => {
-      const t = e.target.closest(".packTile");
-      if(!t) return;
-      state.pack = t.dataset.pack;
-      packSel.value = state.pack;
-      renderTotals();
-      syncPackTiles();
-      renderRarity();
-    });
-    qtyInp.addEventListener("input", () => {
-      state.qty = parseInt(qtyInp.value,10) || 1;
-      renderTotals();
-      renderItems();
-      renderRarity();
-    });
-    senderName.addEventListener("input", () => state.senderName = senderName.value);
-    senderAddr.addEventListener("input", () => state.senderAddr = senderAddr.value);
-    previewInput.addEventListener("input", () => {
-      state.previewText = previewInput.value;
-      previewText.textContent = (state.previewText || "Deine Botschaft").slice(0,80);
-      renderRarity();
-    });
-    document.querySelectorAll("[data-shape]").forEach(b => {
-      b.addEventListener("click", () => setShape(b.dataset.shape));
-    });
-    randomizeBtn.addEventListener("click", () => {
-      const samples = [
-        "Ich denk an dich.","Du packst das.","Vermisse dich.",
-        "Danke für alles.","Ich bin stolz auf dich."
-      ];
-      state.previewText = samples[Math.floor(Math.random()*samples.length)];
-      previewInput.value = state.previewText;
-      previewText.textContent = state.previewText;
-      toast("Vorschau zufällig gesetzt.");
-      renderRarity();
-    });
-    surpriseBtn.addEventListener("click", () => {
-      const r = rollSurprise();
-      const shapes = ["circle","heart","star","smiley","tree"];
-      if(Math.random() < 0.35) setShape(shapes[Math.floor(Math.random()*shapes.length)]);
-      if(Math.random() < 0.45){
-        const spicy = [
-          "Du bist Gold wert.","Ich feier dich.","Komm klar, du schaffst dit.",
-          "Danke. Für alles.","Ich hab dich lieb."
-        ];
-        state.previewText = spicy[Math.floor(Math.random()*spicy.length)];
-        previewInput.value = state.previewText;
-        previewText.textContent = state.previewText;
-      }
-      toast(r.msg);
-      renderRarity();
-    });
-    itemsEl.addEventListener("input", (e) => {
-      const el = e.target;
-      if(el.dataset.kname != null){
-        const i = parseInt(el.dataset.kname,10);
-        state.items[i].name = el.value;
-      }
-      if(el.dataset.kaddr != null){
-        const i = parseInt(el.dataset.kaddr,10);
-        state.items[i].addr = el.value;
-      }
-      if(el.dataset.kmsg != null){
-        const i = parseInt(el.dataset.kmsg,10);
-        state.items[i].msg = el.value;
-      }
-    });
-    itemsEl.addEventListener("click", async (e) => {
-      const copy = e.target.closest("button[data-copyqr]");
-      if(copy){
-        const idx = parseInt(copy.dataset.copyqr,10);
-        const url = replyUrlFor(idx);
-        try{
-          await navigator.clipboard.writeText(url);
-          toast("QR-Link kopiert.");
-        }catch(_){
-          toast("Kopieren ging nicht – bitte manuell markieren.");
-        }
-        return;
-      }
-      const rem = e.target.closest("button[data-remove]");
-      if(rem){
-        const idx = parseInt(rem.dataset.remove,10);
-        state.items.splice(idx,1);
-        state.qty = Math.max(1, state.items.length);
-        qtyInp.value = state.qty;
-        renderTotals();
-        renderItems();
-        renderRarity();
-        toast("Keks entfernt.");
-      }
-    });
-    saveBtn.addEventListener("click", () => saveDraft());
-    payBtn.addEventListener("click", () => {
-      saveDraft();
-      toast("MVP: Zahlung ist Demo. Stripe-Link später verdrahten.");
-    });
-    addToHallBtn.addEventListener("click", () => {
-      saveDraft();
-      hallPushCurrent();
-    });
-    shareDesignBtn.addEventListener("click", async () => {
-      const code = encodeDesign({ pack: state.pack, shape: state.shape, previewText: (state.previewText||"").slice(0,80) });
-      await shareCode(code, "Mein OnlyKeks-Design");
-    });
-    refreshHallBtn.addEventListener("click", renderHall);
-    clearHallBtn.addEventListener("click", () => {
-      localStorage.removeItem(LS.hall);
-      toast("Hall geleert.");
-      renderHall();
-    });
-
-    // update step indicator on focus/scroll
-    document.addEventListener("focusin", updateStepIndicator);
-
-    /* ---------- Init ---------- */
-    applyDesignFromHash();
-    loadDraft();
-    ensureItems();
-    syncInputs();
-    renderTotals();
-    renderHall();
-    updateStepIndicator();
-
-  </script>
 </body>
-                      </html>
+</html>

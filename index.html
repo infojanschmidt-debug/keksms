@@ -1,14 +1,14 @@
-from pathlib import Path, PurePosixPath
+from pathlib import Path
+
 html = r"""<!doctype html>
 <html lang="de">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>OnlyKeks – Post, die schmeckt</title>
-  <meta name="description" content="Gestalte deinen Keks. Verschicken. QR-Rücksendung bekommen. Wir backen den Rücksend-Keks und schicken ihn dir." />
+  <meta name="description" content="Gestalte deinen Keks. Verschicken. QR‑Rücksendung bekommen. Wir backen den Rücksend‑Keks und schicken ihn dir." />
   <meta name="theme-color" content="#ff4fa3" />
   <meta name="robots" content="index,follow" />
-
   <style>
     :root{
       --bg:#ffffff;
@@ -34,7 +34,6 @@ html = r"""<!doctype html>
       --glow-leg: 0 0 0 3px rgba(214,161,0,.25), 0 12px 34px rgba(214,161,0,.18);
       --glow-myth:0 0 0 3px rgba(214,161,0,.30), 0 14px 42px rgba(0,0,0,.55);
     }
-
     *{ box-sizing:border-box; margin:0; padding:0; }
     html,body{ height:100%; }
     body{
@@ -135,16 +134,17 @@ html = r"""<!doctype html>
       border:0;
     }
 
-    /* Intro: Fullscreen Video, stabil */
-    #intro{
+    /* Intro overlay: fullscreen video, fade-out, then remove */
+    #introOverlay{
       position:fixed; inset:0; z-index:9999;
       background:#000;
       display:flex; align-items:center; justify-content:center;
+      opacity:1;
+      transition: opacity .42s ease;
     }
-    #intro.hidden{ display:none; }
-    #introBox{
-      position:relative; width:100%; height:100%;
-      display:flex; align-items:center; justify-content:center;
+    #introOverlay.hidden{
+      opacity:0;
+      pointer-events:none;
     }
     #introVideo{
       position:absolute; inset:0;
@@ -304,7 +304,6 @@ html = r"""<!doctype html>
       border:1px solid var(--line);
     }
 
-    /* Sections */
     section{ padding: 14px 0; }
     h2{ margin: 0 0 10px; font-size: var(--h2); letter-spacing:-.3px; }
     .grid2{ display:grid; grid-template-columns: 1fr 1fr; gap: 14px; }
@@ -382,16 +381,14 @@ html = r"""<!doctype html>
       background: linear-gradient(180deg, rgba(255,255,255,.92), rgba(255,255,255,.64));
       box-shadow: inset 0 1px 0 rgba(255,255,255,.7);
       min-height: 320px;
-      padding: 12px;
+      padding: 0;
       overflow: hidden;
       position:relative;
-    }
-    #threeWrap{
-      position:absolute; inset:0;
     }
     #threeCanvas{
       width:100%; height:100%;
       display:block;
+      touch-action:none;
     }
     .hint3d{
       position:absolute; left:12px; bottom:12px;
@@ -412,13 +409,11 @@ html = r"""<!doctype html>
       margin-top: 14px;
     }
 
-    /* Items */
     .items{ display:grid; gap: 12px; margin-top: 12px; }
     .itemHead{
       display:flex; align-items:center; justify-content:space-between; gap:10px;
     }
 
-    /* Footer */
     footer{ padding: 24px 0 40px; color: rgba(11,27,42,.70); }
     .footer-cols{
       display:grid;
@@ -478,7 +473,6 @@ html = r"""<!doctype html>
     }
     .rarityBadge.myth{ box-shadow: var(--glow-myth); border-color: rgba(214,161,0,.90); }
 
-    /* Media */
     @media (max-width: 900px){
       nav{ display:none; }
       .hero{ grid-template-columns: 1fr; }
@@ -503,20 +497,18 @@ html = r"""<!doctype html>
   <div id="keksToast" aria-live="polite"></div>
 
   <!-- Intro overlay -->
-  <div id="intro" aria-label="Intro">
-    <div id="introBox">
-      <button id="skipIntro" type="button" aria-label="Intro überspringen">Skip</button>
-      <video id="introVideo" muted playsinline preload="auto" autoplay>
-        <source src="assets/video/grok_video_2025-12-14-00-41-51.mp4" type="video/mp4">
-      </video>
-    </div>
+  <div id="introOverlay" aria-label="Intro">
+    <button id="skipIntro" type="button" aria-label="Intro überspringen">Skip</button>
+    <video id="introVideo" muted playsinline preload="auto" autoplay>
+      <source src="assets/video/grok_video_2025-12-14-00-41-51.mp4" type="video/mp4">
+    </video>
   </div>
 
   <!-- Cookie consent overlay (nach Intro) -->
-  <div id="cookieOverlay">
+  <div id="cookieOverlay" role="dialog" aria-modal="true" aria-label="Cookie Einstellungen">
     <div class="cookieContent">
-      <h3>Darf ick kurz reincrunchen?</h3>
-      <p>Wir brauchen ein paar <b>notwendige</b> Krümel, damit dein Keks-Entwurf nicht verloren geht. Optional helfen ein paar Extra-Krümel, zu checken, welche Kekse am meisten gefeiert werden. Wir verkaufen keine Daten.</p>
+      <h3>Darf ich kurz reincrunchen?</h3>
+      <p>Wir brauchen ein paar <b>notwendige</b> Krümel, damit dein Keks‑Entwurf nicht verloren geht. Optional helfen Extra‑Krümel, zu checken, welche Kekse am meisten gefeiert werden. Wir verkaufen keine Daten.</p>
       <div class="cookieActions">
         <button class="btn btnPrimary" id="cookieAccept">Alles klar, gib Krümel 🍪</button>
         <button class="btn" id="cookieEssential">Nur das Nötigste</button>
@@ -603,7 +595,7 @@ html = r"""<!doctype html>
         <div class="card">
           <h2>Wichtig</h2>
           <p class="muted">
-            MVP-Logik: Entwürfe werden lokal gespeichert. Sharing/Ranking läuft über kleine Design-Codes (Link) – serverseitig später.
+            MVP‑Logik: Entwürfe werden lokal gespeichert. Sharing/Ranking läuft über Design‑Codes (Link) – serverseitig später.
           </p>
         </div>
       </div>
@@ -635,14 +627,14 @@ html = r"""<!doctype html>
               <div class="packTile active" data-pack="Custom">
                 <div>
                   <div style="font-weight:1100;">Custom</div>
-                  <div class="muted" style="font-size:13px;">Deko-Feeling + nicer Look. Bestseller.</div>
+                  <div class="muted" style="font-size:13px;">Deko‑Feeling + nicer Look. Bestseller.</div>
                 </div>
                 <span class="badge badgeHot">3er‑Deal: −15%</span>
               </div>
               <div class="packTile" data-pack="Premium">
                 <div>
                   <div style="font-weight:1100;">Premium</div>
-                  <div class="muted" style="font-size:13px;">Box-Feeling + maximaler Wow‑Effekt.</div>
+                  <div class="muted" style="font-size:13px;">Box‑Feeling + maximaler Wow‑Effekt.</div>
                 </div>
                 <span class="badge">Box‑Vibe</span>
               </div>
@@ -676,7 +668,7 @@ html = r"""<!doctype html>
                   <button class="btn" type="button" id="toPay">Weiter zum Bezahlen</button>
                 </div>
                 <div class="muted" style="font-size:12.5px; margin-top:10px;">
-                  Hinweis: Zahlung ist im MVP aktuell Demo. Stripe‑Link kannst du später direkt verdrahten.
+                  Hinweis: Zahlung ist im MVP Demo. Stripe‑Link kannst du später direkt verdrahten.
                 </div>
               </div>
             </div>
@@ -694,9 +686,7 @@ html = r"""<!doctype html>
               </div>
 
               <div class="previewStage" style="margin-top:10px;">
-                <div id="threeWrap">
-                  <canvas id="threeCanvas" aria-label="3D Keks Vorschau"></canvas>
-                </div>
+                <canvas id="threeCanvas" aria-label="3D Keks Vorschau"></canvas>
                 <div class="hint3d">Tipp: Ziehen = drehen · Pinch/Mausrad = zoomen · Tap/Klick = Sprinkles</div>
               </div>
 
@@ -796,10 +786,8 @@ html = r"""<!doctype html>
     </footer>
   </main>
 
-  <!-- QR library -->
   <script src="https://cdn.jsdelivr.net/npm/qrious@4.0.2/dist/qrious.min.js"></script>
 
-  <!-- Three.js (ESM) -->
   <script type="module">
     import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.160.1/build/three.module.js";
     import { OrbitControls } from "https://cdn.jsdelivr.net/npm/three@0.160.1/examples/jsm/controls/OrbitControls.js";
@@ -814,53 +802,77 @@ html = r"""<!doctype html>
       t._t = setTimeout(()=> t.classList.remove("show"), 1900);
     }
 
-    /* ---------- Intro (fullscreen, no black bug) ---------- */
-    (function(){
-      const intro = document.getElementById("intro");
-      const v = document.getElementById("introVideo");
-      const skip = document.getElementById("skipIntro");
-
-      function hideIntro(){
-        if(!intro || intro.classList.contains("hidden")) return;
-        intro.classList.add("hidden");
-        try{ v.pause(); }catch(_){}
-        setTimeout(checkCookieConsent, 250);
-      }
-
-      if(skip) skip.addEventListener("click", hideIntro);
-      const failsafe = setTimeout(hideIntro, 5200);
-
-      (async () => {
-        try{
-          v.muted = true;
-          v.playsInline = true;
-          const p = v.play();
-          if(p && typeof p.then === "function") await p;
-          v.addEventListener("playing", () => clearTimeout(failsafe), { once:true });
-          v.addEventListener("ended", hideIntro, { once:true });
-          v.addEventListener("error", hideIntro, { once:true });
-          v.addEventListener("stalled", hideIntro, { once:true });
-        }catch(e){
-          hideIntro();
-        }
-      })();
-    })();
-
-    /* ---------- Cookie Consent (nach Intro) ---------- */
+    /* ---------- Cookie Consent (erst nach Intro) ---------- */
     (function(){
       const KEY = "onlykeks_cookie_choice_v2";
       const overlay = document.getElementById("cookieOverlay");
       const acceptBtn = document.getElementById("cookieAccept");
       const essentialBtn = document.getElementById("cookieEssential");
+
       function show(){ overlay.style.display="flex"; }
       function hide(){ overlay.style.display="none"; }
       function setChoice(v){ localStorage.setItem(KEY, v); hide(); toast("Alles klar. Weiter geht’s."); }
+
+      // Exposed for intro-close
       window.checkCookieConsent = function(){
         const chosen = localStorage.getItem(KEY);
         if(!chosen){ show(); }
       };
+
       acceptBtn?.addEventListener("click", () => setChoice("all"));
       essentialBtn?.addEventListener("click", () => setChoice("need"));
+    })();
+
+    /* ---------- Intro Overlay (FIX: endet zuverlässig, blockiert nie) ---------- */
+    (function(){
+      const overlay = document.getElementById("introOverlay");
+      const video   = document.getElementById("introVideo");
+      const skip    = document.getElementById("skipIntro");
+      if(!overlay || !video) {
+        // if intro missing, still show cookie if needed
+        if(typeof window.checkCookieConsent === "function") window.checkCookieConsent();
+        return;
+      }
+
+      let closed = false;
+
+      function closeIntro(){
+        if(closed) return;
+        closed = true;
+
+        overlay.classList.add("hidden");
+        try{ video.pause(); }catch(_){}
+
+        // remove from DOM so it can NEVER block clicks
+        setTimeout(() => { overlay.remove(); }, 520);
+
+        // then cookies
+        if(typeof window.checkCookieConsent === "function") window.checkCookieConsent();
+      }
+
+      // 1) Normal end
+      video.addEventListener("ended", closeIntro, { once:true });
+
+      // 2) Skip
+      skip?.addEventListener("click", closeIntro);
+
+      // 3) Hard failsafe (NOT cleared by "playing")
+      setTimeout(closeIntro, 6500);
+
+      // 4) Force autoplay; if rejected -> close
+      try{
+        video.muted = true;
+        video.playsInline = true;
+        const p = video.play();
+        if(p && typeof p.catch === "function") p.catch(closeIntro);
+      }catch(_){
+        closeIntro();
+      }
+
+      // 5) If media errors/stalls
+      video.addEventListener("error", closeIntro, { once:true });
+      video.addEventListener("stalled", closeIntro, { once:true });
+      video.addEventListener("abort", closeIntro, { once:true });
     })();
 
     /* ---------- App State (MVP) ---------- */
@@ -1026,7 +1038,6 @@ html = r"""<!doctype html>
 
     /* ---------- 3D Engine ---------- */
     const canvas = document.getElementById("threeCanvas");
-    const stageEl = canvas.parentElement; // #threeWrap in previewStage
 
     const renderer = new THREE.WebGLRenderer({
       canvas,
@@ -1035,7 +1046,7 @@ html = r"""<!doctype html>
       powerPreference: "high-performance"
     });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    renderer.setClearColor(0x000000, 0); // transparent
+    renderer.setClearColor(0x000000, 0);
     renderer.shadowMap.enabled = true;
 
     const scene = new THREE.Scene();
@@ -1051,7 +1062,6 @@ html = r"""<!doctype html>
     controls.maxDistance = 4.2;
     controls.target.set(0, 0.35, 0);
 
-    // Licht (soft + highlight)
     scene.add(new THREE.HemisphereLight(0xffffff, 0x2a2a2a, 1.15));
 
     const key = new THREE.DirectionalLight(0xffffff, 1.15);
@@ -1068,7 +1078,6 @@ html = r"""<!doctype html>
     rim.position.set(-3.2, 2.6, -2.2);
     scene.add(rim);
 
-    // Boden für Schatten
     const floor = new THREE.Mesh(
       new THREE.PlaneGeometry(10, 10),
       new THREE.ShadowMaterial({ opacity: 0.20 })
@@ -1078,7 +1087,6 @@ html = r"""<!doctype html>
     floor.receiveShadow = true;
     scene.add(floor);
 
-    // Cookie materials
     function makeCookieMaterial(hex){
       return new THREE.MeshStandardMaterial({
         color: hex,
@@ -1092,36 +1100,6 @@ html = r"""<!doctype html>
     const textCanvas = document.createElement("canvas");
     textCanvas.width = 512; textCanvas.height = 256;
     const tctx = textCanvas.getContext("2d");
-
-    function drawTextTexture(txt){
-      tctx.clearRect(0,0,textCanvas.width,textCanvas.height);
-      // Transparent background
-      // Soft highlight
-      tctx.globalAlpha = 0.95;
-      tctx.fillStyle = "rgba(255,255,255,0.0)";
-      tctx.fillRect(0,0,textCanvas.width,textCanvas.height);
-
-      const text = (txt || "").trim().slice(0, 60);
-      if(!text) return;
-
-      // Bubble-like stamp
-      tctx.globalAlpha = 0.88;
-      tctx.fillStyle = "rgba(255,255,255,0.72)";
-      roundRect(tctx, 48, 54, 416, 148, 36);
-      tctx.fill();
-
-      tctx.globalAlpha = 1;
-      tctx.strokeStyle = "rgba(11,27,42,0.15)";
-      tctx.lineWidth = 4;
-      roundRect(tctx, 48, 54, 416, 148, 36);
-      tctx.stroke();
-
-      tctx.fillStyle = "rgba(11,27,42,0.86)";
-      tctx.textAlign = "center";
-      tctx.textBaseline = "middle";
-      tctx.font = "900 40px system-ui, -apple-system, Segoe UI, Roboto, Arial";
-      wrapText(tctx, text, 256, 128, 360, 44);
-    }
 
     function roundRect(ctx, x, y, w, h, r){
       ctx.beginPath();
@@ -1146,10 +1124,31 @@ html = r"""<!doctype html>
         }
       }
       if(line) lines.push(line);
-      if(lines.length > 3) lines = [lines.slice(0,2).join(" "), lines.slice(2).join(" ")].slice(0,3);
-
+      if(lines.length > 3) lines = lines.slice(0,3);
       const startY = y - ((lines.length-1) * lineHeight) / 2;
       lines.forEach((ln, i)=> ctx.fillText(ln, x, startY + i*lineHeight));
+    }
+    function drawTextTexture(txt){
+      tctx.clearRect(0,0,textCanvas.width,textCanvas.height);
+      const text = (txt || "").trim().slice(0, 60);
+      if(!text) return;
+
+      tctx.globalAlpha = 0.88;
+      tctx.fillStyle = "rgba(255,255,255,0.72)";
+      roundRect(tctx, 48, 54, 416, 148, 36);
+      tctx.fill();
+
+      tctx.globalAlpha = 1;
+      tctx.strokeStyle = "rgba(11,27,42,0.15)";
+      tctx.lineWidth = 4;
+      roundRect(tctx, 48, 54, 416, 148, 36);
+      tctx.stroke();
+
+      tctx.fillStyle = "rgba(11,27,42,0.86)";
+      tctx.textAlign = "center";
+      tctx.textBaseline = "middle";
+      tctx.font = "900 40px system-ui, -apple-system, Segoe UI, Roboto, Arial";
+      wrapText(tctx, text, 256, 128, 360, 44);
     }
 
     const textTex = new THREE.CanvasTexture(textCanvas);
@@ -1157,7 +1156,6 @@ html = r"""<!doctype html>
     textTex.anisotropy = 8;
     const textMat = new THREE.MeshBasicMaterial({ map: textTex, transparent: true });
 
-    // Cookie geometry builder (circle/heart/star)
     let cookieGroup = new THREE.Group();
     scene.add(cookieGroup);
 
@@ -1165,58 +1163,51 @@ html = r"""<!doctype html>
       while(g.children.length){
         const c = g.children.pop();
         c.geometry?.dispose?.();
-        if(c.material && c.material.map && c.material.map !== textTex) c.material.map.dispose?.();
-        if(Array.isArray(c.material)) c.material.forEach(m=>m.dispose?.()); else c.material?.dispose?.();
+        if(c.material){
+          if(Array.isArray(c.material)) c.material.forEach(m=>m.dispose?.());
+          else c.material.dispose?.();
+        }
       }
+    }
+
+    // Sprinkles
+    const sprinkleGeo = new THREE.CapsuleGeometry(0.025, 0.10, 3, 10);
+    function sprinkleMat(){
+      const colors = [0xff4fa3, 0x2a7bff, 0x37c871, 0x8a3ffc, 0xffd54a];
+      return new THREE.MeshStandardMaterial({ color: colors[Math.floor(Math.random()*colors.length)], roughness: 0.65, metalness: 0.05 });
     }
 
     function makeCookieMesh(shape){
       clearGroup(cookieGroup);
 
       const height = 0.50;
-      const topY = height;
 
-      // Body
       let geom;
       if(shape === "circle"){
         geom = new THREE.CylinderGeometry(1.02, 1.05, height, 80, 1, false);
       } else {
-        // Extrude 2D -> 3D
         const s = new THREE.Shape();
         if(shape === "heart"){
-          // simple heart
           s.moveTo(0, 0.35);
           s.bezierCurveTo(0, 0.9, -0.9, 0.9, -0.9, 0.25);
           s.bezierCurveTo(-0.9, -0.35, 0, -0.55, 0, -1.05);
           s.bezierCurveTo(0, -0.55, 0.9, -0.35, 0.9, 0.25);
           s.bezierCurveTo(0.9, 0.9, 0, 0.9, 0, 0.35);
-        } else if(shape === "star"){
-          const spikes = 5;
-          const outer = 1.05;
-          const inner = 0.46;
+        } else { // star
+          const spikes = 5, outer = 1.05, inner = 0.46;
           let rot = Math.PI / 2 * 3;
-          let x = 0, y = 0;
           const step = Math.PI / spikes;
           s.moveTo(0, -outer);
           for(let i=0;i<spikes;i++){
-            x = Math.cos(rot) * outer;
-            y = Math.sin(rot) * outer;
-            s.lineTo(x,y);
-            rot += step;
-
-            x = Math.cos(rot) * inner;
-            y = Math.sin(rot) * inner;
-            s.lineTo(x,y);
-            rot += step;
+            s.lineTo(Math.cos(rot)*outer, Math.sin(rot)*outer); rot += step;
+            s.lineTo(Math.cos(rot)*inner, Math.sin(rot)*inner); rot += step;
           }
           s.closePath();
         }
         geom = new THREE.ExtrudeGeometry(s, { depth: height, bevelEnabled: true, bevelSegments: 4, steps: 1, bevelSize: 0.06, bevelThickness: 0.06 });
-        // Center & orient
         geom.center();
         geom.rotateX(Math.PI/2);
       }
-
       geom.computeVertexNormals();
 
       const cookie = new THREE.Mesh(geom, cookieMat);
@@ -1225,32 +1216,27 @@ html = r"""<!doctype html>
       cookie.position.y = height/2;
       cookieGroup.add(cookie);
 
-      // Chocolate chips (instanced spheres)
+      // Chips
       const chipGeo = new THREE.SphereGeometry(0.06, 10, 10);
       const chipMat = new THREE.MeshStandardMaterial({ color: 0x7a4c23, roughness: 0.9, metalness: 0.02 });
       const chipCount = 22;
       const chips = new THREE.InstancedMesh(chipGeo, chipMat, chipCount);
       chips.castShadow = true;
       chips.receiveShadow = true;
-
       const dummy = new THREE.Object3D();
       for(let i=0;i<chipCount;i++){
         const a = Math.random() * Math.PI * 2;
         const r = 0.25 + Math.random() * 0.70;
         dummy.position.set(Math.cos(a)*r, height + 0.02, Math.sin(a)*r);
         dummy.rotation.set(Math.random(), Math.random(), Math.random());
-        const s = 0.55 + Math.random()*0.9;
-        dummy.scale.setScalar(s);
+        dummy.scale.setScalar(0.55 + Math.random()*0.9);
         dummy.updateMatrix();
         chips.setMatrixAt(i, dummy.matrix);
       }
       cookieGroup.add(chips);
 
-      // Text plane (decals-lite)
-      const plane = new THREE.Mesh(
-        new THREE.PlaneGeometry(1.45, 0.72),
-        textMat
-      );
+      // Text plane
+      const plane = new THREE.Mesh(new THREE.PlaneGeometry(1.45, 0.72), textMat);
       plane.rotation.x = -Math.PI/2;
       plane.position.set(0, height + 0.03, 0);
       plane.renderOrder = 3;
@@ -1261,48 +1247,37 @@ html = r"""<!doctype html>
       sprGroup.name = "sprinkles";
       cookieGroup.add(sprGroup);
 
-      // Initial sprinkles
+      function addSprinkleAt(x, z){
+        const spr = new THREE.Mesh(sprinkleGeo, sprinkleMat());
+        spr.castShadow = true;
+        spr.receiveShadow = true;
+        spr.position.set(x, height + 0.04, z);
+        spr.rotation.set(Math.random()*Math.PI, Math.random()*Math.PI, Math.random()*Math.PI);
+        sprGroup.add(spr);
+      }
+      function addRandomSprinkles(n=6){
+        for(let i=0;i<n;i++){
+          const a = Math.random() * Math.PI * 2;
+          const r = 0.20 + Math.random() * 0.78;
+          addSprinkleAt(Math.cos(a)*r, Math.sin(a)*r);
+        }
+      }
+      function resetSprinkles(){
+        while(sprGroup.children.length){
+          const c = sprGroup.children.pop();
+          c.geometry.dispose();
+          c.material.dispose();
+        }
+      }
+
       addRandomSprinkles(8);
 
-      return { cookie, plane, sprGroup };
+      return { cookie, plane, sprGroup, addSprinkleAt, addRandomSprinkles, resetSprinkles, height };
     }
 
     let cookieParts = makeCookieMesh(state.shape);
 
-    // Sprinkles add-on (click/tap)
-    const sprinkleGeo = new THREE.CapsuleGeometry(0.025, 0.10, 3, 10);
-    function sprinkleMat(){
-      const colors = [0xff4fa3, 0x2a7bff, 0x37c871, 0x8a3ffc, 0xffd54a];
-      return new THREE.MeshStandardMaterial({ color: colors[Math.floor(Math.random()*colors.length)], roughness: 0.65, metalness: 0.05 });
-    }
-
-    function addSprinkleAt(x, z){
-      const spr = new THREE.Mesh(sprinkleGeo, sprinkleMat());
-      spr.castShadow = true;
-      spr.receiveShadow = true;
-      spr.position.set(x, 0.50 + 0.04, z);
-      spr.rotation.set(Math.random()*Math.PI, Math.random()*Math.PI, Math.random()*Math.PI);
-      cookieParts.sprGroup.add(spr);
-    }
-
-    function addRandomSprinkles(n=6){
-      for(let i=0;i<n;i++){
-        const a = Math.random() * Math.PI * 2;
-        const r = 0.20 + Math.random() * 0.78;
-        addSprinkleAt(Math.cos(a)*r, Math.sin(a)*r);
-      }
-    }
-
-    function resetSprinkles(){
-      const g = cookieParts.sprGroup;
-      while(g.children.length){
-        const c = g.children.pop();
-        c.geometry.dispose();
-        c.material.dispose();
-      }
-    }
-
-    // Raycaster to place sprinkles where you tap (approx on top)
+    // Raycaster: click/tap to add sprinkles
     const raycaster = new THREE.Raycaster();
     const ndc = new THREE.Vector2();
 
@@ -1312,63 +1287,40 @@ html = r"""<!doctype html>
       const y = - ( (ev.clientY - rect.top) / rect.height ) * 2 + 1;
       ndc.set(x,y);
       raycaster.setFromCamera(ndc, camera);
-
-      // Intersect cookie body (first mesh in group)
-      const target = cookieParts.cookie;
-      const hits = raycaster.intersectObject(target, true);
+      const hits = raycaster.intersectObject(cookieParts.cookie, true);
       if(!hits.length) return;
-
-      // local point, clamp to cookie top
       const p = hits[0].point;
-      // Keep sprinkles within top area
       const lx = THREE.MathUtils.clamp(p.x, -0.95, 0.95);
       const lz = THREE.MathUtils.clamp(p.z, -0.95, 0.95);
-      addSprinkleAt(lx, lz);
+      cookieParts.addSprinkleAt(lx, lz);
       toast("Sprinkle gesetzt.");
     }
-
-    canvas.addEventListener("pointerdown", (ev)=>{
-      // ignore if user is rotating (OrbitControls sets pointer capture), but we keep it simple:
-      // quick tap -> sprinkle
-      if(ev.pointerType === "touch") {
-        // small delay to avoid fighting with rotate
-        setTimeout(()=> onPointerDown(ev), 0);
-      } else {
-        onPointerDown(ev);
-      }
-    }, { passive:true });
+    canvas.addEventListener("pointerdown", onPointerDown, { passive:true });
 
     // Idle animation
     let spinBoost = 0;
     function animate(){
       requestAnimationFrame(animate);
       controls.update();
-
-      // subtle idle wobble
       const t = performance.now() * 0.0007;
       cookieGroup.rotation.y = (Math.sin(t) * 0.12) + spinBoost;
       cookieGroup.rotation.x = Math.sin(t*0.9) * 0.04;
-
-      // decay spinBoost
       spinBoost *= 0.96;
-
       renderer.render(scene, camera);
     }
     animate();
 
     function resize3D(){
-      const box = canvas.getBoundingClientRect();
-      const w = Math.max(1, Math.floor(box.width));
-      const h = Math.max(1, Math.floor(box.height));
+      const rect = canvas.getBoundingClientRect();
+      const w = Math.max(1, Math.floor(rect.width));
+      const h = Math.max(1, Math.floor(rect.height));
       renderer.setSize(w, h, false);
       camera.aspect = w / h;
       camera.updateProjectionMatrix();
     }
     window.addEventListener("resize", resize3D);
-    // Resize once visible (after layout)
-    setTimeout(resize3D, 50);
 
-    // Update cookie appearance
+    // Appearance updates
     function setCookieColor(hex){
       cookieMat.color.setHex(hex);
       cookieMat.needsUpdate = true;
@@ -1385,11 +1337,10 @@ html = r"""<!doctype html>
       drawTextTexture(state.previewText);
       textTex.needsUpdate = true;
     }
-
     function reset3D(){
       setCookieColor(0xE1B074);
-      resetSprinkles();
-      addRandomSprinkles(8);
+      cookieParts.resetSprinkles();
+      cookieParts.addRandomSprinkles(8);
       controls.reset();
       controls.target.set(0, 0.35, 0);
       camera.position.set(0, 1.35, 3.1);
@@ -1397,7 +1348,7 @@ html = r"""<!doctype html>
       toast("3D zurückgesetzt.");
     }
 
-    /* ---------- Hall of Keks (einfacher MVP) ---------- */
+    /* ---------- Hall of Keks ---------- */
     function loadHall(){
       const raw = localStorage.getItem(LS.hall);
       if(!raw) return [];
@@ -1488,7 +1439,7 @@ html = r"""<!doctype html>
     surpriseBtn.addEventListener("click", () => {
       const colors = [0xE1B074, 0xD7A56E, 0xC98E5A, 0xE7BE86];
       setCookieColor(colors[Math.floor(Math.random()*colors.length)]);
-      addRandomSprinkles(6 + Math.floor(Math.random()*10));
+      cookieParts.addRandomSprinkles(6 + Math.floor(Math.random()*10));
       spinBoost += Math.PI * (0.15 + Math.random()*0.25);
       const samples = ["Ick feier dir.", "Du packst dit.", "Ich hab dich lieb.", "Danke für alles.", "Du bist Gold wert."];
       setText(samples[Math.floor(Math.random()*samples.length)]);
@@ -1530,7 +1481,6 @@ html = r"""<!doctype html>
 
     saveBtn.addEventListener("click", () => {
       saveDraft();
-      // Push hall snapshot (VIP look, simpel)
       const hall = loadHall();
       const snap = {
         id: makeToken(10),
@@ -1570,17 +1520,17 @@ html = r"""<!doctype html>
     setText(previewInput.value);
 
     renderHall();
-    resize3D();
+    setTimeout(resize3D, 50);
 
-    // Scroll hash support
+    // Back-compat hash
     if(location.hash === "#config") {
-      // old link support
       document.getElementById("konfigurator").scrollIntoView({behavior:"smooth"});
     }
   </script>
 </body>
 </html>
 """
-out = Path("/mnt/data/index_onlykeks_3d.html")
+
+out = Path("/mnt/data/index_onlykeks_master_fixed.html")
 out.write_text(html, encoding="utf-8")
 str(out)

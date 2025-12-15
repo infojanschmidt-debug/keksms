@@ -3,60 +3,82 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Wie wir mit Daten umgehen – OnlyKeks</title>
+  <title>OnlyKeks – Wie wir mit Daten umgehen</title>
+  <meta name="theme-color" content="#ff4fa3" />
   <style>
+    :root{
+      --ink:#0f172a;
+      --muted:#475569;
+      --line:rgba(15,23,42,.10);
+      --pink:#ff4fa3;
+      --pink2:#ff7bc0;
+      --shadow: 0 10px 30px rgba(2,6,23,.08);
+      --r:22px;
+      --max: 860px;
+      --pad: 18px;
+    }
+    *{box-sizing:border-box}
     body{
       margin:0;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial;
-      background:#fff6ea;
-      color:#0b1b2a;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      color:var(--ink);
+      background:
+        radial-gradient(900px 420px at 15% 0%, rgba(255,79,163,.18), transparent 55%),
+        linear-gradient(180deg, #fff 0%, #fff6fb 55%, #fff 100%);
     }
-    main{
-      max-width:720px;
-      margin:0 auto;
-      padding:28px;
-      line-height:1.6;
+    .wrap{max-width:var(--max); margin:0 auto; padding: 22px var(--pad) 50px;}
+    .card{
+      background: rgba(255,255,255,.86);
+      border:1px solid var(--line);
+      border-radius: var(--r);
+      box-shadow: var(--shadow);
+      padding: 18px;
     }
-    h1{ font-size:28px; }
-    h2{ font-size:18px; margin-top:26px; }
-    p{ color:#4b5b6b; }
-    a{ color:#ff4fa3; text-decoration:underline; }
+    h1{margin:0 0 8px; font-size: 28px; letter-spacing:-.02em}
+    h2{margin:18px 0 8px; font-size: 18px}
+    p, li{color: rgba(15,23,42,.74); line-height:1.55}
+    a{color: rgba(15,23,42,.82)}
+    .pill{
+      display:inline-flex; gap:10px; align-items:center;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border:1px solid rgba(255,79,163,.25);
+      background: rgba(255,79,163,.08);
+      font-weight:900;
+      color: rgba(255,79,163,.95);
+      font-size: 13px;
+      margin-top: 8px;
+    }
   </style>
 </head>
 <body>
-  <main>
-    <h1>Wie wir mit Daten umgehen</h1>
+  <div class="wrap">
+    <div class="card">
+      <h1>Wie wir mit Daten umgehen</h1>
+      <div class="pill">Kurz. Menschlich. Ohne Verkauf.</div>
 
-    <p>
-      Kurzfassung: <b>So wenig wie möglich.</b><br>
-      Wir wollen Kekse verschicken – keine Profile bauen.
-    </p>
+      <p>OnlyKeks ist ein Geschenk-Produkt. Damit dein Keks-Entwurf nicht weg ist, speichern wir ein paar technische Infos im Browser (localStorage/Cookies). Mehr nicht. verstehste</p>
 
-    <h2>Was notwendig ist</h2>
-    <p>
-      Wir speichern technische Infos, damit dein Keks-Entwurf funktioniert
-      und beim Gestalten nicht verloren geht.
-    </p>
+      <h2>Was ist „notwendig“?</h2>
+      <ul>
+        <li>Entwurf (Message, Pack, Style) lokal speichern, damit du nicht neu tippen musst.</li>
+        <li>Token/Link, damit der Reply-Loop funktioniert.</li>
+      </ul>
 
-    <h2>Was optional ist</h2>
-    <p>
-      Anonyme Statistiken helfen uns zu verstehen,
-      welche Kekse Freude machen – und welche wir verbessern sollten.
-    </p>
+      <h2>Was ist „optional“?</h2>
+      <ul>
+        <li>Anonyme Statistik (später), damit wir verstehen, welche Kekse gut ankommen.</li>
+      </ul>
 
-    <h2>Was wir nicht tun</h2>
-    <p>
-      Wir verkaufen keine Daten.<br>
-      Wir bauen keine Schattenprofile.<br>
-      Wir tracken dich nicht quer durchs Internet.
-    </p>
+      <h2>Was wir nicht machen</h2>
+      <ul>
+        <li>Wir verkaufen keine Daten.</li>
+        <li>Wir bauen kein Werbe-Tracking ein.</li>
+        <li>Wir zwingen dich nicht in Accounts.</li>
+      </ul>
 
-    <p>
-      Wenn du Fragen hast, schreib uns.<br>
-      Transparenz gehört für uns genauso dazu wie gute Zutaten.
-    </p>
-
-    <p><a href="/">Zurück zu OnlyKeks</a></p>
-  </main>
+      <p style="margin-top:18px"><a href="./">Zurück zur Seite</a></p>
+    </div>
+  </div>
 </body>
 </html>

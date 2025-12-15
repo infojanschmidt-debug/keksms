@@ -1,3 +1,1114 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>OnlyKeks – Post, die schmeckt</title>
+  <meta name="description" content="Post, die schmeckt – und zurückkommt. Schick ’ne Nachricht als Keks. QR-Code bringt dir ’ne echte Antwort zurück." />
+  <meta name="theme-color" content="#ff4fa3" />
+  <meta name="robots" content="index,follow" />
+
+  <!-- Social -->
+  <meta property="og:title" content="OnlyKeks – Post, die schmeckt" />
+  <meta property="og:description" content="Post, die schmeckt – und zurückkommt. Keks mit Message. QR scan. Antwort zurück." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="assets/img/og.jpg" />
+  <meta property="og:url" content="./" />
+
+  <style>
+    :root{
+      --bg:#ffffff;
+      --ink:#0b1b2a;
+      --muted:#5b6b7a;
+      --line: rgba(11,27,42,.12);
+
+      /* Deko / Geschenk-Mood */
+      --sky1:#ffe6f2;
+      --sky2:#ffd3ea;
+      --sky3:#fff4ea;
+      --pink:#ff4fa3;
+      --pink2:#ff7cc5;
+      --pinkSoft: rgba(255,79,163,.14);
+      --gold:#d7b46a;
+      --vip:#0b0b0f;
+      --ok:#1a8f5a;
+
+      --r:18px;
+      --shadow: 0 12px 30px rgba(11,27,42,.10);
+      --shadow2: 0 10px 22px rgba(11,27,42,.08);
+      --max: 1100px;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Helvetica Neue", sans-serif;
+      color:var(--ink);
+      background:
+        radial-gradient(1200px 600px at 15% 0%, var(--sky2), transparent 60%),
+        radial-gradient(1000px 700px at 85% 0%, var(--sky3), transparent 55%),
+        linear-gradient(180deg, var(--sky1), #fff 45%);
+      overflow-x:hidden;
+    }
+    a{color:inherit}
+    .wrap{max-width:var(--max); margin:0 auto; padding:22px 18px 60px}
+    .topbar{
+      position:sticky; top:0; z-index:50;
+      backdrop-filter: blur(10px);
+      background: rgba(255,255,255,.72);
+      border-bottom: 1px solid var(--line);
+    }
+    .topbar .inner{max-width:var(--max); margin:0 auto; padding:12px 18px; display:flex; align-items:center; gap:14px}
+    .brand{display:flex; align-items:center; gap:10px; text-decoration:none}
+    .logo{
+      width:56px; height:56px; border-radius:14px;
+      background: radial-gradient(18px 18px at 35% 35%, #fff, rgba(255,255,255,.1) 70%),
+                  linear-gradient(145deg, #ffb3d8, #ffd7ea 55%, #fff1e8);
+      box-shadow: var(--shadow2);
+      border: 1px solid rgba(0,0,0,.06);
+      display:grid; place-items:center;
+      position:relative;
+      overflow:hidden;
+    }
+    .logo svg{width:40px; height:40px}
+    .brand strong{font-size:16px; letter-spacing:.2px}
+    .brand span{display:block; font-size:12px; color:var(--muted); margin-top:2px}
+
+    .spacer{flex:1}
+    .nav{display:flex; gap:12px; align-items:center}
+    .nav a{font-size:13px; color:var(--muted); text-decoration:none}
+    .nav a:hover{color:var(--ink)}
+    .btn{
+      appearance:none; border:0; cursor:pointer;
+      padding:12px 14px; border-radius:14px;
+      font-weight:800; font-size:14px;
+      box-shadow: var(--shadow2);
+      background: linear-gradient(135deg, var(--pink), var(--pink2));
+      color:#fff;
+    }
+    .btn.secondary{
+      background:#fff; color:var(--ink);
+      border: 1px solid var(--line);
+      box-shadow:none;
+      font-weight:800;
+    }
+    .btn:active{transform: translateY(1px)}
+
+    /* Intro overlay (optional video) */
+    .intro{
+      position:fixed; inset:0; z-index:200;
+      background: #000;
+      display:none;
+      align-items:center; justify-content:center;
+    }
+    .intro.on{display:flex}
+    .intro video{width:100%; height:100%; object-fit:cover}
+    .intro .skip{
+      position:absolute; right:16px; top:16px;
+      background: rgba(255,255,255,.85);
+      border: 1px solid rgba(255,255,255,.25);
+      border-radius: 14px;
+      padding:10px 12px;
+      font-weight:900;
+      cursor:pointer;
+    }
+
+    /* Hero */
+    .hero{padding:26px 0 8px}
+    .grid{
+      display:grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap:18px;
+      align-items:stretch;
+    }
+    .card{
+      background: rgba(255,255,255,.78);
+      border: 1px solid var(--line);
+      border-radius: var(--r);
+      box-shadow: var(--shadow);
+    }
+    .heroCopy{padding:22px}
+    h1{margin:0 0 10px; font-size:40px; line-height:1.05; letter-spacing:-.6px}
+    .sub{margin:0 0 14px; color:var(--muted); font-size:15px; line-height:1.5}
+    .chips{display:flex; flex-wrap:wrap; gap:8px; margin:12px 0 16px}
+    .chip{
+      font-size:12px; font-weight:800;
+      padding:8px 10px; border-radius:999px;
+      background: rgba(255,79,163,.10);
+      border: 1px solid rgba(255,79,163,.18);
+      color: #7d1d4d;
+    }
+    .ctaRow{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
+    .note{font-size:12px; color:var(--muted); margin-top:10px}
+
+    .heroMedia{padding:10px; display:grid; gap:10px}
+    .videoBox{
+      border-radius: 16px;
+      overflow:hidden;
+      border:1px solid rgba(0,0,0,.08);
+      background:#fff;
+      position:relative;
+      min-height: 300px;
+    }
+    .videoBox video, .videoBox img{width:100%; height:100%; object-fit:cover; display:block}
+    .badge{
+      position:absolute; left:12px; top:12px;
+      background: rgba(255,255,255,.85);
+      border: 1px solid rgba(0,0,0,.08);
+      border-radius: 999px;
+      padding:8px 10px;
+      font-size:12px; font-weight:900;
+    }
+
+    /* Trust bar */
+    .trust{
+      margin:16px 0 0;
+      display:grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap:10px;
+    }
+    .trust .t{
+      padding:12px 12px;
+      border-radius: 16px;
+      background: rgba(255,255,255,.78);
+      border:1px solid var(--line);
+      box-shadow: var(--shadow2);
+      font-size:12px;
+      color:var(--muted);
+    }
+    .trust .t b{color:var(--ink)}
+
+    /* Sections */
+    .section{margin-top:18px}
+    .section h2{margin:0 0 10px; font-size:20px}
+
+    /* Configurator */
+    .cfg{padding:18px}
+    .row{display:grid; grid-template-columns:1fr 1fr; gap:12px}
+    .lbl{font-size:12px; font-weight:900; color:var(--muted); display:block; margin:8px 0 6px}
+    input, textarea, select{
+      width:100%;
+      border-radius: 14px;
+      border: 1px solid rgba(0,0,0,.12);
+      padding:12px 12px;
+      font-size:14px;
+      outline:none;
+      background:#fff;
+    }
+    textarea{min-height:96px; resize:vertical}
+    input:focus, textarea:focus, select:focus{border-color: rgba(255,79,163,.55); box-shadow: 0 0 0 4px rgba(255,79,163,.14)}
+    .packTiles{
+      display:grid; grid-template-columns: repeat(3, 1fr);
+      gap:10px; margin-top:6px;
+    }
+    .tile{
+      text-align:left;
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      padding:12px;
+      background: rgba(255,255,255,.85);
+      cursor:pointer;
+      position:relative;
+    }
+    .tile b{display:block}
+    .tile small{color:var(--muted)}
+    .tile.active{
+      border-color: rgba(255,79,163,.55);
+      box-shadow: 0 0 0 4px rgba(255,79,163,.14);
+    }
+    .tile .tag{
+      position:absolute; right:10px; top:10px;
+      font-size:11px; font-weight:900;
+      padding:6px 8px; border-radius:999px;
+      background: rgba(255,79,163,.12);
+      border:1px solid rgba(255,79,163,.18);
+      color:#7d1d4d;
+    }
+    .tile.vip{
+      background: linear-gradient(135deg, rgba(11,11,15,.92), rgba(11,11,15,.82));
+      color:#fff;
+      border-color: rgba(215,180,106,.45);
+    }
+    .tile.vip small{color: rgba(255,255,255,.78)}
+    .tile.vip .tag{
+      background: rgba(215,180,106,.12);
+      border-color: rgba(215,180,106,.35);
+      color: var(--gold);
+    }
+
+    .split{
+      display:grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap:12px;
+      align-items:stretch;
+      margin-top:12px;
+    }
+    .preview{
+      padding:14px;
+      border-radius: 16px;
+      border: 1px dashed rgba(0,0,0,.18);
+      background: rgba(255,255,255,.72);
+      min-height: 220px;
+    }
+    .pvTop{display:flex; gap:10px; align-items:center; justify-content:space-between; margin-bottom:10px}
+    .mini{font-size:12px; color:var(--muted)}
+    .qrBox{
+      display:grid;
+      place-items:center;
+      border-radius: 16px;
+      border: 1px solid rgba(0,0,0,.10);
+      background:#fff;
+      padding:10px;
+      min-height: 150px;
+    }
+    .qrBox img{width:140px; height:140px; image-rendering: crisp-edges}
+    .keksMock{
+      border-radius: 16px;
+      border: 1px solid rgba(0,0,0,.08);
+      background: radial-gradient(100px 80px at 30% 30%, #fff1e8, #ffd2b0 55%, #e7b289);
+      padding:12px;
+    }
+    .keksMock .m{
+      font-weight:900;
+      font-size:16px;
+      margin-bottom:6px;
+    }
+    .keksMock .s{font-size:12px; color:rgba(0,0,0,.6)}
+    .actions{display:flex; gap:10px; flex-wrap:wrap; margin-top:10px}
+
+    /* Hall of Keks */
+    .hall{padding:18px}
+    .hallGrid{display:grid; grid-template-columns: repeat(3, 1fr); gap:10px}
+    .hallItem{
+      border-radius: 16px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.85);
+      padding:12px;
+      min-height: 120px;
+      display:flex; flex-direction:column; gap:6px;
+    }
+    .hallItem.vip{
+      border-color: rgba(215,180,106,.55);
+      background: linear-gradient(135deg, rgba(11,11,15,.95), rgba(11,11,15,.82));
+      color:#fff;
+      position:relative;
+      overflow:hidden;
+    }
+    .hallItem.vip:before{
+      content:"";
+      position:absolute; inset:-40px -60px auto auto;
+      width:140px; height:140px;
+      background: radial-gradient(circle, rgba(215,180,106,.35), transparent 60%);
+      transform: rotate(12deg);
+    }
+    .hallItem .p{font-size:12px; color:var(--muted)}
+    .hallItem.vip .p{color: rgba(255,255,255,.78)}
+
+    /* FAQ */
+    details{
+      border:1px solid var(--line);
+      border-radius: 16px;
+      background: rgba(255,255,255,.8);
+      padding:12px 14px;
+    }
+    details + details{margin-top:10px}
+    summary{cursor:pointer; font-weight:900}
+
+    /* Footer */
+    .foot{
+      margin-top:18px;
+      padding-top:14px;
+      border-top:1px solid var(--line);
+      color:var(--muted);
+      font-size:12px;
+      display:flex; flex-wrap:wrap; gap:10px; justify-content:space-between;
+    }
+
+    /* Sprinkle */
+    .sprinkle{
+      position:fixed; top:-12px;
+      width:8px; height:8px;
+      border-radius: 999px;
+      opacity:.9;
+      pointer-events:none;
+      z-index:120;
+      filter: blur(.1px);
+    }
+
+    /* Checkout */
+    .checkout{padding:18px}
+    .progress{
+      display:flex; align-items:center; justify-content:space-between;
+      gap:10px; margin-bottom:12px;
+    }
+    .progress .step{
+      font-size:12px; font-weight:900; color:var(--muted);
+      display:flex; align-items:center; gap:8px;
+    }
+    .bar{
+      flex:1;
+      height:10px;
+      border-radius:999px;
+      background: rgba(11,27,42,.08);
+      overflow:hidden;
+      border:1px solid rgba(11,27,42,.08);
+    }
+    .bar > div{
+      height:100%;
+      width:100%;
+      background: linear-gradient(135deg, var(--pink), var(--pink2));
+    }
+    .summaryGrid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:12px;
+      margin-top:12px;
+    }
+    .box{
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.86);
+      padding:14px;
+    }
+    .kv{
+      display:flex; justify-content:space-between; gap:10px;
+      padding:8px 0;
+      border-top:1px dashed rgba(11,27,42,.12);
+      font-size:13px;
+    }
+    .kv:first-child{border-top:0; padding-top:0}
+    .kv b{font-weight:900}
+    .badgeDeal{
+      display:inline-flex; align-items:center; gap:6px;
+      font-size:11px; font-weight:900;
+      padding:6px 8px;
+      border-radius:999px;
+      background: rgba(255,79,163,.12);
+      border:1px solid rgba(255,79,163,.20);
+      color:#7d1d4d;
+    }
+    .dealRow{
+      display:flex; gap:10px; flex-wrap:wrap; margin-top:10px;
+    }
+    .dealBtn{
+      flex:1;
+      min-width: 160px;
+      border-radius: 16px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.90);
+      padding:12px;
+      cursor:pointer;
+      text-align:left;
+    }
+    .dealBtn.active{
+      border-color: rgba(255,79,163,.55);
+      box-shadow: 0 0 0 4px rgba(255,79,163,.14);
+    }
+    .dealBtn b{display:block}
+    .dealBtn small{color:var(--muted)}
+    .impact{
+      border-radius: 16px;
+      border:1px solid rgba(26,143,90,.25);
+      background: rgba(26,143,90,.07);
+      padding:12px 14px;
+      margin-top:12px;
+    }
+    .impact label{
+      display:flex; gap:10px; align-items:flex-start;
+      cursor:pointer;
+    }
+    .impact input{width:18px; height:18px; margin-top:2px}
+    .payCta{
+      width:100%;
+      padding:16px 16px;
+      border-radius: 16px;
+      font-size:16px;
+      font-weight:900;
+      margin-top:12px;
+    }
+    .trustLine{
+      display:flex; gap:12px; flex-wrap:wrap;
+      justify-content:center;
+      color:var(--muted);
+      font-size:12px;
+      margin-top:10px;
+    }
+    .legalMini{
+      color:var(--muted);
+      font-size:11px;
+      margin-top:10px;
+      text-align:center;
+    }
+
+    @media (max-width: 920px){
+      .grid, .split{grid-template-columns:1fr}
+      h1{font-size:34px}
+      .trust{grid-template-columns: 1fr 1fr}
+      .hallGrid{grid-template-columns:1fr}
+      .summaryGrid{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Intro Video Overlay -->
+  <div class="intro" id="intro">
+    <video id="introVideo" playsinline muted preload="auto">
+      <source src="assets/video/intro.mp4" type="video/mp4">
+    </video>
+    <button class="skip" id="skipIntro" type="button">Skip</button>
+  </div>
+
+  <div class="topbar">
+    <div class="inner">
+      <a class="brand" href="./">
+        <div class="logo" aria-label="OnlyKeks Logo">
+          <svg viewBox="0 0 64 64" fill="none" aria-hidden="true">
+            <path d="M32 8c13.25 0 24 10.75 24 24S45.25 56 32 56 8 45.25 8 32 18.75 8 32 8Z" fill="rgba(255,79,163,.20)"/>
+            <path d="M32 10c12.15 0 22 9.85 22 22S44.15 54 32 54 10 44.15 10 32 19.85 10 32 10Z" fill="rgba(255,255,255,.80)"/>
+            <path d="M32 12c11.05 0 20 8.95 20 20S43.05 52 32 52 12 43.05 12 32 20.95 12 32 12Z" fill="url(#g)"/>
+            <circle cx="24" cy="26" r="3" fill="rgba(11,27,42,.35)"/>
+            <circle cx="38" cy="24" r="2.6" fill="rgba(11,27,42,.35)"/>
+            <circle cx="40" cy="38" r="3.1" fill="rgba(11,27,42,.35)"/>
+            <circle cx="26" cy="40" r="2.4" fill="rgba(11,27,42,.35)"/>
+            <defs>
+              <linearGradient id="g" x1="14" y1="14" x2="54" y2="54">
+                <stop stop-color="#fff1e8"/>
+                <stop offset=".55" stop-color="#ffd2b0"/>
+                <stop offset="1" stop-color="#e7b289"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <div>
+          <strong>OnlyKeks</strong>
+          <span>Post, die schmeckt</span>
+        </div>
+      </a>
+
+      <div class="spacer"></div>
+
+      <div class="nav">
+        <a href="#konfigurator">Konfigurator</a>
+        <a href="#checkout">Checkout</a>
+        <a href="#hall">Hall of Keks</a>
+        <a href="#faq">FAQ</a>
+        <button class="btn" id="jumpCta" type="button">Keks gestalten</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <section class="hero">
+      <div class="grid">
+        <div class="card heroCopy">
+          <h1>Post, die schmeckt – und zurückkommt.</h1>
+          <p class="sub">Schick ’ne Nachricht als Keks. Der QR-Code bringt dir ’ne echte Antwort zurück.</p>
+
+          <div class="chips">
+            <div class="chip">Ein Keks. Ein Scan. Eine Antwort.</div>
+            <div class="chip">Kein Account</div>
+            <div class="chip">Draft wird gespeichert</div>
+            <div class="chip">VIP Schwarz/Gold möglich</div>
+          </div>
+
+          <div class="ctaRow">
+            <button class="btn" id="ctaStart" type="button">Keks gestalten</button>
+            <button class="btn secondary" id="ctaDemo" type="button">Beispiel ansehen</button>
+          </div>
+          <div class="note">Kein Account · Kein Abo · Keine Datenweitergabe</div>
+        </div>
+
+        <div class="card heroMedia">
+          <div class="videoBox">
+            <div class="badge">Hero (Loop)</div>
+            <video id="heroLoop" playsinline muted loop autoplay preload="metadata" poster="assets/img/hero-poster.jpg">
+              <source src="assets/video/hero-loop.mp4" type="video/mp4">
+            </video>
+          </div>
+
+          <div class="trust">
+            <div class="t"><b>Kein Account</b><br><span>Scan & Antwort in Sekunden.</span></div>
+            <div class="t"><b>QR pro Keks</b><br><span>Jeder Keks hat seinen Link.</span></div>
+            <div class="t"><b>Privat</b><br><span>Keine Datenweitergabe.</span></div>
+            <div class="t"><b>Einfach</b><br><span>Message → Deko → Send.</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section card cfg" id="konfigurator">
+      <h2>Keks-Konfigurator</h2>
+
+      <label class="lbl" for="pack">Paket</label>
+      <select id="pack" name="pack">
+        <option value="Quick">Quick</option>
+        <option value="Custom" selected>Custom</option>
+        <option value="Premium">Premium</option>
+      </select>
+
+      <div class="packTiles" id="packTiles" role="radiogroup" aria-label="Paket wählen">
+        <button class="tile" type="button" data-pack="Quick">
+          <span class="tag">schnell</span>
+          <b>Quick</b>
+          <small>Message + QR. Straight.</small>
+        </button>
+        <button class="tile active" type="button" data-pack="Custom">
+          <span class="tag">beliebt</span>
+          <b>Custom</b>
+          <small>Mehr Deko. Mehr Wow.</small>
+        </button>
+        <button class="tile vip" type="button" data-pack="Premium">
+          <span class="tag">VIP</span>
+          <b>Premium</b>
+          <small>Schwarz/Gold. Prestige.</small>
+        </button>
+      </div>
+
+      <div class="row" style="margin-top:10px">
+        <div>
+          <label class="lbl" for="message">Deine Message</label>
+          <textarea id="message" maxlength="500" placeholder="z. B. „Ey… ick hab dich lieb.“"></textarea>
+          <div class="mini" id="count">0/500</div>
+        </div>
+        <div>
+          <label class="lbl" for="shape">Keksform</label>
+          <select id="shape">
+            <option value="Kreis" selected>Kreis</option>
+            <option value="Herz">Herz</option>
+            <option value="Stern">Stern</option>
+            <option value="Smiley">Smiley</option>
+            <option value="Tannenbaum">Tannenbaum</option>
+          </select>
+
+          <label class="lbl" for="theme">Deko-Stil</label>
+          <select id="theme">
+            <option value="Pastell">Pastell</option>
+            <option value="Romantisch">Romantisch</option>
+            <option value="Party">Party</option>
+            <option value="Motivation">Motivation</option>
+            <option value="VIP Schwarz/Gold">VIP Schwarz/Gold</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="split">
+        <div class="preview">
+          <div class="pvTop">
+            <div>
+              <div style="font-weight:900">Live-Preview</div>
+              <div class="mini">Draft wird automatisch gespeichert. verstehste</div>
+            </div>
+            <div class="mini" id="draftIdLabel">Draft: –</div>
+          </div>
+
+          <div class="keksMock" id="keksMock">
+            <div class="m" id="pvMsg">Schreib ’ne Message…</div>
+            <div class="s" id="pvMeta">Custom · Kreis · Pastell</div>
+          </div>
+
+          <div class="actions">
+            <button class="btn secondary" type="button" id="btnNew">Neuer Draft</button>
+            <button class="btn secondary" type="button" id="btnCopyLink">QR-Link kopieren</button>
+            <button class="btn" type="button" id="btnShare">Share-Design</button>
+          </div>
+
+          <div class="mini" id="shareOut" style="margin-top:8px"></div>
+        </div>
+
+        <div class="preview">
+          <div class="pvTop">
+            <div>
+              <div style="font-weight:900">QR-Code</div>
+              <div class="mini">Scan führt zu <code>keks.html</code> mit deinem Token.</div>
+            </div>
+            <div class="mini" id="qrHint">–</div>
+          </div>
+
+          <div class="qrBox">
+            <img id="qrImg" alt="QR Code" src="" />
+          </div>
+
+          <div class="mini" style="margin-top:10px">
+            Tipp: Den QR-Link kannst du direkt an den Empfänger schicken – oder in echt auf den Keks packen. checkst du
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section card checkout" id="checkout">
+      <div class="progress">
+        <div class="step">Schritt 3 von 3 · <span style="font-weight:900;color:var(--ink)">Fast fertig</span></div>
+        <div class="bar" aria-hidden="true"><div></div></div>
+      </div>
+
+      <h2>Checkout</h2>
+      <div class="mini">Ein Klick, dann geht’s los. verstehste</div>
+
+      <div class="box" style="margin-top:12px">
+        <div style="display:flex; justify-content:space-between; gap:10px; align-items:center">
+          <div style="font-weight:900">3er-Deal</div>
+          <span class="badgeDeal" id="dealBadge">–25 %</span>
+        </div>
+        <div class="mini" style="margin-top:6px">Mehr Freude, weniger Versand. 3 Kekse verschicken – 25 % sparen.</div>
+
+        <div class="dealRow" role="radiogroup" aria-label="Menge wählen">
+          <button class="dealBtn" type="button" id="qty1">
+            <b>1 Keks</b>
+            <small>Standard</small>
+          </button>
+          <button class="dealBtn active" type="button" id="qty3">
+            <b>3 Kekse <span class="badgeDeal" style="margin-left:8px">–25 %</span></b>
+            <small>Beliebt bei Geschenken & Antworten</small>
+          </button>
+        </div>
+      </div>
+
+      <div class="summaryGrid">
+        <div class="box">
+          <div style="font-weight:900; margin-bottom:6px">Deine Bestellung</div>
+          <div class="kv"><span>Anzahl Kekse</span> <b id="sumQty">3</b></div>
+          <div class="kv"><span>Versand</span> <b>einmal</b></div>
+          <div class="kv"><span>QR-Antwort</span> <b>inklusive</b></div>
+          <div class="kv"><span>Empfänger</span> <b>mehrere möglich</b></div>
+          <div class="mini" style="margin-top:10px">Du kannst gleich noch anpassen. checkst du</div>
+        </div>
+
+        <div class="box">
+          <div style="font-weight:900; margin-bottom:6px">Summe (Demo)</div>
+          <div class="kv"><span>Zwischensumme</span> <b id="subTotal">–</b></div>
+          <div class="kv"><span>Rabatt</span> <b id="discount">–</b></div>
+          <div class="kv"><span>Spende</span> <b id="donationLine">0,00 €</b></div>
+          <div class="kv"><span>Gesamt</span> <b id="total">–</b></div>
+
+          <div class="impact">
+            <label>
+              <input type="checkbox" id="donate" />
+              <div>
+                <div style="font-weight:900">Gutes mitmachen (optional)</div>
+                <div class="mini">0,50 € pro Bestellung gehen an eine Organisation, die Bäume pflanzt.</div>
+              </div>
+            </label>
+          </div>
+
+          <button class="btn payCta" id="sendNow" type="button">Jetzt senden</button>
+
+          <div class="mini" style="text-align:center; margin-top:10px">
+            Deine Kekse gehen heute in die Vorbereitung.
+          </div>
+
+          <div class="trustLine">
+            <span>✓ Sichere Zahlung</span>
+            <span>✓ Kein Abo</span>
+            <span>✓ Keine Datenweitergabe</span>
+          </div>
+
+          <div class="legalMini">
+            Mit dem Klick auf „Jetzt senden“ stimmst du unseren
+            <a href="agb.html">AGB</a> und der <a href="privacy.html">Datenschutzerklärung</a> zu.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section card hall" id="hall">
+      <h2>Hall of Keks</h2>
+      <div class="mini" style="margin-bottom:10px">Beliebte Designs – inkl. VIP-Highlight (Schwarz/Gold). verstehste</div>
+
+      <div class="hallGrid" id="hallGrid">
+        <div class="hallItem vip">
+          <b>Legendary VIP</b>
+          <div class="p">Schwarz/Gold – „Du bist Luxus.“</div>
+          <button class="btn secondary" type="button" data-load="vip">Laden</button>
+        </div>
+        <div class="hallItem">
+          <b>Pastell Love</b>
+          <div class="p">„Denk an dich.“</div>
+          <button class="btn secondary" type="button" data-load="love">Laden</button>
+        </div>
+        <div class="hallItem">
+          <b>Party Ping</b>
+          <div class="p">„Heute eskalieren wir.“</div>
+          <button class="btn secondary" type="button" data-load="party">Laden</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="faq">
+      <h2>FAQ</h2>
+
+      <details>
+        <summary>Wie funktioniert der Reply-Loop?</summary>
+        <p class="sub">
+          Jeder Keks bekommt einen QR-Link zu <code>keks.html</code>. Der Empfänger scannt, tippt ’ne Antwort,
+          und du kannst daraus direkt den nächsten Keks zurückschicken. Kein Account. verstehste
+        </p>
+      </details>
+
+      <details>
+        <summary>Speichert ihr Cookies & Tracking?</summary>
+        <p class="sub">Im MVP wird lokal gespeichert (localStorage). Keine Tracker. checkst du</p>
+      </details>
+
+      <details>
+        <summary>Was fehlt noch für „echtes Business“?</summary>
+        <p class="sub">Stripe + Backend + Produktionspartner. Frontend ist schon darauf ausgelegt. verstehste</p>
+      </details>
+    </section>
+
+    <section class="section">
+      <details>
+        <summary>Was passiert mit Keksen, die nicht mehr verkauft werden können?</summary>
+        <p class="sub">
+          Noch einwandfreie Kekse geben unsere Partnerbäckereien lokal weiter – zum Beispiel an Kindergärten.
+          Leise, unkompliziert, ohne Show. verstehste
+        </p>
+      </details>
+    </section>
+
+    <div class="foot">
+      <div>© <span id="y"></span> OnlyKeks</div>
+      <div style="display:flex; gap:12px; flex-wrap:wrap">
+        <a href="privacy.html">Wie wir mit Daten umgehen</a>
+        <a href="agb.html">AGB</a>
+        <a href="#konfigurator">Konfigurator</a>
+        <a href="#checkout">Checkout</a>
+        <a href="#faq">FAQ</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Helpers
+    const $ = (s, el=document) => el.querySelector(s);
+    const $$ = (s, el=document) => [...el.querySelectorAll(s)];
+
+    function uid(){
+      return 'keks_' + Math.random().toString(16).slice(2) + '_' + Date.now().toString(16);
+    }
+
+    function baseUrl(){
+      const u = new URL(window.location.href);
+      if(!u.pathname.endsWith('/')) u.pathname = u.pathname.replace(/[^/]*$/, '');
+      return u.toString();
+    }
+
+    function buildReplyUrl(draftId){
+      const u = new URL(baseUrl() + 'keks.html');
+      u.searchParams.set('t', draftId);
+      return u.toString();
+    }
+
+    function makeQRDataURL(text, size=170){
+      // MVP: Google Charts QR. Later: local library.
+      return 'https://chart.googleapis.com/chart?cht=qr&chs=' + size + 'x' + size + '&chl=' + encodeURIComponent(text);
+    }
+
+    // State
+    const KEY = 'onlykeks:draft';
+    let draft = null;
+
+    function loadDraft(){
+      try{
+        const raw = localStorage.getItem(KEY);
+        if(raw) return JSON.parse(raw);
+      }catch(e){}
+      return null;
+    }
+    function saveDraft(){
+      try{ localStorage.setItem(KEY, JSON.stringify(draft)); }catch(e){}
+    }
+
+    function newDraft(){
+      draft = {
+        id: uid(),
+        pack: 'Custom',
+        message: '',
+        shape: 'Kreis',
+        theme: 'Pastell',
+        createdAt: new Date().toISOString()
+      };
+      saveDraft();
+      renderAll();
+    }
+
+    // UI bindings
+    const intro = $('#intro');
+    const introVideo = $('#introVideo');
+    const skipIntro = $('#skipIntro');
+
+    const heroLoop = $('#heroLoop');
+    const jumpCta = $('#jumpCta');
+    const ctaStart = $('#ctaStart');
+    const ctaDemo = $('#ctaDemo');
+
+    const packSel = $('#pack');
+    const packTiles = $('#packTiles');
+    const msg = $('#message');
+    const count = $('#count');
+    const shape = $('#shape');
+    const theme = $('#theme');
+
+    const pvMsg = $('#pvMsg');
+    const pvMeta = $('#pvMeta');
+    const draftIdLabel = $('#draftIdLabel');
+
+    const qrImg = $('#qrImg');
+    const qrHint = $('#qrHint');
+
+    const btnNew = $('#btnNew');
+    const btnCopyLink = $('#btnCopyLink');
+    const btnShare = $('#btnShare');
+    const shareOut = $('#shareOut');
+
+    // Checkout bindings
+    const qty1 = $('#qty1');
+    const qty3 = $('#qty3');
+    const donateBox = $('#donate');
+    const sendNow = $('#sendNow');
+
+    // Render
+    function setActiveTile(pack){
+      $$('#packTiles .tile').forEach(b => b.classList.toggle('active', b.dataset.pack === pack));
+    }
+
+    function renderQR(){
+      const replyUrl = buildReplyUrl(draft.id);
+      qrImg.src = makeQRDataURL(replyUrl, 170);
+      qrHint.textContent = 'Link: ' + replyUrl.replace(/^https?:\/\//,'');
+    }
+
+    function renderPreview(){
+      pvMsg.textContent = draft.message.trim() ? draft.message.trim() : "Schreib ’ne Message…";
+      pvMeta.textContent = `${draft.pack} · ${draft.shape} · ${draft.theme}`;
+      draftIdLabel.textContent = 'Draft: ' + draft.id;
+      draftIdLabel.title = draft.id;
+    }
+
+    function renderAll(){
+      packSel.value = draft.pack;
+      setActiveTile(draft.pack);
+
+      msg.value = draft.message;
+      count.textContent = (draft.message || '').length + '/500';
+
+      shape.value = draft.shape;
+      theme.value = draft.theme;
+
+      renderPreview();
+      renderQR();
+      renderCheckout();
+    }
+
+    // Events
+    function updateDraft(patch){
+      draft = {...draft, ...patch};
+      saveDraft();
+      renderAll();
+    }
+
+    packSel.addEventListener('change', () => updateDraft({pack: packSel.value}));
+    packTiles.addEventListener('click', (e) => {
+      const btn = e.target.closest('.tile');
+      if(!btn) return;
+      const p = btn.dataset.pack;
+      packSel.value = p;
+      packSel.dispatchEvent(new Event('change'));
+    });
+
+    msg.addEventListener('input', () => {
+      count.textContent = msg.value.length + '/500';
+      updateDraft({message: msg.value});
+    });
+    shape.addEventListener('change', () => updateDraft({shape: shape.value}));
+    theme.addEventListener('change', () => updateDraft({theme: theme.value}));
+
+    btnNew.addEventListener('click', () => newDraft());
+
+    btnCopyLink.addEventListener('click', async () => {
+      const url = buildReplyUrl(draft.id);
+      try{
+        await navigator.clipboard.writeText(url);
+        shareOut.textContent = 'QR-Link kopiert: ' + url;
+      }catch(e){
+        shareOut.textContent = 'Kopieren ging nich automatisch. Hier: ' + url;
+      }
+    });
+
+    btnShare.addEventListener('click', async () => {
+      const payload = {
+        title: 'OnlyKeks',
+        text: 'Mein Keks-Design – scan & antworte:',
+        url: buildReplyUrl(draft.id)
+      };
+      try{
+        if(navigator.share){
+          await navigator.share(payload);
+          shareOut.textContent = 'Geteilt.';
+        }else{
+          shareOut.textContent = 'Share nicht verfügbar. Link: ' + payload.url;
+        }
+      }catch(e){
+        shareOut.textContent = 'Abgebrochen. Link: ' + payload.url;
+      }
+    });
+
+    function scrollToCfg(){
+      document.getElementById('konfigurator').scrollIntoView({behavior:'smooth', block:'start'});
+      msg.focus({preventScroll:true});
+    }
+    jumpCta.addEventListener('click', scrollToCfg);
+    ctaStart.addEventListener('click', scrollToCfg);
+
+    // Demo / Beispiel
+    ctaDemo.addEventListener('click', () => {
+      updateDraft({
+        pack:'Custom',
+        message:'Ey… ick dachte kurz an dich. ❤️',
+        shape:'Herz',
+        theme:'Romantisch'
+      });
+      scrollToCfg();
+    });
+
+    // Hall loader
+    $('#hallGrid').addEventListener('click', (e) => {
+      const b = e.target.closest('button[data-load]');
+      if(!b) return;
+      const k = b.dataset.load;
+      if(k==='vip'){
+        updateDraft({pack:'Premium', message:'Du bist Luxus. Schwarz/Gold.', shape:'Kreis', theme:'VIP Schwarz/Gold'});
+      }else if(k==='love'){
+        updateDraft({pack:'Custom', message:'Denk an dich. Kuss.', shape:'Herz', theme:'Pastell'});
+      }else if(k==='party'){
+        updateDraft({pack:'Quick', message:'Heute eskalieren wir.', shape:'Stern', theme:'Party'});
+      }
+      scrollToCfg();
+    });
+
+    // Sprinkle rain
+    function sprinkleBurst(n=22){
+      const colors = ['#ff4fa3','#ff7cc5','#ffd2b0','#fff1e8','#d7b46a'];
+      for(let i=0;i<n;i++){
+        const s = document.createElement('div');
+        s.className = 'sprinkle';
+        s.style.left = (Math.random()*100) + 'vw';
+        s.style.background = colors[Math.floor(Math.random()*colors.length)];
+        s.style.width = (6 + Math.random()*6) + 'px';
+        s.style.height = (6 + Math.random()*6) + 'px';
+        const dur = 1200 + Math.random()*1200;
+        const drift = (Math.random()*2-1) * 80;
+        const rot = Math.random()*360;
+        document.body.appendChild(s);
+
+        const start = performance.now();
+        function tick(t){
+          const p = Math.min(1, (t-start)/dur);
+          const y = -12 + p*(window.innerHeight+40);
+          s.style.transform = `translate(${drift*p}px, ${y}px) rotate(${rot*p}deg)`;
+          s.style.opacity = String(1 - p*0.6);
+          if(p<1) requestAnimationFrame(tick);
+          else s.remove();
+        }
+        requestAnimationFrame(tick);
+      }
+    }
+
+    // Intro video logic (autoplay fallback)
+    async function tryIntro(){
+      if(!window.ONLYKEKS_INTRO) return;
+
+      intro.classList.add('on');
+      const done = () => intro.classList.remove('on');
+
+      skipIntro.addEventListener('click', () => { try{introVideo.pause()}catch(e){} done(); }, {once:true});
+
+      try{
+        introVideo.muted = true;
+        introVideo.playsInline = true;
+        await introVideo.play();
+        const cap = setTimeout(() => { done(); }, 6500);
+        introVideo.addEventListener('ended', () => { clearTimeout(cap); done(); }, {once:true});
+        introVideo.addEventListener('error', () => { clearTimeout(cap); done(); }, {once:true});
+      }catch(e){
+        done();
+      }
+    }
+
+    // Hero loop fallback if autoplay fails
+    async function ensureHeroLoop(){
+      try{
+        heroLoop.muted = true;
+        heroLoop.playsInline = true;
+        await heroLoop.play();
+      }catch(e){}
+    }
+
+    // Checkout logic
+    const PRICE_ONE = 6.90;  // anpassen
+    const DISCOUNT_3 = 0.25;
+    const DONATION = 0.50;
+
+    let qty = 3;      // Default: 3er
+    let donate = false;
+
+    function fmtEUR(n){
+      return n.toLocaleString('de-DE', { style:'currency', currency:'EUR' });
+    }
+
+    function renderCheckout(){
+      qty1.classList.toggle('active', qty === 1);
+      qty3.classList.toggle('active', qty === 3);
+
+      $('#sumQty').textContent = String(qty);
+      $('#dealBadge').style.visibility = (qty === 3) ? 'visible' : 'hidden';
+
+      const base = qty * PRICE_ONE;
+      const disc = (qty === 3) ? base * DISCOUNT_3 : 0;
+      const don = donate ? DONATION : 0;
+      const total = base - disc + don;
+
+      $('#subTotal').textContent = fmtEUR(base);
+      $('#discount').textContent = disc ? ('-' + fmtEUR(disc)) : fmtEUR(0);
+      $('#donationLine').textContent = fmtEUR(don);
+      $('#total').textContent = fmtEUR(total);
+    }
+
+    qty1.addEventListener('click', () => { qty = 1; renderCheckout(); });
+    qty3.addEventListener('click', () => { qty = 3; renderCheckout(); });
+    donateBox.addEventListener('change', (e) => { donate = !!e.target.checked; renderCheckout(); });
+
+    sendNow.addEventListener('click', () => {
+      // MVP Demo: später Stripe ankoppeln
+      const replyUrl = buildReplyUrl(draft.id);
+      alert(
+        'Gesendet (Demo).\n\n' +
+        'QR-Link für die Antwort:\n' + replyUrl + '\n\n' +
+        'Nächster Step: Stripe/Partner dranhängen.'
+      );
+      sprinkleBurst(26);
+    });
+
+    // Boot
+    (function init(){
+      $('#y').textContent = new Date().getFullYear();
+
+      // Intro an
+      window.ONLYKEKS_INTRO = true;
+
+      draft = loadDraft();
+      if(!draft) newDraft();
+      else renderAll();
+
+      sprinkleBurst(22);
+
+      ensureHeroLoop();
+      tryIntro();
+    })();
+  </script>
+</body>
+</html>
 <!-- KOMPLETT FERTIGE DATEI
      index.html
      Enthält: Landing + Konfigurator + Reply-Loop + Checkout (MVP)
@@ -161,3 +1272,4 @@
   }
 </script></body>
 </html>
+

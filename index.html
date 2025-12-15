@@ -4,13 +4,13 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>OnlyKeks – Post, die schmeckt</title>
-  <meta name="description" content="Gestalte einen Keks mit Message. Verschicken. Scannen. Antwort zurück – per QR." />
+  <meta name="description" content="Post, die schmeckt – und zurückkommt. Schick ’ne Nachricht als Keks. QR-Code bringt dir ’ne echte Antwort zurück." />
   <meta name="theme-color" content="#ff4fa3" />
   <meta name="robots" content="index,follow" />
 
   <!-- Social -->
   <meta property="og:title" content="OnlyKeks – Post, die schmeckt" />
-  <meta property="og:description" content="Schicke süße Botschaften – und hol dir per QR eine Antwort zurück." />
+  <meta property="og:description" content="Post, die schmeckt – und zurückkommt. Keks mit Message. QR scan. Antwort zurück." />
   <meta property="og:type" content="website" />
   <meta property="og:image" content="assets/img/og.jpg" />
   <meta property="og:url" content="./" />
@@ -82,7 +82,7 @@
     .btn{
       appearance:none; border:0; cursor:pointer;
       padding:12px 14px; border-radius:14px;
-      font-weight:700; font-size:14px;
+      font-weight:800; font-size:14px;
       box-shadow: var(--shadow2);
       background: linear-gradient(135deg, var(--pink), var(--pink2));
       color:#fff;
@@ -91,6 +91,7 @@
       background:#fff; color:var(--ink);
       border: 1px solid var(--line);
       box-shadow:none;
+      font-weight:800;
     }
     .btn:active{transform: translateY(1px)}
 
@@ -109,7 +110,7 @@
       border: 1px solid rgba(255,255,255,.25);
       border-radius: 14px;
       padding:10px 12px;
-      font-weight:800;
+      font-weight:900;
       cursor:pointer;
     }
 
@@ -132,7 +133,7 @@
     .sub{margin:0 0 14px; color:var(--muted); font-size:15px; line-height:1.5}
     .chips{display:flex; flex-wrap:wrap; gap:8px; margin:12px 0 16px}
     .chip{
-      font-size:12px; font-weight:700;
+      font-size:12px; font-weight:800;
       padding:8px 10px; border-radius:999px;
       background: rgba(255,79,163,.10);
       border: 1px solid rgba(255,79,163,.18);
@@ -181,12 +182,6 @@
     /* Sections */
     .section{margin-top:18px}
     .section h2{margin:0 0 10px; font-size:20px}
-    .two{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap:14px;
-      align-items:start;
-    }
 
     /* Configurator */
     .cfg{padding:18px}
@@ -282,13 +277,9 @@
     .keksMock .s{font-size:12px; color:rgba(0,0,0,.6)}
     .actions{display:flex; gap:10px; flex-wrap:wrap; margin-top:10px}
 
-    /* Hall of Keks (VIP highlight placeholder) */
+    /* Hall of Keks */
     .hall{padding:18px}
-    .hallGrid{
-      display:grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap:10px;
-    }
+    .hallGrid{display:grid; grid-template-columns: repeat(3, 1fr); gap:10px}
     .hallItem{
       border-radius: 16px;
       border:1px solid var(--line);
@@ -323,6 +314,8 @@
     }
     details + details{margin-top:10px}
     summary{cursor:pointer; font-weight:900}
+
+    /* Footer */
     .foot{
       margin-top:18px;
       padding-top:14px;
@@ -332,7 +325,7 @@
       display:flex; flex-wrap:wrap; gap:10px; justify-content:space-between;
     }
 
-    /* Sprinkle / crumb rain (lightweight) */
+    /* Sprinkle */
     .sprinkle{
       position:fixed; top:-12px;
       width:8px; height:8px;
@@ -343,19 +336,124 @@
       filter: blur(.1px);
     }
 
+    /* Checkout */
+    .checkout{padding:18px}
+    .progress{
+      display:flex; align-items:center; justify-content:space-between;
+      gap:10px; margin-bottom:12px;
+    }
+    .progress .step{
+      font-size:12px; font-weight:900; color:var(--muted);
+      display:flex; align-items:center; gap:8px;
+    }
+    .bar{
+      flex:1;
+      height:10px;
+      border-radius:999px;
+      background: rgba(11,27,42,.08);
+      overflow:hidden;
+      border:1px solid rgba(11,27,42,.08);
+    }
+    .bar > div{
+      height:100%;
+      width:100%;
+      background: linear-gradient(135deg, var(--pink), var(--pink2));
+    }
+    .summaryGrid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:12px;
+      margin-top:12px;
+    }
+    .box{
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.86);
+      padding:14px;
+    }
+    .kv{
+      display:flex; justify-content:space-between; gap:10px;
+      padding:8px 0;
+      border-top:1px dashed rgba(11,27,42,.12);
+      font-size:13px;
+    }
+    .kv:first-child{border-top:0; padding-top:0}
+    .kv b{font-weight:900}
+    .badgeDeal{
+      display:inline-flex; align-items:center; gap:6px;
+      font-size:11px; font-weight:900;
+      padding:6px 8px;
+      border-radius:999px;
+      background: rgba(255,79,163,.12);
+      border:1px solid rgba(255,79,163,.20);
+      color:#7d1d4d;
+    }
+    .dealRow{
+      display:flex; gap:10px; flex-wrap:wrap; margin-top:10px;
+    }
+    .dealBtn{
+      flex:1;
+      min-width: 160px;
+      border-radius: 16px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.90);
+      padding:12px;
+      cursor:pointer;
+      text-align:left;
+    }
+    .dealBtn.active{
+      border-color: rgba(255,79,163,.55);
+      box-shadow: 0 0 0 4px rgba(255,79,163,.14);
+    }
+    .dealBtn b{display:block}
+    .dealBtn small{color:var(--muted)}
+    .impact{
+      border-radius: 16px;
+      border:1px solid rgba(26,143,90,.25);
+      background: rgba(26,143,90,.07);
+      padding:12px 14px;
+      margin-top:12px;
+    }
+    .impact label{
+      display:flex; gap:10px; align-items:flex-start;
+      cursor:pointer;
+    }
+    .impact input{width:18px; height:18px; margin-top:2px}
+    .payCta{
+      width:100%;
+      padding:16px 16px;
+      border-radius: 16px;
+      font-size:16px;
+      font-weight:900;
+      margin-top:12px;
+    }
+    .trustLine{
+      display:flex; gap:12px; flex-wrap:wrap;
+      justify-content:center;
+      color:var(--muted);
+      font-size:12px;
+      margin-top:10px;
+    }
+    .legalMini{
+      color:var(--muted);
+      font-size:11px;
+      margin-top:10px;
+      text-align:center;
+    }
+
     @media (max-width: 920px){
       .grid, .split{grid-template-columns:1fr}
       h1{font-size:34px}
       .trust{grid-template-columns: 1fr 1fr}
       .hallGrid{grid-template-columns:1fr}
+      .summaryGrid{grid-template-columns:1fr}
     }
   </style>
 </head>
 
 <body>
-  <!-- Optional Intro Video Overlay -->
+  <!-- Intro Video Overlay -->
   <div class="intro" id="intro">
-    <!-- Lege dein Intro-Video hier ab: assets/video/intro.mp4 -->
     <video id="introVideo" playsinline muted preload="auto">
       <source src="assets/video/intro.mp4" type="video/mp4">
     </video>
@@ -366,7 +464,6 @@
     <div class="inner">
       <a class="brand" href="./">
         <div class="logo" aria-label="OnlyKeks Logo">
-          <!-- Simple cookie logo -->
           <svg viewBox="0 0 64 64" fill="none" aria-hidden="true">
             <path d="M32 8c13.25 0 24 10.75 24 24S45.25 56 32 56 8 45.25 8 32 18.75 8 32 8Z" fill="rgba(255,79,163,.20)"/>
             <path d="M32 10c12.15 0 22 9.85 22 22S44.15 54 32 54 10 44.15 10 32 19.85 10 32 10Z" fill="rgba(255,255,255,.80)"/>
@@ -394,6 +491,7 @@
 
       <div class="nav">
         <a href="#konfigurator">Konfigurator</a>
+        <a href="#checkout">Checkout</a>
         <a href="#hall">Hall of Keks</a>
         <a href="#faq">FAQ</a>
         <button class="btn" id="jumpCta" type="button">Keks gestalten</button>
@@ -405,40 +503,36 @@
     <section class="hero">
       <div class="grid">
         <div class="card heroCopy">
-          <h1>Schick ’ne süße Botschaft.<br>Hol dir ’ne Antwort zurück.</h1>
-          <p class="sub">
-            Du gestaltest einen Keks mit Message. Der Empfänger scannt den QR-Code und antwortet.
-            Dann geht der nächste Keks automatisch zurück – Reply-Loop. Kein Account. Kein Stress. verstehste
-          </p>
+          <h1>Post, die schmeckt – und zurückkommt.</h1>
+          <p class="sub">Schick ’ne Nachricht als Keks. Der QR-Code bringt dir ’ne echte Antwort zurück.</p>
 
           <div class="chips">
-            <div class="chip">QR-Antwort in 10 Sekunden</div>
-            <div class="chip">Geschenk-Mood, kein Tech-Look</div>
+            <div class="chip">Ein Keks. Ein Scan. Eine Antwort.</div>
+            <div class="chip">Kein Account</div>
             <div class="chip">Draft wird gespeichert</div>
-            <div class="chip">VIP-Hall of Keks</div>
+            <div class="chip">VIP Schwarz/Gold möglich</div>
           </div>
 
           <div class="ctaRow">
-            <button class="btn" id="ctaStart" type="button">Jetzt gestalten</button>
-            <button class="btn secondary" id="ctaDemo" type="button">Demo laden</button>
+            <button class="btn" id="ctaStart" type="button">Keks gestalten</button>
+            <button class="btn secondary" id="ctaDemo" type="button">Beispiel ansehen</button>
           </div>
-          <div class="note">Hinweis: Das ist ein MVP-Frontend. Zahlung/Produktion kannst du später ankoppeln (Stripe/Partner). checkst du</div>
+          <div class="note">Kein Account · Kein Abo · Keine Datenweitergabe</div>
         </div>
 
         <div class="card heroMedia">
           <div class="videoBox">
-            <div class="badge">Hauptvideo (Loop)</div>
-            <!-- Lege dein Video hier ab: assets/video/hero-loop.mp4 -->
+            <div class="badge">Hero (Loop)</div>
             <video id="heroLoop" playsinline muted loop autoplay preload="metadata" poster="assets/img/hero-poster.jpg">
               <source src="assets/video/hero-loop.mp4" type="video/mp4">
             </video>
           </div>
 
           <div class="trust">
-            <div class="t"><b>Kein Account</b><br><span>Empfänger scannt & antwortet sofort.</span></div>
-            <div class="t"><b>Reply-Code</b><br><span>Jeder Keks hat seinen QR-Link.</span></div>
-            <div class="t"><b>Privat</b><br><span>Wir verkaufen keine Daten.</span></div>
-            <div class="t"><b>Einfach</b><br><span>Message → Deko → Adresse.</span></div>
+            <div class="t"><b>Kein Account</b><br><span>Scan & Antwort in Sekunden.</span></div>
+            <div class="t"><b>QR pro Keks</b><br><span>Jeder Keks hat seinen Link.</span></div>
+            <div class="t"><b>Privat</b><br><span>Keine Datenweitergabe.</span></div>
+            <div class="t"><b>Einfach</b><br><span>Message → Deko → Send.</span></div>
           </div>
         </div>
       </div>
@@ -447,7 +541,6 @@
     <section class="section card cfg" id="konfigurator">
       <h2>Keks-Konfigurator</h2>
 
-      <!-- PACK: Select is source of truth (can stay visible) -->
       <label class="lbl" for="pack">Paket</label>
       <select id="pack" name="pack">
         <option value="Quick">Quick</option>
@@ -455,22 +548,21 @@
         <option value="Premium">Premium</option>
       </select>
 
-      <!-- Tiles -->
       <div class="packTiles" id="packTiles" role="radiogroup" aria-label="Paket wählen">
         <button class="tile" type="button" data-pack="Quick">
           <span class="tag">schnell</span>
           <b>Quick</b>
-          <small>Message + QR. Straight to the point.</small>
+          <small>Message + QR. Straight.</small>
         </button>
         <button class="tile active" type="button" data-pack="Custom">
           <span class="tag">beliebt</span>
           <b>Custom</b>
-          <small>Mehr Deko-Optionen. Mehr Wow.</small>
+          <small>Mehr Deko. Mehr Wow.</small>
         </button>
         <button class="tile vip" type="button" data-pack="Premium">
           <span class="tag">VIP</span>
           <b>Premium</b>
-          <small>Edle Box. Schwarz/Gold. Prestige-Vibes.</small>
+          <small>Schwarz/Gold. Prestige.</small>
         </button>
       </div>
 
@@ -539,7 +631,82 @@
           </div>
 
           <div class="mini" style="margin-top:10px">
-            Produktion/Payment: später ankoppeln (Partner + Stripe). Frontend bleibt sauber. checkst du
+            Tipp: Den QR-Link kannst du direkt an den Empfänger schicken – oder in echt auf den Keks packen. checkst du
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section card checkout" id="checkout">
+      <div class="progress">
+        <div class="step">Schritt 3 von 3 · <span style="font-weight:900;color:var(--ink)">Fast fertig</span></div>
+        <div class="bar" aria-hidden="true"><div></div></div>
+      </div>
+
+      <h2>Checkout</h2>
+      <div class="mini">Ein Klick, dann geht’s los. verstehste</div>
+
+      <div class="box" style="margin-top:12px">
+        <div style="display:flex; justify-content:space-between; gap:10px; align-items:center">
+          <div style="font-weight:900">3er-Deal</div>
+          <span class="badgeDeal" id="dealBadge">–25 %</span>
+        </div>
+        <div class="mini" style="margin-top:6px">Mehr Freude, weniger Versand. 3 Kekse verschicken – 25 % sparen.</div>
+
+        <div class="dealRow" role="radiogroup" aria-label="Menge wählen">
+          <button class="dealBtn" type="button" id="qty1">
+            <b>1 Keks</b>
+            <small>Standard</small>
+          </button>
+          <button class="dealBtn active" type="button" id="qty3">
+            <b>3 Kekse <span class="badgeDeal" style="margin-left:8px">–25 %</span></b>
+            <small>Beliebt bei Geschenken & Antworten</small>
+          </button>
+        </div>
+      </div>
+
+      <div class="summaryGrid">
+        <div class="box">
+          <div style="font-weight:900; margin-bottom:6px">Deine Bestellung</div>
+          <div class="kv"><span>Anzahl Kekse</span> <b id="sumQty">3</b></div>
+          <div class="kv"><span>Versand</span> <b>einmal</b></div>
+          <div class="kv"><span>QR-Antwort</span> <b>inklusive</b></div>
+          <div class="kv"><span>Empfänger</span> <b>mehrere möglich</b></div>
+          <div class="mini" style="margin-top:10px">Du kannst gleich noch anpassen. checkst du</div>
+        </div>
+
+        <div class="box">
+          <div style="font-weight:900; margin-bottom:6px">Summe (Demo)</div>
+          <div class="kv"><span>Zwischensumme</span> <b id="subTotal">–</b></div>
+          <div class="kv"><span>Rabatt</span> <b id="discount">–</b></div>
+          <div class="kv"><span>Spende</span> <b id="donationLine">0,00 €</b></div>
+          <div class="kv"><span>Gesamt</span> <b id="total">–</b></div>
+
+          <div class="impact">
+            <label>
+              <input type="checkbox" id="donate" />
+              <div>
+                <div style="font-weight:900">Gutes mitmachen (optional)</div>
+                <div class="mini">0,50 € pro Bestellung gehen an eine Organisation, die Bäume pflanzt.</div>
+              </div>
+            </label>
+          </div>
+
+          <button class="btn payCta" id="sendNow" type="button">Jetzt senden</button>
+
+          <div class="mini" style="text-align:center; margin-top:10px">
+            Deine Kekse gehen heute in die Vorbereitung.
+          </div>
+
+          <div class="trustLine">
+            <span>✓ Sichere Zahlung</span>
+            <span>✓ Kein Abo</span>
+            <span>✓ Keine Datenweitergabe</span>
+          </div>
+
+          <div class="legalMini">
+            Mit dem Klick auf „Jetzt senden“ stimmst du unseren
+            <a href="agb.html">AGB</a> und der <a href="privacy.html">Datenschutzerklärung</a> zu.
           </div>
         </div>
       </div>
@@ -575,18 +742,28 @@
         <summary>Wie funktioniert der Reply-Loop?</summary>
         <p class="sub">
           Jeder Keks bekommt einen QR-Link zu <code>keks.html</code>. Der Empfänger scannt, tippt ’ne Antwort,
-          und der nächste Keks kann daraus automatisch generiert werden. Die „Automatisierung“ ist hier schon vorbereitet. verstehste
+          und du kannst daraus direkt den nächsten Keks zurückschicken. Kein Account. verstehste
         </p>
       </details>
 
       <details>
         <summary>Speichert ihr Cookies & Tracking?</summary>
-        <p class="sub">Im MVP wird lokal gespeichert (localStorage). Später kannst du den Consent im Geschenk-Ton ergänzen. checkst du</p>
+        <p class="sub">Im MVP wird lokal gespeichert (localStorage). Keine Tracker. checkst du</p>
       </details>
 
       <details>
         <summary>Was fehlt noch für „echtes Business“?</summary>
-        <p class="sub">Payment (Stripe), Backend (Orders/Tokens), und ein Produktionspartner. Das Frontend ist dafür strukturell ready. verstehste</p>
+        <p class="sub">Stripe + Backend + Produktionspartner. Frontend ist schon darauf ausgelegt. verstehste</p>
+      </details>
+    </section>
+
+    <section class="section">
+      <details>
+        <summary>Was passiert mit Keksen, die nicht mehr verkauft werden können?</summary>
+        <p class="sub">
+          Noch einwandfreie Kekse geben unsere Partnerbäckereien lokal weiter – zum Beispiel an Kindergärten.
+          Leise, unkompliziert, ohne Show. verstehste
+        </p>
       </details>
     </section>
 
@@ -594,31 +771,26 @@
       <div>© <span id="y"></span> OnlyKeks</div>
       <div style="display:flex; gap:12px; flex-wrap:wrap">
         <a href="privacy.html">Wie wir mit Daten umgehen</a>
+        <a href="agb.html">AGB</a>
         <a href="#konfigurator">Konfigurator</a>
+        <a href="#checkout">Checkout</a>
         <a href="#faq">FAQ</a>
       </div>
     </div>
   </div>
 
   <script>
-    // -----------------------
     // Helpers
-    // -----------------------
     const $ = (s, el=document) => el.querySelector(s);
     const $$ = (s, el=document) => [...el.querySelectorAll(s)];
 
     function uid(){
-      // simple stable-ish id
       return 'keks_' + Math.random().toString(16).slice(2) + '_' + Date.now().toString(16);
     }
 
     function baseUrl(){
-      // relative-safe for GitHub Pages
       const u = new URL(window.location.href);
-      // ensure ends with /
-      if(!u.pathname.endsWith('/')){
-        u.pathname = u.pathname.replace(/[^/]*$/, '');
-      }
+      if(!u.pathname.endsWith('/')) u.pathname = u.pathname.replace(/[^/]*$/, '');
       return u.toString();
     }
 
@@ -629,15 +801,11 @@
     }
 
     function makeQRDataURL(text, size=170){
-      // Lightweight QR via Google Charts endpoint (no API key). Works fine for MVP.
-      // If you want offline: swap later to a local QR lib.
-      const url = 'https://chart.googleapis.com/chart?cht=qr&chs=' + size + 'x' + size + '&chl=' + encodeURIComponent(text);
-      return url;
+      // MVP: Google Charts QR. Later: local library.
+      return 'https://chart.googleapis.com/chart?cht=qr&chs=' + size + 'x' + size + '&chl=' + encodeURIComponent(text);
     }
 
-    // -----------------------
     // State
-    // -----------------------
     const KEY = 'onlykeks:draft';
     let draft = null;
 
@@ -665,9 +833,7 @@
       renderAll();
     }
 
-    // -----------------------
     // UI bindings
-    // -----------------------
     const intro = $('#intro');
     const introVideo = $('#introVideo');
     const skipIntro = $('#skipIntro');
@@ -696,9 +862,13 @@
     const btnShare = $('#btnShare');
     const shareOut = $('#shareOut');
 
-    // -----------------------
+    // Checkout bindings
+    const qty1 = $('#qty1');
+    const qty3 = $('#qty3');
+    const donateBox = $('#donate');
+    const sendNow = $('#sendNow');
+
     // Render
-    // -----------------------
     function setActiveTile(pack){
       $$('#packTiles .tile').forEach(b => b.classList.toggle('active', b.dataset.pack === pack));
     }
@@ -713,7 +883,7 @@
       pvMsg.textContent = draft.message.trim() ? draft.message.trim() : "Schreib ’ne Message…";
       pvMeta.textContent = `${draft.pack} · ${draft.shape} · ${draft.theme}`;
       draftIdLabel.textContent = 'Draft: ' + draft.id;
-      $('#draftIdLabel').title = draft.id;
+      draftIdLabel.title = draft.id;
     }
 
     function renderAll(){
@@ -728,11 +898,10 @@
 
       renderPreview();
       renderQR();
+      renderCheckout();
     }
 
-    // -----------------------
     // Events
-    // -----------------------
     function updateDraft(patch){
       draft = {...draft, ...patch};
       saveDraft();
@@ -769,7 +938,7 @@
 
     btnShare.addEventListener('click', async () => {
       const payload = {
-        title: 'OnlyKeks Design',
+        title: 'OnlyKeks',
         text: 'Mein Keks-Design – scan & antworte:',
         url: buildReplyUrl(draft.id)
       };
@@ -778,7 +947,7 @@
           await navigator.share(payload);
           shareOut.textContent = 'Geteilt.';
         }else{
-          shareOut.textContent = 'Share nicht verfügbar. Nimm den Link: ' + payload.url;
+          shareOut.textContent = 'Share nicht verfügbar. Link: ' + payload.url;
         }
       }catch(e){
         shareOut.textContent = 'Abgebrochen. Link: ' + payload.url;
@@ -792,6 +961,7 @@
     jumpCta.addEventListener('click', scrollToCfg);
     ctaStart.addEventListener('click', scrollToCfg);
 
+    // Demo / Beispiel
     ctaDemo.addEventListener('click', () => {
       updateDraft({
         pack:'Custom',
@@ -812,15 +982,13 @@
       }else if(k==='love'){
         updateDraft({pack:'Custom', message:'Denk an dich. Kuss.', shape:'Herz', theme:'Pastell'});
       }else if(k==='party'){
-        updateDraft({pack:'Quick', message:'Heute eskalieren wir. 🥳', shape:'Stern', theme:'Party'});
+        updateDraft({pack:'Quick', message:'Heute eskalieren wir.', shape:'Stern', theme:'Party'});
       }
       scrollToCfg();
     });
 
-    // -----------------------
-    // Sprinkle rain (subtle)
-    // -----------------------
-    function sprinkleBurst(n=28){
+    // Sprinkle rain
+    function sprinkleBurst(n=22){
       const colors = ['#ff4fa3','#ff7cc5','#ffd2b0','#fff1e8','#d7b46a'];
       for(let i=0;i<n;i++){
         const s = document.createElement('div');
@@ -835,7 +1003,6 @@
         document.body.appendChild(s);
 
         const start = performance.now();
-        const x0 = parseFloat(s.style.left);
         function tick(t){
           const p = Math.min(1, (t-start)/dur);
           const y = -12 + p*(window.innerHeight+40);
@@ -848,12 +1015,8 @@
       }
     }
 
-    // -----------------------
     // Intro video logic (autoplay fallback)
-    // -----------------------
     async function tryIntro(){
-      // If file missing or autoplay blocked, we skip.
-      // Activate intro by setting window.ONLYKEKS_INTRO = true; in console or below.
       if(!window.ONLYKEKS_INTRO) return;
 
       intro.classList.add('on');
@@ -865,8 +1028,7 @@
         introVideo.muted = true;
         introVideo.playsInline = true;
         await introVideo.play();
-        // Hard cap so user never gets stuck
-        const cap = setTimeout(() => { done(); }, 4000);
+        const cap = setTimeout(() => { done(); }, 6500);
         introVideo.addEventListener('ended', () => { clearTimeout(cap); done(); }, {once:true});
         introVideo.addEventListener('error', () => { clearTimeout(cap); done(); }, {once:true});
       }catch(e){
@@ -880,22 +1042,65 @@
         heroLoop.muted = true;
         heroLoop.playsInline = true;
         await heroLoop.play();
-      }catch(e){
-        // silently ignore; poster will show
-      }
+      }catch(e){}
     }
 
-    // -----------------------
+    // Checkout logic
+    const PRICE_ONE = 6.90;  // anpassen
+    const DISCOUNT_3 = 0.25;
+    const DONATION = 0.50;
+
+    let qty = 3;      // Default: 3er
+    let donate = false;
+
+    function fmtEUR(n){
+      return n.toLocaleString('de-DE', { style:'currency', currency:'EUR' });
+    }
+
+    function renderCheckout(){
+      qty1.classList.toggle('active', qty === 1);
+      qty3.classList.toggle('active', qty === 3);
+
+      $('#sumQty').textContent = String(qty);
+      $('#dealBadge').style.visibility = (qty === 3) ? 'visible' : 'hidden';
+
+      const base = qty * PRICE_ONE;
+      const disc = (qty === 3) ? base * DISCOUNT_3 : 0;
+      const don = donate ? DONATION : 0;
+      const total = base - disc + don;
+
+      $('#subTotal').textContent = fmtEUR(base);
+      $('#discount').textContent = disc ? ('-' + fmtEUR(disc)) : fmtEUR(0);
+      $('#donationLine').textContent = fmtEUR(don);
+      $('#total').textContent = fmtEUR(total);
+    }
+
+    qty1.addEventListener('click', () => { qty = 1; renderCheckout(); });
+    qty3.addEventListener('click', () => { qty = 3; renderCheckout(); });
+    donateBox.addEventListener('change', (e) => { donate = !!e.target.checked; renderCheckout(); });
+
+    sendNow.addEventListener('click', () => {
+      // MVP Demo: später Stripe ankoppeln
+      const replyUrl = buildReplyUrl(draft.id);
+      alert(
+        'Gesendet (Demo).\n\n' +
+        'QR-Link für die Antwort:\n' + replyUrl + '\n\n' +
+        'Nächster Step: Stripe/Partner dranhängen.'
+      );
+      sprinkleBurst(26);
+    });
+
     // Boot
-    // -----------------------
     (function init(){
       $('#y').textContent = new Date().getFullYear();
+
+      // Intro an
+      window.ONLYKEKS_INTRO = true;
 
       draft = loadDraft();
       if(!draft) newDraft();
       else renderAll();
 
-      // initial sprinkle
       sprinkleBurst(22);
 
       ensureHeroLoop();
@@ -903,4 +1108,4 @@
     })();
   </script>
 </body>
-</html>
+  </html>

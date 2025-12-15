@@ -1099,7 +1099,15 @@
 
       draft = loadDraft();
       if(!draft) newDraft();
-      else renderAll();
+      else renderAll();// Wenn wir von keks.html zurückkommen, Reply in Message übernehmen
+const p = new URLSearchParams(location.search);
+const r = p.get('reply');
+if(r){
+  if(!draft) newDraft();
+  updateDraft({ message: r });
+  // URL säubern (optional)
+  history.replaceState({}, document.title, location.pathname);
+}
 
       sprinkleBurst(22);
 
@@ -1109,3 +1117,4 @@
   </script>
 </body>
   </html>
+

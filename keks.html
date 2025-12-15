@@ -3,168 +3,190 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>OnlyKeks Reply</title>
+  <title>OnlyKeks – Antwort</title>
   <meta name="theme-color" content="#ff4fa3" />
+  <meta name="robots" content="noindex,nofollow" />
+
   <style>
     :root{
-      --ink:#0b1b2a;
-      --muted:#5b6b7a;
-      --line: rgba(11,27,42,.12);
-      --sky1:#ffe6f2;
-      --sky2:#ffd3ea;
-      --sky3:#fff4ea;
+      --bg:#ffffff;
+      --ink:#0f172a;
+      --muted:#475569;
+      --line:rgba(15,23,42,.10);
+      --shadow: 0 10px 30px rgba(2,6,23,.08);
       --pink:#ff4fa3;
-      --pink2:#ff7cc5;
-      --r:18px;
-      --shadow: 0 12px 30px rgba(11,27,42,.10);
+      --pink2:#ff7bc0;
+      --r:22px;
+      --max: 760px;
+      --pad: 18px;
     }
     *{box-sizing:border-box}
     body{
-      margin:0; min-height:100vh;
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
       color:var(--ink);
       background:
-        radial-gradient(1200px 600px at 15% 0%, var(--sky2), transparent 60%),
-        radial-gradient(1000px 700px at 85% 0%, var(--sky3), transparent 55%),
-        linear-gradient(180deg, var(--sky1), #fff 55%);
-      display:grid; place-items:center;
-      padding:18px;
+        radial-gradient(900px 400px at 15% 0%, rgba(255,79,163,.18), transparent 55%),
+        linear-gradient(180deg, #fff 0%, #fff6fb 55%, #fff 100%);
     }
+    .wrap{max-width:var(--max); margin:0 auto; padding: 22px var(--pad) 50px;}
     .card{
-      width:min(720px, 100%);
-      background: rgba(255,255,255,.85);
+      background: rgba(255,255,255,.86);
       border:1px solid var(--line);
       border-radius: var(--r);
       box-shadow: var(--shadow);
-      padding:18px;
+      padding: 18px;
     }
-    h1{margin:0 0 8px; font-size:26px}
-    p{margin:0 0 12px; color:var(--muted); line-height:1.5}
-    .lbl{font-size:12px; font-weight:900; color:var(--muted); display:block; margin:10px 0 6px}
+    h1{margin:0 0 8px; font-size: 28px; letter-spacing:-.02em}
+    .muted{color: rgba(15,23,42,.68); line-height:1.45}
+    .pill{
+      display:inline-flex; gap:10px; align-items:center;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border:1px solid rgba(255,79,163,.25);
+      background: rgba(255,79,163,.08);
+      font-weight:900;
+      color: rgba(255,79,163,.95);
+      font-size: 13px;
+      margin-top: 8px;
+    }
     textarea, input{
       width:100%;
-      border-radius: 14px;
-      border: 1px solid rgba(0,0,0,.12);
-      padding:12px 12px;
-      font-size:14px;
+      padding: 14px;
+      border-radius: 16px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.92);
+      font-size: 15px;
       outline:none;
-      background:#fff;
     }
-    textarea{min-height:120px; resize:vertical}
-    textarea:focus, input:focus{border-color: rgba(255,79,163,.55); box-shadow: 0 0 0 4px rgba(255,79,163,.14)}
-    .row{display:grid; grid-template-columns:1fr 1fr; gap:12px}
-    .btn{
-      appearance:none; border:0; cursor:pointer;
-      padding:12px 14px; border-radius:14px;
-      font-weight:900; font-size:14px;
+    textarea{min-height: 140px; resize: vertical}
+    textarea:focus, input:focus{
+      border-color: rgba(255,79,163,.45);
+      box-shadow: 0 0 0 4px rgba(255,79,163,.10);
+    }
+    .cta{
+      display:inline-flex; align-items:center; justify-content:center;
+      padding: 14px 18px;
+      border-radius: 999px;
       background: linear-gradient(135deg, var(--pink), var(--pink2));
       color:#fff;
-      margin-top:12px;
+      text-decoration:none;
+      font-weight:1000;
+      border:0;
+      cursor:pointer;
       width:100%;
+      margin-top: 12px;
     }
-    .btn.secondary{
-      background:#fff; color:var(--ink);
+    .mono{
+      margin-top: 12px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 12.5px;
+      color: rgba(15,23,42,.70);
+      word-break: break-all;
+    }
+    .sep{height:12px}
+    .cookie{
+      border-radius: 20px;
+      padding: 16px;
       border:1px solid var(--line);
-      box-shadow:none;
+      background:
+        radial-gradient(420px 200px at 20% 10%, rgba(255,79,163,.12), transparent 65%),
+        linear-gradient(135deg, #f7caa6, #d9a07a);
+      color: rgba(15,23,42,.92);
+      box-shadow: 0 6px 18px rgba(2,6,23,.08);
+      margin-top: 10px;
     }
-    .mini{font-size:12px; color:var(--muted); margin-top:10px}
-    code{background: rgba(0,0,0,.06); padding:2px 6px; border-radius: 8px}
-    .ok{
-      border:1px solid rgba(26,143,90,.25);
-      background: rgba(26,143,90,.07);
-      border-radius: 16px;
-      padding:12px;
-      margin-top:12px;
-    }
+    .cookie .meta{font-size: 13px; opacity:.82; font-weight:1000}
+    .cookie .msg{margin-top: 10px; font-size: 18px; font-weight:1000; line-height:1.15; letter-spacing:-.01em}
   </style>
 </head>
+
 <body>
-  <div class="card">
-    <h1>Antwort schreiben</h1>
-    <p>Du hast einen Reply-Keks bekommen. Kurz zurückschreiben – fertig. Kein Account. verstehste</p>
+  <div class="wrap">
+    <div class="card">
+      <h1>Antwort schreiben</h1>
+      <div class="muted">Du hast ’nen Keks bekommen. Jetzt schreib kurz zurück – dann ist der Loop komplett. verstehste</div>
 
-    <div class="mini" id="tokenOut">Token: –</div>
+      <div class="pill">Kein Account · Kein Stress · Nur Reply</div>
 
-    <label class="lbl" for="reply">Deine Antwort</label>
-    <textarea id="reply" maxlength="500" placeholder="z. B. „Ey… dit hat mir den Tag gerettet.“"></textarea>
+      <div class="sep"></div>
 
-    <div class="row">
-      <div>
-        <label class="lbl" for="name">Dein Name (optional)</label>
-        <input id="name" placeholder="z. B. Kati" />
+      <div class="muted" style="font-weight:1000;margin-bottom:6px">Keks-Message</div>
+      <div class="cookie" id="cookieBox">
+        <div class="meta" id="cookieMeta">–</div>
+        <div class="msg" id="cookieMsg">–</div>
       </div>
-      <div>
-        <label class="lbl" for="emoji">Mood (optional)</label>
-        <input id="emoji" placeholder="z. B. ❤️🥳✨" />
+
+      <div class="sep"></div>
+
+      <div class="muted" style="font-weight:1000;margin-bottom:6px">Deine Antwort</div>
+      <textarea id="reply" maxlength="800" placeholder="Schreib hier deine Antwort…"></textarea>
+
+      <button class="cta" id="sendReply" type="button">Antwort senden</button>
+
+      <div class="mono" id="debug">Token: –</div>
+      <div class="muted" style="font-size:12.5px;margin-top:10px">
+        MVP: Reply wird im Browser gespeichert. Später: echter Versand/Inbox/Benachrichtigung.
       </div>
     </div>
-
-    <button class="btn" id="save" type="button">Antwort speichern</button>
-
-    <div class="mini" id="out"></div>
-
-    <div class="ok" id="after" style="display:none">
-      <div style="font-weight:900">Gespeichert.</div>
-      <div class="mini">Willste direkt zurückschicken? Dann mach ’nen Reply-Keks draus. checkst du</div>
-      <button class="btn secondary" id="backSend" type="button">Antwort als Keks zurücksenden</button>
-    </div>
-
-    <div class="mini">MVP: lokal gespeichert. Backend/Orders kommen später. checkst du</div>
   </div>
 
   <script>
-    const $ = (s) => document.querySelector(s);
-    const params = new URLSearchParams(location.search);
-    const token = params.get('t') || 'unknown';
-    $('#tokenOut').textContent = 'Token: ' + token;
+    const $ = (s, r=document)=>r.querySelector(s);
+    const LS = {
+      get(k, d=null){ try{ const v=localStorage.getItem(k); return v?JSON.parse(v):d }catch(e){ return d } },
+      set(k, v){ try{ localStorage.setItem(k, JSON.stringify(v)) }catch(e){} }
+    };
 
-    const KEY = 'onlykeks:replies';
-
-    function load(){
-      try{ return JSON.parse(localStorage.getItem(KEY) || '[]'); }catch(e){ return []; }
-    }
-    function saveAll(list){
-      try{ localStorage.setItem(KEY, JSON.stringify(list)); }catch(e){}
+    function qs(name){
+      return new URLSearchParams(location.search).get(name);
     }
 
-    function baseUrl(){
-      const u = new URL(window.location.href);
-      if(!u.pathname.endsWith('/')) u.pathname = u.pathname.replace(/[^/]*$/, '');
-      return u.toString();
+    function packLabel(v){
+      if(v==='quick') return 'Quick';
+      if(v==='custom') return 'Custom';
+      return 'Premium';
+    }
+    function styleLabel(v){
+      if(v==='pastell') return 'Pastell';
+      if(v==='party') return 'Party';
+      if(v==='clean') return 'Clean';
+      return 'VIP';
+    }
+    function shapeLabel(v){
+      return ({kreis:'Kreis', herz:'Herz', stern:'Stern', smiley:'Smiley', tanne:'Tannenbaum'})[v] || v;
     }
 
-    $('#save').addEventListener('click', () => {
-      const reply = $('#reply').value.trim();
-      if(!reply){
-        $('#out').textContent = 'Bitte ’ne kurze Antwort eintippen.';
-        return;
+    function paintCookie(d){
+      const meta = `${packLabel(d.pack||'custom')} · ${shapeLabel(d.shape||'kreis')} · ${styleLabel(d.style||'pastell')}`;
+      $('#cookieMeta').textContent = meta;
+      $('#cookieMsg').textContent = (d.msg && d.msg.trim()) ? d.msg.trim() : '—';
+
+      const box = $('#cookieBox');
+      if((d.style==='vip') || (d.pack==='premium')){
+        box.style.background = 'radial-gradient(450px 220px at 20% 10%, rgba(215,181,109,.28), transparent 60%), linear-gradient(180deg, rgba(11,11,15,.96), rgba(11,11,15,.88))';
+        box.style.color = '#fff';
       }
-      const item = {
-        token,
-        reply,
-        name: $('#name').value.trim(),
-        emoji: $('#emoji').value.trim(),
-        ts: new Date().toISOString()
+    }
+
+    (function(){
+      const token = qs('t') || '—';
+      $('#debug').textContent = 'Token: ' + token;
+
+      const draft = LS.get('onlykeks_draft_' + token, null);
+      if(draft) paintCookie(draft);
+
+      $('#sendReply').onclick = ()=>{
+        const reply = ($('#reply').value||'').trim();
+        if(!reply){
+          alert('Kurz was tippen, dann ist der Loop rund.');
+          return;
+        }
+        LS.set('onlykeks_reply_' + token, { reply, ts: Date.now() });
+        alert('Antwort gespeichert. MVP done.');
+        $('#reply').value = '';
       };
-      const list = load();
-      list.unshift(item);
-      saveAll(list);
-
-      $('#out').textContent = 'Gespeichert.';
-      $('#after').style.display = 'block';
-
-      // Prepare back-link with prefilled message (simple, readable)
-      const txt =
-        (item.emoji ? item.emoji + ' ' : '') +
-        (item.name ? item.name + ': ' : '') +
-        item.reply;
-
-      $('#backSend').onclick = () => {
-        const u = new URL(baseUrl() + 'index.html');
-        u.searchParams.set('reply', txt);
-        window.location.href = u.toString();
-      };
-    });
+    })();
   </script>
 </body>
 </html>

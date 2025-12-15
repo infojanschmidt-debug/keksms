@@ -101,7 +101,9 @@
       background: #000;
       display:none;
       align-items:center; justify-content:center;
-    }
+    }.intro{ position:fixed; inset:0; z-index:200; background:#000; }
+.intro video{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; z-index:1; }
+.intro .skip{ z-index:3; }
     .intro.on{display:flex}
     .intro video{width:100%; height:100%; object-fit:cover}
     .intro .skip{
@@ -112,7 +114,43 @@
       padding:10px 12px;
       font-weight:900;
       cursor:pointer;
-    }
+    }async function tryIntro(){
+  const qs = new URLSearchParams(location.search);
+
+  // Notausgang: /?nointro=1
+  if(qs.get('nointro') === '1') return;
+
+  // Wenn du Intro nur manchmal willst, setz hier auf false/true
+  if(!window.ONLYKEKS_INTRO) return;
+
+  intro.classList.add('on');
+
+  const done = () => {
+    intro.classList.remove('on');
+    try{ introVideo.pause(); }catch(e){}
+  };
+
+  // Harter Failsafe: spätestens nach 4.5s ist Schluss – egal was passiert
+  const kill = setTimeout(done, 4500);
+
+  // Skip muss IMMER funktionieren (auch auf Mobile: touchstart)
+  const skip = () => { clearTimeout(kill); done(); };
+  skipIntro.addEventListener('click', skip, {once:true});
+  skipIntro.addEventListener('touchstart', skip, {once:true});
+
+  // Wenn Video kaputt/blocked: sofort raus
+  introVideo.addEventListener('error', () => { clearTimeout(kill); done(); }, {once:true});
+
+  // Versuch zu spielen – wenn’s nicht geht: Timer beendet’s trotzdem
+  try{
+    introVideo.muted = true;
+    introVideo.playsInline = true;
+    await introVideo.play();
+    introVideo.addEventListener('ended', () => { clearTimeout(kill); done(); }, {once:true});
+  }catch(e){
+    // Autoplay geblockt → wir lassen den Timer laufen und sind nach 4.5s raus
+  }
+                                              }
 
     /* Hero */
     .hero{padding:26px 0 8px}
@@ -1272,4 +1310,5 @@
   }
 </script></body>
 </html>
+
 

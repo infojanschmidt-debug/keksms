@@ -8,6 +8,7 @@
   <meta name="theme-color" content="#ff4fa3" />
   <meta property="og:title" content="OnlyKeks – Post, die schmeckt" />
   <meta property="og:description" content="Message als Keks. QR-Reply-Loop. 3 Steps. Fertig." />
+
   <style>
     :root{
       --bg:#ffffff;
@@ -22,6 +23,7 @@
       --ok:#0a7a3f;
       --shadow: 0 10px 30px rgba(0,0,0,.06);
       --r: 18px;
+      --max:980px;
     }
     *{box-sizing:border-box}
     html,body{height:100%}
@@ -33,23 +35,25 @@
         radial-gradient(1200px 600px at 15% -10%, rgba(255,79,163,.18), transparent 55%),
         radial-gradient(900px 520px at 90% 0%, rgba(255,127,195,.16), transparent 55%),
         linear-gradient(#fff, #fff);
+      overflow-x:hidden;
     }
     a{color:inherit}
-    .wrap{max-width:980px;margin:0 auto;padding:18px}
+    .wrap{max-width:var(--max);margin:0 auto;padding:18px}
     header{
       position:sticky;top:0;z-index:20;
       background: rgba(255,255,255,.85);
       backdrop-filter: blur(10px);
       border-bottom:1px solid var(--line);
     }
-    .topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 18px;max-width:980px;margin:0 auto}
-    .brand{display:flex;align-items:center;gap:10px;font-weight:800}
+    .topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 18px;max-width:var(--max);margin:0 auto}
+    .brand{display:flex;align-items:center;gap:10px;font-weight:900}
     .logo{
       width:34px;height:34px;border-radius:12px;
       background: radial-gradient(circle at 30% 30%, #fff, #ffe2f0 45%, #ffd0e7 75%);
       border:1px solid rgba(255,79,163,.25);
       box-shadow: var(--shadow);
       position:relative;
+      flex:0 0 auto;
     }
     .logo:after{
       content:"";
@@ -60,7 +64,7 @@
     .btn{
       appearance:none;border:1px solid var(--line);
       background:#fff;border-radius:999px;
-      padding:10px 14px;font-weight:700;cursor:pointer;
+      padding:10px 14px;font-weight:800;cursor:pointer;
     }
     .btn.primary{
       border-color: rgba(255,79,163,.35);
@@ -74,19 +78,16 @@
     .hero{padding:28px 18px 14px}
     .grid{display:grid;grid-template-columns:1.25fr .75fr;gap:18px;align-items:start}
     @media (max-width: 860px){ .grid{grid-template-columns:1fr} }
-    .h1{font-size:46px;line-height:1.05;margin:0 0 10px;font-weight:900;letter-spacing:-.02em}
+    .h1{font-size:46px;line-height:1.05;margin:0 0 10px;font-weight:950;letter-spacing:-.02em}
     @media (max-width: 480px){ .h1{font-size:38px} }
     .sub{font-size:17px;line-height:1.55;color:var(--muted);margin:0 0 16px}
-    .trust{
-      display:flex;flex-wrap:wrap;gap:10px;margin:14px 0 0;
-      color:#222;
-    }
+    .trust{display:flex;flex-wrap:wrap;gap:10px;margin:14px 0 0;color:#222}
     .pill{
       display:inline-flex;align-items:center;gap:8px;
       padding:8px 10px;border-radius:999px;
       border:1px solid var(--line);
       background: rgba(255,255,255,.75);
-      font-size:13px;font-weight:700;
+      font-size:13px;font-weight:900;
     }
     .pill .dot{width:8px;height:8px;border-radius:999px;background:var(--pink)}
     .card{
@@ -101,11 +102,9 @@
     .keksPreview{
       width:100%;aspect-ratio: 1.35/1;
       border-radius: 22px;
-      background:
-        radial-gradient(circle at 30% 30%, #fff, #f9d9bd 40%, #d28c55 92%);
+      background: radial-gradient(circle at 30% 30%, #fff, #f9d9bd 40%, #d28c55 92%);
       border:1px solid rgba(0,0,0,.10);
-      position:relative;
-      overflow:hidden;
+      position:relative;overflow:hidden;
     }
     .sprinkles{position:absolute;inset:0;opacity:.9}
     .sprinkles i{
@@ -123,7 +122,7 @@
     }
     .msgOnCookie{
       position:absolute;left:10%;right:10%;top:22%;
-      font-weight:900;font-size:18px;line-height:1.15;
+      font-weight:950;font-size:18px;line-height:1.15;
       text-align:center;color:#111;
       text-shadow: 0 2px 10px rgba(255,255,255,.6);
       word-break: break-word;
@@ -131,7 +130,7 @@
     .miniRow{display:flex;gap:10px;flex-wrap:wrap}
     .chip{
       padding:8px 10px;border-radius:999px;border:1px solid var(--line);
-      background: rgba(255,255,255,.7);font-weight:800;font-size:13px;cursor:pointer;
+      background: rgba(255,255,255,.7);font-weight:900;font-size:13px;cursor:pointer;
     }
     .chip.active{border-color: rgba(255,79,163,.55); background: rgba(255,79,163,.10)}
     .section{padding:14px 18px}
@@ -146,11 +145,8 @@
     .muted{color:var(--muted);font-size:14px;line-height:1.5}
     .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
     .field{display:grid;gap:6px;margin:12px 0}
-    label{font-weight:800;font-size:13px}
-    input, textarea, select{
-      width:100%;padding:12px;border-radius:14px;border:1px solid var(--line);
-      font: inherit;background:#fff;
-    }
+    label{font-weight:900;font-size:13px}
+    input, textarea, select{width:100%;padding:12px;border-radius:14px;border:1px solid var(--line);font:inherit;background:#fff}
     textarea{min-height:96px;resize:vertical}
     .packTiles{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
     @media (max-width: 860px){ .packTiles{grid-template-columns:1fr} }
@@ -158,19 +154,27 @@
       border:1px solid var(--line);border-radius: var(--r);
       background: rgba(255,255,255,.7);
       padding:12px;cursor:pointer;
+      position:relative;
     }
     .tile h4{margin:0 0 6px}
-    .tile .price{font-weight:900}
+    .tile .price{font-weight:950}
+    .badge{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:6px 8px;border-radius:999px;font-weight:950;font-size:12px;
+      border:1px solid rgba(255,79,163,.35);
+      background: rgba(255,79,163,.10);
+      color: rgba(255,79,163,.95);
+      width:max-content;
+    }
     .tile.vip{
       border-color: rgba(199,164,76,.55);
       background: linear-gradient(180deg, rgba(17,17,17,.92), rgba(17,17,17,.82));
       color:#fff;
-      position:relative;
     }
     .tile.vip:after{
       content:"VIP";
       position:absolute;top:10px;right:10px;
-      font-weight:900;font-size:12px;letter-spacing:.12em;
+      font-weight:950;font-size:12px;letter-spacing:.12em;
       color: var(--gold);
       border:1px solid rgba(199,164,76,.5);
       padding:6px 8px;border-radius:999px;
@@ -185,16 +189,16 @@
     .toast{
       position:fixed;left:50%;bottom:14px;transform:translateX(-50%);
       background: rgba(17,17,17,.92);color:#fff;padding:10px 12px;
-      border-radius:999px;font-weight:800;font-size:13px;display:none;
+      border-radius:999px;font-weight:950;font-size:13px;display:none;
       box-shadow: 0 16px 40px rgba(0,0,0,.20);
       z-index:100;
-      max-width: 92vw;
-      text-align:center;
+      max-width: 92vw;text-align:center;
     }
+
     /* Cookie consent */
     .consent{
       position:fixed;left:14px;right:14px;bottom:14px;z-index:90;
-      max-width: 980px;margin:0 auto;
+      max-width: var(--max);margin:0 auto;
       display:none;
     }
     .consent .box{
@@ -208,263 +212,439 @@
     .consent .txt{min-width:240px;flex:1;color:#222}
     .consent .txt b{display:block;margin-bottom:2px}
     .consent .actions{display:flex;gap:10px;flex-wrap:wrap}
+
+    /* Hall of Keks VIP Styling */
+    .vipFrame{
+      border:1px solid rgba(199,164,76,.55);
+      background: linear-gradient(180deg, rgba(17,17,17,.92), rgba(17,17,17,.82));
+      color:#fff;
+      border-radius: var(--r);
+      padding:12px;
+      position:relative;
+      overflow:hidden;
+    }
+    .vipFrame:before{
+      content:"";
+      position:absolute;inset:-2px;
+      background: radial-gradient(circle at 30% 20%, rgba(199,164,76,.25), transparent 40%),
+                  radial-gradient(circle at 80% 0%, rgba(255,79,163,.18), transparent 50%);
+      pointer-events:none;
+    }
+    .vipFrame .vipTitle{font-weight:950}
+    .vipFrame .vipSub{color:rgba(255,255,255,.78);font-size:13px;font-weight:800}
+
+    /* Keksregen (dezenter Hintergrund) */
+    .rain{position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.26}
+    .rain i{
+      position:absolute;left:var(--x);top:var(--y);
+      width:10px;height:10px;border-radius:999px;
+      background: radial-gradient(circle at 30% 30%, #fff, #f3c49b 45%, #c98a55 90%);
+      border:1px solid rgba(0,0,0,.06);
+      transform: rotate(var(--r));
+      filter: blur(.1px);
+      animation: fall var(--d) linear infinite;
+    }
+    @keyframes fall{
+      from{ transform: translateY(-20px) rotate(var(--r)); opacity:0 }
+      10%{ opacity:1 }
+      to{ transform: translateY(110vh) rotate(calc(var(--r) + 120deg)); opacity:0 }
+    }
+
+    /* === INTRO (Vorgabe A): niemals schwarzer Screen === */
+    #intro{
+      position:fixed;inset:0;z-index:9999;
+      display:flex;align-items:center;justify-content:center;
+      background:
+        radial-gradient(1200px 600px at 15% -10%, rgba(255,79,163,.22), transparent 55%),
+        radial-gradient(900px 520px at 90% 0%, rgba(255,127,195,.18), transparent 55%),
+        linear-gradient(#fff, #fff);
+    }
+    #intro.hidden{display:none !important}
+    #intro .box{
+      width:min(860px, 92vw);
+      border:1px solid var(--line);
+      border-radius:24px;
+      background: rgba(255,255,255,.82);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      position:relative;
+    }
+    #intro video{width:100%;height:auto;display:block;background:transparent !important}
+    #intro .overlay{
+      position:absolute;inset:0;
+      display:flex;align-items:flex-end;justify-content:space-between;
+      padding:12px;
+      background: linear-gradient(180deg, transparent 60%, rgba(255,255,255,.82));
+    }
+    #intro .brandline{display:flex;gap:10px;align-items:center;font-weight:950}
+    #intro .skip{
+      border:1px solid rgba(255,79,163,.45);
+      background: rgba(255,79,163,.10);
+      padding:10px 12px;border-radius:999px;
+      font-weight:950;cursor:pointer;
+    }
   </style>
 </head>
 
 <body>
-<header>
-  <div class="topbar">
-    <div class="brand">
-      <div class="logo" aria-hidden="true"></div>
-      <div>OnlyKeks <span style="color:var(--muted);font-weight:800">– Post, die schmeckt</span></div>
-    </div>
-    <div class="row">
-      <button class="btn" id="btnHall">Hall of Keks</button>
-      <button class="btn cta" id="btnStart">Keks gestalten</button>
+  <!-- Keksregen -->
+  <div class="rain" id="rain" aria-hidden="true"></div>
+
+  <!-- INTRO (Vorgabe A) -->
+  <div id="intro" aria-hidden="false">
+    <div class="box">
+      <!-- Optional: Wenn du ein Video hast, Source setzen. Ohne Source auto-skippt es schnell. -->
+      <video id="introVid" playsinline muted preload="auto">
+        <!-- <source src="assets/intro.mp4" type="video/mp4"> -->
+      </video>
+      <div class="overlay">
+        <div class="brandline">
+          <div class="logo" aria-hidden="true"></div>
+          <div>OnlyKeks</div>
+        </div>
+        <button class="skip" id="introSkip" type="button">Skip</button>
+      </div>
     </div>
   </div>
-</header>
 
-<main class="wrap">
-  <section class="hero">
-    <div class="grid">
-      <div>
-        <h1 class="h1">Schick ’ne Message. Als Keks. Und krieg ’ne Antwort zurück.</h1>
-        <p class="sub">
-          3 Steps, keine Ablenkung: Message schreiben → Keks gestalten → abschicken.
-          Der QR-Reply-Loop macht aus Empfängern neue Sender.
-        </p>
-        <div class="row">
-          <button class="btn cta" id="btnStart2">Jetzt gestalten</button>
-          <button class="btn primary" id="btnAutoDemo">Demo-Message laden</button>
-        </div>
+  <header>
+    <div class="topbar">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <div>OnlyKeks <span style="color:var(--muted);font-weight:900">– Post, die schmeckt</span></div>
+      </div>
+      <div class="row">
+        <button class="btn" id="btnHall">Hall of Keks</button>
+        <button class="btn cta" id="btnStart">Keks gestalten</button>
+      </div>
+    </div>
+  </header>
 
-        <div class="trust">
-          <span class="pill"><span class="dot"></span> Mobile-first & super simpel</span>
-          <span class="pill"><span class="dot"></span> Wir verkaufen keine Daten</span>
-          <span class="pill"><span class="dot"></span> Reply-Loop = Viralität</span>
-        </div>
+  <main class="wrap" style="position:relative;z-index:1">
+    <section class="hero">
+      <div class="grid">
+        <div>
+          <h1 class="h1">Schick ’ne Message. Als Keks. Und krieg ’ne Antwort zurück.</h1>
+          <p class="sub">
+            3 Steps, keine Ablenkung: Message schreiben → Keks gestalten → abschicken.
+            Der QR-Reply-Loop macht aus Empfängern neue Sender.
+          </p>
+          <div class="row">
+            <button class="btn cta" id="btnStart2">Jetzt gestalten</button>
+            <button class="btn primary" id="btnAutoDemo">Demo-Message laden</button>
+            <button class="btn" id="btnPreview">Preview öffnen</button>
+          </div>
 
-        <div class="section">
-          <div class="steps">
-            <div class="step">
-              <b>1) Message</b>
-              <div class="muted">Kurz und persönlich. Kein Roman. Wirkung kommt über Gefühl.</div>
-            </div>
-            <div class="step">
-              <b>2) Keks gestalten</b>
-              <div class="muted">Ein paar Deko-Optionen. Kontrolle ohne Stress.</div>
-            </div>
-            <div class="step">
-              <b>3) Abschicken</b>
-              <div class="muted">Empfänger scannt QR → antwortet → du bekommst Rückpost.</div>
+          <div class="trust">
+            <span class="pill"><span class="dot"></span> Mobile-first & super simpel</span>
+            <span class="pill"><span class="dot"></span> Wir verkaufen keine Daten</span>
+            <span class="pill"><span class="dot"></span> Reply-Loop = Viralität</span>
+            <span class="pill"><span class="dot"></span> Stempel-System (Early Reward)</span>
+          </div>
+
+          <div class="section">
+            <div class="steps">
+              <div class="step">
+                <b>1) Message</b>
+                <div class="muted">Kurz und persönlich. Kein Roman. Wirkung kommt über Gefühl.</div>
+              </div>
+              <div class="step">
+                <b>2) Keks gestalten</b>
+                <div class="muted">Ein paar Deko-Optionen. Kontrolle ohne Stress.</div>
+              </div>
+              <div class="step">
+                <b>3) Abschicken</b>
+                <div class="muted">Empfänger scannt QR → antwortet → du bekommst Rückpost.</div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <div class="card">
-        <div class="hd">
-          <div style="font-weight:900">Live-Preview</div>
-          <div style="color:var(--muted);font-weight:800;font-size:13px" id="rarity">Rarity: Classic</div>
+        <div class="card">
+          <div class="hd">
+            <div style="font-weight:950">Live-Preview</div>
+            <div style="color:var(--muted);font-weight:900;font-size:13px" id="rarity">Rarity: Classic</div>
+          </div>
+          <div class="bd">
+            <div class="keksPreview" id="cookie">
+              <div class="icing" id="icing"></div>
+              <div class="msgOnCookie" id="msgOnCookie">Deine Message hier.</div>
+              <div class="sprinkles" id="sprinkles"></div>
+            </div>
+
+            <div class="hr"></div>
+
+            <div class="miniRow" id="templateRow">
+              <button class="chip" data-tpl="Ich denk an dich.">Ich denk an dich</button>
+              <button class="chip" data-tpl="Beweg dein Arsch.">Beweg dein Arsch</button>
+              <button class="chip" data-tpl="Du packst das.">Du packst das</button>
+              <button class="chip" data-tpl="Sorry. Lass reden.">Sorry</button>
+              <button class="chip" data-tpl="Party heute?">Party?</button>
+            </div>
+            <p class="muted" style="margin:10px 0 0">
+              Tipp: kurze Message knallt mehr. Der Keks ist Bühne, nicht Buch.
+            </p>
+          </div>
         </div>
-        <div class="bd">
-          <div class="keksPreview" id="cookie">
-            <div class="icing" id="icing"></div>
-            <div class="msgOnCookie" id="msgOnCookie">Deine Message hier.</div>
-            <div class="sprinkles" id="sprinkles"></div>
+      </div>
+    </section>
+
+    <!-- Flow anchor -->
+    <section class="card" id="config" style="margin:14px 0 0">
+      <div class="hd">
+        <div style="font-weight:950">Keks gestalten</div>
+        <div class="muted" id="stepInfo" style="font-weight:900">Step 1/3</div>
+      </div>
+      <div class="bd">
+
+        <!-- STEP 1 -->
+        <div class="stepPane" data-step="1">
+          <div class="field">
+            <label for="message">Deine Message</label>
+            <textarea id="message" placeholder="z.B. Ich vermiss dich."></textarea>
+            <div class="muted">Kurz ist King. 10–80 Zeichen ist sweet spot.</div>
+          </div>
+
+          <div class="field">
+            <label>Pack wählen</label>
+            <div class="packTiles" id="packTiles">
+              <div class="tile active" data-pack="quick">
+                <h4>Quick</h4>
+                <div class="muted">Vorlage + schnell raus</div>
+                <div class="price">9,90 €</div>
+              </div>
+
+              <div class="tile" data-pack="custom">
+                <h4>Custom</h4>
+                <div class="muted">Freie Message + mehr Deko</div>
+                <div class="price">14,90 €</div>
+                <div class="badge" style="margin-top:10px">3er-Deal: -25% (Demo)</div>
+              </div>
+
+              <div class="tile vip" data-pack="premium">
+                <h4>Premium</h4>
+                <div class="muted">Box + Extras + VIP-Vibes</div>
+                <div class="price">24,90 €</div>
+              </div>
+            </div>
+            <select id="pack" style="display:none">
+              <option value="quick">Quick</option>
+              <option value="custom">Custom</option>
+              <option value="premium">Premium</option>
+            </select>
+          </div>
+
+          <div class="row">
+            <button class="btn cta" id="next1">Weiter</button>
+            <button class="btn" id="saveDraft">Entwurf speichern</button>
+          </div>
+        </div>
+
+        <!-- STEP 2 -->
+        <div class="stepPane" data-step="2" style="display:none">
+          <div class="twoCol">
+            <div class="field">
+              <label>Deko-Style</label>
+              <div class="miniRow" id="dekoRow">
+                <button class="chip active" data-icing="soft">Soft</button>
+                <button class="chip" data-icing="pink">Pink</button>
+                <button class="chip" data-icing="vip">VIP</button>
+              </div>
+              <div class="muted">VIP nutzt Schwarz/Gold nur als Akzent. Nicht flächig.</div>
+            </div>
+
+            <div class="field">
+              <label>Sprinkles</label>
+              <div class="miniRow" id="sprRow">
+                <button class="chip active" data-spr="light">Leicht</button>
+                <button class="chip" data-spr="medium">Medium</button>
+                <button class="chip" data-spr="heavy">Heavy</button>
+                <button class="chip" data-spr="off">Aus</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>Preview-Link</label>
+            <input id="previewLink" readonly />
+            <div class="muted">Teilen (Demo): Preview liest deinen Draft. Cross-Device Token kommt später.</div>
+          </div>
+
+          <div class="field">
+            <label>QR-Reply-Link (Demo)</label>
+            <input id="qrLink" readonly />
+            <div class="muted">Scan → Antwortseite. Später: echte Speicherung/Versand/Workflow.</div>
+          </div>
+
+          <div class="row">
+            <button class="btn" id="back2">Zurück</button>
+            <button class="btn cta" id="next2">Weiter</button>
+          </div>
+        </div>
+
+        <!-- STEP 3 -->
+        <div class="stepPane" data-step="3" style="display:none">
+          <div class="field">
+            <label>Adresse (Demo)</label>
+            <input id="addr" placeholder="Straße & Hausnummer" />
+            <div class="twoCol">
+              <input id="plz" placeholder="PLZ" />
+              <input id="ort" placeholder="Ort" />
+            </div>
+            <div class="muted">Für Demo reicht irgendwas. Später: echte Validierung + Versandinfos.</div>
+          </div>
+
+          <div class="row">
+            <button class="btn" id="back3">Zurück</button>
+            <button class="btn cta" id="payBtn">Zum Bezahlen (Demo)</button>
           </div>
 
           <div class="hr"></div>
 
-          <div class="miniRow" id="templateRow">
-            <button class="chip" data-tpl="Ich denk an dich.">Ich denk an dich</button>
-            <button class="chip" data-tpl="Beweg dein Arsch.">Beweg dein Arsch</button>
-            <button class="chip" data-tpl="Du packst das.">Du packst das</button>
-            <button class="chip" data-tpl="Sorry. Lass reden.">Sorry</button>
-            <button class="chip" data-tpl="Party heute?">Party?</button>
+          <div class="muted">
+            <b>Hinweis:</b> Zahlungsbutton ist Demo. Später Stripe Payment Link.
+            <br/><b>Stempel:</b> Pro Keks 1 Stempel. Ab 10 Belohnung (Demo, off-chain vorbereitet).
           </div>
+
+          <div class="hr"></div>
+          <div class="row" style="justify-content:space-between">
+            <div class="muted"><b>Stempelstand:</b> <span id="stamps">0</span>/10</div>
+            <button class="btn primary" id="addStamp">+1 Stempel (Demo)</button>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="card">
+        <div class="hd">
+          <div style="font-weight:950">Hall of Keks</div>
+          <div class="muted" style="font-weight:900">VIP & Top-Designs (Demo)</div>
+        </div>
+        <div class="bd" id="hall">
+          <div class="vipFrame">
+            <div class="vipTitle">VIP-Bereich</div>
+            <div class="vipSub">Legendary/Mythic Kekse bekommen Schwarz/Gold-Glanz + Highlight-Frame.</div>
+          </div>
+
+          <div class="hr"></div>
+
+          <div class="row">
+            <button class="btn" id="shareBtn">Design teilen</button>
+            <button class="btn primary" id="copyCodeBtn">Design-Code kopieren</button>
+          </div>
+
           <p class="muted" style="margin:10px 0 0">
-            Tipp: kurze Message knallt mehr. Der Keks ist Bühne, nicht Buch.
+            Share-Loop ist Pflicht: jeder geteilte Keks ist ein Mini-Funnel. Dit ist Viralität ohne Gelaber.
           </p>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <section class="card" id="flow" style="margin:14px 0 0">
-    <div class="hd">
-      <div style="font-weight:900">Keks gestalten</div>
-      <div class="muted" id="stepInfo" style="font-weight:800">Step 1/3</div>
-    </div>
-    <div class="bd">
-
-      <!-- STEP 1 -->
-      <div class="stepPane" data-step="1">
-        <div class="field">
-          <label for="message">Deine Message</label>
-          <textarea id="message" placeholder="z.B. Ich vermiss dich."></textarea>
-          <div class="muted">Kurz ist King. 10–80 Zeichen ist sweet spot.</div>
-        </div>
-
-        <div class="field">
-          <label>Pack wählen</label>
-          <div class="packTiles" id="packTiles">
-            <div class="tile active" data-pack="quick">
-              <h4>Quick</h4>
-              <div class="muted">Vorlage + schnell raus</div>
-              <div class="price">9,90 €</div>
-            </div>
-            <div class="tile" data-pack="custom">
-              <h4>Custom</h4>
-              <div class="muted">Freie Message + mehr Deko</div>
-              <div class="price">14,90 €</div>
-            </div>
-            <div class="tile vip" data-pack="premium">
-              <h4>Premium</h4>
-              <div class="muted">Box + Extras + VIP-Vibes</div>
-              <div class="price">24,90 €</div>
-            </div>
-          </div>
-          <select id="pack" style="display:none">
-            <option value="quick">Quick</option>
-            <option value="custom">Custom</option>
-            <option value="premium">Premium</option>
-          </select>
-        </div>
-
-        <div class="row">
-          <button class="btn cta" id="next1">Weiter</button>
-          <button class="btn" id="saveDraft">Entwurf speichern</button>
-        </div>
+    <!-- Footer sections (als echte Anker) -->
+    <footer class="foot">
+      <div class="hr"></div>
+      <div class="row" style="gap:12px">
+        <a href="#impressum">Impressum</a>
+        <a href="#datenschutz">Datenschutz</a>
+        <a href="#agb">AGB</a>
+        <a href="#versand">Versand</a>
+        <a href="#allergene">Allergene</a>
+        <a href="./privacy.html">Wie wir mit Daten umgehen</a>
       </div>
 
-      <!-- STEP 2 -->
-      <div class="stepPane" data-step="2" style="display:none">
-        <div class="twoCol">
-          <div class="field">
-            <label>Deko-Style</label>
-            <div class="miniRow" id="dekoRow">
-              <button class="chip active" data-icing="soft">Soft</button>
-              <button class="chip" data-icing="pink">Pink</button>
-              <button class="chip" data-icing="vip">VIP</button>
-            </div>
-            <div class="muted">VIP nutzt Schwarz/Gold nur als Akzent. Nicht flächig.</div>
-          </div>
+      <div class="hr"></div>
 
-          <div class="field">
-            <label>Sprinkles</label>
-            <div class="miniRow" id="sprRow">
-              <button class="chip active" data-spr="light">Leicht</button>
-              <button class="chip" data-spr="medium">Medium</button>
-              <button class="chip" data-spr="heavy">Heavy</button>
-              <button class="chip" data-spr="off">Aus</button>
-            </div>
-          </div>
-        </div>
+      <section id="impressum">
+        <b>Impressum (Demo)</b>
+        <p class="muted">Hier trägst du später deine Anbieterkennzeichnung ein.</p>
+      </section>
 
-        <div class="field">
-          <label>QR-Reply-Link (Demo)</label>
-          <input id="qrLink" readonly />
-          <div class="muted">Das ist erstmal ein Demo-Link. Später ersetzt du ihn durch deinen echten Reply-Endpoint.</div>
-        </div>
+      <section id="datenschutz">
+        <b>Datenschutz (Kurzfassung)</b>
+        <p class="muted">Wir speichern Drafts lokal im Browser. Keine Datenverkäufe. Details: <a href="./privacy.html">privacy.html</a>.</p>
+      </section>
 
-        <div class="row">
-          <button class="btn" id="back2">Zurück</button>
-          <button class="btn cta" id="next2">Weiter</button>
-        </div>
+      <section id="agb">
+        <b>AGB (Demo)</b>
+        <p class="muted">MVP-Placeholder. Später sauber rechtlich ausformulieren.</p>
+      </section>
+
+      <section id="versand">
+        <b>Versand (Demo)</b>
+        <p class="muted">MVP: Versandbedingungen folgen. Später Partner/White-Label-Flow integrieren.</p>
+      </section>
+
+      <section id="allergene">
+        <b>Allergene (Demo)</b>
+        <p class="muted">MVP: Allergene/Ingredients folgen. Später verpflichtend sauber.</p>
+      </section>
+    </footer>
+  </main>
+
+  <div class="toast" id="toast">Gespeichert.</div>
+
+  <div class="consent" id="consent">
+    <div class="box">
+      <div class="txt">
+        <b>Cookies, aber keksig.</b>
+        Wir speichern nur deinen Entwurf, damit dein Keks nicht verloren geht. Optional (später) anonyme Statistik. Wir verkaufen keine Daten.
       </div>
-
-      <!-- STEP 3 -->
-      <div class="stepPane" data-step="3" style="display:none">
-        <div class="field">
-          <label>Adresse (Demo)</label>
-          <input id="addr" placeholder="Straße & Hausnummer" />
-          <div class="twoCol">
-            <input id="plz" placeholder="PLZ" />
-            <input id="ort" placeholder="Ort" />
-          </div>
-          <div class="muted">Für Demo reicht irgendwas. Später: echte Validierung + Versandinfos.</div>
-        </div>
-
-        <div class="row">
-          <button class="btn" id="back3">Zurück</button>
-          <button class="btn cta" id="payBtn">Zum Bezahlen (Demo)</button>
-        </div>
-
-        <div class="hr"></div>
-
-        <div class="muted">
-          <b>Hinweis:</b> Zahlungsbutton ist aktuell Demo. Du kannst später einen Stripe Payment Link einsetzen.
-        </div>
+      <div class="actions">
+        <button class="btn cta" id="consentAll">Alles klar</button>
+        <button class="btn" id="consentNeed">Nur das Nötigste</button>
+        <button class="btn" id="consentInfo">Wie wir mit Daten umgehen</button>
       </div>
-
-    </div>
-  </section>
-
-  <section class="section">
-    <div class="card">
-      <div class="hd"><div style="font-weight:900">Hall of Keks (VIP)</div><div class="muted" style="font-weight:800">Top-Designs (Demo)</div></div>
-      <div class="bd" id="hall">
-        <div class="muted">Hier kommen später die beliebtesten Designs rein – mit Schwarz/Gold-Highlight und Share-Button.</div>
-        <div class="hr"></div>
-        <div class="row">
-          <button class="btn" id="shareBtn">Design teilen (Demo)</button>
-          <button class="btn primary" id="copyCodeBtn">Design-Code kopieren</button>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <footer class="foot">
-    <div class="hr"></div>
-    <div class="muted">
-      Impressum · Datenschutz · AGB · Versand · Allergene (Demo-Footer, später als echte Sections)
-    </div>
-  </footer>
-</main>
-
-<div class="toast" id="toast">Gespeichert.</div>
-
-<div class="consent" id="consent">
-  <div class="box">
-    <div class="txt">
-      <b>Cookies, aber keksig.</b>
-      Wir speichern nur deinen Entwurf, damit dein Keks nicht verloren geht. Optional helfen uns Cookies zu verstehen, welche Kekse gefallen. Wir verkaufen keine Daten.
-    </div>
-    <div class="actions">
-      <button class="btn cta" id="consentAll">Alles klar</button>
-      <button class="btn" id="consentNeed">Nur das Nötigste</button>
-      <button class="btn" id="consentInfo">Wie wir mit Daten umgehen</button>
     </div>
   </div>
-</div>
 
 <script>
 (() => {
+  // === Intro (Vorgabe A): niemals schwarz, immer auto-skip ===
+  const intro = document.getElementById('intro');
+  const vid = document.getElementById('introVid');
+  const skip = document.getElementById('introSkip');
+  const hideIntro = () => {
+    if(!intro) return;
+    intro.classList.add('hidden');
+    intro.setAttribute('aria-hidden','true');
+    try{ vid && vid.pause(); }catch(e){}
+  };
+  if(skip){
+    skip.addEventListener('click', (e)=>{ e.preventDefault(); e.stopPropagation(); hideIntro(); }, true);
+    skip.addEventListener('touchstart', (e)=>{ e.preventDefault(); e.stopPropagation(); hideIntro(); }, {passive:false, capture:true});
+  }
+  document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') hideIntro(); });
+
+  const hasSource = !!(vid && vid.querySelector('source') && (vid.querySelector('source').getAttribute('src')||"").trim());
+  setTimeout(()=>{ if(intro && !intro.classList.contains('hidden')) hideIntro(); }, hasSource ? 2200 : 800);
+  (async ()=>{
+    if(!vid) return;
+    if(!hasSource) return;
+    try{
+      await vid.play();
+      vid.addEventListener('loadeddata', ()=> setTimeout(()=>{ if(intro && !intro.classList.contains('hidden')) hideIntro(); }, 900), {once:true});
+      vid.addEventListener('ended', hideIntro, {once:true});
+    }catch(e){ hideIntro(); }
+  })();
+
+  // === Keksregen ===
+  const rain = document.getElementById('rain');
+  if(rain){
+    const n = 18;
+    for(let i=0;i<n;i++){
+      const el = document.createElement('i');
+      el.style.setProperty('--x', Math.round(Math.random()*100)+'%');
+      el.style.setProperty('--y', Math.round(Math.random()*100)+'%');
+      el.style.setProperty('--r', (Math.random()*180-90)+'deg');
+      el.style.setProperty('--d', (10 + Math.random()*14)+'s');
+      rain.appendChild(el);
+    }
+  }
+
   const $ = (id) => document.getElementById(id);
   const toast = (msg) => { const t=$('toast'); t.textContent=msg; t.style.display='block'; clearTimeout(window.__tto); window.__tto=setTimeout(()=>t.style.display='none', 2200); };
-
-  // State
-  const state = {
-    orderId: localStorage.getItem('ok_order') || ('ok_' + Math.random().toString(36).slice(2) + Date.now().toString(36)),
-    message: localStorage.getItem('ok_msg') || '',
-    pack: localStorage.getItem('ok_pack') || 'quick',
-    icing: localStorage.getItem('ok_icing') || 'soft',
-    spr: localStorage.getItem('ok_spr') || 'light',
-  };
-  localStorage.setItem('ok_order', state.orderId);
-
-  // Elements
-  const msg = $('message');
-  const msgOnCookie = $('msgOnCookie');
-  const rarity = $('rarity');
-  const qrLink = $('qrLink');
-  const pack = $('pack');
-  const packTiles = $('packTiles');
-  const sprinkles = $('sprinkles');
-  const icing = $('icing');
-  const stepInfo = $('stepInfo');
 
   // Consent
   const consent = $('consent');
@@ -473,40 +653,71 @@
   if(!consentVal){ consent.style.display='block'; }
   $('consentAll').onclick = () => { localStorage.setItem(consentKey,'all'); consent.style.display='none'; toast('Alles klar.'); };
   $('consentNeed').onclick = () => { localStorage.setItem(consentKey,'need'); consent.style.display='none'; toast('Nur das Nötigste.'); };
-  $('consentInfo').onclick = () => { alert("Kurzfassung: Wir speichern deinen Entwurf lokal im Browser. Optional (später) anonymes Tracking zur Produktverbesserung. Keine Datenverkäufe."); };
+  $('consentInfo').onclick = () => { location.href = './privacy.html'; };
 
-  // Helpers
+  // === Draft/State v2 ===
+  const CFG = {
+    draftKey: "onlykeks_draft_v2",
+    stampsKey: "onlykeks_stamps_v1"
+  };
+
+  const state = {
+    rid: localStorage.getItem('ok_rid') || ('rid_' + Math.random().toString(36).slice(2) + Date.now().toString(36)),
+    orderId: localStorage.getItem('ok_order') || ('ok_' + Math.random().toString(36).slice(2) + Date.now().toString(36)),
+    message: localStorage.getItem('ok_msg') || '',
+    pack: localStorage.getItem('ok_pack') || 'quick',
+    icing: localStorage.getItem('ok_icing') || 'soft',
+    spr: localStorage.getItem('ok_spr') || 'light',
+  };
+  localStorage.setItem('ok_order', state.orderId);
+  localStorage.setItem('ok_rid', state.rid);
+
+  // Elements
+  const msg = $('message');
+  const msgOnCookie = $('msgOnCookie');
+  const qrLink = $('qrLink');
+  const previewLink = $('previewLink');
+  const pack = $('pack');
+  const packTiles = $('packTiles');
+  const sprinkles = $('sprinkles');
+  const icing = $('icing');
+  const stepInfo = $('stepInfo');
+  const stampsEl = $('stamps');
+
   const setActiveChips = (container, predicate) => {
     container.querySelectorAll('.chip').forEach(c => c.classList.toggle('active', predicate(c)));
   };
 
-  const updateRarity = () => {
-    // Simple rarity logic: Premium + VIP icing => Mythic vibes (demo)
-    let r = 'Classic';
-    if(state.pack === 'premium' && state.icing === 'vip') r = 'Mythic (VIP)';
-    else if(state.pack === 'premium') r = 'Legendary';
-    else if(state.pack === 'custom') r = 'Rare';
-    $('rarity').textContent = 'Rarity: ' + r;
+  const rarityText = () => {
+    if(state.pack === 'premium' && state.icing === 'vip') return 'Mythic (VIP)';
+    if(state.pack === 'premium') return 'Legendary';
+    if(state.pack === 'custom') return 'Rare';
+    return 'Classic';
+  };
+
+  const updateRarity = () => $('rarity').textContent = 'Rarity: ' + rarityText();
+
+  const buildPreview = () => {
+    const base = location.origin + location.pathname.replace(/index\.html$/,'') + 'preview.html';
+    const url = base + '?rid=' + encodeURIComponent(state.rid);
+    previewLink.value = url;
   };
 
   const buildQr = () => {
-    // Demo link – later replace with real endpoint
     const base = location.origin + location.pathname.replace(/index\.html$/,'') + 'keks.html';
-    const url = base + '?order=' + encodeURIComponent(state.orderId) + '&draft=' + encodeURIComponent(btoa(unescape(encodeURIComponent(state.message || ''))));
+    const url = base + '?order=' + encodeURIComponent(state.orderId) + '&rid=' + encodeURIComponent(state.rid);
     qrLink.value = url;
   };
 
   const renderSprinkles = () => {
     sprinkles.innerHTML = '';
-    const level = state.spr;
-    if(level === 'off') return;
-    const n = level === 'light' ? 10 : level === 'medium' ? 18 : 28;
+    if(state.spr === 'off') return;
+    const n = state.spr === 'light' ? 10 : state.spr === 'medium' ? 18 : 28;
     for(let i=0;i<n;i++){
       const el = document.createElement('i');
       el.style.setProperty('--x', Math.round(Math.random()*92)+'%');
       el.style.setProperty('--y', Math.round(Math.random()*82)+'%');
       el.style.setProperty('--r', (Math.random()*160-80)+'deg');
-      // add a few gold ones when VIP
       if(state.icing === 'vip' && Math.random() < 0.25) el.style.background = 'rgba(199,164,76,.95)';
       sprinkles.appendChild(el);
     }
@@ -519,7 +730,7 @@
     } else if(state.icing === 'pink'){
       icing.style.background = 'rgba(255,79,163,.16)';
       icing.style.borderColor = 'rgba(255,79,163,.35)';
-    } else { // vip
+    } else {
       icing.style.background = 'linear-gradient(180deg, rgba(17,17,17,.16), rgba(17,17,17,.06))';
       icing.style.borderColor = 'rgba(199,164,76,.45)';
     }
@@ -535,7 +746,18 @@
     msgOnCookie.textContent = (state.message || 'Deine Message hier.').slice(0, 110);
   };
 
-  const saveState = () => {
+  const saveDraftV2 = () => {
+    const draft = {
+      v: 2,
+      rid: state.rid,
+      orderId: state.orderId,
+      message: state.message,
+      pack: state.pack,
+      icing: state.icing,
+      spr: state.spr,
+      updatedAt: new Date().toISOString()
+    };
+    localStorage.setItem(CFG.draftKey, JSON.stringify(draft));
     localStorage.setItem('ok_msg', state.message);
     localStorage.setItem('ok_pack', state.pack);
     localStorage.setItem('ok_icing', state.icing);
@@ -548,16 +770,20 @@
   renderIcing();
   renderSprinkles();
   updateRarity();
+  buildPreview();
   buildQr();
+  saveDraftV2();
 
-  // Hero buttons
-  const scrollToFlow = () => $('flow').scrollIntoView({behavior:'smooth', block:'start'});
+  // Buttons
+  const scrollToFlow = () => $('config').scrollIntoView({behavior:'smooth', block:'start'});
   $('btnStart').onclick = scrollToFlow;
   $('btnStart2').onclick = scrollToFlow;
 
+  $('btnPreview').onclick = () => { saveDraftV2(); location.href = './preview.html?rid=' + encodeURIComponent(state.rid); };
+
   $('btnAutoDemo').onclick = () => {
     state.message = "Ick denk an dich. Ehrlich.";
-    applyMessage(); buildQr(); saveState();
+    applyMessage(); buildPreview(); buildQr(); saveDraftV2();
     toast('Demo geladen.');
   };
 
@@ -566,7 +792,7 @@
     const b = e.target.closest('button[data-tpl]');
     if(!b) return;
     state.message = b.dataset.tpl;
-    applyMessage(); buildQr(); saveState();
+    applyMessage(); buildPreview(); buildQr(); saveDraftV2();
     $('templateRow').querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
     b.classList.add('active');
     toast('Template gesetzt.');
@@ -576,7 +802,7 @@
   msg.addEventListener('input', () => {
     state.message = msg.value.trim();
     msgOnCookie.textContent = (state.message || 'Deine Message hier.').slice(0,110);
-    buildQr(); saveState();
+    buildPreview(); buildQr(); saveDraftV2();
   });
 
   // Pack tiles
@@ -584,7 +810,7 @@
     const t = e.target.closest('.tile');
     if(!t) return;
     state.pack = t.dataset.pack;
-    applyPackTiles(); updateRarity(); saveState();
+    applyPackTiles(); updateRarity(); saveDraftV2();
     toast('Pack gewählt.');
   });
 
@@ -599,8 +825,7 @@
   $('next1').onclick = () => {
     if(!state.message || state.message.length < 3){
       toast('Kurz ’ne Message rein, bitte.');
-      msg.focus();
-      return;
+      msg.focus(); return;
     }
     showStep(2);
   };
@@ -614,7 +839,7 @@
     if(!b) return;
     state.icing = b.dataset.icing;
     setActiveChips($('dekoRow'), (x)=>x===b);
-    renderIcing(); renderSprinkles(); updateRarity(); saveState();
+    renderIcing(); renderSprinkles(); updateRarity(); saveDraftV2();
     toast('Style gesetzt.');
   });
   $('sprRow').addEventListener('click', (e) => {
@@ -622,33 +847,53 @@
     if(!b) return;
     state.spr = b.dataset.spr;
     setActiveChips($('sprRow'), (x)=>x===b);
-    renderSprinkles(); saveState();
+    renderSprinkles(); saveDraftV2();
     toast('Sprinkles gesetzt.');
   });
 
-  $('saveDraft').onclick = () => { saveState(); toast('Entwurf gespeichert.'); };
+  $('saveDraft').onclick = () => { saveDraftV2(); toast('Entwurf gespeichert.'); };
 
   $('payBtn').onclick = () => {
-    saveState();
+    saveDraftV2();
     toast('Demo: Zahlung kommt als nächstes (Stripe Link später).');
   };
 
-  // Hall actions (demo)
+  // Stempel (Early Reward, off-chain vorbereitet)
+  const getStamps = () => parseInt(localStorage.getItem(CFG.stampsKey) || "0", 10) || 0;
+  const setStamps = (n) => localStorage.setItem(CFG.stampsKey, String(Math.max(0,n)));
+  const renderStamps = () => {
+    const s = getStamps();
+    if(stampsEl) stampsEl.textContent = String(s);
+  };
+  renderStamps();
+  $('addStamp').onclick = () => {
+    const s = getStamps() + 1;
+    setStamps(s);
+    renderStamps();
+    toast(s >= 10 ? '10 Stempel! Belohnung (Demo).' : '+1 Stempel.');
+  };
+
+  // Hall actions
   $('btnHall').onclick = () => document.getElementById('hall').scrollIntoView({behavior:'smooth'});
   $('copyCodeBtn').onclick = async () => {
-    const code = btoa(JSON.stringify({m: state.message, p: state.pack, i: state.icing, s: state.spr, o: state.orderId}));
+    const code = btoa(JSON.stringify({v:2, rid: state.rid, m: state.message, p: state.pack, i: state.icing, s: state.spr}));
     try{ await navigator.clipboard.writeText(code); toast('Design-Code kopiert.'); }
     catch(e){ toast('Kopieren ging nicht (Browser).'); }
   };
   $('shareBtn').onclick = async () => {
     const shareText = `Mein OnlyKeks: "${state.message}"`;
-    const url = location.href.split('#')[0];
+    const url = previewLink.value || (location.href.split('#')[0]);
     if(navigator.share){
       try{ await navigator.share({title:'OnlyKeks', text:shareText, url}); toast('Geteilt.'); } catch(e){}
     } else {
       try{ await navigator.clipboard.writeText(url); toast('Link kopiert.'); } catch(e){ toast('Share nicht verfügbar.'); }
     }
   };
+
+  // Wenn irgendwo noch ein Service Worker steckt: killen (damit der schwarze Screen nicht cached bleibt)
+  if('serviceWorker' in navigator){
+    navigator.serviceWorker.getRegistrations().then(rs => rs.forEach(r => r.unregister())).catch(()=>{});
+  }
 })();
 </script>
 </body>

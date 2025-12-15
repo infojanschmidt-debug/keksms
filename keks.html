@@ -3,190 +3,49 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>OnlyKeks – Antwort</title>
+  <title>OnlyKeks – Antwort senden</title>
   <meta name="theme-color" content="#ff4fa3" />
-  <meta name="robots" content="noindex,nofollow" />
-
   <style>
-    :root{
-      --bg:#ffffff;
-      --ink:#0f172a;
-      --muted:#475569;
-      --line:rgba(15,23,42,.10);
-      --shadow: 0 10px 30px rgba(2,6,23,.08);
-      --pink:#ff4fa3;
-      --pink2:#ff7bc0;
-      --r:22px;
-      --max: 760px;
-      --pad: 18px;
-    }
-    *{box-sizing:border-box}
-    body{
-      margin:0;
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
-      color:var(--ink);
-      background:
-        radial-gradient(900px 400px at 15% 0%, rgba(255,79,163,.18), transparent 55%),
-        linear-gradient(180deg, #fff 0%, #fff6fb 55%, #fff 100%);
-    }
-    .wrap{max-width:var(--max); margin:0 auto; padding: 22px var(--pad) 50px;}
-    .card{
-      background: rgba(255,255,255,.86);
-      border:1px solid var(--line);
-      border-radius: var(--r);
-      box-shadow: var(--shadow);
-      padding: 18px;
-    }
-    h1{margin:0 0 8px; font-size: 28px; letter-spacing:-.02em}
-    .muted{color: rgba(15,23,42,.68); line-height:1.45}
-    .pill{
-      display:inline-flex; gap:10px; align-items:center;
-      padding: 8px 12px;
-      border-radius: 999px;
-      border:1px solid rgba(255,79,163,.25);
-      background: rgba(255,79,163,.08);
-      font-weight:900;
-      color: rgba(255,79,163,.95);
-      font-size: 13px;
-      margin-top: 8px;
-    }
-    textarea, input{
-      width:100%;
-      padding: 14px;
-      border-radius: 16px;
-      border:1px solid var(--line);
-      background: rgba(255,255,255,.92);
-      font-size: 15px;
-      outline:none;
-    }
-    textarea{min-height: 140px; resize: vertical}
-    textarea:focus, input:focus{
-      border-color: rgba(255,79,163,.45);
-      box-shadow: 0 0 0 4px rgba(255,79,163,.10);
-    }
-    .cta{
-      display:inline-flex; align-items:center; justify-content:center;
-      padding: 14px 18px;
-      border-radius: 999px;
-      background: linear-gradient(135deg, var(--pink), var(--pink2));
-      color:#fff;
-      text-decoration:none;
-      font-weight:1000;
-      border:0;
-      cursor:pointer;
-      width:100%;
-      margin-top: 12px;
-    }
-    .mono{
-      margin-top: 12px;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-      font-size: 12.5px;
-      color: rgba(15,23,42,.70);
-      word-break: break-all;
-    }
-    .sep{height:12px}
-    .cookie{
-      border-radius: 20px;
-      padding: 16px;
-      border:1px solid var(--line);
-      background:
-        radial-gradient(420px 200px at 20% 10%, rgba(255,79,163,.12), transparent 65%),
-        linear-gradient(135deg, #f7caa6, #d9a07a);
-      color: rgba(15,23,42,.92);
-      box-shadow: 0 6px 18px rgba(2,6,23,.08);
-      margin-top: 10px;
-    }
-    .cookie .meta{font-size: 13px; opacity:.82; font-weight:1000}
-    .cookie .msg{margin-top: 10px; font-size: 18px; font-weight:1000; line-height:1.15; letter-spacing:-.01em}
+    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;background:#fff;color:#111}
+    .wrap{max-width:720px;margin:0 auto;padding:18px}
+    .card{border:1px solid #ececec;border-radius:18px;padding:14px;background:rgba(255,255,255,.9)}
+    .muted{color:#666}
+    textarea,input{width:100%;padding:12px;border-radius:14px;border:1px solid #ececec;font:inherit}
+    textarea{min-height:120px}
+    button{padding:12px 14px;border-radius:999px;border:1px solid rgba(255,79,163,.5);background:rgba(255,79,163,.12);font-weight:900;cursor:pointer}
   </style>
 </head>
-
 <body>
   <div class="wrap">
+    <h1>Antwort zurückschicken</h1>
+    <p class="muted">Du scannst den QR. Du antwortest. Der Absender bekommt echte Post zurück.</p>
+
     <div class="card">
-      <h1>Antwort schreiben</h1>
-      <div class="muted">Du hast ’nen Keks bekommen. Jetzt schreib kurz zurück – dann ist der Loop komplett. verstehste</div>
+      <div class="muted">Order:</div>
+      <div id="order" style="font-weight:900;margin-bottom:10px">–</div>
 
-      <div class="pill">Kein Account · Kein Stress · Nur Reply</div>
+      <label style="font-weight:900">Deine Antwort</label>
+      <textarea id="reply" placeholder="Schreib kurz, ehrlich, persönlich."></textarea>
 
-      <div class="sep"></div>
-
-      <div class="muted" style="font-weight:1000;margin-bottom:6px">Keks-Message</div>
-      <div class="cookie" id="cookieBox">
-        <div class="meta" id="cookieMeta">–</div>
-        <div class="msg" id="cookieMsg">–</div>
-      </div>
-
-      <div class="sep"></div>
-
-      <div class="muted" style="font-weight:1000;margin-bottom:6px">Deine Antwort</div>
-      <textarea id="reply" maxlength="800" placeholder="Schreib hier deine Antwort…"></textarea>
-
-      <button class="cta" id="sendReply" type="button">Antwort senden</button>
-
-      <div class="mono" id="debug">Token: –</div>
-      <div class="muted" style="font-size:12.5px;margin-top:10px">
-        MVP: Reply wird im Browser gespeichert. Später: echter Versand/Inbox/Benachrichtigung.
-      </div>
+      <div style="height:10px"></div>
+      <button id="send">Antwort speichern (Demo)</button>
+      <p class="muted" style="margin-top:10px">Demo: Speichert lokal. Später: echte Speicherung/Versand/Workflow.</p>
     </div>
   </div>
 
-  <script>
-    const $ = (s, r=document)=>r.querySelector(s);
-    const LS = {
-      get(k, d=null){ try{ const v=localStorage.getItem(k); return v?JSON.parse(v):d }catch(e){ return d } },
-      set(k, v){ try{ localStorage.setItem(k, JSON.stringify(v)) }catch(e){} }
-    };
+<script>
+(() => {
+  const q = new URLSearchParams(location.search);
+  const order = q.get('order') || 'unknown';
+  document.getElementById('order').textContent = order;
 
-    function qs(name){
-      return new URLSearchParams(location.search).get(name);
-    }
-
-    function packLabel(v){
-      if(v==='quick') return 'Quick';
-      if(v==='custom') return 'Custom';
-      return 'Premium';
-    }
-    function styleLabel(v){
-      if(v==='pastell') return 'Pastell';
-      if(v==='party') return 'Party';
-      if(v==='clean') return 'Clean';
-      return 'VIP';
-    }
-    function shapeLabel(v){
-      return ({kreis:'Kreis', herz:'Herz', stern:'Stern', smiley:'Smiley', tanne:'Tannenbaum'})[v] || v;
-    }
-
-    function paintCookie(d){
-      const meta = `${packLabel(d.pack||'custom')} · ${shapeLabel(d.shape||'kreis')} · ${styleLabel(d.style||'pastell')}`;
-      $('#cookieMeta').textContent = meta;
-      $('#cookieMsg').textContent = (d.msg && d.msg.trim()) ? d.msg.trim() : '—';
-
-      const box = $('#cookieBox');
-      if((d.style==='vip') || (d.pack==='premium')){
-        box.style.background = 'radial-gradient(450px 220px at 20% 10%, rgba(215,181,109,.28), transparent 60%), linear-gradient(180deg, rgba(11,11,15,.96), rgba(11,11,15,.88))';
-        box.style.color = '#fff';
-      }
-    }
-
-    (function(){
-      const token = qs('t') || '—';
-      $('#debug').textContent = 'Token: ' + token;
-
-      const draft = LS.get('onlykeks_draft_' + token, null);
-      if(draft) paintCookie(draft);
-
-      $('#sendReply').onclick = ()=>{
-        const reply = ($('#reply').value||'').trim();
-        if(!reply){
-          alert('Kurz was tippen, dann ist der Loop rund.');
-          return;
-        }
-        LS.set('onlykeks_reply_' + token, { reply, ts: Date.now() });
-        alert('Antwort gespeichert. MVP done.');
-        $('#reply').value = '';
-      };
-    })();
-  </script>
+  document.getElementById('send').onclick = () => {
+    const txt = document.getElementById('reply').value.trim();
+    if(txt.length < 2){ alert('Kurz was schreiben, bitte.'); return; }
+    localStorage.setItem('ok_reply_' + order, txt);
+    alert('Gespeichert (Demo). Später geht das als echte Post raus.');
+  };
+})();
+</script>
 </body>
 </html>

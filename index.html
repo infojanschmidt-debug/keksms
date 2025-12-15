@@ -8,16 +8,13 @@
   <meta name="theme-color" content="#ff4fa3" />
   <meta name="robots" content="index,follow" />
 
-  <!-- Social -->
   <meta property="og:title" content="OnlyKeks – Post, die schmeckt" />
   <meta property="og:description" content="Post, die schmeckt – und zurückkommt. Keks mit Message. QR scan. Antwort zurück." />
   <meta property="og:type" content="website" />
   <meta property="og:image" content="assets/img/og.jpg" />
   <meta property="og:url" content="./" />
 
-  <!-- Preloads -->
   <link rel="preload" as="video" href="assets/img/video/intro.mp4" type="video/mp4" />
-  <link rel="preload" as="video" href="assets/img/video/hero-loop.mp4" type="video/mp4" />
   <link rel="icon" href="assets/img/favicon.png" />
 
   <style>
@@ -29,16 +26,20 @@
       --card:#ffffff;
       --shadow: 0 10px 30px rgba(2,6,23,.06);
       --shadow2: 0 6px 18px rgba(2,6,23,.08);
+
       --pink:#ff4fa3;
       --pink2:#ff7bc0;
-      --cream:#fff6fb;
+
+      /* Schoko-Vanille Basis + Touch Deko-Chichi */
+      --vanilla:#fff4e6;
+      --cream:#fff7fb;
       --choco:#4b2a1b;
       --choco2:#7a3f27;
-      --sugar: rgba(255,255,255,.85);
+
       --vip:#0b0b0f;
       --gold:#d7b56d;
+
       --r:22px;
-      --r2:16px;
       --max: 1080px;
       --pad: 20px;
       --h1: clamp(34px, 5vw, 56px);
@@ -49,44 +50,38 @@
     html,body{height:100%}
     body{
       margin:0;
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
       color:var(--ink);
       background:
-        radial-gradient(900px 400px at 15% 0%, rgba(255,79,163,.18), transparent 55%),
-        radial-gradient(700px 380px at 90% 8%, rgba(255,123,192,.18), transparent 55%),
+        radial-gradient(900px 420px at 15% 0%, rgba(255,79,163,.12), transparent 55%),
+        radial-gradient(740px 400px at 92% 10%, rgba(255,123,192,.12), transparent 55%),
         linear-gradient(180deg, #fff 0%, var(--cream) 52%, #fff 100%);
       overflow-x:hidden;
     }
     a{color:inherit}
-
     .wrap{max-width:var(--max); margin:0 auto; padding: 0 var(--pad);}
 
-    /* Keksregen – dauerhaft */
-    .rain{
-      position:fixed; inset:0;
-      pointer-events:none;
-      z-index:0;
-      overflow:hidden;
-    }
+    /* Keksregen: Fortnite-Rarity */
+    .rain{position:fixed; inset:0; pointer-events:none; z-index:0; overflow:hidden;}
     .drop{
-      position:absolute;
-      top:-12vh;
-      font-size: 16px;
-      opacity:.16;
-      filter: blur(.1px);
+      position:absolute; top:-14vh;
+      font-size:16px;
+      opacity:.18;
+      transform: translateY(0) rotate(0deg);
       animation: fall linear infinite;
       will-change: transform;
+      filter: blur(.05px);
     }
+    .drop.common{opacity:.14}
+    .drop.rare{opacity:.18}
+    .drop.epic{opacity:.22}
+    .drop.legendary{opacity:.24; text-shadow: 0 0 18px rgba(215,181,109,.25)}
     @keyframes fall{
-      to{ transform: translateY(120vh) rotate(360deg); }
+      to{ transform: translateY(125vh) rotate(360deg); }
     }
-    @media (prefers-reduced-motion: reduce){
-      .drop{display:none}
-    }
+    @media (prefers-reduced-motion: reduce){ .drop{display:none} }
 
-    /* Layout Layers */
     .topbar, main, footer{position:relative; z-index:1}
-
     .topbar{
       position:sticky; top:0; z-index:40;
       backdrop-filter: blur(10px);
@@ -122,7 +117,7 @@
     nav a:hover{background: rgba(15,23,42,.04)}
     @media (max-width: 920px){ nav{display:none} }
 
-    /* Buttons – Zuckerguss Rahmen */
+    /* CTA mit Zuckerguss-Rahmen */
     .cta{
       position:relative;
       display:inline-flex; align-items:center; justify-content:center;
@@ -135,7 +130,6 @@
       box-shadow: var(--shadow);
       border: 0;
       cursor:pointer;
-      transform: translateZ(0);
     }
     .cta::before{
       content:"";
@@ -147,7 +141,7 @@
         linear-gradient(180deg, rgba(255,255,255,.55), rgba(255,255,255,.0));
       pointer-events:none;
       mix-blend-mode: screen;
-      opacity:.65;
+      opacity:.68;
     }
     .cta.secondary{
       background: #fff;
@@ -158,7 +152,7 @@
     .cta.secondary::before{opacity:.35}
 
     .card{
-      background: rgba(255,255,255,.82);
+      background: rgba(255,255,255,.84);
       border:1px solid var(--line);
       border-radius: var(--r);
       box-shadow: var(--shadow);
@@ -210,7 +204,7 @@
       padding: 14px 14px;
       border-radius: 18px;
       border:1px solid var(--line);
-      background: rgba(255,255,255,.82);
+      background: rgba(255,255,255,.84);
     }
     .trust b{display:block; font-size: 14px; margin-bottom: 4px}
     .trust span{color: rgba(15,23,42,.65); font-size: 13px}
@@ -225,23 +219,28 @@
       min-height: 320px;
     }
 
-    /* Hero Loop Video Frame */
+    /* Hero "Loop" ohne Video: animiertes Panel */
     .loopFrame{
       position:relative;
       border-radius: 22px;
       border:1px solid rgba(15,23,42,.12);
-      background:
-        radial-gradient(300px 160px at 20% 20%, rgba(255,79,163,.18), transparent 60%),
-        radial-gradient(260px 150px at 85% 35%, rgba(255,123,192,.16), transparent 60%),
-        linear-gradient(180deg, rgba(255,255,255,.9), rgba(255,255,255,.6));
       overflow:hidden;
       aspect-ratio: 16/10;
+      background:
+        radial-gradient(320px 160px at 20% 20%, rgba(255,79,163,.14), transparent 60%),
+        radial-gradient(300px 170px at 90% 35%, rgba(255,123,192,.12), transparent 60%),
+        linear-gradient(180deg, rgba(255,255,255,.9), rgba(255,255,255,.6));
     }
-    .loopFrame video{
-      width:100%; height:100%;
-      object-fit: cover;
-      display:block;
-      filter: saturate(1.05) contrast(1.02);
+    .loopAnim{
+      position:absolute; inset:0;
+      background:
+        linear-gradient(90deg, transparent, rgba(255,255,255,.35), transparent);
+      transform: translateX(-60%);
+      animation: shimmer 2.6s linear infinite;
+      opacity:.6;
+    }
+    @keyframes shimmer{
+      to{ transform: translateX(140%); }
     }
     .loopBadge{
       position:absolute;
@@ -255,6 +254,17 @@
       color: rgba(15,23,42,.82);
       backdrop-filter: blur(8px);
     }
+    .loopShot{
+      position:absolute; inset:18px;
+      border-radius: 18px;
+      border:1px dashed rgba(15,23,42,.18);
+      display:flex; align-items:center; justify-content:center;
+      font-weight:1000;
+      color: rgba(15,23,42,.55);
+      background:
+        radial-gradient(260px 130px at 30% 30%, rgba(122,63,39,.12), transparent 60%),
+        radial-gradient(260px 140px at 80% 60%, rgba(255,79,163,.10), transparent 60%);
+    }
 
     .mini{
       display:grid;
@@ -264,7 +274,7 @@
     .mini .tile{
       border-radius: 18px;
       border:1px solid var(--line);
-      background: rgba(255,255,255,.82);
+      background: rgba(255,255,255,.84);
       padding: 12px;
       font-weight:1000;
       color: rgba(15,23,42,.78);
@@ -321,27 +331,34 @@
       color: rgba(255,79,163,.98);
     }
 
+    .rarityTag{
+      display:inline-flex; align-items:center; gap:8px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      border:1px solid rgba(15,23,42,.12);
+      background: rgba(255,255,255,.82);
+      font-weight:1000;
+      font-size: 12px;
+    }
+    .rarityTag.common{border-color: rgba(15,23,42,.12)}
+    .rarityTag.rare{border-color: rgba(0,170,255,.25)}
+    .rarityTag.epic{border-color: rgba(160,80,255,.25)}
+    .rarityTag.legendary{border-color: rgba(215,181,109,.45); color: rgba(120,85,10,.9)}
+
     .preview{
       position:relative;
       border-radius: 22px;
       border:1px solid rgba(15,23,42,.12);
-      background: rgba(255,255,255,.65);
+      background: rgba(255,255,255,.70);
       overflow:hidden;
       padding: 16px;
     }
-    .cookieStage{
-      display:grid;
-      grid-template-columns: 1fr;
-      gap: 12px;
-    }
-
-    /* Cookie SVG wrapper */
     .cookieWrap{
       border-radius: 20px;
       border:1px dashed rgba(15,23,42,.18);
       background:
-        radial-gradient(280px 140px at 20% 20%, rgba(255,79,163,.14), transparent 60%),
-        radial-gradient(260px 150px at 85% 35%, rgba(255,123,192,.12), transparent 60%),
+        radial-gradient(280px 140px at 20% 20%, rgba(255,79,163,.10), transparent 60%),
+        radial-gradient(260px 150px at 85% 35%, rgba(122,63,39,.10), transparent 60%),
         linear-gradient(180deg, rgba(255,255,255,.9), rgba(255,255,255,.6));
       padding: 14px;
       min-height: 300px;
@@ -360,11 +377,9 @@
       background: #fff;
       padding: 8px;
     }
-    .smallActions{
-      display:flex; gap:10px; flex-wrap:wrap;
-    }
+    .smallActions{display:flex; gap:10px; flex-wrap:wrap;}
 
-    /* Intro Overlay – HARD SAFE */
+    /* Intro Overlay */
     .intro{
       position:fixed;
       inset:0;
@@ -375,17 +390,9 @@
       justify-content:center;
       pointer-events:auto;
     }
-    .intro video{
-      width:100%;
-      height:100%;
-      object-fit:cover;
-      display:block;
-      background:#000;
-    }
+    .intro video{width:100%;height:100%;object-fit:cover;display:block;background:#000;}
     .intro .skip{
-      position:absolute;
-      top:16px;
-      right:16px;
+      position:absolute; top:16px; right:16px;
       z-index:100000;
       pointer-events:auto;
       padding:10px 14px;
@@ -398,10 +405,7 @@
       backdrop-filter: blur(8px);
     }
     .intro .hint{
-      position:absolute;
-      bottom:16px;
-      left:16px;
-      right:16px;
+      position:absolute; bottom:16px; left:16px; right:16px;
       color:rgba(255,255,255,.85);
       font-weight:900;
       font-size:13px;
@@ -410,43 +414,29 @@
       text-shadow: 0 8px 20px rgba(0,0,0,.55);
     }
 
-    footer{
-      padding: 30px 0 50px;
-      color: rgba(15,23,42,.62);
-      font-size: 14px;
-    }
+    footer{padding: 30px 0 50px; color: rgba(15,23,42,.62); font-size: 14px;}
     .footRow{display:flex; gap:14px; flex-wrap:wrap; margin-top: 10px}
   </style>
 
-  <!-- QR Library -->
   <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.4/build/qrcode.min.js" defer></script>
 </head>
 
 <body>
-  <!-- Keksregen Layer -->
   <div class="rain" id="rain" aria-hidden="true"></div>
 
-  <!-- INTRO (immer clickable/skipbar) -->
   <div class="intro" id="intro" onclick="window.__introTap && window.__introTap(event)">
-    <button class="skip" id="introSkip" type="button" onclick="window.__skipIntro && window.__skipIntro()">
-      Skip
-    </button>
-
+    <button class="skip" id="introSkip" type="button" onclick="window.__skipIntro && window.__skipIntro()">Skip</button>
     <video id="introVideo" playsinline muted preload="auto" poster="assets/intro/poster.jpg">
       <source src="assets/img/video/intro.mp4" type="video/mp4" />
     </video>
-
     <div class="hint">Wenn Autoplay zickt: Tippen = Start. ESC = raus.</div>
   </div>
 
-  <!-- Topbar -->
   <div class="topbar">
     <div class="inner">
       <a class="brand" href="./">
         <div class="logo" aria-hidden="true"></div>
-        <div>
-          OnlyKeks<br><span style="font-weight:700;color:rgba(15,23,42,.55);font-size:12px">Post, die schmeckt</span>
-        </div>
+        <div>OnlyKeks<br><span style="font-weight:700;color:rgba(15,23,42,.55);font-size:12px">Post, die schmeckt</span></div>
       </a>
       <nav aria-label="Navigation">
         <a href="#config">Konfigurator</a>
@@ -458,19 +448,18 @@
   </div>
 
   <main>
-    <!-- Hero -->
     <div class="wrap hero" id="top">
       <div class="heroGrid">
         <div class="card heroCard">
           <div class="kicker">Post, die schmeckt – und zurückkommt.</div>
           <h1>Schick ’ne süße Botschaft.<br>Hol dir ’ne Antwort zurück.</h1>
-          <p class="sub">Du schreibst die Message. Wir packen sie auf den Keks. Der QR-Code bringt den Reply-Loop zurück – ohne Account, ohne Stress.</p>
+          <p class="sub">Du schreibst die Message. Wir packen sie auf den Keks. Der QR bringt dich zur internen Preview – sauberer Loop, ohne Account.</p>
 
           <div class="chipRow">
-            <div class="chip">1 Keks. 1 Scan. 1 Antwort.</div>
-            <div class="chip">Kein Account</div>
+            <div class="chip">Preview-Link per QR</div>
+            <div class="chip">Fortnite-Rarity Packs</div>
+            <div class="chip">Schoko + Vanille + Deko</div>
             <div class="chip">Draft wird gespeichert</div>
-            <div class="chip">Schoko + Deko</div>
           </div>
 
           <div class="heroActions">
@@ -479,39 +468,36 @@
           </div>
 
           <div class="trustbar">
-            <div class="trust"><b>Kein Account</b><span>Scan & Antwort in Sekunden.</span></div>
-            <div class="trust"><b>QR pro Keks</b><span>Jeder Keks hat seinen Link.</span></div>
-            <div class="trust"><b>Privat</b><span>Wir verkaufen keine Daten.</span></div>
-            <div class="trust"><b>Einfach</b><span>Message → Deko → Send.</span></div>
+            <div class="trust"><b>Kein Account</b><span>Einfach gestalten & teilen.</span></div>
+            <div class="trust"><b>QR pro Keks</b><span>Geht auf interne Preview.</span></div>
+            <div class="trust"><b>Privat</b><span>Local Draft – keine Datenweitergabe.</span></div>
+            <div class="trust"><b>Boss-Mode</b><span>Rarity/Skins/Token vorbereitet.</span></div>
           </div>
         </div>
 
         <div class="card visual">
-          <!-- HERO LOOP VIDEO -->
           <div class="loopFrame">
-            <video id="heroLoop" autoplay muted loop playsinline preload="auto">
-              <source src="assets/img/video/hero-loop.mp4" type="video/mp4" />
-            </video>
-            <div class="loopBadge">Live Loop: Keks → QR → Reply</div>
+            <div class="loopShot">Loop Visual (Auto-Animation)<br><span style="font-weight:800; font-size:13px; opacity:.8;">Später echtes MP4 hier rein</span></div>
+            <div class="loopAnim"></div>
+            <div class="loopBadge">Live Loop: Keks → QR → Preview</div>
           </div>
           <div class="mini">
-            <div class="tile">Reply-Loop<span>QR scannt → Reply-Seite öffnet.</span></div>
-            <div class="tile">Share<span>Design-Code & Link teilen.</span></div>
+            <div class="tile">Preview<span>QR scannt → preview.html lädt Draft.</span></div>
+            <div class="tile">Rarity<span>Packs sind nach Seltenheit gestaffelt.</span></div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Konfigurator -->
     <section id="config">
       <div class="wrap">
         <h2>Konfigurator</h2>
-        <p class="muted">MVP: Message + Form + Zuckerguss + Sprinkles + Sticker + QR. Draft speichert automatisch lokal. Verstehste.</p>
+        <p class="muted">MVP: Shape + Sticker/Emojis + Zuckerguss/Glasur + Schokoguss + Streusel. QR zeigt auf interne Preview, verstehste.</p>
 
         <div class="configGrid">
           <div class="card panel">
             <label for="msg">Deine Message</label>
-            <textarea id="msg" maxlength="220" placeholder="z.B. 'Denk an dich. Ruf mich an. ❤️'"></textarea>
+            <textarea id="msg" maxlength="220" placeholder="z.B. 'Du fehlst. Ruf an. 🍪❤️'"></textarea>
             <div class="hint2"><span id="msgCount">0</span>/220 Zeichen</div>
 
             <label>Form</label>
@@ -522,118 +508,120 @@
               <div class="pill" data-shape="smiley" aria-pressed="false">Smiley</div>
             </div>
 
-            <label for="icing">Zuckerguss</label>
-            <select id="icing">
-              <option value="pink">Pink</option>
+            <label for="glaze">Glasur / Zuckerguss</label>
+            <select id="glaze">
               <option value="vanilla">Vanille</option>
-              <option value="choco">Schoko</option>
+              <option value="pink">Deko Pink</option>
               <option value="white">Weiß</option>
+              <option value="choco">Schoko</option>
               <option value="vip">VIP Schwarz/Gold</option>
             </select>
 
-            <label>Sprinkles</label>
+            <label for="drizzle">Schokoguss</label>
+            <select id="drizzle">
+              <option value="none">Keiner</option>
+              <option value="light">Leicht</option>
+              <option value="heavy">Viel (Boss)</option>
+            </select>
+
+            <label>Streusel</label>
             <div class="row" id="sprinkleRow">
               <div class="pill" data-sprinkle="none" aria-pressed="true">Keine</div>
-              <div class="pill" data-sprinkle="hearts" aria-pressed="false">Herzchen</div>
-              <div class="pill" data-sprinkle="stars" aria-pressed="false">Sterne</div>
-              <div class="pill" data-sprinkle="confetti" aria-pressed="false">Konfetti</div>
+              <div class="pill" data-sprinkle="sugarHearts" aria-pressed="false">Zuckerherzen</div>
+              <div class="pill" data-sprinkle="sugarPearls" aria-pressed="false">Zuckerkugeln</div>
+              <div class="pill" data-sprinkle="chocoSprinkles" aria-pressed="false">Schokostreusel</div>
+              <div class="pill" data-sprinkle="rainbow" aria-pressed="false">Bunte Streusel</div>
             </div>
 
-            <label>Sticker</label>
+            <label>Sticker / Emoji</label>
             <div class="row" id="stickerRow">
               <div class="pill" data-sticker="none" aria-pressed="true">Keiner</div>
-              <div class="pill" data-sticker="kiss" aria-pressed="false">💋</div>
-              <div class="pill" data-sticker="ring" aria-pressed="false">💍</div>
-              <div class="pill" data-sticker="crown" aria-pressed="false">👑</div>
+              <div class="pill" data-sticker="❤️" aria-pressed="false">❤️</div>
+              <div class="pill" data-sticker="✨" aria-pressed="false">✨</div>
+              <div class="pill" data-sticker="🍫" aria-pressed="false">🍫</div>
+              <div class="pill" data-sticker="💋" aria-pressed="false">💋</div>
+              <div class="pill" data-sticker="👑" aria-pressed="false">👑</div>
+              <div class="pill" data-sticker="💎" aria-pressed="false">💎</div>
             </div>
 
-            <label for="pack">Pack</label>
+            <label for="pack">Pack (Rarity)</label>
             <select id="pack">
-              <option value="quick">Quick (1 Keks)</option>
-              <option value="custom">Custom (1 Keks + mehr Deko)</option>
-              <option value="premium">Premium (Box + Extras)</option>
+              <option value="schnell">Schnell – Common</option>
+              <option value="normal">Normal – Rare</option>
+              <option value="premium">Premium – Epic</option>
+              <option value="boss">Boss – Legendary</option>
             </select>
+
+            <div style="margin-top:10px">
+              <span class="rarityTag" id="rarityTag">Rarity: Common</span>
+              <span class="rarityTag" id="priceTag" style="margin-left:8px;">Preis: —</span>
+            </div>
 
             <div style="height:12px"></div>
             <div class="row">
-              <button class="cta" type="button" id="btnCopyLink">Link kopieren</button>
+              <button class="cta" type="button" id="btnCopyLink">Preview-Link kopieren</button>
               <button class="cta secondary" type="button" id="btnReset">Reset</button>
             </div>
             <div class="hint2" id="saveHint">Draft: wird gespeichert…</div>
           </div>
 
           <div class="card preview">
-            <div class="cookieStage">
-              <div class="cookieWrap">
-                <svg id="cookieSvg" width="360" height="260" viewBox="0 0 360 260" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Keks Vorschau">
-                  <defs>
-                    <linearGradient id="cookieBase" x1="0" y1="0" x2="1" y2="1">
-                      <stop offset="0" stop-color="#d9a36a"/>
-                      <stop offset="1" stop-color="#b87945"/>
-                    </linearGradient>
-                    <linearGradient id="chocoDrip" x1="0" y1="0" x2="1" y2="0">
-                      <stop offset="0" stop-color="#4b2a1b"/>
-                      <stop offset="1" stop-color="#7a3f27"/>
-                    </linearGradient>
-                    <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
-                      <feDropShadow dx="0" dy="10" stdDeviation="10" flood-color="rgba(2,6,23,.20)"/>
-                    </filter>
-                  </defs>
+            <div class="cookieWrap">
+              <svg id="cookieSvg" width="360" height="260" viewBox="0 0 360 260" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Keks Vorschau">
+                <defs>
+                  <linearGradient id="cookieBase" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0" stop-color="#e2b17a"/>
+                    <stop offset="1" stop-color="#b87945"/>
+                  </linearGradient>
+                  <linearGradient id="chocoDrip" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0" stop-color="#4b2a1b"/>
+                    <stop offset="1" stop-color="#7a3f27"/>
+                  </linearGradient>
+                  <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
+                    <feDropShadow dx="0" dy="10" stdDeviation="10" flood-color="rgba(2,6,23,.20)"/>
+                  </filter>
+                </defs>
 
-                  <!-- Base Shape -->
-                  <g filter="url(#softShadow)" id="shapeLayer"></g>
+                <g filter="url(#softShadow)" id="shapeLayer"></g>
+                <g id="glazeLayer"></g>
+                <g id="dripLayer"></g>
+                <g id="sprinkleLayer"></g>
+                <g id="stickerLayer"></g>
+                <g id="textLayer"></g>
+              </svg>
+            </div>
 
-                  <!-- Icing -->
-                  <g id="icingLayer"></g>
-
-                  <!-- Choco Drizzle -->
-                  <g id="dripLayer"></g>
-
-                  <!-- Sprinkles -->
-                  <g id="sprinkleLayer"></g>
-
-                  <!-- Sticker -->
-                  <g id="stickerLayer"></g>
-
-                  <!-- Text -->
-                  <g id="textLayer"></g>
-                </svg>
-              </div>
-
-              <div class="qrBox">
-                <canvas class="qrCanvas" id="qr"></canvas>
-                <div>
-                  <div style="font-weight:1000">Dein QR / Reply-Link</div>
-                  <div class="hint2" id="qrUrl" style="max-width:520px; word-break:break-all;"></div>
-                  <div class="smallActions" style="margin-top:10px">
-                    <button class="cta secondary" type="button" id="btnCopyQrUrl">QR-Link kopieren</button>
-                    <button class="cta secondary" type="button" id="btnDownloadQr">QR speichern</button>
-                  </div>
+            <div class="qrBox">
+              <canvas class="qrCanvas" id="qr"></canvas>
+              <div>
+                <div style="font-weight:1000">Interne Preview</div>
+                <div class="hint2" id="qrUrl" style="max-width:520px; word-break:break-all;"></div>
+                <div class="smallActions" style="margin-top:10px">
+                  <button class="cta secondary" type="button" id="btnCopyQrUrl">Link kopieren</button>
+                  <button class="cta secondary" type="button" id="btnDownloadQr">QR speichern</button>
                 </div>
               </div>
-
-              <div class="hint2">Hinweis: Das ist MVP-Preview (SVG). 3D/WebGL kommt danach als Boss-Upgrade.</div>
             </div>
+
+            <div class="hint2">Hinweis: Preview nutzt localStorage. Wenn du den Link auf ’nem anderen Gerät öffnest, ist der Draft dort nicht da (kommt später mit Server/Token), verstehste.</div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Checkout -->
     <section id="checkout">
       <div class="wrap">
         <h2>Checkout</h2>
-        <p class="muted">MVP-Platzhalter: hier kommt Stripe/Partner rein. Aktuell: Link + QR + Draft als Proof, dass der Flow steht.</p>
+        <p class="muted">Nächster Step: Preise → Stripe → Partner. Aktuell: Preview + Rarity + QR = funktionierender MVP-Beweis.</p>
       </div>
     </section>
 
-    <!-- FAQ -->
     <section id="faq">
       <div class="wrap">
         <h2>FAQ</h2>
         <p class="muted">
-          <b>Wie funktioniert Reply?</b><br>
-          Du schickst ’nen Keks mit QR. Der Empfänger scannt und antwortet. Du kriegst den Reply-Loop zurück.
+          <b>Warum Preview intern?</b><br>
+          Damit wir sofort sauber testen können, ohne Backend. Danach machen wir’s “echt” mit Token/DB.
         </p>
       </div>
     </section>
@@ -649,7 +637,6 @@
     </div>
   </footer>
 
-  <!-- INTRO FAILSAFE JS (Skip funktioniert IMMER) -->
   <script>
     (function(){
       const $ = (s, r=document)=>r.querySelector(s);
@@ -679,55 +666,81 @@
       document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') hideIntro(); });
 
       vid.addEventListener('ended', hideIntro);
-
       setTimeout(()=>{ if(intro.style.display !== 'none') hideIntro(); }, 9000);
 
       (async ()=>{ try{ await vid.play(); }catch(e){} })();
     })();
   </script>
 
-  <!-- Keksregen + Konfigurator Logic -->
   <script>
     const CFG = {
-      heroLoop: "assets/img/video/hero-loop.mp4",
-      replyBase: "keks.html",              // Zielseite
-      draftKey: "onlykeks_draft_v1",
-      rainCountDesktop: 22,
-      rainCountMobile: 14
+      previewPage: "preview.html",
+      draftKey: "onlykeks_draft_v2",
+      rainCount: 26
     };
 
-    // Keksregen
+    // Fortnite-Rarity Setup
+    const PACKS = {
+      schnell:  { rarity:"common",    label:"Common",    priceCents: 399,  tokenHint:"10 Token" },
+      normal:   { rarity:"rare",      label:"Rare",      priceCents: 699,  tokenHint:"25 Token" },
+      premium:  { rarity:"epic",      label:"Epic",      priceCents: 1299, tokenHint:"60 Token" },
+      boss:     { rarity:"legendary", label:"Legendary", priceCents: 2499, tokenHint:"150 Token" }
+    };
+
+    function moneyEUR(cents){
+      const v = (cents/100).toFixed(2).replace('.',',');
+      return v + " €";
+    }
+
+    // Keksregen: variable Größen + seltene "Legendary" Drops
     (function initRain(){
       const rain = document.getElementById('rain');
       if(!rain) return;
 
-      const isMobile = matchMedia("(max-width: 920px)").matches;
-      const count = isMobile ? CFG.rainCountMobile : CFG.rainCountDesktop;
-      const emojis = ["🍪","🍪","🍪","✨","🍫","🍪","😊"];
+      const drops = [
+        {t:"🍪", w:0.68},
+        {t:"🍫", w:0.14},
+        {t:"✨", w:0.10},
+        {t:"💎", w:0.05},
+        {t:"👑", w:0.03}
+      ];
 
-      for(let i=0;i<count;i++){
+      function pickWeighted(){
+        const r = Math.random();
+        let acc=0;
+        for(const d of drops){
+          acc += d.w;
+          if(r<=acc) return d.t;
+        }
+        return "🍪";
+      }
+
+      function rarityRoll(){
+        const r = Math.random();
+        if(r < 0.72) return "common";
+        if(r < 0.92) return "rare";
+        if(r < 0.985) return "epic";
+        return "legendary";
+      }
+
+      for(let i=0;i<CFG.rainCount;i++){
         const d = document.createElement('div');
-        d.className = 'drop';
-        d.textContent = emojis[Math.floor(Math.random()*emojis.length)];
+        const rar = rarityRoll();
+        d.className = 'drop ' + rar;
+        d.textContent = pickWeighted();
+
         const left = Math.random()*100;
-        const dur = 8 + Math.random()*10;
+        const dur = 7 + Math.random()*12;
         const delay = -Math.random()*dur;
-        const size = 12 + Math.random()*14;
+        const size = (rar==="legendary" ? 26 : rar==="epic" ? 22 : rar==="rare" ? 18 : 14) + Math.random()*10;
+
         d.style.left = left + "vw";
         d.style.animationDuration = dur + "s";
         d.style.animationDelay = delay + "s";
         d.style.fontSize = size + "px";
-        d.style.opacity = (0.10 + Math.random()*0.10).toFixed(2);
+
         rain.appendChild(d);
       }
-    })();
-
-    // Hero Loop Fallback (falls Pfad falsch)
-    (function(){
-      const v = document.getElementById('heroLoop');
-      if(!v) return;
-      v.addEventListener('error', ()=>{/* ignore */});
-      // If browser blocks autoplay video with sound (we are muted) – should be ok.
     })();
 
     // Konfigurator
@@ -737,8 +750,13 @@
 
       const msg = $('#msg');
       const msgCount = $('#msgCount');
-      const icing = $('#icing');
+      const glaze = $('#glaze');
+      const drizzle = $('#drizzle');
       const pack = $('#pack');
+
+      const rarityTag = $('#rarityTag');
+      const priceTag = $('#priceTag');
+
       const qrCanvas = $('#qr');
       const qrUrlEl = $('#qrUrl');
 
@@ -754,7 +772,7 @@
       const stickerRow = $('#stickerRow');
 
       const shapeLayer = document.getElementById('shapeLayer');
-      const icingLayer = document.getElementById('icingLayer');
+      const glazeLayer = document.getElementById('glazeLayer');
       const dripLayer = document.getElementById('dripLayer');
       const sprinkleLayer = document.getElementById('sprinkleLayer');
       const stickerLayer = document.getElementById('stickerLayer');
@@ -764,10 +782,11 @@
         rid: cryptoRandomId(),
         message: "",
         shape: "circle",
-        icing: "pink",
+        glaze: "vanilla",
+        drizzle: "light",
         sprinkle: "none",
         sticker: "none",
-        pack: "quick"
+        pack: "schnell"
       };
 
       function cryptoRandomId(){
@@ -822,31 +841,35 @@
           const d = JSON.parse(raw);
           if(!d || typeof d !== "object") return;
           state = { ...state, ...d };
+          if(!state.rid) state.rid = cryptoRandomId();
         }catch(e){}
       }
 
-      function replyUrl(){
-        const u = new URL(CFG.replyBase, location.href);
+      function previewUrl(){
+        const u = new URL(CFG.previewPage, location.href);
         u.searchParams.set('rid', state.rid);
         return u.toString();
       }
 
-      function icingColors(kind){
+      function glazeColors(kind){
         switch(kind){
           case "pink": return { fill:"#ff7bc0", stroke:"rgba(255,79,163,.55)" };
           case "vanilla": return { fill:"#fff1d6", stroke:"rgba(180,120,69,.30)" };
           case "choco": return { fill:"#5a2f1e", stroke:"rgba(122,63,39,.55)" };
           case "white": return { fill:"#ffffff", stroke:"rgba(15,23,42,.18)" };
           case "vip": return { fill:"#0b0b0f", stroke:"#d7b56d" };
-          default: return { fill:"#ff7bc0", stroke:"rgba(255,79,163,.55)" };
+          default: return { fill:"#fff1d6", stroke:"rgba(180,120,69,.30)" };
         }
+      }
+
+      function packMeta(){
+        return PACKS[state.pack] || PACKS.schnell;
       }
 
       function drawBaseShape(){
         shapeLayer.innerHTML = "";
         const s = state.shape;
 
-        // Base cookie path(s)
         let el;
         if(s === "circle"){
           el = svgEl('circle', { cx:180, cy:130, r:92, fill:"url(#cookieBase)", stroke:"rgba(15,23,42,.10)", "stroke-width":"2" });
@@ -869,25 +892,27 @@
           shapeLayer.appendChild(eye1);
           shapeLayer.appendChild(eye2);
           shapeLayer.appendChild(mouth);
+          addChips();
           return;
         }
-
         shapeLayer.appendChild(el);
+        addChips();
 
-        // Chocolate chips
-        const chips = [
-          [140,105,10],[210,100,7],[120,150,8],[235,155,11],[175,175,7],[160,85,6]
-        ];
-        chips.forEach(([x,y,r])=>{
-          const c = svgEl('circle',{cx:x, cy:y, r:r, fill:"rgba(75,42,27,.38)"});
-          shapeLayer.appendChild(c);
-        });
+        function addChips(){
+          const chips = [
+            [140,105,10],[210,100,7],[120,150,8],[235,155,11],[175,175,7],[160,85,6]
+          ];
+          chips.forEach(([x,y,r])=>{
+            const c = svgEl('circle',{cx:x, cy:y, r:r, fill:"rgba(75,42,27,.38)"});
+            shapeLayer.appendChild(c);
+          });
+        }
       }
 
-      function drawIcing(){
-        icingLayer.innerHTML = "";
-        const c = icingColors(state.icing);
-        // Icing blob (a bit smaller than base)
+      function drawGlaze(){
+        glazeLayer.innerHTML = "";
+        const c = glazeColors(state.glaze);
+
         let el;
         if(state.shape === "circle" || state.shape === "smiley"){
           el = svgEl('circle', { cx:180, cy:130, r:76, fill:c.fill, stroke:c.stroke, "stroke-width":"3", opacity:"0.95" });
@@ -902,31 +927,34 @@
             fill:c.fill, stroke:c.stroke, "stroke-width":"3", opacity:"0.95"
           });
         }
-        icingLayer.appendChild(el);
+        glazeLayer.appendChild(el);
 
-        // Gold accent for VIP
-        if(state.icing === "vip"){
-          const ring = svgEl('circle',{cx:180, cy:130, r:78, fill:"none", stroke:"#d7b56d", "stroke-width":"4", opacity:"0.9"});
-          icingLayer.appendChild(ring);
+        if(state.glaze === "vip"){
+          const ring = svgEl('circle',{cx:180, cy:130, r:78, fill:"none", stroke:"#d7b56d", "stroke-width":"4", opacity:"0.95"});
+          glazeLayer.appendChild(ring);
         }
       }
 
       function drawDrip(){
         dripLayer.innerHTML = "";
-        // Always a bit of chocolate drizzle (more when icing != choco)
-        const dripOpacity = state.icing === "choco" ? 0.22 : 0.28;
+        const mode = state.drizzle;
+        if(mode === "none") return;
 
-        const path = svgEl('path',{
+        const op = mode === "heavy" ? 0.40 : 0.26;
+        const w1 = mode === "heavy" ? 12 : 10;
+        const w2 = mode === "heavy" ? 10 : 8;
+
+        const path1 = svgEl('path',{
           d:"M120 94 C140 86 158 110 176 98 C196 84 214 110 238 96",
-          fill:"none", stroke:"url(#chocoDrip)", "stroke-width":"10", "stroke-linecap":"round",
-          opacity:String(dripOpacity)
+          fill:"none", stroke:"url(#chocoDrip)", "stroke-width":String(w1), "stroke-linecap":"round",
+          opacity:String(op)
         });
         const path2 = svgEl('path',{
           d:"M132 126 C150 110 168 140 186 124 C206 106 226 140 244 122",
-          fill:"none", stroke:"url(#chocoDrip)", "stroke-width":"8", "stroke-linecap":"round",
-          opacity:String(dripOpacity)
+          fill:"none", stroke:"url(#chocoDrip)", "stroke-width":String(w2), "stroke-linecap":"round",
+          opacity:String(op)
         });
-        dripLayer.appendChild(path);
+        dripLayer.appendChild(path1);
         dripLayer.appendChild(path2);
       }
 
@@ -935,21 +963,24 @@
         const kind = state.sprinkle;
         if(kind === "none") return;
 
-        const points = [
+        const pts = [
           [140,120],[165,105],[196,112],[215,132],[175,150],[150,150],[205,155],[185,170]
         ];
 
-        points.forEach(([x,y], i)=>{
-          if(kind === "hearts"){
+        pts.forEach(([x,y], i)=>{
+          if(kind === "sugarHearts"){
             const t = svgEl('text',{x:x, y:y, "font-size":"16", "text-anchor":"middle"});
             t.textContent = "❤";
             sprinkleLayer.appendChild(t);
-          } else if(kind === "stars"){
-            const t = svgEl('text',{x:x, y:y, "font-size":"16", "text-anchor":"middle"});
-            t.textContent = "★";
-            sprinkleLayer.appendChild(t);
-          } else if(kind === "confetti"){
-            const r = svgEl('rect',{x:x-4, y:y-4, width:8, height:8, rx:2, fill: (i%2? "rgba(255,79,163,.65)":"rgba(255,255,255,.75)") , opacity:"0.9"});
+          } else if(kind === "sugarPearls"){
+            const c = svgEl('circle',{cx:x, cy:y-4, r:4.8, fill:"rgba(255,255,255,.85)", stroke:"rgba(15,23,42,.10)", "stroke-width":"1"});
+            sprinkleLayer.appendChild(c);
+          } else if(kind === "chocoSprinkles"){
+            const r = svgEl('rect',{x:x-4, y:y-8, width:10, height:4, rx:2, fill:"rgba(75,42,27,.45)"});
+            sprinkleLayer.appendChild(r);
+          } else if(kind === "rainbow"){
+            const colors = ["rgba(255,79,163,.75)","rgba(255,210,95,.75)","rgba(120,205,255,.70)","rgba(160,80,255,.65)"];
+            const r = svgEl('rect',{x:x-4, y:y-8, width:10, height:4, rx:2, fill: colors[i%colors.length]});
             sprinkleLayer.appendChild(r);
           }
         });
@@ -958,10 +989,10 @@
       function drawSticker(){
         stickerLayer.innerHTML = "";
         const s = state.sticker;
-        if(s === "none") return;
+        if(!s || s === "none") return;
 
-        const t = svgEl('text',{x:250, y:86, "font-size":"30", "text-anchor":"middle"});
-        t.textContent = (s==="kiss"?"💋": s==="ring"?"💍": s==="crown"?"👑":"");
+        const t = svgEl('text',{x:252, y:88, "font-size":"30", "text-anchor":"middle"});
+        t.textContent = s;
         stickerLayer.appendChild(t);
       }
 
@@ -970,18 +1001,17 @@
         const text = clampText(state.message, 220);
         if(!text) return;
 
-        const lines = wrapLines(text, 18); // max chars per line
-        const maxLines = 4;
-        const out = lines.slice(0, maxLines);
+        const lines = wrapLines(text, 18).slice(0,4);
+        const startY = 126 - (lines.length-1)*14;
 
-        const startY = 126 - (out.length-1)*14;
-        out.forEach((ln, idx)=>{
+        const fill = (state.glaze === "vip") ? "#d7b56d" : "rgba(15,23,42,.78)";
+        lines.forEach((ln, idx)=>{
           const t = svgEl('text',{
             x:180, y:startY + idx*28,
             "font-size":"18",
             "font-weight":"900",
             "text-anchor":"middle",
-            fill: state.icing === "vip" ? "#d7b56d" : "rgba(15,23,42,.78)"
+            fill
           });
           t.textContent = ln;
           textLayer.appendChild(t);
@@ -1012,36 +1042,44 @@
       }
 
       async function renderQr(){
-        const url = replyUrl();
+        const url = previewUrl();
         qrUrlEl.textContent = url;
 
         if(!window.QRCode){
-          // library loads defer – wait a tick
-          setTimeout(renderQr, 250);
+          setTimeout(renderQr, 200);
           return;
         }
         try{
           await QRCode.toCanvas(qrCanvas, url, { margin: 1, width: 120 });
-        }catch(e){
-          // fallback: nothing
-        }
+        }catch(e){}
+      }
+
+      function renderMeta(){
+        const p = packMeta();
+        rarityTag.className = "rarityTag " + p.rarity;
+        rarityTag.textContent = "Rarity: " + p.label;
+
+        priceTag.className = "rarityTag " + p.rarity;
+        priceTag.textContent = "Preis: " + moneyEUR(p.priceCents) + " (" + p.tokenHint + ")";
       }
 
       function renderAll(){
         msgCount.textContent = (msg.value || "").length;
         drawBaseShape();
-        drawIcing();
+        drawGlaze();
         drawDrip();
         drawSprinkles();
         drawSticker();
         drawText();
+        renderMeta();
         renderQr();
       }
 
       function syncUI(){
         msg.value = state.message || "";
-        icing.value = state.icing || "pink";
-        pack.value = state.pack || "quick";
+        glaze.value = state.glaze || "vanilla";
+        drizzle.value = state.drizzle || "light";
+        pack.value = state.pack || "schnell";
 
         pressGroup(shapeRow, 'data-shape', state.shape);
         pressGroup(sprinkleRow, 'data-sprinkle', state.sprinkle);
@@ -1050,22 +1088,24 @@
         msgCount.textContent = (msg.value || "").length;
       }
 
-      // Events
       msg.addEventListener('input', ()=>{
         state.message = clampText(msg.value, 220);
-        renderAll();
-        persist();
+        renderAll(); persist();
       });
 
-      icing.addEventListener('change', ()=>{
-        state.icing = icing.value;
-        renderAll();
-        persist();
+      glaze.addEventListener('change', ()=>{
+        state.glaze = glaze.value;
+        renderAll(); persist();
+      });
+
+      drizzle.addEventListener('change', ()=>{
+        state.drizzle = drizzle.value;
+        renderAll(); persist();
       });
 
       pack.addEventListener('change', ()=>{
         state.pack = pack.value;
-        persist();
+        renderAll(); persist();
       });
 
       pickFromRow(shapeRow, 'data-shape', 'shape');
@@ -1073,16 +1113,13 @@
       pickFromRow(stickerRow, 'data-sticker', 'sticker');
 
       btnReset.addEventListener('click', ()=>{
-        state = { rid: cryptoRandomId(), message:"", shape:"circle", icing:"pink", sprinkle:"none", sticker:"none", pack:"quick" };
-        syncUI();
-        renderAll();
-        persist();
+        state = { rid: cryptoRandomId(), message:"", shape:"circle", glaze:"vanilla", drizzle:"light", sprinkle:"none", sticker:"none", pack:"schnell" };
+        syncUI(); renderAll(); persist();
       });
 
       function copyToClipboard(text){
-        try{
-          navigator.clipboard.writeText(text);
-        }catch(e){
+        try{ navigator.clipboard.writeText(text); }
+        catch(e){
           const ta = document.createElement('textarea');
           ta.value = text; document.body.appendChild(ta);
           ta.select(); document.execCommand('copy');
@@ -1090,13 +1127,13 @@
         }
       }
 
-      btnCopyQrUrl.addEventListener('click', ()=> copyToClipboard(replyUrl()));
-      btnCopyLink.addEventListener('click', ()=> copyToClipboard(replyUrl()));
+      btnCopyQrUrl.addEventListener('click', ()=> copyToClipboard(previewUrl()));
+      btnCopyLink.addEventListener('click', ()=> copyToClipboard(previewUrl()));
 
       btnDownloadQr.addEventListener('click', ()=>{
         try{
           const a = document.createElement('a');
-          a.download = "onlykeks-qr.png";
+          a.download = "onlykeks-preview-qr.png";
           a.href = qrCanvas.toDataURL("image/png");
           a.click();
         }catch(e){}

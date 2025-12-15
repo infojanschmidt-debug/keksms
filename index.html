@@ -4,1147 +4,652 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>OnlyKeks – Post, die schmeckt</title>
-  <meta name="description" content="Post, die schmeckt – und zurückkommt. Schick ’ne Nachricht als Keks. QR-Code bringt dir ’ne echte Antwort zurück." />
+  <meta name="description" content="Schick eine Nachricht als Keks. QR scan → echte Antwort zurück. Schnell, persönlich, viral." />
   <meta name="theme-color" content="#ff4fa3" />
-  <meta name="robots" content="index,follow" />
-
   <meta property="og:title" content="OnlyKeks – Post, die schmeckt" />
-  <meta property="og:description" content="Post, die schmeckt – und zurückkommt. Keks mit Message. QR scan. Antwort zurück." />
-  <meta property="og:type" content="website" />
-  <meta property="og:image" content="assets/img/og.jpg" />
-  <meta property="og:url" content="./" />
-
-  <link rel="preload" as="video" href="assets/img/video/intro.mp4" type="video/mp4" />
-  <link rel="icon" href="assets/img/favicon.png" />
-
+  <meta property="og:description" content="Message als Keks. QR-Reply-Loop. 3 Steps. Fertig." />
   <style>
     :root{
       --bg:#ffffff;
-      --ink:#0f172a;
-      --muted:#475569;
-      --line:rgba(15,23,42,.10);
-      --card:#ffffff;
-      --shadow: 0 10px 30px rgba(2,6,23,.06);
-      --shadow2: 0 6px 18px rgba(2,6,23,.08);
-
+      --ink:#111111;
+      --muted:#666;
       --pink:#ff4fa3;
-      --pink2:#ff7bc0;
-
-      /* Schoko-Vanille Basis + Touch Deko-Chichi */
-      --vanilla:#fff4e6;
-      --cream:#fff7fb;
-      --choco:#4b2a1b;
-      --choco2:#7a3f27;
-
-      --vip:#0b0b0f;
-      --gold:#d7b56d;
-
-      --r:22px;
-      --max: 1080px;
-      --pad: 20px;
-      --h1: clamp(34px, 5vw, 56px);
-      --h2: clamp(24px, 3.6vw, 34px);
+      --pink2:#ff7fc3;
+      --line:#ececec;
+      --card:#fafafa;
+      --gold:#c7a44c;
+      --vip:#111;
+      --ok:#0a7a3f;
+      --shadow: 0 10px 30px rgba(0,0,0,.06);
+      --r: 18px;
     }
-
     *{box-sizing:border-box}
     html,body{height:100%}
     body{
       margin:0;
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji","Segoe UI Emoji";
       color:var(--ink);
       background:
-        radial-gradient(900px 420px at 15% 0%, rgba(255,79,163,.12), transparent 55%),
-        radial-gradient(740px 400px at 92% 10%, rgba(255,123,192,.12), transparent 55%),
-        linear-gradient(180deg, #fff 0%, var(--cream) 52%, #fff 100%);
-      overflow-x:hidden;
+        radial-gradient(1200px 600px at 15% -10%, rgba(255,79,163,.18), transparent 55%),
+        radial-gradient(900px 520px at 90% 0%, rgba(255,127,195,.16), transparent 55%),
+        linear-gradient(#fff, #fff);
     }
     a{color:inherit}
-    .wrap{max-width:var(--max); margin:0 auto; padding: 0 var(--pad);}
-
-    /* Keksregen: Fortnite-Rarity */
-    .rain{position:fixed; inset:0; pointer-events:none; z-index:0; overflow:hidden;}
-    .drop{
-      position:absolute; top:-14vh;
-      font-size:16px;
-      opacity:.18;
-      transform: translateY(0) rotate(0deg);
-      animation: fall linear infinite;
-      will-change: transform;
-      filter: blur(.05px);
-    }
-    .drop.common{opacity:.14}
-    .drop.rare{opacity:.18}
-    .drop.epic{opacity:.22}
-    .drop.legendary{opacity:.24; text-shadow: 0 0 18px rgba(215,181,109,.25)}
-    @keyframes fall{
-      to{ transform: translateY(125vh) rotate(360deg); }
-    }
-    @media (prefers-reduced-motion: reduce){ .drop{display:none} }
-
-    .topbar, main, footer{position:relative; z-index:1}
-    .topbar{
-      position:sticky; top:0; z-index:40;
+    .wrap{max-width:980px;margin:0 auto;padding:18px}
+    header{
+      position:sticky;top:0;z-index:20;
+      background: rgba(255,255,255,.85);
       backdrop-filter: blur(10px);
-      background: rgba(255,255,255,.78);
       border-bottom:1px solid var(--line);
     }
-    .topbar .inner{
-      display:flex; align-items:center; justify-content:space-between;
-      padding: 12px var(--pad);
-      max-width:var(--max); margin:0 auto;
-    }
-    .brand{
-      display:flex; gap:10px; align-items:center; text-decoration:none;
-      font-weight:900; letter-spacing:-.02em;
-    }
-    .brand .logo{
-      width:34px; height:34px; border-radius: 12px;
-      background:
-        radial-gradient(12px 12px at 30% 30%, rgba(255,255,255,.9), transparent 60%),
-        linear-gradient(135deg, var(--pink), var(--pink2));
-      box-shadow: var(--shadow2);
-      border:1px solid rgba(255,255,255,.7);
-    }
-    nav{display:flex; gap:10px; align-items:center}
-    nav a{
-      text-decoration:none;
-      padding: 10px 12px;
-      border-radius: 999px;
-      color: rgba(15,23,42,.78);
-      font-weight:800;
-      font-size: 14px;
-    }
-    nav a:hover{background: rgba(15,23,42,.04)}
-    @media (max-width: 920px){ nav{display:none} }
-
-    /* CTA mit Zuckerguss-Rahmen */
-    .cta{
-      position:relative;
-      display:inline-flex; align-items:center; justify-content:center;
-      padding: 14px 18px;
-      border-radius: 999px;
-      background: linear-gradient(135deg, var(--pink), var(--pink2));
-      color:#fff;
-      text-decoration:none;
-      font-weight:1000;
+    .topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 18px;max-width:980px;margin:0 auto}
+    .brand{display:flex;align-items:center;gap:10px;font-weight:800}
+    .logo{
+      width:34px;height:34px;border-radius:12px;
+      background: radial-gradient(circle at 30% 30%, #fff, #ffe2f0 45%, #ffd0e7 75%);
+      border:1px solid rgba(255,79,163,.25);
       box-shadow: var(--shadow);
-      border: 0;
-      cursor:pointer;
+      position:relative;
     }
-    .cta::before{
+    .logo:after{
       content:"";
-      position:absolute; inset:-2px;
-      border-radius: 999px;
-      background:
-        radial-gradient(10px 10px at 20% 20%, rgba(255,255,255,.9), transparent 55%),
-        radial-gradient(12px 12px at 80% 30%, rgba(255,255,255,.8), transparent 60%),
-        linear-gradient(180deg, rgba(255,255,255,.55), rgba(255,255,255,.0));
-      pointer-events:none;
-      mix-blend-mode: screen;
-      opacity:.68;
+      position:absolute;inset:9px 8px 7px 8px;border-radius:10px;
+      background: radial-gradient(circle at 30% 30%, #fff, #f3c49b 45%, #c98a55 90%);
+      border:1px solid rgba(0,0,0,.08);
     }
-    .cta.secondary{
-      background: #fff;
-      color: var(--ink);
+    .btn{
+      appearance:none;border:1px solid var(--line);
+      background:#fff;border-radius:999px;
+      padding:10px 14px;font-weight:700;cursor:pointer;
+    }
+    .btn.primary{
+      border-color: rgba(255,79,163,.35);
+      background: linear-gradient(180deg, rgba(255,79,163,.14), rgba(255,79,163,.06));
+    }
+    .btn.cta{
+      padding:12px 16px;
+      background: linear-gradient(180deg, rgba(255,79,163,.22), rgba(255,79,163,.10));
+      border-color: rgba(255,79,163,.5);
+    }
+    .hero{padding:28px 18px 14px}
+    .grid{display:grid;grid-template-columns:1.25fr .75fr;gap:18px;align-items:start}
+    @media (max-width: 860px){ .grid{grid-template-columns:1fr} }
+    .h1{font-size:46px;line-height:1.05;margin:0 0 10px;font-weight:900;letter-spacing:-.02em}
+    @media (max-width: 480px){ .h1{font-size:38px} }
+    .sub{font-size:17px;line-height:1.55;color:var(--muted);margin:0 0 16px}
+    .trust{
+      display:flex;flex-wrap:wrap;gap:10px;margin:14px 0 0;
+      color:#222;
+    }
+    .pill{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:8px 10px;border-radius:999px;
       border:1px solid var(--line);
-      box-shadow: none;
+      background: rgba(255,255,255,.75);
+      font-size:13px;font-weight:700;
     }
-    .cta.secondary::before{opacity:.35}
-
+    .pill .dot{width:8px;height:8px;border-radius:999px;background:var(--pink)}
     .card{
-      background: rgba(255,255,255,.84);
+      background: rgba(255,255,255,.75);
       border:1px solid var(--line);
       border-radius: var(--r);
       box-shadow: var(--shadow);
+      overflow:hidden;
     }
-
-    .hero{padding: 34px 0 18px;}
-    .heroGrid{
-      display:grid; gap:18px;
-      grid-template-columns: 1.2fr .8fr;
-      align-items:stretch;
+    .card .hd{padding:14px 14px 10px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:10px}
+    .card .bd{padding:14px}
+    .keksPreview{
+      width:100%;aspect-ratio: 1.35/1;
+      border-radius: 22px;
+      background:
+        radial-gradient(circle at 30% 30%, #fff, #f9d9bd 40%, #d28c55 92%);
+      border:1px solid rgba(0,0,0,.10);
+      position:relative;
+      overflow:hidden;
     }
-    @media (max-width: 920px){ .heroGrid{grid-template-columns: 1fr} }
-
-    .heroCard{padding: 24px;}
-    .kicker{
-      display:inline-flex; align-items:center; gap:10px;
-      padding: 8px 12px;
-      border-radius: 999px;
-      border:1px solid rgba(255,79,163,.25);
-      background: rgba(255,79,163,.08);
-      font-weight:1000;
-      color: rgba(255,79,163,.95);
-      font-size: 13px;
-      margin-bottom: 14px;
+    .sprinkles{position:absolute;inset:0;opacity:.9}
+    .sprinkles i{
+      position:absolute;display:block;width:10px;height:4px;border-radius:999px;
+      background: rgba(255,79,163,.9);
+      transform: rotate(var(--r));
+      left:var(--x);top:var(--y);
     }
-    h1{font-size:var(--h1); line-height:1.03; margin:0 0 10px; letter-spacing:-.03em;}
-    .sub{font-size: 17px; color: rgba(15,23,42,.78); margin: 0 0 16px; line-height:1.4;}
-
-    .chipRow{display:flex; flex-wrap:wrap; gap:10px; margin: 12px 0 18px}
+    .icing{
+      position:absolute;left:8%;top:10%;right:8%;bottom:18%;
+      border-radius: 26px;
+      background: rgba(255,255,255,.55);
+      border:1px solid rgba(255,79,163,.18);
+      backdrop-filter: blur(2px);
+    }
+    .msgOnCookie{
+      position:absolute;left:10%;right:10%;top:22%;
+      font-weight:900;font-size:18px;line-height:1.15;
+      text-align:center;color:#111;
+      text-shadow: 0 2px 10px rgba(255,255,255,.6);
+      word-break: break-word;
+    }
+    .miniRow{display:flex;gap:10px;flex-wrap:wrap}
     .chip{
-      padding: 10px 12px;
-      border-radius: 999px;
-      border: 1px solid var(--line);
-      background: rgba(255,255,255,.78);
-      font-weight:850;
-      font-size: 13px;
-      color: rgba(15,23,42,.8);
+      padding:8px 10px;border-radius:999px;border:1px solid var(--line);
+      background: rgba(255,255,255,.7);font-weight:800;font-size:13px;cursor:pointer;
     }
-    .heroActions{display:flex; gap:12px; flex-wrap:wrap; align-items:center}
-
-    .trustbar{
-      margin-top: 14px;
-      display:grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 10px;
+    .chip.active{border-color: rgba(255,79,163,.55); background: rgba(255,79,163,.10)}
+    .section{padding:14px 18px}
+    .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+    @media (max-width: 860px){ .steps{grid-template-columns:1fr} }
+    .step{
+      border:1px solid var(--line);border-radius: var(--r);
+      background: rgba(255,255,255,.7);
+      padding:12px;
     }
-    @media (max-width: 920px){ .trustbar{grid-template-columns: repeat(2,1fr)} }
-    .trust{
-      padding: 14px 14px;
-      border-radius: 18px;
-      border:1px solid var(--line);
-      background: rgba(255,255,255,.84);
+    .step b{display:block;margin:0 0 6px}
+    .muted{color:var(--muted);font-size:14px;line-height:1.5}
+    .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+    .field{display:grid;gap:6px;margin:12px 0}
+    label{font-weight:800;font-size:13px}
+    input, textarea, select{
+      width:100%;padding:12px;border-radius:14px;border:1px solid var(--line);
+      font: inherit;background:#fff;
     }
-    .trust b{display:block; font-size: 14px; margin-bottom: 4px}
-    .trust span{color: rgba(15,23,42,.65); font-size: 13px}
-
-    .visual{
-      overflow:hidden;
-      position:relative;
-      padding: 18px;
-      display:flex;
-      flex-direction:column;
-      gap:12px;
-      min-height: 320px;
+    textarea{min-height:96px;resize:vertical}
+    .packTiles{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+    @media (max-width: 860px){ .packTiles{grid-template-columns:1fr} }
+    .tile{
+      border:1px solid var(--line);border-radius: var(--r);
+      background: rgba(255,255,255,.7);
+      padding:12px;cursor:pointer;
     }
-
-    /* Hero "Loop" ohne Video: animiertes Panel */
-    .loopFrame{
-      position:relative;
-      border-radius: 22px;
-      border:1px solid rgba(15,23,42,.12);
-      overflow:hidden;
-      aspect-ratio: 16/10;
-      background:
-        radial-gradient(320px 160px at 20% 20%, rgba(255,79,163,.14), transparent 60%),
-        radial-gradient(300px 170px at 90% 35%, rgba(255,123,192,.12), transparent 60%),
-        linear-gradient(180deg, rgba(255,255,255,.9), rgba(255,255,255,.6));
-    }
-    .loopAnim{
-      position:absolute; inset:0;
-      background:
-        linear-gradient(90deg, transparent, rgba(255,255,255,.35), transparent);
-      transform: translateX(-60%);
-      animation: shimmer 2.6s linear infinite;
-      opacity:.6;
-    }
-    @keyframes shimmer{
-      to{ transform: translateX(140%); }
-    }
-    .loopBadge{
-      position:absolute;
-      left:12px; bottom:12px;
-      padding: 10px 12px;
-      border-radius: 999px;
-      background: rgba(255,255,255,.78);
-      border:1px solid rgba(15,23,42,.10);
-      font-weight:1000;
-      font-size: 13px;
-      color: rgba(15,23,42,.82);
-      backdrop-filter: blur(8px);
-    }
-    .loopShot{
-      position:absolute; inset:18px;
-      border-radius: 18px;
-      border:1px dashed rgba(15,23,42,.18);
-      display:flex; align-items:center; justify-content:center;
-      font-weight:1000;
-      color: rgba(15,23,42,.55);
-      background:
-        radial-gradient(260px 130px at 30% 30%, rgba(122,63,39,.12), transparent 60%),
-        radial-gradient(260px 140px at 80% 60%, rgba(255,79,163,.10), transparent 60%);
-    }
-
-    .mini{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap:10px;
-    }
-    .mini .tile{
-      border-radius: 18px;
-      border:1px solid var(--line);
-      background: rgba(255,255,255,.84);
-      padding: 12px;
-      font-weight:1000;
-      color: rgba(15,23,42,.78);
-    }
-    .mini .tile span{
-      display:block;
-      margin-top: 4px;
-      font-weight:750;
-      color: rgba(15,23,42,.6);
-      font-size: 13px;
-    }
-
-    section{padding: 22px 0}
-    h2{font-size:var(--h2); margin: 0 0 10px; letter-spacing:-.02em;}
-    .muted{color: rgba(15,23,42,.65); line-height:1.45}
-
-    /* Configurator */
-    .configGrid{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-      align-items:start;
-    }
-    @media (max-width: 920px){ .configGrid{grid-template-columns: 1fr} }
-
-    .panel{padding: 18px;}
-    .row{display:flex; gap:10px; flex-wrap:wrap}
-    label{display:block; font-weight:900; font-size: 13px; color: rgba(15,23,42,.78); margin: 12px 0 6px}
-    input[type="text"], textarea, select{
-      width:100%;
-      padding: 12px 12px;
-      border-radius: 14px;
-      border: 1px solid rgba(15,23,42,.14);
-      background: rgba(255,255,255,.92);
-      outline:none;
-      font-weight:750;
-      color: rgba(15,23,42,.9);
-    }
-    textarea{min-height: 92px; resize: vertical}
-    .hint2{font-size: 12px; color: rgba(15,23,42,.58); margin-top: 6px}
-
-    .pill{
-      border:1px solid rgba(15,23,42,.12);
-      background: rgba(255,255,255,.84);
-      border-radius: 999px;
-      padding: 10px 12px;
-      font-weight:950;
-      cursor:pointer;
-      user-select:none;
-    }
-    .pill[aria-pressed="true"]{
-      border-color: rgba(255,79,163,.35);
-      background: rgba(255,79,163,.10);
-      color: rgba(255,79,163,.98);
-    }
-
-    .rarityTag{
-      display:inline-flex; align-items:center; gap:8px;
-      padding: 8px 10px;
-      border-radius: 999px;
-      border:1px solid rgba(15,23,42,.12);
-      background: rgba(255,255,255,.82);
-      font-weight:1000;
-      font-size: 12px;
-    }
-    .rarityTag.common{border-color: rgba(15,23,42,.12)}
-    .rarityTag.rare{border-color: rgba(0,170,255,.25)}
-    .rarityTag.epic{border-color: rgba(160,80,255,.25)}
-    .rarityTag.legendary{border-color: rgba(215,181,109,.45); color: rgba(120,85,10,.9)}
-
-    .preview{
-      position:relative;
-      border-radius: 22px;
-      border:1px solid rgba(15,23,42,.12);
-      background: rgba(255,255,255,.70);
-      overflow:hidden;
-      padding: 16px;
-    }
-    .cookieWrap{
-      border-radius: 20px;
-      border:1px dashed rgba(15,23,42,.18);
-      background:
-        radial-gradient(280px 140px at 20% 20%, rgba(255,79,163,.10), transparent 60%),
-        radial-gradient(260px 150px at 85% 35%, rgba(122,63,39,.10), transparent 60%),
-        linear-gradient(180deg, rgba(255,255,255,.9), rgba(255,255,255,.6));
-      padding: 14px;
-      min-height: 300px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-    }
-    .qrBox{
-      display:flex; gap:12px; align-items:center; flex-wrap:wrap;
-      padding-top: 10px;
-    }
-    .qrCanvas{
-      width: 120px; height:120px;
-      border-radius: 16px;
-      border:1px solid rgba(15,23,42,.12);
-      background: #fff;
-      padding: 8px;
-    }
-    .smallActions{display:flex; gap:10px; flex-wrap:wrap;}
-
-    /* Intro Overlay */
-    .intro{
-      position:fixed;
-      inset:0;
-      z-index:99999;
-      background:#000;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      pointer-events:auto;
-    }
-    .intro video{width:100%;height:100%;object-fit:cover;display:block;background:#000;}
-    .intro .skip{
-      position:absolute; top:16px; right:16px;
-      z-index:100000;
-      pointer-events:auto;
-      padding:10px 14px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,.25);
-      background:rgba(0,0,0,.35);
+    .tile h4{margin:0 0 6px}
+    .tile .price{font-weight:900}
+    .tile.vip{
+      border-color: rgba(199,164,76,.55);
+      background: linear-gradient(180deg, rgba(17,17,17,.92), rgba(17,17,17,.82));
       color:#fff;
-      font-weight:1000;
-      cursor:pointer;
-      backdrop-filter: blur(8px);
+      position:relative;
     }
-    .intro .hint{
-      position:absolute; bottom:16px; left:16px; right:16px;
-      color:rgba(255,255,255,.85);
-      font-weight:900;
-      font-size:13px;
+    .tile.vip:after{
+      content:"VIP";
+      position:absolute;top:10px;right:10px;
+      font-weight:900;font-size:12px;letter-spacing:.12em;
+      color: var(--gold);
+      border:1px solid rgba(199,164,76,.5);
+      padding:6px 8px;border-radius:999px;
+      background: rgba(0,0,0,.25);
+    }
+    .tile.active{outline:3px solid rgba(255,79,163,.18); border-color: rgba(255,79,163,.55)}
+    .tile.vip.active{outline:3px solid rgba(199,164,76,.25)}
+    .twoCol{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    @media (max-width: 860px){ .twoCol{grid-template-columns:1fr} }
+    .foot{padding:26px 18px;color:var(--muted);font-size:13px}
+    .hr{height:1px;background:var(--line);margin:14px 0}
+    .toast{
+      position:fixed;left:50%;bottom:14px;transform:translateX(-50%);
+      background: rgba(17,17,17,.92);color:#fff;padding:10px 12px;
+      border-radius:999px;font-weight:800;font-size:13px;display:none;
+      box-shadow: 0 16px 40px rgba(0,0,0,.20);
+      z-index:100;
+      max-width: 92vw;
       text-align:center;
-      pointer-events:none;
-      text-shadow: 0 8px 20px rgba(0,0,0,.55);
     }
-
-    footer{padding: 30px 0 50px; color: rgba(15,23,42,.62); font-size: 14px;}
-    .footRow{display:flex; gap:14px; flex-wrap:wrap; margin-top: 10px}
+    /* Cookie consent */
+    .consent{
+      position:fixed;left:14px;right:14px;bottom:14px;z-index:90;
+      max-width: 980px;margin:0 auto;
+      display:none;
+    }
+    .consent .box{
+      background: rgba(255,255,255,.92);
+      border:1px solid var(--line);
+      border-radius: var(--r);
+      box-shadow: var(--shadow);
+      padding:12px;
+      display:flex;gap:12px;flex-wrap:wrap;align-items:center;justify-content:space-between;
+    }
+    .consent .txt{min-width:240px;flex:1;color:#222}
+    .consent .txt b{display:block;margin-bottom:2px}
+    .consent .actions{display:flex;gap:10px;flex-wrap:wrap}
   </style>
-
-  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.4/build/qrcode.min.js" defer></script>
 </head>
 
 <body>
-  <div class="rain" id="rain" aria-hidden="true"></div>
-
-  <div class="intro" id="intro" onclick="window.__introTap && window.__introTap(event)">
-    <button class="skip" id="introSkip" type="button" onclick="window.__skipIntro && window.__skipIntro()">Skip</button>
-    <video id="introVideo" playsinline muted preload="auto" poster="assets/intro/poster.jpg">
-      <source src="assets/img/video/intro.mp4" type="video/mp4" />
-    </video>
-    <div class="hint">Wenn Autoplay zickt: Tippen = Start. ESC = raus.</div>
-  </div>
-
+<header>
   <div class="topbar">
-    <div class="inner">
-      <a class="brand" href="./">
-        <div class="logo" aria-hidden="true"></div>
-        <div>OnlyKeks<br><span style="font-weight:700;color:rgba(15,23,42,.55);font-size:12px">Post, die schmeckt</span></div>
-      </a>
-      <nav aria-label="Navigation">
-        <a href="#config">Konfigurator</a>
-        <a href="#checkout">Checkout</a>
-        <a href="#faq">FAQ</a>
-      </nav>
-      <button class="cta" type="button" onclick="location.hash='#config'">Jetzt gestalten</button>
+    <div class="brand">
+      <div class="logo" aria-hidden="true"></div>
+      <div>OnlyKeks <span style="color:var(--muted);font-weight:800">– Post, die schmeckt</span></div>
+    </div>
+    <div class="row">
+      <button class="btn" id="btnHall">Hall of Keks</button>
+      <button class="btn cta" id="btnStart">Keks gestalten</button>
     </div>
   </div>
+</header>
 
-  <main>
-    <div class="wrap hero" id="top">
-      <div class="heroGrid">
-        <div class="card heroCard">
-          <div class="kicker">Post, die schmeckt – und zurückkommt.</div>
-          <h1>Schick ’ne süße Botschaft.<br>Hol dir ’ne Antwort zurück.</h1>
-          <p class="sub">Du schreibst die Message. Wir packen sie auf den Keks. Der QR bringt dich zur internen Preview – sauberer Loop, ohne Account.</p>
-
-          <div class="chipRow">
-            <div class="chip">Preview-Link per QR</div>
-            <div class="chip">Fortnite-Rarity Packs</div>
-            <div class="chip">Schoko + Vanille + Deko</div>
-            <div class="chip">Draft wird gespeichert</div>
-          </div>
-
-          <div class="heroActions">
-            <a class="cta" href="#config">Keks gestalten</a>
-            <button class="cta secondary" type="button" onclick="location.hash='#config'">Beispiel ansehen</button>
-          </div>
-
-          <div class="trustbar">
-            <div class="trust"><b>Kein Account</b><span>Einfach gestalten & teilen.</span></div>
-            <div class="trust"><b>QR pro Keks</b><span>Geht auf interne Preview.</span></div>
-            <div class="trust"><b>Privat</b><span>Local Draft – keine Datenweitergabe.</span></div>
-            <div class="trust"><b>Boss-Mode</b><span>Rarity/Skins/Token vorbereitet.</span></div>
-          </div>
+<main class="wrap">
+  <section class="hero">
+    <div class="grid">
+      <div>
+        <h1 class="h1">Schick ’ne Message. Als Keks. Und krieg ’ne Antwort zurück.</h1>
+        <p class="sub">
+          3 Steps, keine Ablenkung: Message schreiben → Keks gestalten → abschicken.
+          Der QR-Reply-Loop macht aus Empfängern neue Sender.
+        </p>
+        <div class="row">
+          <button class="btn cta" id="btnStart2">Jetzt gestalten</button>
+          <button class="btn primary" id="btnAutoDemo">Demo-Message laden</button>
         </div>
 
-        <div class="card visual">
-          <div class="loopFrame">
-            <div class="loopShot">Loop Visual (Auto-Animation)<br><span style="font-weight:800; font-size:13px; opacity:.8;">Später echtes MP4 hier rein</span></div>
-            <div class="loopAnim"></div>
-            <div class="loopBadge">Live Loop: Keks → QR → Preview</div>
+        <div class="trust">
+          <span class="pill"><span class="dot"></span> Mobile-first & super simpel</span>
+          <span class="pill"><span class="dot"></span> Wir verkaufen keine Daten</span>
+          <span class="pill"><span class="dot"></span> Reply-Loop = Viralität</span>
+        </div>
+
+        <div class="section">
+          <div class="steps">
+            <div class="step">
+              <b>1) Message</b>
+              <div class="muted">Kurz und persönlich. Kein Roman. Wirkung kommt über Gefühl.</div>
+            </div>
+            <div class="step">
+              <b>2) Keks gestalten</b>
+              <div class="muted">Ein paar Deko-Optionen. Kontrolle ohne Stress.</div>
+            </div>
+            <div class="step">
+              <b>3) Abschicken</b>
+              <div class="muted">Empfänger scannt QR → antwortet → du bekommst Rückpost.</div>
+            </div>
           </div>
-          <div class="mini">
-            <div class="tile">Preview<span>QR scannt → preview.html lädt Draft.</span></div>
-            <div class="tile">Rarity<span>Packs sind nach Seltenheit gestaffelt.</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="hd">
+          <div style="font-weight:900">Live-Preview</div>
+          <div style="color:var(--muted);font-weight:800;font-size:13px" id="rarity">Rarity: Classic</div>
+        </div>
+        <div class="bd">
+          <div class="keksPreview" id="cookie">
+            <div class="icing" id="icing"></div>
+            <div class="msgOnCookie" id="msgOnCookie">Deine Message hier.</div>
+            <div class="sprinkles" id="sprinkles"></div>
           </div>
+
+          <div class="hr"></div>
+
+          <div class="miniRow" id="templateRow">
+            <button class="chip" data-tpl="Ich denk an dich.">Ich denk an dich</button>
+            <button class="chip" data-tpl="Beweg dein Arsch.">Beweg dein Arsch</button>
+            <button class="chip" data-tpl="Du packst das.">Du packst das</button>
+            <button class="chip" data-tpl="Sorry. Lass reden.">Sorry</button>
+            <button class="chip" data-tpl="Party heute?">Party?</button>
+          </div>
+          <p class="muted" style="margin:10px 0 0">
+            Tipp: kurze Message knallt mehr. Der Keks ist Bühne, nicht Buch.
+          </p>
         </div>
       </div>
     </div>
+  </section>
 
-    <section id="config">
-      <div class="wrap">
-        <h2>Konfigurator</h2>
-        <p class="muted">MVP: Shape + Sticker/Emojis + Zuckerguss/Glasur + Schokoguss + Streusel. QR zeigt auf interne Preview, verstehste.</p>
+  <section class="card" id="flow" style="margin:14px 0 0">
+    <div class="hd">
+      <div style="font-weight:900">Keks gestalten</div>
+      <div class="muted" id="stepInfo" style="font-weight:800">Step 1/3</div>
+    </div>
+    <div class="bd">
 
-        <div class="configGrid">
-          <div class="card panel">
-            <label for="msg">Deine Message</label>
-            <textarea id="msg" maxlength="220" placeholder="z.B. 'Du fehlst. Ruf an. 🍪❤️'"></textarea>
-            <div class="hint2"><span id="msgCount">0</span>/220 Zeichen</div>
+      <!-- STEP 1 -->
+      <div class="stepPane" data-step="1">
+        <div class="field">
+          <label for="message">Deine Message</label>
+          <textarea id="message" placeholder="z.B. Ich vermiss dich."></textarea>
+          <div class="muted">Kurz ist King. 10–80 Zeichen ist sweet spot.</div>
+        </div>
 
-            <label>Form</label>
-            <div class="row" id="shapeRow">
-              <div class="pill" data-shape="circle" aria-pressed="true">Kreis</div>
-              <div class="pill" data-shape="heart" aria-pressed="false">Herz</div>
-              <div class="pill" data-shape="star" aria-pressed="false">Stern</div>
-              <div class="pill" data-shape="smiley" aria-pressed="false">Smiley</div>
+        <div class="field">
+          <label>Pack wählen</label>
+          <div class="packTiles" id="packTiles">
+            <div class="tile active" data-pack="quick">
+              <h4>Quick</h4>
+              <div class="muted">Vorlage + schnell raus</div>
+              <div class="price">9,90 €</div>
             </div>
-
-            <label for="glaze">Glasur / Zuckerguss</label>
-            <select id="glaze">
-              <option value="vanilla">Vanille</option>
-              <option value="pink">Deko Pink</option>
-              <option value="white">Weiß</option>
-              <option value="choco">Schoko</option>
-              <option value="vip">VIP Schwarz/Gold</option>
-            </select>
-
-            <label for="drizzle">Schokoguss</label>
-            <select id="drizzle">
-              <option value="none">Keiner</option>
-              <option value="light">Leicht</option>
-              <option value="heavy">Viel (Boss)</option>
-            </select>
-
-            <label>Streusel</label>
-            <div class="row" id="sprinkleRow">
-              <div class="pill" data-sprinkle="none" aria-pressed="true">Keine</div>
-              <div class="pill" data-sprinkle="sugarHearts" aria-pressed="false">Zuckerherzen</div>
-              <div class="pill" data-sprinkle="sugarPearls" aria-pressed="false">Zuckerkugeln</div>
-              <div class="pill" data-sprinkle="chocoSprinkles" aria-pressed="false">Schokostreusel</div>
-              <div class="pill" data-sprinkle="rainbow" aria-pressed="false">Bunte Streusel</div>
+            <div class="tile" data-pack="custom">
+              <h4>Custom</h4>
+              <div class="muted">Freie Message + mehr Deko</div>
+              <div class="price">14,90 €</div>
             </div>
-
-            <label>Sticker / Emoji</label>
-            <div class="row" id="stickerRow">
-              <div class="pill" data-sticker="none" aria-pressed="true">Keiner</div>
-              <div class="pill" data-sticker="❤️" aria-pressed="false">❤️</div>
-              <div class="pill" data-sticker="✨" aria-pressed="false">✨</div>
-              <div class="pill" data-sticker="🍫" aria-pressed="false">🍫</div>
-              <div class="pill" data-sticker="💋" aria-pressed="false">💋</div>
-              <div class="pill" data-sticker="👑" aria-pressed="false">👑</div>
-              <div class="pill" data-sticker="💎" aria-pressed="false">💎</div>
+            <div class="tile vip" data-pack="premium">
+              <h4>Premium</h4>
+              <div class="muted">Box + Extras + VIP-Vibes</div>
+              <div class="price">24,90 €</div>
             </div>
-
-            <label for="pack">Pack (Rarity)</label>
-            <select id="pack">
-              <option value="schnell">Schnell – Common</option>
-              <option value="normal">Normal – Rare</option>
-              <option value="premium">Premium – Epic</option>
-              <option value="boss">Boss – Legendary</option>
-            </select>
-
-            <div style="margin-top:10px">
-              <span class="rarityTag" id="rarityTag">Rarity: Common</span>
-              <span class="rarityTag" id="priceTag" style="margin-left:8px;">Preis: —</span>
-            </div>
-
-            <div style="height:12px"></div>
-            <div class="row">
-              <button class="cta" type="button" id="btnCopyLink">Preview-Link kopieren</button>
-              <button class="cta secondary" type="button" id="btnReset">Reset</button>
-            </div>
-            <div class="hint2" id="saveHint">Draft: wird gespeichert…</div>
           </div>
+          <select id="pack" style="display:none">
+            <option value="quick">Quick</option>
+            <option value="custom">Custom</option>
+            <option value="premium">Premium</option>
+          </select>
+        </div>
 
-          <div class="card preview">
-            <div class="cookieWrap">
-              <svg id="cookieSvg" width="360" height="260" viewBox="0 0 360 260" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Keks Vorschau">
-                <defs>
-                  <linearGradient id="cookieBase" x1="0" y1="0" x2="1" y2="1">
-                    <stop offset="0" stop-color="#e2b17a"/>
-                    <stop offset="1" stop-color="#b87945"/>
-                  </linearGradient>
-                  <linearGradient id="chocoDrip" x1="0" y1="0" x2="1" y2="0">
-                    <stop offset="0" stop-color="#4b2a1b"/>
-                    <stop offset="1" stop-color="#7a3f27"/>
-                  </linearGradient>
-                  <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
-                    <feDropShadow dx="0" dy="10" stdDeviation="10" flood-color="rgba(2,6,23,.20)"/>
-                  </filter>
-                </defs>
-
-                <g filter="url(#softShadow)" id="shapeLayer"></g>
-                <g id="glazeLayer"></g>
-                <g id="dripLayer"></g>
-                <g id="sprinkleLayer"></g>
-                <g id="stickerLayer"></g>
-                <g id="textLayer"></g>
-              </svg>
-            </div>
-
-            <div class="qrBox">
-              <canvas class="qrCanvas" id="qr"></canvas>
-              <div>
-                <div style="font-weight:1000">Interne Preview</div>
-                <div class="hint2" id="qrUrl" style="max-width:520px; word-break:break-all;"></div>
-                <div class="smallActions" style="margin-top:10px">
-                  <button class="cta secondary" type="button" id="btnCopyQrUrl">Link kopieren</button>
-                  <button class="cta secondary" type="button" id="btnDownloadQr">QR speichern</button>
-                </div>
-              </div>
-            </div>
-
-            <div class="hint2">Hinweis: Preview nutzt localStorage. Wenn du den Link auf ’nem anderen Gerät öffnest, ist der Draft dort nicht da (kommt später mit Server/Token), verstehste.</div>
-          </div>
+        <div class="row">
+          <button class="btn cta" id="next1">Weiter</button>
+          <button class="btn" id="saveDraft">Entwurf speichern</button>
         </div>
       </div>
-    </section>
 
-    <section id="checkout">
-      <div class="wrap">
-        <h2>Checkout</h2>
-        <p class="muted">Nächster Step: Preise → Stripe → Partner. Aktuell: Preview + Rarity + QR = funktionierender MVP-Beweis.</p>
-      </div>
-    </section>
+      <!-- STEP 2 -->
+      <div class="stepPane" data-step="2" style="display:none">
+        <div class="twoCol">
+          <div class="field">
+            <label>Deko-Style</label>
+            <div class="miniRow" id="dekoRow">
+              <button class="chip active" data-icing="soft">Soft</button>
+              <button class="chip" data-icing="pink">Pink</button>
+              <button class="chip" data-icing="vip">VIP</button>
+            </div>
+            <div class="muted">VIP nutzt Schwarz/Gold nur als Akzent. Nicht flächig.</div>
+          </div>
 
-    <section id="faq">
-      <div class="wrap">
-        <h2>FAQ</h2>
-        <p class="muted">
-          <b>Warum Preview intern?</b><br>
-          Damit wir sofort sauber testen können, ohne Backend. Danach machen wir’s “echt” mit Token/DB.
-        </p>
-      </div>
-    </section>
-  </main>
+          <div class="field">
+            <label>Sprinkles</label>
+            <div class="miniRow" id="sprRow">
+              <button class="chip active" data-spr="light">Leicht</button>
+              <button class="chip" data-spr="medium">Medium</button>
+              <button class="chip" data-spr="heavy">Heavy</button>
+              <button class="chip" data-spr="off">Aus</button>
+            </div>
+          </div>
+        </div>
 
-  <footer>
-    <div class="wrap">
-      © 2025 OnlyKeks
-      <div class="footRow">
-        <a href="privacy.html">Wie wir mit Daten umgehen</a>
-        <a href="#top">Top</a>
+        <div class="field">
+          <label>QR-Reply-Link (Demo)</label>
+          <input id="qrLink" readonly />
+          <div class="muted">Das ist erstmal ein Demo-Link. Später ersetzt du ihn durch deinen echten Reply-Endpoint.</div>
+        </div>
+
+        <div class="row">
+          <button class="btn" id="back2">Zurück</button>
+          <button class="btn cta" id="next2">Weiter</button>
+        </div>
       </div>
+
+      <!-- STEP 3 -->
+      <div class="stepPane" data-step="3" style="display:none">
+        <div class="field">
+          <label>Adresse (Demo)</label>
+          <input id="addr" placeholder="Straße & Hausnummer" />
+          <div class="twoCol">
+            <input id="plz" placeholder="PLZ" />
+            <input id="ort" placeholder="Ort" />
+          </div>
+          <div class="muted">Für Demo reicht irgendwas. Später: echte Validierung + Versandinfos.</div>
+        </div>
+
+        <div class="row">
+          <button class="btn" id="back3">Zurück</button>
+          <button class="btn cta" id="payBtn">Zum Bezahlen (Demo)</button>
+        </div>
+
+        <div class="hr"></div>
+
+        <div class="muted">
+          <b>Hinweis:</b> Zahlungsbutton ist aktuell Demo. Du kannst später einen Stripe Payment Link einsetzen.
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="card">
+      <div class="hd"><div style="font-weight:900">Hall of Keks (VIP)</div><div class="muted" style="font-weight:800">Top-Designs (Demo)</div></div>
+      <div class="bd" id="hall">
+        <div class="muted">Hier kommen später die beliebtesten Designs rein – mit Schwarz/Gold-Highlight und Share-Button.</div>
+        <div class="hr"></div>
+        <div class="row">
+          <button class="btn" id="shareBtn">Design teilen (Demo)</button>
+          <button class="btn primary" id="copyCodeBtn">Design-Code kopieren</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="foot">
+    <div class="hr"></div>
+    <div class="muted">
+      Impressum · Datenschutz · AGB · Versand · Allergene (Demo-Footer, später als echte Sections)
     </div>
   </footer>
+</main>
 
-  <script>
-    (function(){
-      const $ = (s, r=document)=>r.querySelector(s);
+<div class="toast" id="toast">Gespeichert.</div>
 
-      const intro = $('#intro');
-      const vid   = $('#introVideo');
-      const skip  = $('#introSkip');
+<div class="consent" id="consent">
+  <div class="box">
+    <div class="txt">
+      <b>Cookies, aber keksig.</b>
+      Wir speichern nur deinen Entwurf, damit dein Keks nicht verloren geht. Optional helfen uns Cookies zu verstehen, welche Kekse gefallen. Wir verkaufen keine Daten.
+    </div>
+    <div class="actions">
+      <button class="btn cta" id="consentAll">Alles klar</button>
+      <button class="btn" id="consentNeed">Nur das Nötigste</button>
+      <button class="btn" id="consentInfo">Wie wir mit Daten umgehen</button>
+    </div>
+  </div>
+</div>
 
-      if(!intro || !vid || !skip) return;
+<script>
+(() => {
+  const $ = (id) => document.getElementById(id);
+  const toast = (msg) => { const t=$('toast'); t.textContent=msg; t.style.display='block'; clearTimeout(window.__tto); window.__tto=setTimeout(()=>t.style.display='none', 2200); };
 
-      function hideIntro(){
-        intro.style.display = 'none';
-        intro.setAttribute('aria-hidden','true');
-        try{ vid.pause(); }catch(e){}
-      }
+  // State
+  const state = {
+    orderId: localStorage.getItem('ok_order') || ('ok_' + Math.random().toString(36).slice(2) + Date.now().toString(36)),
+    message: localStorage.getItem('ok_msg') || '',
+    pack: localStorage.getItem('ok_pack') || 'quick',
+    icing: localStorage.getItem('ok_icing') || 'soft',
+    spr: localStorage.getItem('ok_spr') || 'light',
+  };
+  localStorage.setItem('ok_order', state.orderId);
 
-      window.__skipIntro = hideIntro;
+  // Elements
+  const msg = $('message');
+  const msgOnCookie = $('msgOnCookie');
+  const rarity = $('rarity');
+  const qrLink = $('qrLink');
+  const pack = $('pack');
+  const packTiles = $('packTiles');
+  const sprinkles = $('sprinkles');
+  const icing = $('icing');
+  const stepInfo = $('stepInfo');
 
-      window.__introTap = async function(ev){
-        if(ev && ev.target && ev.target.id === 'introSkip') return;
-        try{ await vid.play(); }catch(e){ hideIntro(); }
-      };
+  // Consent
+  const consent = $('consent');
+  const consentKey = 'ok_consent';
+  const consentVal = localStorage.getItem(consentKey);
+  if(!consentVal){ consent.style.display='block'; }
+  $('consentAll').onclick = () => { localStorage.setItem(consentKey,'all'); consent.style.display='none'; toast('Alles klar.'); };
+  $('consentNeed').onclick = () => { localStorage.setItem(consentKey,'need'); consent.style.display='none'; toast('Nur das Nötigste.'); };
+  $('consentInfo').onclick = () => { alert("Kurzfassung: Wir speichern deinen Entwurf lokal im Browser. Optional (später) anonymes Tracking zur Produktverbesserung. Keine Datenverkäufe."); };
 
-      skip.addEventListener('click', (e)=>{ e.preventDefault(); e.stopPropagation(); hideIntro(); }, true);
-      skip.addEventListener('touchstart', (e)=>{ e.preventDefault(); e.stopPropagation(); hideIntro(); }, {passive:false, capture:true});
+  // Helpers
+  const setActiveChips = (container, predicate) => {
+    container.querySelectorAll('.chip').forEach(c => c.classList.toggle('active', predicate(c)));
+  };
 
-      document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') hideIntro(); });
+  const updateRarity = () => {
+    // Simple rarity logic: Premium + VIP icing => Mythic vibes (demo)
+    let r = 'Classic';
+    if(state.pack === 'premium' && state.icing === 'vip') r = 'Mythic (VIP)';
+    else if(state.pack === 'premium') r = 'Legendary';
+    else if(state.pack === 'custom') r = 'Rare';
+    $('rarity').textContent = 'Rarity: ' + r;
+  };
 
-      vid.addEventListener('ended', hideIntro);
-      setTimeout(()=>{ if(intro.style.display !== 'none') hideIntro(); }, 9000);
+  const buildQr = () => {
+    // Demo link – later replace with real endpoint
+    const base = location.origin + location.pathname.replace(/index\.html$/,'') + 'keks.html';
+    const url = base + '?order=' + encodeURIComponent(state.orderId) + '&draft=' + encodeURIComponent(btoa(unescape(encodeURIComponent(state.message || ''))));
+    qrLink.value = url;
+  };
 
-      (async ()=>{ try{ await vid.play(); }catch(e){} })();
-    })();
-  </script>
-
-  <script>
-    const CFG = {
-      previewPage: "preview.html",
-      draftKey: "onlykeks_draft_v2",
-      rainCount: 26
-    };
-
-    // Fortnite-Rarity Setup
-    const PACKS = {
-      schnell:  { rarity:"common",    label:"Common",    priceCents: 399,  tokenHint:"10 Token" },
-      normal:   { rarity:"rare",      label:"Rare",      priceCents: 699,  tokenHint:"25 Token" },
-      premium:  { rarity:"epic",      label:"Epic",      priceCents: 1299, tokenHint:"60 Token" },
-      boss:     { rarity:"legendary", label:"Legendary", priceCents: 2499, tokenHint:"150 Token" }
-    };
-
-    function moneyEUR(cents){
-      const v = (cents/100).toFixed(2).replace('.',',');
-      return v + " €";
+  const renderSprinkles = () => {
+    sprinkles.innerHTML = '';
+    const level = state.spr;
+    if(level === 'off') return;
+    const n = level === 'light' ? 10 : level === 'medium' ? 18 : 28;
+    for(let i=0;i<n;i++){
+      const el = document.createElement('i');
+      el.style.setProperty('--x', Math.round(Math.random()*92)+'%');
+      el.style.setProperty('--y', Math.round(Math.random()*82)+'%');
+      el.style.setProperty('--r', (Math.random()*160-80)+'deg');
+      // add a few gold ones when VIP
+      if(state.icing === 'vip' && Math.random() < 0.25) el.style.background = 'rgba(199,164,76,.95)';
+      sprinkles.appendChild(el);
     }
+  };
 
-    // Keksregen: variable Größen + seltene "Legendary" Drops
-    (function initRain(){
-      const rain = document.getElementById('rain');
-      if(!rain) return;
+  const renderIcing = () => {
+    if(state.icing === 'soft'){
+      icing.style.background = 'rgba(255,255,255,.55)';
+      icing.style.borderColor = 'rgba(255,79,163,.18)';
+    } else if(state.icing === 'pink'){
+      icing.style.background = 'rgba(255,79,163,.16)';
+      icing.style.borderColor = 'rgba(255,79,163,.35)';
+    } else { // vip
+      icing.style.background = 'linear-gradient(180deg, rgba(17,17,17,.16), rgba(17,17,17,.06))';
+      icing.style.borderColor = 'rgba(199,164,76,.45)';
+    }
+  };
 
-      const drops = [
-        {t:"🍪", w:0.68},
-        {t:"🍫", w:0.14},
-        {t:"✨", w:0.10},
-        {t:"💎", w:0.05},
-        {t:"👑", w:0.03}
-      ];
+  const applyPackTiles = () => {
+    pack.value = state.pack;
+    packTiles.querySelectorAll('.tile').forEach(t => t.classList.toggle('active', t.dataset.pack === state.pack));
+  };
 
-      function pickWeighted(){
-        const r = Math.random();
-        let acc=0;
-        for(const d of drops){
-          acc += d.w;
-          if(r<=acc) return d.t;
-        }
-        return "🍪";
-      }
+  const applyMessage = () => {
+    msg.value = state.message;
+    msgOnCookie.textContent = (state.message || 'Deine Message hier.').slice(0, 110);
+  };
 
-      function rarityRoll(){
-        const r = Math.random();
-        if(r < 0.72) return "common";
-        if(r < 0.92) return "rare";
-        if(r < 0.985) return "epic";
-        return "legendary";
-      }
+  const saveState = () => {
+    localStorage.setItem('ok_msg', state.message);
+    localStorage.setItem('ok_pack', state.pack);
+    localStorage.setItem('ok_icing', state.icing);
+    localStorage.setItem('ok_spr', state.spr);
+  };
 
-      for(let i=0;i<CFG.rainCount;i++){
-        const d = document.createElement('div');
-        const rar = rarityRoll();
-        d.className = 'drop ' + rar;
-        d.textContent = pickWeighted();
+  // Init
+  applyMessage();
+  applyPackTiles();
+  renderIcing();
+  renderSprinkles();
+  updateRarity();
+  buildQr();
 
-        const left = Math.random()*100;
-        const dur = 7 + Math.random()*12;
-        const delay = -Math.random()*dur;
-        const size = (rar==="legendary" ? 26 : rar==="epic" ? 22 : rar==="rare" ? 18 : 14) + Math.random()*10;
+  // Hero buttons
+  const scrollToFlow = () => $('flow').scrollIntoView({behavior:'smooth', block:'start'});
+  $('btnStart').onclick = scrollToFlow;
+  $('btnStart2').onclick = scrollToFlow;
 
-        d.style.left = left + "vw";
-        d.style.animationDuration = dur + "s";
-        d.style.animationDelay = delay + "s";
-        d.style.fontSize = size + "px";
+  $('btnAutoDemo').onclick = () => {
+    state.message = "Ick denk an dich. Ehrlich.";
+    applyMessage(); buildQr(); saveState();
+    toast('Demo geladen.');
+  };
 
-        rain.appendChild(d);
-      }
-    })();
+  // Templates
+  $('templateRow').addEventListener('click', (e) => {
+    const b = e.target.closest('button[data-tpl]');
+    if(!b) return;
+    state.message = b.dataset.tpl;
+    applyMessage(); buildQr(); saveState();
+    $('templateRow').querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
+    b.classList.add('active');
+    toast('Template gesetzt.');
+  });
 
-    // Konfigurator
-    (function(){
-      const $ = (s, r=document)=>r.querySelector(s);
-      const $$ = (s, r=document)=>Array.from(r.querySelectorAll(s));
+  // Message typing
+  msg.addEventListener('input', () => {
+    state.message = msg.value.trim();
+    msgOnCookie.textContent = (state.message || 'Deine Message hier.').slice(0,110);
+    buildQr(); saveState();
+  });
 
-      const msg = $('#msg');
-      const msgCount = $('#msgCount');
-      const glaze = $('#glaze');
-      const drizzle = $('#drizzle');
-      const pack = $('#pack');
+  // Pack tiles
+  packTiles.addEventListener('click', (e) => {
+    const t = e.target.closest('.tile');
+    if(!t) return;
+    state.pack = t.dataset.pack;
+    applyPackTiles(); updateRarity(); saveState();
+    toast('Pack gewählt.');
+  });
 
-      const rarityTag = $('#rarityTag');
-      const priceTag = $('#priceTag');
+  // Flow steps
+  let step = 1;
+  const showStep = (n) => {
+    step = n;
+    document.querySelectorAll('.stepPane').forEach(p => p.style.display = (p.dataset.step == n ? 'block' : 'none'));
+    stepInfo.textContent = `Step ${n}/3`;
+    scrollToFlow();
+  };
+  $('next1').onclick = () => {
+    if(!state.message || state.message.length < 3){
+      toast('Kurz ’ne Message rein, bitte.');
+      msg.focus();
+      return;
+    }
+    showStep(2);
+  };
+  $('back2').onclick = () => showStep(1);
+  $('next2').onclick = () => showStep(3);
+  $('back3').onclick = () => showStep(2);
 
-      const qrCanvas = $('#qr');
-      const qrUrlEl = $('#qrUrl');
+  // Deko chips
+  $('dekoRow').addEventListener('click', (e) => {
+    const b = e.target.closest('button[data-icing]');
+    if(!b) return;
+    state.icing = b.dataset.icing;
+    setActiveChips($('dekoRow'), (x)=>x===b);
+    renderIcing(); renderSprinkles(); updateRarity(); saveState();
+    toast('Style gesetzt.');
+  });
+  $('sprRow').addEventListener('click', (e) => {
+    const b = e.target.closest('button[data-spr]');
+    if(!b) return;
+    state.spr = b.dataset.spr;
+    setActiveChips($('sprRow'), (x)=>x===b);
+    renderSprinkles(); saveState();
+    toast('Sprinkles gesetzt.');
+  });
 
-      const btnCopyLink = $('#btnCopyLink');
-      const btnReset = $('#btnReset');
-      const btnCopyQrUrl = $('#btnCopyQrUrl');
-      const btnDownloadQr = $('#btnDownloadQr');
+  $('saveDraft').onclick = () => { saveState(); toast('Entwurf gespeichert.'); };
 
-      const saveHint = $('#saveHint');
+  $('payBtn').onclick = () => {
+    saveState();
+    toast('Demo: Zahlung kommt als nächstes (Stripe Link später).');
+  };
 
-      const shapeRow = $('#shapeRow');
-      const sprinkleRow = $('#sprinkleRow');
-      const stickerRow = $('#stickerRow');
-
-      const shapeLayer = document.getElementById('shapeLayer');
-      const glazeLayer = document.getElementById('glazeLayer');
-      const dripLayer = document.getElementById('dripLayer');
-      const sprinkleLayer = document.getElementById('sprinkleLayer');
-      const stickerLayer = document.getElementById('stickerLayer');
-      const textLayer = document.getElementById('textLayer');
-
-      let state = {
-        rid: cryptoRandomId(),
-        message: "",
-        shape: "circle",
-        glaze: "vanilla",
-        drizzle: "light",
-        sprinkle: "none",
-        sticker: "none",
-        pack: "schnell"
-      };
-
-      function cryptoRandomId(){
-        try{
-          const a = new Uint8Array(8);
-          crypto.getRandomValues(a);
-          return Array.from(a).map(x=>x.toString(16).padStart(2,'0')).join('');
-        }catch(e){
-          return String(Date.now());
-        }
-      }
-
-      function pressGroup(rowEl, attr, value){
-        if(!rowEl) return;
-        $$('.pill', rowEl).forEach(p=>{
-          const v = p.getAttribute(attr);
-          p.setAttribute('aria-pressed', v === value ? 'true':'false');
-        });
-      }
-
-      function pickFromRow(rowEl, attr, key){
-        if(!rowEl) return;
-        rowEl.addEventListener('click', (e)=>{
-          const t = e.target.closest('.pill');
-          if(!t) return;
-          const v = t.getAttribute(attr);
-          state[key] = v;
-          pressGroup(rowEl, attr, v);
-          renderAll();
-          persist();
-        });
-      }
-
-      function clampText(text, max=220){
-        text = (text || "").trim();
-        if(text.length > max) text = text.slice(0,max);
-        return text;
-      }
-
-      function persist(){
-        try{
-          localStorage.setItem(CFG.draftKey, JSON.stringify(state));
-          saveHint.textContent = "Draft gespeichert.";
-          setTimeout(()=>{ saveHint.textContent = "Draft: wird gespeichert…"; }, 1200);
-        }catch(e){}
-      }
-
-      function load(){
-        try{
-          const raw = localStorage.getItem(CFG.draftKey);
-          if(!raw) return;
-          const d = JSON.parse(raw);
-          if(!d || typeof d !== "object") return;
-          state = { ...state, ...d };
-          if(!state.rid) state.rid = cryptoRandomId();
-        }catch(e){}
-      }
-
-      function previewUrl(){
-        const u = new URL(CFG.previewPage, location.href);
-        u.searchParams.set('rid', state.rid);
-        return u.toString();
-      }
-
-      function glazeColors(kind){
-        switch(kind){
-          case "pink": return { fill:"#ff7bc0", stroke:"rgba(255,79,163,.55)" };
-          case "vanilla": return { fill:"#fff1d6", stroke:"rgba(180,120,69,.30)" };
-          case "choco": return { fill:"#5a2f1e", stroke:"rgba(122,63,39,.55)" };
-          case "white": return { fill:"#ffffff", stroke:"rgba(15,23,42,.18)" };
-          case "vip": return { fill:"#0b0b0f", stroke:"#d7b56d" };
-          default: return { fill:"#fff1d6", stroke:"rgba(180,120,69,.30)" };
-        }
-      }
-
-      function packMeta(){
-        return PACKS[state.pack] || PACKS.schnell;
-      }
-
-      function drawBaseShape(){
-        shapeLayer.innerHTML = "";
-        const s = state.shape;
-
-        let el;
-        if(s === "circle"){
-          el = svgEl('circle', { cx:180, cy:130, r:92, fill:"url(#cookieBase)", stroke:"rgba(15,23,42,.10)", "stroke-width":"2" });
-        } else if(s === "heart"){
-          el = svgEl('path', {
-            d:"M180 212 C120 172 96 140 96 112 C96 86 114 68 140 68 C160 68 172 80 180 92 C188 80 200 68 220 68 C246 68 264 86 264 112 C264 140 240 172 180 212 Z",
-            fill:"url(#cookieBase)", stroke:"rgba(15,23,42,.10)", "stroke-width":"2"
-          });
-        } else if(s === "star"){
-          el = svgEl('path', {
-            d:"M180 52 L203 98 L254 104 L217 136 L226 186 L180 160 L134 186 L143 136 L106 104 L157 98 Z",
-            fill:"url(#cookieBase)", stroke:"rgba(15,23,42,.10)", "stroke-width":"2"
-          });
-        } else if(s === "smiley"){
-          el = svgEl('circle', { cx:180, cy:130, r:92, fill:"url(#cookieBase)", stroke:"rgba(15,23,42,.10)", "stroke-width":"2" });
-          const eye1 = svgEl('circle',{cx:148, cy:118, r:8, fill:"rgba(15,23,42,.35)"});
-          const eye2 = svgEl('circle',{cx:212, cy:118, r:8, fill:"rgba(15,23,42,.35)"});
-          const mouth = svgEl('path',{d:"M145 150 C160 175 200 175 215 150", fill:"none", stroke:"rgba(15,23,42,.35)", "stroke-width":"8", "stroke-linecap":"round"});
-          shapeLayer.appendChild(el);
-          shapeLayer.appendChild(eye1);
-          shapeLayer.appendChild(eye2);
-          shapeLayer.appendChild(mouth);
-          addChips();
-          return;
-        }
-        shapeLayer.appendChild(el);
-        addChips();
-
-        function addChips(){
-          const chips = [
-            [140,105,10],[210,100,7],[120,150,8],[235,155,11],[175,175,7],[160,85,6]
-          ];
-          chips.forEach(([x,y,r])=>{
-            const c = svgEl('circle',{cx:x, cy:y, r:r, fill:"rgba(75,42,27,.38)"});
-            shapeLayer.appendChild(c);
-          });
-        }
-      }
-
-      function drawGlaze(){
-        glazeLayer.innerHTML = "";
-        const c = glazeColors(state.glaze);
-
-        let el;
-        if(state.shape === "circle" || state.shape === "smiley"){
-          el = svgEl('circle', { cx:180, cy:130, r:76, fill:c.fill, stroke:c.stroke, "stroke-width":"3", opacity:"0.95" });
-        } else if(state.shape === "heart"){
-          el = svgEl('path', {
-            d:"M180 198 C130 168 112 142 112 120 C112 98 126 84 146 84 C162 84 172 94 180 106 C188 94 198 84 214 84 C234 84 248 98 248 120 C248 142 230 168 180 198 Z",
-            fill:c.fill, stroke:c.stroke, "stroke-width":"3", opacity:"0.95"
-          });
-        } else if(state.shape === "star"){
-          el = svgEl('path', {
-            d:"M180 70 L198 106 L238 110 L208 134 L216 172 L180 152 L144 172 L152 134 L122 110 L162 106 Z",
-            fill:c.fill, stroke:c.stroke, "stroke-width":"3", opacity:"0.95"
-          });
-        }
-        glazeLayer.appendChild(el);
-
-        if(state.glaze === "vip"){
-          const ring = svgEl('circle',{cx:180, cy:130, r:78, fill:"none", stroke:"#d7b56d", "stroke-width":"4", opacity:"0.95"});
-          glazeLayer.appendChild(ring);
-        }
-      }
-
-      function drawDrip(){
-        dripLayer.innerHTML = "";
-        const mode = state.drizzle;
-        if(mode === "none") return;
-
-        const op = mode === "heavy" ? 0.40 : 0.26;
-        const w1 = mode === "heavy" ? 12 : 10;
-        const w2 = mode === "heavy" ? 10 : 8;
-
-        const path1 = svgEl('path',{
-          d:"M120 94 C140 86 158 110 176 98 C196 84 214 110 238 96",
-          fill:"none", stroke:"url(#chocoDrip)", "stroke-width":String(w1), "stroke-linecap":"round",
-          opacity:String(op)
-        });
-        const path2 = svgEl('path',{
-          d:"M132 126 C150 110 168 140 186 124 C206 106 226 140 244 122",
-          fill:"none", stroke:"url(#chocoDrip)", "stroke-width":String(w2), "stroke-linecap":"round",
-          opacity:String(op)
-        });
-        dripLayer.appendChild(path1);
-        dripLayer.appendChild(path2);
-      }
-
-      function drawSprinkles(){
-        sprinkleLayer.innerHTML = "";
-        const kind = state.sprinkle;
-        if(kind === "none") return;
-
-        const pts = [
-          [140,120],[165,105],[196,112],[215,132],[175,150],[150,150],[205,155],[185,170]
-        ];
-
-        pts.forEach(([x,y], i)=>{
-          if(kind === "sugarHearts"){
-            const t = svgEl('text',{x:x, y:y, "font-size":"16", "text-anchor":"middle"});
-            t.textContent = "❤";
-            sprinkleLayer.appendChild(t);
-          } else if(kind === "sugarPearls"){
-            const c = svgEl('circle',{cx:x, cy:y-4, r:4.8, fill:"rgba(255,255,255,.85)", stroke:"rgba(15,23,42,.10)", "stroke-width":"1"});
-            sprinkleLayer.appendChild(c);
-          } else if(kind === "chocoSprinkles"){
-            const r = svgEl('rect',{x:x-4, y:y-8, width:10, height:4, rx:2, fill:"rgba(75,42,27,.45)"});
-            sprinkleLayer.appendChild(r);
-          } else if(kind === "rainbow"){
-            const colors = ["rgba(255,79,163,.75)","rgba(255,210,95,.75)","rgba(120,205,255,.70)","rgba(160,80,255,.65)"];
-            const r = svgEl('rect',{x:x-4, y:y-8, width:10, height:4, rx:2, fill: colors[i%colors.length]});
-            sprinkleLayer.appendChild(r);
-          }
-        });
-      }
-
-      function drawSticker(){
-        stickerLayer.innerHTML = "";
-        const s = state.sticker;
-        if(!s || s === "none") return;
-
-        const t = svgEl('text',{x:252, y:88, "font-size":"30", "text-anchor":"middle"});
-        t.textContent = s;
-        stickerLayer.appendChild(t);
-      }
-
-      function drawText(){
-        textLayer.innerHTML = "";
-        const text = clampText(state.message, 220);
-        if(!text) return;
-
-        const lines = wrapLines(text, 18).slice(0,4);
-        const startY = 126 - (lines.length-1)*14;
-
-        const fill = (state.glaze === "vip") ? "#d7b56d" : "rgba(15,23,42,.78)";
-        lines.forEach((ln, idx)=>{
-          const t = svgEl('text',{
-            x:180, y:startY + idx*28,
-            "font-size":"18",
-            "font-weight":"900",
-            "text-anchor":"middle",
-            fill
-          });
-          t.textContent = ln;
-          textLayer.appendChild(t);
-        });
-      }
-
-      function wrapLines(text, maxChars){
-        const words = text.split(/\s+/);
-        const lines = [];
-        let cur = "";
-        for(const w of words){
-          const next = cur ? (cur + " " + w) : w;
-          if(next.length <= maxChars){
-            cur = next;
-          }else{
-            if(cur) lines.push(cur);
-            cur = w;
-          }
-        }
-        if(cur) lines.push(cur);
-        return lines;
-      }
-
-      function svgEl(tag, attrs){
-        const el = document.createElementNS("http://www.w3.org/2000/svg", tag);
-        for(const k in attrs) el.setAttribute(k, attrs[k]);
-        return el;
-      }
-
-      async function renderQr(){
-        const url = previewUrl();
-        qrUrlEl.textContent = url;
-
-        if(!window.QRCode){
-          setTimeout(renderQr, 200);
-          return;
-        }
-        try{
-          await QRCode.toCanvas(qrCanvas, url, { margin: 1, width: 120 });
-        }catch(e){}
-      }
-
-      function renderMeta(){
-        const p = packMeta();
-        rarityTag.className = "rarityTag " + p.rarity;
-        rarityTag.textContent = "Rarity: " + p.label;
-
-        priceTag.className = "rarityTag " + p.rarity;
-        priceTag.textContent = "Preis: " + moneyEUR(p.priceCents) + " (" + p.tokenHint + ")";
-      }
-
-      function renderAll(){
-        msgCount.textContent = (msg.value || "").length;
-        drawBaseShape();
-        drawGlaze();
-        drawDrip();
-        drawSprinkles();
-        drawSticker();
-        drawText();
-        renderMeta();
-        renderQr();
-      }
-
-      function syncUI(){
-        msg.value = state.message || "";
-        glaze.value = state.glaze || "vanilla";
-        drizzle.value = state.drizzle || "light";
-        pack.value = state.pack || "schnell";
-
-        pressGroup(shapeRow, 'data-shape', state.shape);
-        pressGroup(sprinkleRow, 'data-sprinkle', state.sprinkle);
-        pressGroup(stickerRow, 'data-sticker', state.sticker);
-
-        msgCount.textContent = (msg.value || "").length;
-      }
-
-      msg.addEventListener('input', ()=>{
-        state.message = clampText(msg.value, 220);
-        renderAll(); persist();
-      });
-
-      glaze.addEventListener('change', ()=>{
-        state.glaze = glaze.value;
-        renderAll(); persist();
-      });
-
-      drizzle.addEventListener('change', ()=>{
-        state.drizzle = drizzle.value;
-        renderAll(); persist();
-      });
-
-      pack.addEventListener('change', ()=>{
-        state.pack = pack.value;
-        renderAll(); persist();
-      });
-
-      pickFromRow(shapeRow, 'data-shape', 'shape');
-      pickFromRow(sprinkleRow, 'data-sprinkle', 'sprinkle');
-      pickFromRow(stickerRow, 'data-sticker', 'sticker');
-
-      btnReset.addEventListener('click', ()=>{
-        state = { rid: cryptoRandomId(), message:"", shape:"circle", glaze:"vanilla", drizzle:"light", sprinkle:"none", sticker:"none", pack:"schnell" };
-        syncUI(); renderAll(); persist();
-      });
-
-      function copyToClipboard(text){
-        try{ navigator.clipboard.writeText(text); }
-        catch(e){
-          const ta = document.createElement('textarea');
-          ta.value = text; document.body.appendChild(ta);
-          ta.select(); document.execCommand('copy');
-          ta.remove();
-        }
-      }
-
-      btnCopyQrUrl.addEventListener('click', ()=> copyToClipboard(previewUrl()));
-      btnCopyLink.addEventListener('click', ()=> copyToClipboard(previewUrl()));
-
-      btnDownloadQr.addEventListener('click', ()=>{
-        try{
-          const a = document.createElement('a');
-          a.download = "onlykeks-preview-qr.png";
-          a.href = qrCanvas.toDataURL("image/png");
-          a.click();
-        }catch(e){}
-      });
-
-      // Init
-      load();
-      syncUI();
-      renderAll();
-      persist();
-    })();
-  </script>
+  // Hall actions (demo)
+  $('btnHall').onclick = () => document.getElementById('hall').scrollIntoView({behavior:'smooth'});
+  $('copyCodeBtn').onclick = async () => {
+    const code = btoa(JSON.stringify({m: state.message, p: state.pack, i: state.icing, s: state.spr, o: state.orderId}));
+    try{ await navigator.clipboard.writeText(code); toast('Design-Code kopiert.'); }
+    catch(e){ toast('Kopieren ging nicht (Browser).'); }
+  };
+  $('shareBtn').onclick = async () => {
+    const shareText = `Mein OnlyKeks: "${state.message}"`;
+    const url = location.href.split('#')[0];
+    if(navigator.share){
+      try{ await navigator.share({title:'OnlyKeks', text:shareText, url}); toast('Geteilt.'); } catch(e){}
+    } else {
+      try{ await navigator.clipboard.writeText(url); toast('Link kopiert.'); } catch(e){ toast('Share nicht verfügbar.'); }
+    }
+  };
+})();
+</script>
 </body>
 </html>

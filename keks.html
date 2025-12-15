@@ -56,21 +56,32 @@
     .btn{
       appearance:none; border:0; cursor:pointer;
       padding:12px 14px; border-radius:14px;
-      font-weight:800; font-size:14px;
+      font-weight:900; font-size:14px;
       background: linear-gradient(135deg, var(--pink), var(--pink2));
       color:#fff;
       margin-top:12px;
+      width:100%;
+    }
+    .btn.secondary{
+      background:#fff; color:var(--ink);
+      border:1px solid var(--line);
+      box-shadow:none;
     }
     .mini{font-size:12px; color:var(--muted); margin-top:10px}
     code{background: rgba(0,0,0,.06); padding:2px 6px; border-radius: 8px}
+    .ok{
+      border:1px solid rgba(26,143,90,.25);
+      background: rgba(26,143,90,.07);
+      border-radius: 16px;
+      padding:12px;
+      margin-top:12px;
+    }
   </style>
 </head>
 <body>
   <div class="card">
     <h1>Antwort schreiben</h1>
-    <p>
-      Du hast einen Reply-Keks bekommen. Schreib kurz zurück – und fertig. Kein Account, kein Drama. verstehste
-    </p>
+    <p>Du hast einen Reply-Keks bekommen. Kurz zurückschreiben – fertig. Kein Account. verstehste</p>
 
     <div class="mini" id="tokenOut">Token: –</div>
 
@@ -91,7 +102,14 @@
     <button class="btn" id="save" type="button">Antwort speichern</button>
 
     <div class="mini" id="out"></div>
-    <div class="mini">Hinweis: Im MVP wird lokal gespeichert. Backend/Order-System kann später folgen. checkst du</div>
+
+    <div class="ok" id="after" style="display:none">
+      <div style="font-weight:900">Gespeichert.</div>
+      <div class="mini">Willste direkt zurückschicken? Dann mach ’nen Reply-Keks draus. checkst du</div>
+      <button class="btn secondary" id="backSend" type="button">Antwort als Keks zurücksenden</button>
+    </div>
+
+    <div class="mini">MVP: lokal gespeichert. Backend/Orders kommen später. checkst du</div>
   </div>
 
   <script>
@@ -101,11 +119,18 @@
     $('#tokenOut').textContent = 'Token: ' + token;
 
     const KEY = 'onlykeks:replies';
+
     function load(){
       try{ return JSON.parse(localStorage.getItem(KEY) || '[]'); }catch(e){ return []; }
     }
     function saveAll(list){
       try{ localStorage.setItem(KEY, JSON.stringify(list)); }catch(e){}
+    }
+
+    function baseUrl(){
+      const u = new URL(window.location.href);
+      if(!u.pathname.endsWith('/')) u.pathname = u.pathname.replace(/[^/]*$/, '');
+      return u.toString();
     }
 
     $('#save').addEventListener('click', () => {
@@ -125,12 +150,21 @@
       list.unshift(item);
       saveAll(list);
 
-      $('#out').innerHTML = 'Gespeichert. Du kannst dit Fenster schließen. <br><br><code>' + escapeHtml(JSON.stringify(item)) + '</code>';
-    });
+      $('#out').textContent = 'Gespeichert.';
+      $('#after').style.display = 'block';
 
-    function escapeHtml(s){
-      return s.replace(/[&<>"']/g, (c) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-    }
+      // Prepare back-link with prefilled message (simple, readable)
+      const txt =
+        (item.emoji ? item.emoji + ' ' : '') +
+        (item.name ? item.name + ': ' : '') +
+        item.reply;
+
+      $('#backSend').onclick = () => {
+        const u = new URL(baseUrl() + 'index.html');
+        u.searchParams.set('reply', txt);
+        window.location.href = u.toString();
+      };
+    });
   </script>
 </body>
 </html>

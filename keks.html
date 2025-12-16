@@ -3,60 +3,239 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>OnlyKeks – Antwort senden</title>
+  <title>OnlyKeks – Dein Keks</title>
+  <meta name="description" content="Ein Keks mit Message. QR gescannt? Antworte – oder schick deinen eigenen Keks." />
   <meta name="theme-color" content="#ff4fa3" />
   <style>
-    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;background:#fff;color:#111}
-    .wrap{max-width:720px;margin:0 auto;padding:18px}
-    .card{border:1px solid #ececec;border-radius:18px;padding:14px;background:rgba(255,255,255,.9)}
-    .muted{color:#666;line-height:1.5}
-    textarea,input{width:100%;padding:12px;border-radius:14px;border:1px solid #ececec;font:inherit}
-    textarea{min-height:120px}
-    button{padding:12px 14px;border-radius:999px;border:1px solid rgba(255,79,163,.5);background:rgba(255,79,163,.12);font-weight:900;cursor:pointer}
-    .pill{display:inline-flex;gap:8px;align-items:center;padding:8px 10px;border-radius:999px;border:1px solid rgba(255,79,163,.25);background:rgba(255,79,163,.06);font-weight:900;margin:8px 0;flex-wrap:wrap}
+    :root{
+      --bg:#ffffff; --ink:#111; --muted:#666; --line:#ececec;
+      --pink:#ff4fa3; --pink2:#ff7fc3; --shadow:0 14px 45px rgba(0,0,0,.08);
+      --r:16px;
+      --common:#b9b9b9; --uncommon:#2ecc71; --rare:#4aa3ff; --epic:#b56bff; --legendary:#f6d26a;
+      --vip:#0b0b10; --vip2:#151525;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family: ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial;background:var(--bg);color:var(--ink)}
+    .wrap{max-width:880px;margin:0 auto;padding:18px}
+    .card{border:1px solid var(--line);border-radius: calc(var(--r) + 8px);box-shadow: var(--shadow);background:#fff;padding:14px}
+    .top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}
+    .brand{font-weight:950;display:flex;align-items:center;gap:10px}
+    .logo{width:36px;height:36px;border-radius:14px;border:1px solid var(--line);display:grid;place-items:center;box-shadow:var(--shadow);background: radial-gradient(circle at 30% 30%, #fff 0 30%, #ffe1ef 31% 55%, #ffd0e6 56% 100%);}
+    .badge{display:inline-flex;align-items:center;gap:7px;font-size:12px;font-weight:950;padding:8px 10px;border-radius:999px;border:1px solid var(--line);background:#fff}
+    .dot{width:10px;height:10px;border-radius:99px;background:var(--common)}
+    .stage{
+      margin-top:10px;
+      border:1px solid var(--line);
+      border-radius: calc(var(--r) + 8px);
+      overflow:hidden;
+      background:
+        radial-gradient(65% 60% at 50% 35%, rgba(255,79,163,.20) 0%, rgba(255,127,195,.10) 35%, rgba(0,0,0,0) 70%),
+        linear-gradient(#fff,#fff);
+      padding:14px;
+      display:grid;gap:12px;
+    }
+    .cookieWrap{display:grid;place-items:center}
+    .cookie{
+      width:min(260px, 78vw);aspect-ratio:1/1;border-radius:50%;
+      background: radial-gradient(circle at 30% 25%, #fff7df 0 22%, #f8d9a4 23% 55%, #e7b46b 56% 100%);
+      border:1px solid rgba(0,0,0,.10);
+      box-shadow: 0 22px 60px rgba(0,0,0,.14);
+      position:relative;
+      display:grid;place-items:center;
+      animation: breathe 3.2s ease-in-out infinite;
+      overflow:hidden;
+    }
+    .cookie.star{clip-path: polygon(50% 2%, 61% 35%, 98% 35%, 68% 56%, 79% 92%, 50% 72%, 21% 92%, 32% 56%, 2% 35%, 39% 35%); border-radius:0}
+    .cookie.heart{border-radius: 18% 18% 35% 35%/18% 18% 45% 45%; transform: rotate(45deg);}
+    .cookie.heart .inner{transform: rotate(-45deg);}
+    .inner{padding:20px;display:grid;place-items:center;text-align:center}
+    .msg{
+      font-weight:950;font-size: clamp(18px, 4.7vw, 30px);
+      line-height:1.05;color: rgba(0,0,0,.82);
+      background: rgba(255,255,255,.35);
+      padding: 10px 12px;border-radius:16px;
+      max-width:92%;
+      word-wrap: break-word;
+      text-shadow: 0 2px 0 rgba(255,255,255,.45);
+    }
+    .glow{position:absolute;inset:-16%;border-radius:50%;filter:blur(18px);opacity:.9;pointer-events:none}
+    .btn{
+      appearance:none;border:0;cursor:pointer;border-radius:999px;
+      padding:12px 16px;font-weight:950;letter-spacing:.2px;
+      display:inline-flex;gap:8px;align-items:center;justify-content:center;
+      box-shadow: 0 10px 25px rgba(0,0,0,.08);
+    }
+    .btnPrimary{background: linear-gradient(135deg, var(--pink), var(--pink2)); color:#fff}
+    .btnDark{background:#111;color:#fff}
+    .btnGhost{background:#fff;border:1px solid var(--line);box-shadow:none}
+    .row{display:flex;gap:10px;flex-wrap:wrap}
+    .input{width:100%;padding:14px;border-radius:14px;border:1px solid var(--line);font-size:16px;font-weight:850}
+    .muted{color:var(--muted);font-size:13px;line-height:1.45;margin:0}
+    .h{font-size:22px;font-weight:950;margin:0}
+    @keyframes breathe{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-3px) scale(1.01)}}
+    .vip{background:linear-gradient(135deg,var(--vip),var(--vip2));color:#fff;border-color:rgba(255,255,255,.10)}
+    .vip .badge{background:rgba(0,0,0,.22);border-color:rgba(255,255,255,.14);color:#fff}
+    .vip .muted{color:rgba(255,255,255,.72)}
   </style>
 </head>
 <body>
-  <div class="wrap">
-    <h1>Antwort zurückschicken</h1>
-    <p class="muted">Du scannst den QR. Du antwortest. Der Absender bekommt echte Post zurück.</p>
-
-    <div class="card">
-      <div class="pill">Order: <span id="order">–</span> · RID: <span id="rid">–</span></div>
-
-      <label style="font-weight:900">Deine Antwort</label>
-      <textarea id="reply" placeholder="Schreib kurz, ehrlich, persönlich."></textarea>
-
-      <div style="height:10px"></div>
-      <button id="send">Antwort speichern (Demo)</button>
-      <p class="muted" style="margin-top:10px">
-        Demo: Speichert lokal im Browser des Empfängers. Nächster Schritt ist Backend/Token-Sharing, damit der Absender es wirklich sieht.
-      </p>
-    </div>
+<div class="wrap">
+  <div class="top">
+    <div class="brand"><div class="logo">🍪</div> OnlyKeks</div>
+    <div class="badge"><span class="dot" id="dot"></span><span id="rarity">COMMON</span></div>
   </div>
 
+  <div class="card" id="mainCard">
+    <div class="h" id="title">Dein Keks ist da.</div>
+    <p class="muted" id="subtitle">Wenn du willst: antworte kurz – oder schick selbst einen.</p>
+
+    <div class="stage">
+      <div class="cookieWrap">
+        <div class="cookie" id="cookie">
+          <div class="glow" id="glow"></div>
+          <div class="inner">
+            <div class="msg" id="msg">Ich denk an dich.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row" id="replyBlock" style="display:none">
+        <input class="input" id="replyInput" maxlength="64" placeholder="Deine Antwort…" />
+        <button class="btn btnDark" id="sendReply" type="button">Antwort senden</button>
+        <p class="muted">Demo-Antwort: wird lokal gespeichert. Später: echtes Reply-System.</p>
+      </div>
+
+      <div class="row">
+        <button class="btn btnPrimary" id="cta" type="button">So einen auch verschicken</button>
+        <button class="btn btnGhost" id="share" type="button">Link kopieren</button>
+      </div>
+
+      <p class="muted" id="foot">QR gescannt? Dann bist du genau richtig.</p>
+    </div>
+  </div>
+</div>
+
 <script>
-(() => {
-  const CFG = {
-    replyByOrderPrefix: "onlykeks_reply_order_",
-    replyByRidPrefix: "onlykeks_reply_rid_"
+const RARITY_CONFIG = {
+  common:    { label:"COMMON",    color:getCss("--common"),    glow:"rgba(185,185,185,.55)", vip:false },
+  uncommon:  { label:"UNCOMMON",  color:getCss("--uncommon"),  glow:"rgba(46,204,113,.50)", vip:false },
+  rare:      { label:"RARE",      color:getCss("--rare"),      glow:"rgba(74,163,255,.55)", vip:false },
+  epic:      { label:"EPIC",      color:getCss("--epic"),      glow:"rgba(181,107,255,.60)", vip:true  },
+  legendary: { label:"LEGENDARY", color:getCss("--legendary"), glow:"rgba(246,210,106,.65)", vip:true  }
+};
+
+function getCss(v){ return getComputedStyle(document.documentElement).getPropertyValue(v).trim(); }
+
+function hashMini(str){
+  let h=2166136261;
+  for(let i=0;i<str.length;i++){ h ^= str.charCodeAt(i); h = Math.imul(h, 16777619); }
+  return (h>>>0).toString(36).slice(0,8).toUpperCase();
+}
+
+function qs(name){
+  const url = new URL(location.href);
+  return url.searchParams.get(name);
+}
+
+function loadFromShare(shareCode){
+  // Wir versuchen: Draft/Letzter Checkout aus localStorage (Demo)
+  // In echt: Server Lookup. Hier: wir mappen shareCode auf gespeicherten Draft, falls vorhanden.
+  try{
+    const draft = JSON.parse(localStorage.getItem("ok_draft_v2")||"null");
+    if(draft && draft.shareCode===shareCode){
+      return draft;
+    }
+  }catch(e){}
+  // Fallback: pseudo-varianten
+  const presets = [
+    {rarity:"common",shape:"smiley",message:"Ich denk an dich."},
+    {rarity:"uncommon",shape:"star",message:"Du packst das."},
+    {rarity:"rare",shape:"smiley",message:"Beweg dein Arsch."},
+    {rarity:"epic",shape:"heart",message:"Sorry."},
+    {rarity:"legendary",shape:"heart",message:"Komm. Jetzt."}
+  ];
+  const idx = (parseInt(shareCode.slice(-1),36) || 0) % presets.length;
+  return presets[idx];
+}
+
+function loadFromReply(orderId){
+  // Demo: Reply-Link zeigt Originalkeks (falls im Draft gespeichert) + Antwortfeld
+  try{
+    const draft = JSON.parse(localStorage.getItem("ok_draft_v2")||"null");
+    if(draft && draft.orderId===orderId) return draft;
+  }catch(e){}
+  // fallback
+  return {rarity:"common",shape:"smiley",message:"Ich denk an dich."};
+}
+
+function applyDesign(d){
+  const rarity = (d.rarity||"common").toLowerCase();
+  const cfg = RARITY_CONFIG[rarity] || RARITY_CONFIG.common;
+
+  document.getElementById("rarity").textContent = cfg.label;
+  document.getElementById("dot").style.background = cfg.color;
+  document.getElementById("msg").textContent = d.message || "…";
+
+  const cookie = document.getElementById("cookie");
+  cookie.classList.remove("heart","star");
+  if(d.shape==="heart") cookie.classList.add("heart");
+  else if(d.shape==="star") cookie.classList.add("star");
+
+  const glow = document.getElementById("glow");
+  glow.style.background = `radial-gradient(circle at 50% 50%, ${cfg.glow} 0%, rgba(0,0,0,0) 60%)`;
+
+  const card = document.getElementById("mainCard");
+  card.classList.toggle("vip", !!cfg.vip);
+
+  // CTA nudge: Premium rarities wirken stärker
+  const sub = document.getElementById("subtitle");
+  sub.textContent = cfg.vip
+    ? "Selten. Besonders. Wenn du willst: antworte – oder schick selbst einen."
+    : "Wenn du willst: antworte kurz – oder schick selbst einen.";
+}
+
+(function init(){
+  const share = qs("share");
+  const reply = qs("reply");
+
+  let design = null;
+
+  if(reply){
+    document.getElementById("title").textContent = "QR gescannt. Antwort gefällig?";
+    document.getElementById("subtitle").textContent = "Schreib kurz zurück – der Loop lebt.";
+    document.getElementById("replyBlock").style.display = "flex";
+    design = loadFromReply(reply);
+  } else if(share){
+    document.getElementById("title").textContent = "Keks-Design geladen.";
+    document.getElementById("subtitle").textContent = "Gefällt dir? Dann schick deinen eigenen.";
+    design = loadFromShare(share);
+  } else {
+    // Default
+    design = loadFromShare(hashMini("default"));
+  }
+
+  applyDesign(design);
+
+  document.getElementById("cta").onclick = ()=>{
+    // zurück zum Konfigurator
+    location.href = "./index.html";
   };
 
-  const q = new URLSearchParams(location.search);
-  const order = q.get('order') || 'unknown';
-  const rid = q.get('rid') || 'unknown';
-  document.getElementById('order').textContent = order;
-  document.getElementById('rid').textContent = rid;
+  document.getElementById("share").onclick = async ()=>{
+    try{
+      await navigator.clipboard.writeText(location.href);
+      alert("Link kopiert.");
+    }catch(e){
+      alert("Hier ist der Link:\n" + location.href);
+    }
+  };
 
-  document.getElementById('send').onclick = () => {
-    const txt = document.getElementById('reply').value.trim();
-    if(txt.length < 2){ alert('Kurz was schreiben, bitte.'); return; }
-
-    const payload = { order, rid, txt, at: new Date().toISOString() };
-    localStorage.setItem(CFG.replyByOrderPrefix + order, JSON.stringify(payload));
-    localStorage.setItem(CFG.replyByRidPrefix + rid, JSON.stringify(payload));
-
-    alert('Gespeichert (Demo). Später geht das als echte Post raus.');
+  document.getElementById("sendReply").onclick = ()=>{
+    const val = (document.getElementById("replyInput").value||"").trim();
+    if(!val){ alert("Schreib wenigstens ein Wort, diggi."); return; }
+    localStorage.setItem("ok_last_reply", JSON.stringify({at:Date.now(), text:val}));
+    alert("Antwort gespeichert (Demo). Später geht das als echte Rückpost raus.");
+    document.getElementById("replyInput").value="";
   };
 })();
 </script>

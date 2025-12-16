@@ -80,20 +80,15 @@
                 <stop offset="0" stop-color="#e2b17a"/>
                 <stop offset="1" stop-color="#b87945"/>
               </linearGradient>
-              <linearGradient id="chocoDrip" x1="0" y1="0" x2="1" y2="0">
-                <stop offset="0" stop-color="#4b2a1b"/>
-                <stop offset="1" stop-color="#7a3f27"/>
-              </linearGradient>
               <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
                 <feDropShadow dx="0" dy="10" stdDeviation="10" flood-color="rgba(2,6,23,.20)"/>
               </filter>
             </defs>
 
             <g filter="url(#softShadow)" id="shapeLayer"></g>
+            <g id="chipLayer"></g>
             <g id="glazeLayer"></g>
-            <g id="dripLayer"></g>
             <g id="sprinkleLayer"></g>
-            <g id="stickerLayer"></g>
             <g id="textLayer"></g>
           </svg>
         </div>
@@ -102,31 +97,30 @@
         <button class="btn secondary" type="button" id="btnCopy">Preview-Link kopieren</button>
 
         <p class="muted" style="margin:0">
-          <b>Wichtig:</b> Diese Preview liest aus <code>localStorage</code> (MVP). Cross-Device Token/Backend kommt danach.
+          <b>Wichtig:</b> MVP liest aus <code>localStorage</code>. Cross-Device Token/Backend kommt als nächstes.
         </p>
       </div>
     </div>
   </div>
 
   <script>
-    const CFG = { draftKey: "onlykeks_draft_v2" };
+    const CFG = { draftKey: "onlykeks_draft_v2", draftByRidPrefix: "onlykeks_draft_rid_" };
     const $ = (s, r=document)=>r.querySelector(s);
     const status = $('#status');
 
     const shapeLayer = document.getElementById('shapeLayer');
+    const chipLayer = document.getElementById('chipLayer');
     const glazeLayer = document.getElementById('glazeLayer');
-    const dripLayer = document.getElementById('dripLayer');
     const sprinkleLayer = document.getElementById('sprinkleLayer');
-    const stickerLayer = document.getElementById('stickerLayer');
     const textLayer = document.getElementById('textLayer');
 
     const rid = new URL(location.href).searchParams.get('rid') || "";
 
     function glazeColors(kind){
       switch(kind){
-        case "pink": return { fill:"#ff7bc0", stroke:"rgba(255,79,163,.55)" };
-        case "vip": return { fill:"#0b0b0f", stroke:"#d7b56d" };
-        default: return { fill:"#fff1d6", stroke:"rgba(180,120,69,.30)" };
+        case "pink": return { fill:"rgba(255,79,163,.18)", stroke:"rgba(255,79,163,.55)" };
+        case "vip": return { fill:"rgba(17,17,17,.14)", stroke:"rgba(215,181,109,.75)", ring:"rgba(215,181,109,.95)" };
+        default: return { fill:"rgba(255,241,214,.95)", stroke:"rgba(180,120,69,.30)" };
       }
     }
     function svgEl(tag, attrs){
@@ -149,32 +143,69 @@
 
     function draw(state){
       shapeLayer.innerHTML = "";
+      chipLayer.innerHTML = "";
       glazeLayer.innerHTML = "";
-      dripLayer.innerHTML = "";
       sprinkleLayer.innerHTML = "";
-      stickerLayer.innerHTML = "";
       textLayer.innerHTML = "";
 
-      const s = (state.shape || "circle"); // future-ready
-      const base = svgEl('circle', { cx:180, cy:130, r:92, fill:"url(#cookieBase)", stroke:"rgba(15,23,42,.10)", "stroke-width":"2" });
+      const shape = (state.shape || "circle");
+
+      let base;
+      if(shape === 'heart'){
+        base = svgEl('path', {
+          d: "M180 214 C130 184 92 156 92 124 C92 98 110 82 132 82 C150 82 164 92 180 108 C196 92 210 82 228 82 C250 82 268 98 268 124 C268 156 230 184 180 214 Z",
+          fill:"url(#cookieBase)", stroke:"rgba(15,23,42,.10)", "stroke-width":"2"
+        });
+      } else if(shape === 'star'){
+        base = svgEl('path', {
+          d: "M180 58 L202 102 L250 108 L214 140 L224 188 L180 164 L136 188 L146 140 L110 108 L158 102 Z",
+          fill:"url(#cookieBase)", stroke:"rgba(15,23,42,.10)", "stroke-width":"2"
+        });
+      } else if(shape === 'tree'){
+        base = svgEl('path', {
+          d: "M180 52 L214 104 L198 104 L226 150 L204 150 L236 206 L124 206 L156 150 L134 150 L162 104 L146 104 Z",
+          fill:"url(#cookieBase)", stroke:"rgba(15,23,42,.10)", "stroke-width":"2"
+        });
+      } else {
+        base = svgEl('circle', { cx:180, cy:130, r:92, fill:"url(#cookieBase)", stroke:"rgba(15,23,42,.10)", "stroke-width":"2" });
+      }
       shapeLayer.appendChild(base);
 
       [[140,105,10],[210,100,7],[120,150,8],[235,155,11],[175,175,7],[160,85,6]].forEach(([x,y,r])=>{
-        shapeLayer.appendChild(svgEl('circle',{cx:x, cy:y, r:r, fill:"rgba(75,42,27,.38)"}));
+        chipLayer.appendChild(svgEl('circle',{cx:x, cy:y, r:r, fill:"rgba(75,42,27,.38)"}));
       });
 
       const c = glazeColors(state.icing === "vip" ? "vip" : (state.icing === "pink" ? "pink" : "vanilla"));
-      const g = svgEl('circle', { cx:180, cy:130, r:76, fill:c.fill, stroke:c.stroke, "stroke-width":"3", opacity:"0.95" });
-      glazeLayer.appendChild(g);
+      const glaze = svgEl('circle', { cx:180, cy:130, r:76, fill:c.fill, stroke:c.stroke, "stroke-width":"3", opacity:"0.95" });
+      glazeLayer.appendChild(glaze);
+
       if(state.icing === "vip"){
-        glazeLayer.appendChild(svgEl('circle',{cx:180, cy:130, r:78, fill:"none", stroke:"#d7b56d", "stroke-width":"4", opacity:"0.95"}));
+        glazeLayer.appendChild(svgEl('circle',{cx:180, cy:130, r:78, fill:"none", stroke:c.ring, "stroke-width":"4", opacity:"0.95"}));
+      }
+
+      // Sprinkles
+      const spr = state.spr || "light";
+      if(spr !== "off"){
+        const n = spr === 'light' ? 10 : spr === 'medium' ? 18 : 28;
+        for(let i=0;i<n;i++){
+          const x = 90 + Math.random()*180;
+          const y = 70 + Math.random()*140;
+          const w = 10, h = 4;
+          const r = (Math.random()*160-80);
+          const isGold = (state.icing === 'vip' && Math.random()<0.25);
+          sprinkleLayer.appendChild(svgEl('rect',{
+            x:x, y:y, width:w, height:h, rx:"999",
+            fill: isGold ? "rgba(215,181,109,.95)" : "rgba(255,79,163,.9)",
+            transform:`rotate(${r} ${x} ${y})`, opacity:"0.95"
+          }));
+        }
       }
 
       const text = (state.message||"").trim();
       if(text){
         const lines = wrapLines(text, 18).slice(0,4);
         const startY = 126 - (lines.length-1)*14;
-        const fill = (state.icing === "vip") ? "#d7b56d" : "rgba(15,23,42,.78)";
+        const fill = (state.icing === "vip") ? "rgba(215,181,109,.98)" : "rgba(15,23,42,.78)";
         lines.forEach((ln, idx)=>{
           const t = svgEl('text',{x:180, y:startY + idx*28, "font-size":"18", "font-weight":"900", "text-anchor":"middle", fill});
           t.textContent = ln; textLayer.appendChild(t);
@@ -184,14 +215,13 @@
 
     function loadDraft(){
       try{
+        if(rid){
+          const byRid = localStorage.getItem(CFG.draftByRidPrefix + rid);
+          if(byRid) return JSON.parse(byRid);
+        }
         const raw = localStorage.getItem(CFG.draftKey);
         if(!raw) return null;
-        const d = JSON.parse(raw);
-        if(!d || typeof d !== "object") return null;
-        if(rid && d.rid && d.rid !== rid){
-          // MVP: wir zeigen trotzdem den aktuellen Draft
-        }
-        return d;
+        return JSON.parse(raw);
       }catch(e){ return null; }
     }
 
@@ -199,7 +229,7 @@
     if(!st){
       status.textContent = "Kein Draft gefunden. Öffne zuerst den Konfigurator auf diesem Gerät.";
     }else{
-      status.innerHTML = "Draft geladen. Rarity-Pack: <b>" + (st.pack||"") + "</b>";
+      status.innerHTML = "Draft geladen. Pack: <b>" + (st.pack||"") + "</b> · Form: <b>" + (st.shape||"") + "</b>";
       draw(st);
     }
 

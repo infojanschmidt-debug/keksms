@@ -8,1082 +8,982 @@
   <meta name="theme-color" content="#ff4fa3" />
   <meta property="og:title" content="OnlyKeks – Post, die schmeckt" />
   <meta property="og:description" content="Message als Keks. QR-Reply-Loop. 3 Steps. Fertig." />
-
+  <meta property="og:type" content="website" />
   <style>
     :root{
       --bg:#ffffff;
       --ink:#111111;
       --muted:#666;
-      --pink:#ff4fa3;
-      --pink2:#ff7fc3;
       --line:#ececec;
       --card:#fafafa;
+      --pink:#ff4fa3;
+      --pink2:#ff7fc3;
       --gold:#c7a44c;
-      --vip:#111;
-      --ok:#0a7a3f;
-      --shadow: 0 10px 30px rgba(0,0,0,.06);
-      --r: 18px;
-      --max:980px;
+      --vip:#0b0b10;
+      --vip2:#151525;
+      --shadow: 0 14px 45px rgba(0,0,0,.08);
+      --r:16px;
+
+      --common:#b9b9b9;
+      --uncommon:#2ecc71;
+      --rare:#4aa3ff;
+      --epic:#b56bff;
+      --legendary:#f6d26a;
     }
     *{box-sizing:border-box}
     html,body{height:100%}
     body{
       margin:0;
       font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      background:var(--bg);
       color:var(--ink);
-      background:
-        radial-gradient(1200px 600px at 15% -10%, rgba(255,79,163,.18), transparent 55%),
-        radial-gradient(900px 520px at 90% 0%, rgba(255,127,195,.16), transparent 55%),
-        linear-gradient(#fff, #fff);
       overflow-x:hidden;
     }
     a{color:inherit}
-    .wrap{max-width:var(--max);margin:0 auto;padding:18px}
-    header{
-      position:sticky;top:0;z-index:20;
-      background: rgba(255,255,255,.85);
-      backdrop-filter: blur(10px);
-      border-bottom:1px solid var(--line);
-    }
-    .topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 18px;max-width:var(--max);margin:0 auto}
-    .brand{display:flex;align-items:center;gap:10px;font-weight:900}
+    .wrap{max-width:1080px;margin:0 auto;padding:22px}
+    .topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:8px 0 18px}
+    .brand{display:flex;align-items:center;gap:10px;font-weight:900;letter-spacing:.2px}
     .logo{
-      width:34px;height:34px;border-radius:12px;
-      background: radial-gradient(circle at 30% 30%, #fff, #ffe2f0 45%, #ffd0e7 75%);
-      border:1px solid rgba(255,79,163,.25);
+      width:38px;height:38px;border-radius:14px;
+      background: radial-gradient(circle at 30% 30%, #fff 0 30%, #ffe1ef 31% 55%, #ffd0e6 56% 100%);
+      border:1px solid var(--line);
+      display:grid;place-items:center;
       box-shadow: var(--shadow);
-      position:relative;
-      flex:0 0 auto;
     }
-    .logo:after{
-      content:"";
-      position:absolute;inset:9px 8px 7px 8px;border-radius:10px;
-      background: radial-gradient(circle at 30% 30%, #fff, #f3c49b 45%, #c98a55 90%);
-      border:1px solid rgba(0,0,0,.08);
+    .logo span{font-size:18px}
+    .pill{font-size:12px;color:var(--muted);border:1px solid var(--line);padding:8px 10px;border-radius:999px;background:#fff}
+    .hero{
+      display:grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap:18px;
+      align-items:stretch;
     }
+    @media (max-width:920px){ .hero{grid-template-columns:1fr;}}
+    .card{
+      border:1px solid var(--line);
+      background: #fff;
+      border-radius: calc(var(--r) + 6px);
+      box-shadow: var(--shadow);
+    }
+    .heroLeft{padding:18px}
+    .h1{font-size:40px;line-height:1.05;margin:4px 0 10px;font-weight:950}
+    @media(max-width:520px){.h1{font-size:34px}}
+    .sub{color:var(--muted);font-size:15px;line-height:1.45;margin:0 0 14px}
+    .ctaRow{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
     .btn{
-      appearance:none;border:1px solid var(--line);
-      background:#fff;border-radius:999px;
-      padding:10px 14px;font-weight:800;cursor:pointer;
-    }
-    .btn.primary{
-      border-color: rgba(255,79,163,.35);
-      background: linear-gradient(180deg, rgba(255,79,163,.14), rgba(255,79,163,.06));
-    }
-    .btn.cta{
-      padding:12px 16px;
-      background: linear-gradient(180deg, rgba(255,79,163,.22), rgba(255,79,163,.10));
-      border-color: rgba(255,79,163,.5);
-    }
-    .btn.vip{
-      border-color: rgba(199,164,76,.55);
-      background: linear-gradient(180deg, rgba(17,17,17,.92), rgba(17,17,17,.82));
-      color:#fff;
-    }
-    .hero{padding:28px 18px 14px}
-    .grid{display:grid;grid-template-columns:1.25fr .75fr;gap:18px;align-items:start}
-    @media (max-width: 860px){ .grid{grid-template-columns:1fr} }
-    .h1{font-size:46px;line-height:1.05;margin:0 0 10px;font-weight:950;letter-spacing:-.02em}
-    @media (max-width: 480px){ .h1{font-size:38px} }
-    .sub{font-size:17px;line-height:1.55;color:var(--muted);margin:0 0 16px}
-    .trust{display:flex;flex-wrap:wrap;gap:10px;margin:14px 0 0;color:#222}
-    .pill{
+      appearance:none;border:0;cursor:pointer;
+      border-radius: 999px;
+      padding: 12px 16px;
+      font-weight:850;
+      letter-spacing:.2px;
+      transition: transform .12s ease, box-shadow .12s ease, filter .12s ease;
+      box-shadow: 0 10px 25px rgba(0,0,0,.08);
       display:inline-flex;align-items:center;gap:8px;
+      user-select:none;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .btn:active{transform: translateY(1px) scale(.99)}
+    .btnPrimary{background: linear-gradient(135deg, var(--pink), var(--pink2)); color:#fff}
+    .btnGhost{background:#fff;border:1px solid var(--line);box-shadow:none}
+    .btnDark{background:#111;color:#fff}
+    .smallLink{font-size:13px;color:var(--muted);text-decoration:underline;cursor:pointer;padding:10px 6px;border-radius:10px}
+    .smallLink:active{opacity:.7}
+
+    /* Stage (Preview als Bühne) */
+    .stage{
+      position:relative;
+      padding:16px;
+      overflow:hidden;
+      border-radius: calc(var(--r) + 6px);
+      background:
+        radial-gradient(65% 60% at 50% 35%, rgba(255,79,163,.20) 0%, rgba(255,127,195,.10) 35%, rgba(0,0,0,0) 70%),
+        radial-gradient(70% 70% at 50% 40%, rgba(0,0,0,.06) 0%, rgba(0,0,0,0) 70%),
+        linear-gradient(#ffffff, #ffffff);
+      border:1px solid var(--line);
+      min-height: 340px;
+      display:grid;
+      grid-template-rows:auto 1fr auto;
+      gap:12px;
+    }
+    .stageTop{display:flex;align-items:center;justify-content:space-between;gap:10px}
+    .badge{
+      display:inline-flex;align-items:center;gap:7px;
+      font-size:12px;font-weight:900;
       padding:8px 10px;border-radius:999px;
       border:1px solid var(--line);
-      background: rgba(255,255,255,.75);
-      font-size:13px;font-weight:900;
+      background:#fff;
     }
-    .pill .dot{width:8px;height:8px;border-radius:999px;background:var(--pink)}
-    .card{
-      background: rgba(255,255,255,.75);
-      border:1px solid var(--line);
-      border-radius: var(--r);
-      box-shadow: var(--shadow);
-      overflow:hidden;
-    }
-    .card .hd{padding:14px 14px 10px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:10px}
-    .card .bd{padding:14px}
-
-    .section{padding:14px 18px}
-    .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-    @media (max-width: 860px){ .steps{grid-template-columns:1fr} }
-    .step{
-      border:1px solid var(--line);border-radius: var(--r);
-      background: rgba(255,255,255,.7);
-      padding:12px;
-    }
-    .step b{display:block;margin:0 0 6px}
-    .muted{color:var(--muted);font-size:14px;line-height:1.5}
-    .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-    .field{display:grid;gap:6px;margin:12px 0}
-    label{font-weight:900;font-size:13px}
-    input, textarea, select{width:100%;padding:12px;border-radius:14px;border:1px solid var(--line);font:inherit;background:#fff}
-    textarea{min-height:96px;resize:vertical}
-    .packTiles{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-    @media (max-width: 860px){ .packTiles{grid-template-columns:1fr} }
-    .tile{
-      border:1px solid var(--line);border-radius: var(--r);
-      background: rgba(255,255,255,.7);
-      padding:12px;cursor:pointer;
+    .badgeDot{width:10px;height:10px;border-radius:99px;background:var(--common)}
+    .stageHint{font-size:12px;color:var(--muted)}
+    .cookieWrap{display:grid;place-items:center;min-height:180px}
+    .cookie{
+      width:min(240px, 72vw);
+      aspect-ratio: 1/1;
+      border-radius: 50%;
       position:relative;
+      background: radial-gradient(circle at 30% 25%, #fff7df 0 22%, #f8d9a4 23% 55%, #e7b46b 56% 100%);
+      border: 1px solid rgba(0,0,0,.10);
+      box-shadow: 0 22px 60px rgba(0,0,0,.14);
+      display:grid;
+      place-items:center;
+      transform-origin:center;
+      animation: breathe 3.2s ease-in-out infinite;
     }
-    .tile h4{margin:0 0 6px}
-    .tile .price{font-weight:950}
-    .badge{
-      display:inline-flex;align-items:center;gap:8px;
-      padding:6px 8px;border-radius:999px;font-weight:950;font-size:12px;
-      border:1px solid rgba(255,79,163,.35);
-      background: rgba(255,79,163,.10);
-      color: rgba(255,79,163,.95);
-      width:max-content;
+    .cookie.heart{border-radius: 18% 18% 35% 35%/18% 18% 45% 45%; transform: rotate(45deg);}
+    .cookie.heart .cookieInner{transform: rotate(-45deg);}
+    .cookie.star{clip-path: polygon(50% 2%, 61% 35%, 98% 35%, 68% 56%, 79% 92%, 50% 72%, 21% 92%, 32% 56%, 2% 35%, 39% 35%);}
+    .cookie .cookieInner{width:100%;height:100%;display:grid;place-items:center;padding:20px;text-align:center}
+    .msg{
+      font-weight:950;
+      font-size: clamp(18px, 4.7vw, 30px);
+      line-height:1.05;
+      color: rgba(0,0,0,.82);
+      text-shadow: 0 2px 0 rgba(255,255,255,.45);
+      padding: 10px 12px;
+      border-radius: 16px;
+      background: rgba(255,255,255,.35);
+      backdrop-filter: blur(4px);
+      max-width: 92%;
+      word-wrap: break-word;
     }
-    .tile.vip{
-      border-color: rgba(199,164,76,.55);
-      background: linear-gradient(180deg, rgba(17,17,17,.92), rgba(17,17,17,.82));
-      color:#fff;
+    .spark{
+      position:absolute;inset:-30%;
+      background: radial-gradient(circle at 50% 50%, rgba(255,255,255,.12), rgba(255,255,255,0) 55%);
+      pointer-events:none;
+      opacity:.0;
     }
-    .tile.vip:after{
-      content:"VIP";
-      position:absolute;top:10px;right:10px;
-      font-weight:950;font-size:12px;letter-spacing:.12em;
-      color: var(--gold);
-      border:1px solid rgba(199,164,76,.5);
-      padding:6px 8px;border-radius:999px;
-      background: rgba(0,0,0,.25);
-    }
-    .tile.active{outline:3px solid rgba(255,79,163,.18); border-color: rgba(255,79,163,.55)}
-    .tile.vip.active{outline:3px solid rgba(199,164,76,.25)}
-    .twoCol{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-    @media (max-width: 860px){ .twoCol{grid-template-columns:1fr} }
-    .foot{padding:26px 18px;color:var(--muted);font-size:13px}
-    .hr{height:1px;background:var(--line);margin:14px 0}
-    .toast{
-      position:fixed;left:50%;bottom:14px;transform:translateX(-50%);
-      background: rgba(17,17,17,.92);color:#fff;padding:10px 12px;
-      border-radius:999px;font-weight:950;font-size:13px;display:none;
-      box-shadow: 0 16px 40px rgba(0,0,0,.20);
-      z-index:100;
-      max-width: 92vw;text-align:center;
-    }
-
-    /* Cookie consent */
-    .consent{
-      position:fixed;left:14px;right:14px;bottom:14px;z-index:90;
-      max-width: var(--max);margin:0 auto;
-      display:none;
-    }
-    .consent .box{
-      background: rgba(255,255,255,.92);
-      border:1px solid var(--line);
-      border-radius: var(--r);
-      box-shadow: var(--shadow);
-      padding:12px;
-      display:flex;gap:12px;flex-wrap:wrap;align-items:center;justify-content:space-between;
-    }
-    .consent .txt{min-width:240px;flex:1;color:#222}
-    .consent .txt b{display:block;margin-bottom:2px}
-    .consent .actions{display:flex;gap:10px;flex-wrap:wrap}
-
-    /* Hall of Keks VIP Styling */
-    .vipFrame{
-      border:1px solid rgba(199,164,76,.55);
-      background: linear-gradient(180deg, rgba(17,17,17,.92), rgba(17,17,17,.82));
-      color:#fff;
-      border-radius: var(--r);
-      padding:12px;
-      position:relative;
-      overflow:hidden;
-    }
-    .vipFrame:before{
-      content:"";
-      position:absolute;inset:-2px;
-      background: radial-gradient(circle at 30% 20%, rgba(199,164,76,.25), transparent 40%),
-                  radial-gradient(circle at 80% 0%, rgba(255,79,163,.18), transparent 50%);
+    .glow{
+      position:absolute;inset:-16%;
+      border-radius: 50%;
+      filter: blur(18px);
+      opacity:.0;
       pointer-events:none;
     }
-    .vipFrame .vipTitle{font-weight:950}
-    .vipFrame .vipSub{color:rgba(255,255,255,.78);font-size:13px;font-weight:800}
+    .glow.on{opacity:.9}
+    .sprinkles{
+      position:absolute;inset:0;pointer-events:none;
+      opacity:.0;
+    }
+    .sprinkles.on{opacity:1}
+    .sprinkles i{
+      position:absolute;
+      width:10px;height:4px;border-radius:99px;
+      background: rgba(255,79,163,.85);
+      transform: rotate(18deg);
+      box-shadow: 0 2px 0 rgba(255,255,255,.35);
+      opacity:.9;
+    }
+    .sprinkles i:nth-child(1){left:18%;top:22%}
+    .sprinkles i:nth-child(2){left:68%;top:26%;transform:rotate(-14deg)}
+    .sprinkles i:nth-child(3){left:60%;top:68%;transform:rotate(22deg)}
+    .sprinkles i:nth-child(4){left:26%;top:66%;transform:rotate(-18deg)}
+    .sprinkles i:nth-child(5){left:42%;top:18%;transform:rotate(10deg)}
+    .sprinkles i:nth-child(6){left:44%;top:74%;transform:rotate(-8deg)}
 
-    /* Keksregen (dezenter Hintergrund) */
-    .rain{position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.26}
-    .rain i{
-      position:absolute;left:var(--x);top:var(--y);
-      width:10px;height:10px;border-radius:999px;
-      background: radial-gradient(circle at 30% 30%, #fff, #f3c49b 45%, #c98a55 90%);
-      border:1px solid rgba(0,0,0,.06);
-      transform: rotate(var(--r));
-      filter: blur(.1px);
-      animation: fall var(--d) linear infinite;
+    @keyframes breathe{
+      0%,100%{transform: translateY(0) scale(1)}
+      50%{transform: translateY(-3px) scale(1.01)}
     }
-    @keyframes fall{
-      from{ transform: translateY(-20px) rotate(var(--r)); opacity:0 }
-      10%{ opacity:1 }
-      to{ transform: translateY(110vh) rotate(calc(var(--r) + 120deg)); opacity:0 }
+    .shake{animation: shake .35s ease-in-out 1}
+    @keyframes shake{
+      0%{transform: translateX(0)}
+      25%{transform: translateX(-3px)}
+      50%{transform: translateX(3px)}
+      75%{transform: translateX(-2px)}
+      100%{transform: translateX(0)}
+    }
+    .pop{animation: pop .25s ease-out 1}
+    @keyframes pop{
+      0%{transform: scale(.98)}
+      100%{transform: scale(1)}
     }
 
-    /* INTRO: niemals schwarzer Screen */
-    #intro{
-      position:fixed;inset:0;z-index:9999;
-      display:flex;align-items:center;justify-content:center;
-      background:
-        radial-gradient(1200px 600px at 15% -10%, rgba(255,79,163,.22), transparent 55%),
-        radial-gradient(900px 520px at 90% 0%, rgba(255,127,195,.18), transparent 55%),
-        linear-gradient(#fff, #fff);
-    }
-    #intro.hidden{display:none !important}
-    #intro .box{
-      width:min(860px, 92vw);
+    /* Sets Picker */
+    .section{margin-top:20px}
+    .secTitle{font-size:22px;font-weight:950;margin:0 0 6px}
+    .secSub{margin:0 0 12px;color:var(--muted);font-size:14px;line-height:1.45}
+    .rail{display:flex;gap:12px;overflow:auto;padding:4px 2px 10px;scroll-snap-type:x mandatory}
+    .rail::-webkit-scrollbar{height:10px}
+    .rail::-webkit-scrollbar-thumb{background:#e9e9e9;border-radius:99px}
+    .setCard{
+      flex:0 0 min(320px, 86vw);
+      scroll-snap-align:start;
       border:1px solid var(--line);
-      border-radius:24px;
-      background: rgba(255,255,255,.82);
+      border-radius: calc(var(--r) + 8px);
+      background:#fff;
       box-shadow: var(--shadow);
+      padding:14px;
+      position:relative;
       overflow:hidden;
+    }
+    .setTop{display:flex;align-items:center;justify-content:space-between;gap:10px}
+    .setName{font-weight:950;font-size:18px;margin:6px 0 2px}
+    .setUse{color:var(--muted);font-size:13px;margin:0 0 10px}
+    .miniStage{height:140px;display:grid;place-items:center;border-radius:18px;background: radial-gradient(60% 70% at 50% 35%, rgba(0,0,0,.08), rgba(0,0,0,0) 70%)}
+    .miniCookie{
+      width:120px;height:120px;border-radius:50%;
+      border:1px solid rgba(0,0,0,.10);
+      background: radial-gradient(circle at 30% 25%, #fff7df 0 22%, #f8d9a4 23% 55%, #e7b46b 56% 100%);
+      display:grid;place-items:center;
       position:relative;
     }
-    #intro video{width:100%;height:auto;display:block;background:transparent !important}
-    #intro .overlay{
-      position:absolute;inset:0;
-      display:flex;align-items:flex-end;justify-content:space-between;
-      padding:12px;
-      background: linear-gradient(180deg, transparent 60%, rgba(255,255,255,.82));
+    .miniCookie.star{clip-path: polygon(50% 2%, 61% 35%, 98% 35%, 68% 56%, 79% 92%, 50% 72%, 21% 92%, 32% 56%, 2% 35%, 39% 35%); border-radius:0}
+    .miniCookie.heart{border-radius: 18% 18% 35% 35%/18% 18% 45% 45%; transform: rotate(45deg);}
+    .miniCookie.heart b{transform: rotate(-45deg);}
+    .miniCookie b{font-size:12px;font-weight:950;color:rgba(0,0,0,.78);text-align:center;padding:0 10px;line-height:1.05}
+    .setBtn{width:100%;justify-content:center;margin-top:10px}
+    .rarityTag{border:1px solid var(--line);border-radius:999px;padding:8px 10px;font-weight:950;font-size:12px;background:#fff;display:flex;align-items:center;gap:7px}
+    .rarityTag i{width:10px;height:10px;border-radius:99px;background:var(--common);display:inline-block}
+
+    /* Builder (Feinschliff) */
+    .builder{
+      display:grid;grid-template-columns: 1fr 1fr;gap:14px;
     }
-    #intro .brandline{display:flex;gap:10px;align-items:center;font-weight:950}
-    #intro .skip{
-      border:1px solid rgba(255,79,163,.45);
-      background: rgba(255,79,163,.10);
+    @media (max-width:920px){ .builder{grid-template-columns:1fr;}}
+    .panel{padding:14px}
+    .label{font-size:12px;color:var(--muted);font-weight:850;margin:10px 0 6px}
+    .input{
+      width:100%;padding:14px 14px;border-radius:14px;
+      border:1px solid var(--line);
+      font-size:16px;font-weight:850;
+      outline:none;
+    }
+    .row{display:flex;gap:10px;flex-wrap:wrap}
+    .chip{
+      border:1px solid var(--line);
+      background:#fff;
       padding:10px 12px;border-radius:999px;
-      font-weight:950;cursor:pointer;
+      font-weight:900;font-size:13px;
+      cursor:pointer;
+    }
+    .chip.on{border-color:#111;box-shadow:0 8px 22px rgba(0,0,0,.08)}
+    .hint{font-size:12px;color:var(--muted);line-height:1.4;margin:10px 0 0}
+    .divider{height:1px;background:var(--line);margin:14px 0}
+    .trust{
+      display:flex;flex-wrap:wrap;gap:10px;color:var(--muted);font-size:13px
+    }
+    .trust span{display:inline-flex;gap:8px;align-items:center;border:1px solid var(--line);border-radius:999px;padding:10px 12px;background:#fff}
+    .check{font-weight:900;color:#1a8f3a}
+
+    /* Hall */
+    .hallGrid{display:flex;gap:12px;overflow:auto;padding:4px 2px 10px;scroll-snap-type:x mandatory}
+    .hallItem{
+      flex:0 0 min(320px, 86vw);
+      scroll-snap-align:start;
+      border:1px solid var(--line);
+      border-radius: calc(var(--r) + 8px);
+      background:#fff;
+      box-shadow: var(--shadow);
+      padding:14px;
+      position:relative;
+      overflow:hidden;
+      cursor:pointer;
+      transition: transform .12s ease;
+    }
+    .hallItem:active{transform: scale(.99)}
+    .hallMini{height:150px;border-radius:18px;background: radial-gradient(60% 70% at 50% 35%, rgba(0,0,0,.08), rgba(0,0,0,0) 70%);display:grid;place-items:center;margin:8px 0 10px}
+    .vipBox{
+      background: linear-gradient(135deg, var(--vip), var(--vip2));
+      border:1px solid rgba(255,255,255,.10);
+      color:#fff;
+    }
+    .vipBox .rarityTag{background:rgba(0,0,0,.22);border-color:rgba(255,255,255,.16);color:#fff}
+    .vipBox .setUse,.vipBox .secSub,.vipBox .hint{color: rgba(255,255,255,.70)}
+    .vipBox .hallItem{background: rgba(255,255,255,.06); border-color: rgba(255,255,255,.10); box-shadow:none}
+    .vipBox .hallItem .setUse{color: rgba(255,255,255,.70)}
+    .vipBox .hallItem .rarityTag{background: rgba(0,0,0,.22); border-color: rgba(255,255,255,.14); color:#fff}
+
+    /* Intro Video */
+    .intro{
+      position:fixed;inset:0;z-index:9999;background:#000;
+      display:grid;place-items:center;
+    }
+    .intro video{width:100%;height:100%;object-fit:cover}
+    .introSkip{
+      position:absolute;right:14px;top:14px;
+      background: rgba(0,0,0,.45);
+      border:1px solid rgba(255,255,255,.25);
+      color:#fff;
+      padding:10px 12px;border-radius:999px;
+      font-weight:900;font-size:13px;
+      cursor:pointer;
+      backdrop-filter: blur(8px);
+    }
+    .introBrand{
+      position:absolute;left:14px;top:14px;
+      color:#fff;font-weight:950;letter-spacing:.2px;
+      background: rgba(0,0,0,.35);
+      border:1px solid rgba(255,255,255,.18);
+      padding:10px 12px;border-radius:999px;
+      backdrop-filter: blur(8px);
     }
 
-    /* Live SVG preview */
-    .cookieWrap{
-      width:100%;
-      border-radius: 22px;
-      border:1px solid rgba(0,0,0,.10);
-      background: rgba(255,255,255,.65);
-      padding: 10px;
-      overflow:hidden;
+    /* Consent */
+    .consent{
+      position:fixed;left:12px;right:12px;bottom:12px;z-index:9998;
+      max-width:980px;margin:0 auto;
+      border:1px solid var(--line);background:#fff;border-radius:18px;
+      box-shadow: var(--shadow);
+      padding:12px;
+      display:none;
     }
-    .miniRow{display:flex;gap:10px;flex-wrap:wrap}
-    .chip{
-      padding:8px 10px;border-radius:999px;border:1px solid var(--line);
-      background: rgba(255,255,255,.7);font-weight:900;font-size:13px;cursor:pointer;
-    }
-    .chip.active{border-color: rgba(255,79,163,.55); background: rgba(255,79,163,.10)}
+    .consentRow{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+    .consent p{margin:0;color:var(--muted);font-size:13px;line-height:1.35}
+    .consent strong{color:var(--ink)}
   </style>
 </head>
-
 <body>
-  <!-- Keksregen -->
-  <div class="rain" id="rain" aria-hidden="true"></div>
 
-  <!-- INTRO -->
-  <div id="intro" aria-hidden="false">
-    <div class="box">
-      <video id="introVid" playsinline muted preload="auto">
-        <source src="assets/intro.mp4" type="video/mp4">
-      </video>
-      <div class="overlay">
-        <div class="brandline">
-          <div class="logo" aria-hidden="true"></div>
-          <div>OnlyKeks</div>
-        </div>
-        <button class="skip" id="introSkip" type="button">Skip</button>
-      </div>
+<!-- Intro Video -->
+<div class="intro" id="intro">
+  <div class="introBrand">OnlyKeks</div>
+  <button class="introSkip" id="introSkip" type="button">Skip</button>
+  <video id="introVid" playsinline muted preload="auto">
+    <source src="assets/Intro.mp4" type="video/mp4">
+  </video>
+</div>
+
+<div class="wrap">
+
+  <div class="topbar">
+    <div class="brand">
+      <div class="logo"><span>🍪</span></div>
+      <div>OnlyKeks</div>
+      <div class="pill">Post, die schmeckt</div>
     </div>
+    <div class="pill" id="legendaryPill">Legendary: <b id="legendaryState">aktiv</b></div>
   </div>
 
-  <header>
-    <div class="topbar">
-      <div class="brand">
-        <div class="logo" aria-hidden="true"></div>
-        <div>OnlyKeks <span style="color:var(--muted);font-weight:900">– Post, die schmeckt</span></div>
+  <div class="hero">
+    <div class="card heroLeft">
+      <div class="h1">Schick ’ne Message. Als Keks.<br/>Und krieg ’ne Antwort zurück.</div>
+      <p class="sub">
+        Du tippst ’nen Satz. Der Keks trägt ihn. Empfänger scannt QR – und kann direkt antworten. Schnell, persönlich, viral.
+      </p>
+
+      <div class="ctaRow">
+        <button class="btn btnPrimary" id="goSets">Jetzt gestalten</button>
+        <button class="btn btnDark" id="surprise">Überrasch mich</button>
+        <span class="smallLink" id="demo">Demo laden</span>
+        <span class="smallLink" id="openHall">Hall of Keks</span>
       </div>
+
+      <div class="divider"></div>
+      <div class="trust">
+        <span><span class="check">✓</span> Kein Abo</span>
+        <span><span class="check">✓</span> Keine Datenverkäufe</span>
+        <span><span class="check">✓</span> Geschenk-Feeling statt Formular</span>
+      </div>
+    </div>
+
+    <div class="stage" id="stage">
+      <div class="stageTop">
+        <div class="badge" id="rarityBadge">
+          <span class="badgeDot" id="rarityDot"></span>
+          <span id="rarityText">COMMON</span>
+        </div>
+        <div class="stageHint" id="stageHint">Tippe deine Message – der Keks reagiert.</div>
+      </div>
+
+      <div class="cookieWrap">
+        <div class="cookie" id="cookie">
+          <div class="glow" id="glow"></div>
+          <div class="sprinkles" id="sprinkles">
+            <i></i><i></i><i></i><i></i><i></i><i></i>
+          </div>
+          <div class="spark" id="spark"></div>
+          <div class="cookieInner" id="cookieInner">
+            <div class="msg" id="cookieMsg">Ich denk an dich.</div>
+          </div>
+        </div>
+      </div>
+
       <div class="row">
-        <button class="btn" id="btnHall">Hall of Keks</button>
-        <button class="btn cta" id="btnStart">Keks gestalten</button>
-      </div>
-    </div>
-  </header>
-
-  <main class="wrap" style="position:relative;z-index:1">
-    <section class="hero">
-      <div class="grid">
-        <div>
-          <h1 class="h1">Schick ’ne Message. Als Keks. Und krieg ’ne Antwort zurück.</h1>
-          <p class="sub">
-            3 Steps, keine Ablenkung: Message schreiben → Keks gestalten → abschicken.
-            Der QR-Reply-Loop macht aus Empfängern neue Sender.
-          </p>
-          <div class="row">
-            <button class="btn cta" id="btnStart2">Jetzt gestalten</button>
-            <button class="btn primary" id="btnAutoDemo">Demo-Message laden</button>
-            <button class="btn vip" id="btnSurprise">Überrasch mich</button>
-            <button class="btn" id="btnPreview">Preview öffnen</button>
-          </div>
-
-          <div class="trust">
-            <span class="pill"><span class="dot"></span> Mobile-first & super simpel</span>
-            <span class="pill"><span class="dot"></span> Wir verkaufen keine Daten</span>
-            <span class="pill"><span class="dot"></span> Reply-Loop = Viralität</span>
-            <span class="pill"><span class="dot"></span> Stempel-System (Early Reward)</span>
-          </div>
-
-          <div class="section">
-            <div class="steps">
-              <div class="step">
-                <b>1) Message</b>
-                <div class="muted">Kurz und persönlich. Kein Roman. Wirkung kommt über Gefühl.</div>
-              </div>
-              <div class="step">
-                <b>2) Keks gestalten</b>
-                <div class="muted">Emoji-Formen + Deko. Kontrolle ohne Stress.</div>
-              </div>
-              <div class="step">
-                <b>3) Abschicken</b>
-                <div class="muted">Empfänger scannt QR → antwortet → du bekommst Rückpost.</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="hd">
-            <div style="font-weight:950">Live-Preview</div>
-            <div style="color:var(--muted);font-weight:900;font-size:13px" id="rarity">Rarity: Classic</div>
-          </div>
-          <div class="bd">
-            <div class="cookieWrap">
-              <svg id="cookieSvg" width="100%" height="260" viewBox="0 0 360 260" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Keks Vorschau">
-                <defs>
-                  <linearGradient id="cookieBase" x1="0" y1="0" x2="1" y2="1">
-                    <stop offset="0" stop-color="#e2b17a"/>
-                    <stop offset="1" stop-color="#b87945"/>
-                  </linearGradient>
-                  <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
-                    <feDropShadow dx="0" dy="10" stdDeviation="10" flood-color="rgba(2,6,23,.20)"/>
-                  </filter>
-                </defs>
-                <g filter="url(#softShadow)" id="shapeLayer"></g>
-                <g id="chipLayer"></g>
-                <g id="glazeLayer"></g>
-                <g id="sprinkleLayer"></g>
-                <g id="textLayer"></g>
-              </svg>
-            </div>
-
-            <div class="hr"></div>
-
-            <div class="miniRow" id="templateRow">
-              <button class="chip" data-tpl="Ich denk an dich.">Ich denk an dich</button>
-              <button class="chip" data-tpl="Beweg dein Arsch.">Beweg dein Arsch</button>
-              <button class="chip" data-tpl="Du packst das.">Du packst das</button>
-              <button class="chip" data-tpl="Sorry. Lass reden.">Sorry</button>
-              <button class="chip" data-tpl="Party heute?">Party?</button>
-            </div>
-            <p class="muted" style="margin:10px 0 0">
-              Tipp: kurze Message knallt mehr. Der Keks ist Bühne, nicht Buch.
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Flow anchor -->
-    <section class="card" id="config" style="margin:14px 0 0">
-      <div class="hd">
-        <div style="font-weight:950">Keks gestalten</div>
-        <div class="muted" id="stepInfo" style="font-weight:900">Step 1/3</div>
-      </div>
-      <div class="bd">
-
-        <!-- STEP 1 -->
-        <div class="stepPane" data-step="1">
-          <div class="field">
-            <label for="message">Deine Message</label>
-            <textarea id="message" placeholder="z.B. Ich vermiss dich."></textarea>
-            <div class="muted">Kurz ist King. 10–80 Zeichen ist sweet spot.</div>
-          </div>
-
-          <div class="field">
-            <label>Emoji-Keksform</label>
-            <div class="miniRow" id="shapeRow">
-              <button class="chip active" data-shape="circle">Classic</button>
-              <button class="chip" data-shape="heart">❤️ Herz</button>
-              <button class="chip" data-shape="star">⭐ Stern</button>
-              <button class="chip" data-shape="smiley">🙂 Smiley</button>
-              <button class="chip" data-shape="tree">🎄 Baum</button>
-            </div>
-            <div class="muted">Dit ist die Emoji-Form. Preview zeigt’s sofort.</div>
-          </div>
-
-          <div class="field">
-            <label>Pack wählen</label>
-            <div class="packTiles" id="packTiles">
-              <div class="tile active" data-pack="quick">
-                <h4>Quick</h4>
-                <div class="muted">Vorlage + schnell raus</div>
-                <div class="price">9,90 €</div>
-              </div>
-
-              <div class="tile" data-pack="custom">
-                <h4>Custom</h4>
-                <div class="muted">Freie Message + mehr Deko</div>
-                <div class="price">14,90 €</div>
-                <div class="badge" style="margin-top:10px">3er-Deal: -25% (Demo)</div>
-              </div>
-
-              <div class="tile vip" data-pack="premium">
-                <h4>Premium</h4>
-                <div class="muted">Box + Extras + VIP-Vibes</div>
-                <div class="price">24,90 €</div>
-              </div>
-            </div>
-            <select id="pack" style="display:none">
-              <option value="quick">Quick</option>
-              <option value="custom">Custom</option>
-              <option value="premium">Premium</option>
-            </select>
-          </div>
-
-          <div class="row">
-            <button class="btn cta" id="next1">Weiter</button>
-            <button class="btn" id="saveDraft">Entwurf speichern</button>
-            <button class="btn vip" id="surprise2">Überrasch mich</button>
-          </div>
-        </div>
-
-        <!-- STEP 2 -->
-        <div class="stepPane" data-step="2" style="display:none">
-          <div class="twoCol">
-            <div class="field">
-              <label>Deko-Style</label>
-              <div class="miniRow" id="dekoRow">
-                <button class="chip active" data-icing="soft">Soft</button>
-                <button class="chip" data-icing="pink">Pink</button>
-                <button class="chip" data-icing="vip">VIP</button>
-              </div>
-              <div class="muted">VIP nutzt Schwarz/Gold nur als Akzent. Nicht flächig.</div>
-            </div>
-
-            <div class="field">
-              <label>Sprinkles</label>
-              <div class="miniRow" id="sprRow">
-                <button class="chip active" data-spr="light">Leicht</button>
-                <button class="chip" data-spr="medium">Medium</button>
-                <button class="chip" data-spr="heavy">Heavy</button>
-                <button class="chip" data-spr="off">Aus</button>
-              </div>
-            </div>
-          </div>
-
-          <div class="field">
-            <label>Preview-Link</label>
-            <input id="previewLink" readonly />
-            <div class="muted">Preview liest deinen Draft. Cross-Device Token/Backend kommt als nächstes.</div>
-          </div>
-
-          <div class="field">
-            <label>QR-Reply-Link (Demo)</label>
-            <input id="qrLink" readonly />
-            <div class="muted">Scan → Antwortseite. Später: echte Speicherung/Versand/Workflow.</div>
-          </div>
-
-          <div class="row">
-            <button class="btn" id="back2">Zurück</button>
-            <button class="btn cta" id="next2">Weiter</button>
-          </div>
-        </div>
-
-        <!-- STEP 3 -->
-        <div class="stepPane" data-step="3" style="display:none">
-          <div class="field">
-            <label>Adresse (Demo)</label>
-            <input id="addr" placeholder="Straße & Hausnummer" />
-            <div class="twoCol">
-              <input id="plz" placeholder="PLZ" />
-              <input id="ort" placeholder="Ort" />
-            </div>
-            <div class="muted">Demo reicht. Später: Validierung + Versandinfos + Partner-Flow.</div>
-          </div>
-
-          <div class="row">
-            <button class="btn" id="back3">Zurück</button>
-            <button class="btn cta" id="payBtn">Zum Bezahlen (Demo)</button>
-          </div>
-
-          <div class="hr"></div>
-
-          <div class="muted">
-            <b>Hinweis:</b> Zahlungsbutton ist Demo. Später Stripe Payment Link.
-            <br/><b>Stempel:</b> Pro Keks 1 Stempel. Ab 10 Belohnung (Demo, off-chain vorbereitet).
-          </div>
-
-          <div class="hr"></div>
-          <div class="row" style="justify-content:space-between">
-            <div class="muted"><b>Stempelstand:</b> <span id="stamps">0</span>/10</div>
-            <button class="btn primary" id="addStamp">+1 Stempel (Demo)</button>
-          </div>
-        </div>
-
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="card">
-        <div class="hd">
-          <div style="font-weight:950">Hall of Keks</div>
-          <div class="muted" style="font-weight:900">VIP & Top-Designs (Demo)</div>
-        </div>
-        <div class="bd" id="hall">
-          <div class="vipFrame">
-            <div class="vipTitle">VIP-Bereich</div>
-            <div class="vipSub">Legendary/Mythic Kekse bekommen Schwarz/Gold-Glanz + Highlight-Frame.</div>
-          </div>
-
-          <div class="hr"></div>
-
-          <div class="row">
-            <button class="btn vip" id="shareBtn">Design teilen</button>
-            <button class="btn primary" id="copyCodeBtn">Design-Code kopieren</button>
-          </div>
-
-          <p class="muted" style="margin:10px 0 0">
-            Share-Loop ist Pflicht: jeder geteilte Keks ist ein Mini-Funnel. Viralität ohne Gelaber.
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <footer class="foot">
-      <div class="hr"></div>
-      <div class="row" style="gap:12px">
-        <a href="#impressum">Impressum</a>
-        <a href="#datenschutz">Datenschutz</a>
-        <a href="#agb">AGB</a>
-        <a href="#versand">Versand</a>
-        <a href="#allergene">Allergene</a>
-        <a href="./privacy.html">Wie wir mit Daten umgehen</a>
-      </div>
-
-      <div class="hr"></div>
-
-      <section id="impressum">
-        <b>Impressum (Demo)</b>
-        <p class="muted">Hier trägst du später deine Anbieterkennzeichnung ein.</p>
-      </section>
-
-      <section id="datenschutz">
-        <b>Datenschutz (Kurzfassung)</b>
-        <p class="muted">Wir speichern Drafts lokal im Browser. Keine Datenverkäufe. Details: <a href="./privacy.html">privacy.html</a>.</p>
-      </section>
-
-      <section id="agb">
-        <b>AGB (Demo)</b>
-        <p class="muted">MVP-Placeholder. Später sauber rechtlich ausformulieren.</p>
-      </section>
-
-      <section id="versand">
-        <b>Versand (Demo)</b>
-        <p class="muted">MVP: Versandbedingungen folgen. Später Partner/White-Label-Flow integrieren.</p>
-      </section>
-
-      <section id="allergene">
-        <b>Allergene (Demo)</b>
-        <p class="muted">MVP: Allergene/Ingredients folgen. Später verpflichtend sauber.</p>
-      </section>
-    </footer>
-  </main>
-
-  <div class="toast" id="toast">Gespeichert.</div>
-
-  <div class="consent" id="consent">
-    <div class="box">
-      <div class="txt">
-        <b>Cookies, aber keksig.</b>
-        Wir speichern nur deinen Entwurf, damit dein Keks nicht verloren geht. Optional (später) anonyme Statistik. Wir verkaufen keine Daten.
-      </div>
-      <div class="actions">
-        <button class="btn cta" id="consentAll">Alles klar</button>
-        <button class="btn" id="consentNeed">Nur das Nötigste</button>
-        <button class="btn" id="consentInfo">Wie wir mit Daten umgehen</button>
+        <input class="input" id="msgInput" maxlength="32" value="Ich denk an dich." aria-label="Message" />
       </div>
     </div>
   </div>
+
+  <!-- Sets Picker -->
+  <div class="section" id="sets">
+    <div class="secTitle">Wähl deinen Keks-Vibe</div>
+    <p class="secSub">Kein Rumgefummel. Du nimmst ’nen fertigen Moment – und machst nur noch Feinschliff.</p>
+
+    <div class="rail" id="setRail"></div>
+  </div>
+
+  <!-- Builder -->
+  <div class="section">
+    <div class="secTitle">Feinschliff</div>
+    <p class="secSub">Common–Rare: bisschen Style. Epic–Legendary: nur Message – wirkt stärker.</p>
+
+    <div class="builder">
+      <div class="card panel">
+        <div class="label">Form</div>
+        <div class="row" id="shapeRow">
+          <button class="chip" data-shape="smiley" type="button">🙂 Smiley</button>
+          <button class="chip" data-shape="heart" type="button">❤️ Herz</button>
+          <button class="chip" data-shape="star" type="button">⭐ Stern</button>
+        </div>
+
+        <div class="label">Style</div>
+        <div class="row" id="styleRow">
+          <button class="chip" data-style="clean" type="button">Clean</button>
+          <button class="chip" data-style="playful" type="button">Verspielt</button>
+          <button class="chip" data-style="bold" type="button">Bold</button>
+        </div>
+
+        <p class="hint" id="editHint">Hinweis: Je höher die Rarity, desto weniger wird “gebastelt” – der Keks spricht für sich.</p>
+      </div>
+
+      <div class="card panel">
+        <div class="secTitle" style="font-size:18px;margin:0 0 6px;">Abschicken</div>
+        <p class="secSub" style="margin:0 0 10px;">Fast fertig. Dein Keks ist gleich unterwegs.</p>
+
+        <div class="label">Pack</div>
+        <div class="row" id="packRow">
+          <button class="chip" data-pack="quick" type="button">Quick</button>
+          <button class="chip" data-pack="custom" type="button">Custom</button>
+          <button class="chip" data-pack="premium" type="button">Premium</button>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="trust">
+          <span><span class="check">✓</span> Einmalig & sicher</span>
+          <span><span class="check">✓</span> Versand in DE</span>
+          <span><span class="check">✓</span> Keine Abo-Falle</span>
+        </div>
+
+        <div class="divider"></div>
+
+        <button class="btn btnPrimary" id="checkoutBtn" style="width:100%;justify-content:center">Keks losschicken</button>
+        <p class="hint" id="checkoutHint">Zahlung sicher & einmalig. Danach bekommst du Share-Link + QR-Reply.</p>
+
+        <div class="divider"></div>
+        <button class="btn btnGhost" id="shareBtn" style="width:100%;justify-content:center;display:none">Keks teilen</button>
+        <p class="hint" id="shareHint" style="display:none">Teilen bringt den Viral-Loop ins Rollen.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hall of Keks -->
+  <div class="section" id="hall">
+    <div class="secTitle">Beliebte Kekse gerade</div>
+    <p class="secSub">Echte Messages. Echte Vibes. Klick einen an – und bau dir deinen.</p>
+    <div class="hallGrid" id="hallRail"></div>
+
+    <div class="section card vipBox" style="padding:14px;margin-top:14px">
+      <div class="secTitle" style="margin:0 0 6px;color:#fff">Hall of Keks – VIP</div>
+      <p class="secSub" style="margin:0 0 10px">Epic & Legendary. Kommt selten zurück.</p>
+      <div class="hallGrid" id="vipRail"></div>
+      <p class="hint">Tipp: Viele upgraden hier.</p>
+    </div>
+  </div>
+
+  <div class="section" style="margin:26px 0 10px">
+    <div class="pill" style="display:inline-block">Impressum / Datenschutz / AGB / Versand / Allergene – als Sections später sauber rein.</div>
+  </div>
+
+</div>
+
+<!-- Consent -->
+<div class="consent" id="consent">
+  <div class="consentRow">
+    <p>
+      <strong>Kurzer Cookie-Keks:</strong> Wir brauchen das Nötigste, damit dein Keks-Entwurf gespeichert bleibt. Optional hilft’s uns zu verstehen, welche Kekse gefallen.
+      <span style="display:block;margin-top:6px"><a href="#" id="privacyLink">Wie wir mit Daten umgehen</a></span>
+    </p>
+    <div class="ctaRow" style="margin:0">
+      <button class="btn btnPrimary" id="consentAll">Alles klar</button>
+      <button class="btn btnGhost" id="consentNeed">Nur das Nötigste</button>
+    </div>
+  </div>
+</div>
 
 <script>
-(() => {
-  // Helper: Base-Pfad (funktioniert auf GitHub Pages + lokal)
-  const basePath = (() => {
-    const p = location.pathname;
-    return p.endsWith('/index.html') ? p.replace(/index\.html$/,'') : (p.endsWith('/') ? p : p.replace(/[^/]+$/,''));
-  })();
-  const abs = (file) => location.origin + basePath + file;
+/* =========================
+   CONFIG
+========================= */
+const LEGENDARY_ACTIVE = true; // Drop-Schalter: true/false
 
-  // === Intro: niemals schwarz, autoplay try, fallback, skip ===
-  const intro = document.getElementById('intro');
-  const vid = document.getElementById('introVid');
-  const skip = document.getElementById('introSkip');
-  const hideIntro = () => {
-    if(!intro) return;
-    intro.classList.add('hidden');
-    intro.setAttribute('aria-hidden','true');
-    try{ vid && vid.pause(); }catch(e){}
-  };
-  if(skip){
-    skip.addEventListener('click', (e)=>{ e.preventDefault(); e.stopPropagation(); hideIntro(); }, true);
-    skip.addEventListener('touchstart', (e)=>{ e.preventDefault(); e.stopPropagation(); hideIntro(); }, {passive:false, capture:true});
+const RARITY_CONFIG = {
+  common:    { label:"COMMON",    color:"var(--common)",    glow:"rgba(185,185,185,.55)", anim:"breathe", allowShape:true, allowStyle:true,  sprinkles:false, shake:false },
+  uncommon:  { label:"UNCOMMON",  color:"var(--uncommon)",  glow:"rgba(46,204,113,.50)", anim:"breathe", allowShape:true, allowStyle:true,  sprinkles:true,  shake:false },
+  rare:      { label:"RARE",      color:"var(--rare)",      glow:"rgba(74,163,255,.55)", anim:"breathe", allowShape:true, allowStyle:true,  sprinkles:true,  shake:true  },
+  epic:      { label:"EPIC",      color:"var(--epic)",      glow:"rgba(181,107,255,.60)",anim:"breathe", allowShape:false,allowStyle:false, sprinkles:false, shake:false },
+  legendary: { label:"LEGENDARY", color:"var(--legendary)", glow:"rgba(246,210,106,.65)",anim:"breathe", allowShape:false,allowStyle:false, sprinkles:false, shake:false }
+};
+
+const SETS = [
+  { id:"thinkofyou", name:"Ich denk an dich", use:"Kleine Geste. Große Wirkung.", rarity:"common",    shape:"smiley", style:"clean",   message:"Ich denk an dich.", label:"Alltag" },
+  { id:"yougotthis", name:"Du packst das",   use:"Motivation ohne Kitsch.",      rarity:"uncommon",  shape:"star",   style:"playful", message:"Du packst das.",   label:"Motivation" },
+  { id:"move",       name:"Beweg dein Arsch.",use:"Ehrlich. Direkt. Wirkt.",      rarity:"rare",      shape:"smiley", style:"bold",    message:"Beweg dein Arsch.", label:"Viral" },
+  { id:"sorry",      name:"Sorry.",          use:"Wenn Worte schwerfallen.",     rarity:"epic",      shape:"heart",  style:"clean",   message:"Sorry.",          label:"Herz" },
+  { id:"comeNow",    name:"Komm. Jetzt.",    use:"Statement-Keks.",              rarity:"legendary", shape:"heart",  style:"clean",   message:"Komm. Jetzt.",    label:"Statement" }
+];
+
+/* =========================
+   STATE
+========================= */
+const state = {
+  setId: "thinkofyou",
+  rarity: "common",
+  shape: "smiley",
+  style: "clean",
+  message: "Ich denk an dich.",
+  pack: "quick",
+  orderId: null,
+  shareCode: null
+};
+
+const $ = (id)=>document.getElementById(id);
+
+/* =========================
+   INTRO VIDEO (Autoplay-Fallback + Skip)
+========================= */
+(function intro(){
+  const intro = $("intro");
+  const vid = $("introVid");
+  const skip = $("introSkip");
+
+  function hide(){
+    intro.style.display="none";
+    intro.setAttribute("aria-hidden","true");
+    try{vid.pause();}catch(e){}
   }
-  document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') hideIntro(); });
 
-  // robust: wenn Video fehlt oder nicht playbar -> auto-skip
-  const srcEl = vid ? vid.querySelector('source') : null;
-  const hasSource = !!(srcEl && (srcEl.getAttribute('src')||"").trim());
-  setTimeout(()=>{ if(intro && !intro.classList.contains('hidden')) hideIntro(); }, hasSource ? 2200 : 800);
-  (async ()=>{
-    if(!vid || !hasSource) return;
-    try{
-      await vid.play();
-      vid.addEventListener('ended', hideIntro, {once:true});
-      // falls Video hängt: nach 6s raus
-      setTimeout(()=>{ if(intro && !intro.classList.contains('hidden')) hideIntro(); }, 6000);
-    }catch(e){ hideIntro(); }
-  })();
+  skip.addEventListener("click", (e)=>{e.preventDefault(); hide();});
+  document.addEventListener("keydown",(e)=>{ if(e.key==="Escape") hide(); });
 
-  // === Keksregen ===
-  const rain = document.getElementById('rain');
-  if(rain){
-    const n = 18;
-    for(let i=0;i<n;i++){
-      const el = document.createElement('i');
-      el.style.setProperty('--x', Math.round(Math.random()*100)+'%');
-      el.style.setProperty('--y', Math.round(Math.random()*100)+'%');
-      el.style.setProperty('--r', (Math.random()*180-90)+'deg');
-      el.style.setProperty('--d', (10 + Math.random()*14)+'s');
-      rain.appendChild(el);
+  vid.addEventListener("ended", hide);
+
+  // Auto-skip nach 9s egal was passiert
+  setTimeout(()=>{ if(intro.style.display!=="none") hide(); }, 9000);
+
+  // Try autoplay; wenn blockiert, tap anywhere startet oder skippt
+  async function tryPlay(){
+    try{ await vid.play(); }
+    catch(e){
+      intro.addEventListener("click", async (ev)=>{
+        if(ev.target && ev.target.id==="introSkip") return;
+        try{ await vid.play(); }catch(e2){ hide(); }
+      }, {once:true});
     }
   }
+  tryPlay();
+})();
 
-  const $ = (id) => document.getElementById(id);
-  const toast = (msg) => { const t=$('toast'); t.textContent=msg; t.style.display='block'; clearTimeout(window.__tto); window.__tto=setTimeout(()=>t.style.display='none', 2200); };
+/* =========================
+   CONSENT (minimal, gift tone)
+========================= */
+(function consent(){
+  const key="ok_consent_v1";
+  const c = $("consent");
+  const v = localStorage.getItem(key);
+  if(!v){ c.style.display="block"; }
+  $("consentAll").onclick=()=>{ localStorage.setItem(key,"all"); c.style.display="none"; };
+  $("consentNeed").onclick=()=>{ localStorage.setItem(key,"need"); c.style.display="none"; };
+  $("privacyLink").onclick=(e)=>{ e.preventDefault(); alert("Kurzfassung: Wir speichern den Entwurf lokal im Browser. Keine Datenverkäufe. Optional nur anonyme Events."); };
+})();
 
-  // Consent
-  const consent = $('consent');
-  const consentKey = 'ok_consent';
-  const consentVal = localStorage.getItem(consentKey);
-  if(!consentVal){ consent.style.display='block'; }
-  $('consentAll').onclick = () => { localStorage.setItem(consentKey,'all'); consent.style.display='none'; toast('Alles klar.'); };
-  $('consentNeed').onclick = () => { localStorage.setItem(consentKey,'need'); consent.style.display='none'; toast('Nur das Nötigste.'); };
-  $('consentInfo').onclick = () => { location.href = './privacy.html'; };
+/* =========================
+   UI: Render Sets
+========================= */
+function rarityDotColor(r){ return getComputedStyle(document.documentElement).getPropertyValue(`--${r}`) || "#bbb"; }
 
-  // === State ===
-  const CFG = {
-    draftKey: "onlykeks_draft_v2",
-    draftByRidPrefix: "onlykeks_draft_rid_",
-    stampsKey: "onlykeks_stamps_v1",
-    replyByOrderPrefix: "onlykeks_reply_order_",
-    replyByRidPrefix: "onlykeks_reply_rid_"
-  };
+function renderSets(){
+  const rail = $("setRail");
+  rail.innerHTML = "";
 
-  const state = {
-    rid: localStorage.getItem('ok_rid') || ('rid_' + Math.random().toString(36).slice(2) + Date.now().toString(36)),
-    orderId: localStorage.getItem('ok_order') || ('ok_' + Math.random().toString(36).slice(2) + Date.now().toString(36)),
-    message: localStorage.getItem('ok_msg') || '',
-    pack: localStorage.getItem('ok_pack') || 'quick',
-    icing: localStorage.getItem('ok_icing') || 'soft',
-    spr: localStorage.getItem('ok_spr') || 'light',
-    shape: localStorage.getItem('ok_shape') || 'circle',
-  };
-  localStorage.setItem('ok_order', state.orderId);
-  localStorage.setItem('ok_rid', state.rid);
-
-  // History (Undo/Redo light – MVP)
-  const history = { stack: [], idx: -1 };
-  const snap = () => JSON.stringify({message:state.message, pack:state.pack, icing:state.icing, spr:state.spr, shape:state.shape});
-  const pushHist = () => {
-    const s = snap();
-    if(history.idx >= 0 && history.stack[history.idx] === s) return;
-    history.stack = history.stack.slice(0, history.idx+1);
-    history.stack.push(s);
-    history.idx = history.stack.length - 1;
-  };
-  const applySnap = (s) => {
-    try{
-      const o = JSON.parse(s);
-      state.message = o.message ?? state.message;
-      state.pack = o.pack ?? state.pack;
-      state.icing = o.icing ?? state.icing;
-      state.spr = o.spr ?? state.spr;
-      state.shape = o.shape ?? state.shape;
-    }catch(e){}
-  };
-
-  // Elements
-  const msg = $('message');
-  const qrLink = $('qrLink');
-  const previewLink = $('previewLink');
-  const pack = $('pack');
-  const packTiles = $('packTiles');
-  const stepInfo = $('stepInfo');
-  const stampsEl = $('stamps');
-
-  // SVG layers
-  const shapeLayer = $('shapeLayer');
-  const chipLayer = $('chipLayer');
-  const glazeLayer = $('glazeLayer');
-  const sprinkleLayer = $('sprinkleLayer');
-  const textLayer = $('textLayer');
-
-  const svgEl = (tag, attrs) => {
-    const el = document.createElementNS("http://www.w3.org/2000/svg", tag);
-    for(const k in attrs) el.setAttribute(k, attrs[k]);
-    return el;
-  };
-
-  const glazeColors = (kind) => {
-    switch(kind){
-      case "pink": return { fill:"rgba(255,79,163,.18)", stroke:"rgba(255,79,163,.45)" };
-      case "vip": return { fill:"rgba(17,17,17,.14)", stroke:"rgba(199,164,76,.55)", ring:"rgba(199,164,76,.95)" };
-      default: return { fill:"rgba(255,255,255,.55)", stroke:"rgba(255,79,163,.18)" };
+  SETS.forEach(s=>{
+    if(s.rarity==="legendary" && !LEGENDARY_ACTIVE){
+      // Legendary bleibt sichtbar aber deaktiviert
     }
-  };
+    const cfg = RARITY_CONFIG[s.rarity];
 
-  const wrapLines = (text, maxChars) => {
-    const words = text.split(/\s+/);
-    const lines = [];
-    let cur = "";
-    for(const w of words){
-      const next = cur ? (cur + " " + w) : w;
-      if(next.length <= maxChars){ cur = next; }
-      else { if(cur) lines.push(cur); cur = w; }
-    }
-    if(cur) lines.push(cur);
-    return lines;
-  };
+    const el = document.createElement("div");
+    el.className="setCard";
 
-  const drawShape = () => {
-    shapeLayer.innerHTML = '';
-    chipLayer.innerHTML = '';
-    glazeLayer.innerHTML = '';
-    sprinkleLayer.innerHTML = '';
-    textLayer.innerHTML = '';
+    const disabled = (s.rarity==="legendary" && !LEGENDARY_ACTIVE);
 
-    // Base cookie shape (emoji-ish)
-    const s = state.shape;
-    let base;
-    if(s === 'heart'){
-      base = svgEl('path', {
-        d: "M180 214 C130 184 92 156 92 124 C92 98 110 82 132 82 C150 82 164 92 180 108 C196 92 210 82 228 82 C250 82 268 98 268 124 C268 156 230 184 180 214 Z",
-        fill:"url(#cookieBase)", stroke:"rgba(15,23,42,.10)", "stroke-width":"2"
-      });
-    } else if(s === 'star'){
-      base = svgEl('path', {
-        d: "M180 58 L202 102 L250 108 L214 140 L224 188 L180 164 L136 188 L146 140 L110 108 L158 102 Z",
-        fill:"url(#cookieBase)", stroke:"rgba(15,23,42,.10)", "stroke-width":"2"
-      });
-    } else if(s === 'smiley'){
-      base = svgEl('circle', { cx:180, cy:130, r:92, fill:"url(#cookieBase)", stroke:"rgba(15,23,42,.10)", "stroke-width":"2" });
-    } else if(s === 'tree'){
-      base = svgEl('path', {
-        d: "M180 52 L214 104 L198 104 L226 150 L204 150 L236 206 L124 206 L156 150 L134 150 L162 104 L146 104 Z",
-        fill:"url(#cookieBase)", stroke:"rgba(15,23,42,.10)", "stroke-width":"2"
-      });
-    } else {
-      base = svgEl('circle', { cx:180, cy:130, r:92, fill:"url(#cookieBase)", stroke:"rgba(15,23,42,.10)", "stroke-width":"2" });
-    }
-    shapeLayer.appendChild(base);
+    el.innerHTML = `
+      <div class="setTop">
+        <div class="rarityTag"><i style="background:${cfg.color}"></i>${cfg.label}</div>
+        <div class="pill" style="font-size:12px">${s.label}</div>
+      </div>
+      <div class="setName">${s.name}</div>
+      <p class="setUse">${s.use}${disabled ? " <b>(derzeit nicht verfügbar)</b>" : ""}</p>
+      <div class="miniStage">
+        <div class="miniCookie ${s.shape}">
+          <b>${escapeHtml(s.message)}</b>
+        </div>
+      </div>
+      <button class="btn ${disabled ? "btnGhost" : (s.rarity==="legendary" ? "btnDark" : "btnPrimary")} setBtn" type="button" ${disabled ? "disabled" : ""}>
+        ${s.rarity==="legendary" ? "Legendary wählen" : "Diesen Keks nehmen"}
+      </button>
+      <div class="hint">${s.rarity==="legendary" ? "Selten. Besonders." : ""}</div>
+    `;
 
-    // Choco chips
-    const chips = [[140,105,10],[210,100,7],[120,150,8],[235,155,11],[175,175,7],[160,85,6]];
-    chips.forEach(([x,y,r])=>{
-      chipLayer.appendChild(svgEl('circle',{cx:x, cy:y, r:r, fill:"rgba(75,42,27,.38)"}));
-    });
-
-    // Glaze
-    const gKind = state.icing === 'vip' ? 'vip' : (state.icing === 'pink' ? 'pink' : 'vanilla');
-    const c = glazeColors(gKind);
-
-    const glaze = (s === 'star')
-      ? svgEl('path',{ d:"M180 72 L196 104 L232 108 L206 128 L214 160 L180 144 L146 160 L154 128 L128 108 L164 104 Z", fill:c.fill, stroke:c.stroke, "stroke-width":"3", opacity:"0.95" })
-      : (s === 'heart')
-        ? svgEl('path',{ d:"M180 198 C140 170 110 150 110 126 C110 106 124 94 140 94 C154 94 166 102 180 116 C194 102 206 94 220 94 C236 94 250 106 250 126 C250 150 220 170 180 198 Z", fill:c.fill, stroke:c.stroke, "stroke-width":"3", opacity:"0.95" })
-        : (s === 'tree')
-          ? svgEl('path',{ d:"M180 76 L205 112 L194 112 L214 146 L198 146 L222 192 L138 192 L162 146 L146 146 L166 112 L155 112 Z", fill:c.fill, stroke:c.stroke, "stroke-width":"3", opacity:"0.95" })
-          : svgEl('circle',{ cx:180, cy:130, r:76, fill:c.fill, stroke:c.stroke, "stroke-width":"3", opacity:"0.95" });
-
-    glazeLayer.appendChild(glaze);
-    if(gKind === 'vip'){
-      // Gold ring
-      const ring = (s==='circle' || s==='smiley')
-        ? svgEl('circle',{cx:180, cy:130, r:78, fill:"none", stroke:c.ring, "stroke-width":"4", opacity:"0.95"})
-        : svgEl('path',{d:"M180 70 C125 85 110 155 160 200 C180 215 210 212 230 194 C270 156 255 86 180 70 Z", fill:"none", stroke:c.ring, "stroke-width":"3", opacity:"0.65"});
-      glazeLayer.appendChild(ring);
-    }
-
-    // Smiley face overlay
-    if(s === 'smiley'){
-      const eye1 = svgEl('circle',{cx:150, cy:120, r:7, fill:"rgba(15,23,42,.55)"});
-      const eye2 = svgEl('circle',{cx:210, cy:120, r:7, fill:"rgba(15,23,42,.55)"});
-      const mouth = svgEl('path',{d:"M145 155 C160 175 200 175 215 155", fill:"none", stroke:"rgba(15,23,42,.50)", "stroke-width":"6", "stroke-linecap":"round"});
-      textLayer.appendChild(eye1); textLayer.appendChild(eye2); textLayer.appendChild(mouth);
-    }
-
-    // Sprinkles
-    if(state.spr !== 'off'){
-      const n = state.spr === 'light' ? 10 : state.spr === 'medium' ? 18 : 28;
-      for(let i=0;i<n;i++){
-        const x = 90 + Math.random()*180;
-        const y = 70 + Math.random()*140;
-        const w = 10, h = 4;
-        const r = (Math.random()*160-80);
-        const isGold = (state.icing === 'vip' && Math.random()<0.25);
-        const rect = svgEl('rect',{x:x, y:y, width:w, height:h, rx:"999", fill: isGold ? "rgba(199,164,76,.95)" : "rgba(255,79,163,.9)", transform:`rotate(${r} ${x} ${y})`, opacity:"0.95"});
-        sprinkleLayer.appendChild(rect);
-      }
-    }
-
-    // Text on cookie
-    const text = (state.message||"").trim();
-    if(text){
-      const lines = wrapLines(text, 18).slice(0,4);
-      const startY = 126 - (lines.length-1)*14;
-      const fill = (state.icing === "vip") ? "rgba(199,164,76,.98)" : "rgba(15,23,42,.78)";
-      lines.forEach((ln, idx)=>{
-        const t = svgEl('text',{x:180, y:startY + idx*28, "font-size":"18", "font-weight":"900", "text-anchor":"middle", fill});
-        t.textContent = ln;
-        textLayer.appendChild(t);
-      });
-    }
-  };
-
-  const rarityText = () => {
-    if(state.pack === 'premium' && state.icing === 'vip') return 'Mythic (VIP)';
-    if(state.pack === 'premium') return 'Legendary';
-    if(state.pack === 'custom') return 'Rare';
-    return 'Classic';
-  };
-  const updateRarity = () => $('rarity').textContent = 'Rarity: ' + rarityText();
-
-  const buildPreview = () => {
-    previewLink.value = abs('preview.html') + '?rid=' + encodeURIComponent(state.rid);
-  };
-  const buildQr = () => {
-    qrLink.value = abs('keks.html') + '?order=' + encodeURIComponent(state.orderId) + '&rid=' + encodeURIComponent(state.rid);
-  };
-
-  const setActiveChips = (container, predicate) => {
-    container.querySelectorAll('.chip').forEach(c => c.classList.toggle('active', predicate(c)));
-  };
-
-  const applyPackTiles = () => {
-    pack.value = state.pack;
-    packTiles.querySelectorAll('.tile').forEach(t => t.classList.toggle('active', t.dataset.pack === state.pack));
-  };
-
-  const saveDraftV2 = () => {
-    const draft = {
-      v: 2,
-      rid: state.rid,
-      orderId: state.orderId,
-      message: state.message,
-      pack: state.pack,
-      icing: state.icing,
-      spr: state.spr,
-      shape: state.shape,
-      updatedAt: new Date().toISOString()
+    el.querySelector("button").onclick = ()=>{
+      applySet(s.id);
+      scrollToId("stage");
     };
-    const raw = JSON.stringify(draft);
-    localStorage.setItem(CFG.draftKey, raw);
-    localStorage.setItem(CFG.draftByRidPrefix + state.rid, raw);
 
-    localStorage.setItem('ok_msg', state.message);
-    localStorage.setItem('ok_pack', state.pack);
-    localStorage.setItem('ok_icing', state.icing);
-    localStorage.setItem('ok_spr', state.spr);
-    localStorage.setItem('ok_shape', state.shape);
-  };
-
-  // Init
-  msg.value = state.message;
-  applyPackTiles();
-  updateRarity();
-  buildPreview();
-  buildQr();
-  pushHist();
-  drawShape();
-  saveDraftV2();
-
-  // Flow
-  const scrollToFlow = () => $('config').scrollIntoView({behavior:'smooth', block:'start'});
-  $('btnStart').onclick = scrollToFlow;
-  $('btnStart2').onclick = scrollToFlow;
-  $('btnPreview').onclick = () => { saveDraftV2(); location.href = './preview.html?rid=' + encodeURIComponent(state.rid); };
-
-  $('btnAutoDemo').onclick = () => {
-    state.message = "Ick denk an dich. Ehrlich.";
-    msg.value = state.message;
-    pushHist();
-    drawShape(); updateRarity(); buildPreview(); buildQr(); saveDraftV2();
-    toast('Demo geladen.');
-  };
-
-  const surprise = () => {
-    const templates = [
-      "Ich denk an dich.",
-      "Beweg dein Arsch.",
-      "Du packst das.",
-      "Sorry. Lass reden.",
-      "Party heute?",
-      "Komm klar – aber mit Liebe.",
-      "Du fehlst hier."
-    ];
-    const packs = ["quick","custom","premium"];
-    const icings = ["soft","pink","vip"];
-    const sprs = ["light","medium","heavy","off"];
-    const shapes = ["circle","heart","star","smiley","tree"];
-
-    state.message = templates[Math.floor(Math.random()*templates.length)];
-    state.pack = packs[Math.floor(Math.random()*packs.length)];
-    state.icing = icings[Math.floor(Math.random()*icings.length)];
-    state.spr = sprs[Math.floor(Math.random()*sprs.length)];
-    state.shape = shapes[Math.floor(Math.random()*shapes.length)];
-
-    msg.value = state.message;
-
-    applyPackTiles();
-    setActiveChips($('dekoRow'), (x)=>x.dataset.icing === state.icing);
-    setActiveChips($('sprRow'), (x)=>x.dataset.spr === state.spr);
-    setActiveChips($('shapeRow'), (x)=>x.dataset.shape === state.shape);
-
-    pushHist();
-    drawShape(); updateRarity(); buildPreview(); buildQr(); saveDraftV2();
-    toast('Überraschung gesetzt.');
-  };
-  $('btnSurprise').onclick = surprise;
-  $('surprise2').onclick = () => { surprise(); scrollToFlow(); };
-
-  // Templates click
-  $('templateRow').addEventListener('click', (e) => {
-    const b = e.target.closest('button[data-tpl]');
-    if(!b) return;
-    state.message = b.dataset.tpl;
-    msg.value = state.message;
-    $('templateRow').querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
-    b.classList.add('active');
-    pushHist();
-    drawShape(); buildPreview(); buildQr(); saveDraftV2();
-    toast('Template gesetzt.');
+    rail.appendChild(el);
   });
+}
 
-  // Message typing
-  msg.addEventListener('input', () => {
-    state.message = msg.value.trim();
-    pushHist();
-    drawShape(); buildPreview(); buildQr(); saveDraftV2();
-  });
+/* =========================
+   Apply Set + Rarity UX
+========================= */
+function applySet(setId){
+  const s = SETS.find(x=>x.id===setId) || SETS[0];
+  state.setId = s.id;
+  state.rarity = s.rarity;
+  state.shape = s.shape;
+  state.style = s.style;
+  state.message = s.message;
 
-  // Shape chips
-  $('shapeRow').addEventListener('click', (e) => {
-    const b = e.target.closest('button[data-shape]');
-    if(!b) return;
-    state.shape = b.dataset.shape;
-    setActiveChips($('shapeRow'), (x)=>x===b);
-    pushHist();
-    drawShape(); buildPreview(); buildQr(); saveDraftV2();
-    toast('Form gesetzt.');
-  });
+  $("msgInput").value = state.message;
+  updateStage(true);
+  updateControls();
+  saveDraft();
+}
 
-  // Pack tiles
-  packTiles.addEventListener('click', (e) => {
-    const t = e.target.closest('.tile');
-    if(!t) return;
-    state.pack = t.dataset.pack;
-    applyPackTiles();
-    pushHist();
-    drawShape(); updateRarity(); saveDraftV2();
-    toast('Pack gewählt.');
-  });
+function updateStage(withPop){
+  const cfg = RARITY_CONFIG[state.rarity];
+  $("rarityText").textContent = cfg.label;
+  $("rarityDot").style.background = cfg.color;
+  $("cookieMsg").textContent = state.message;
 
-  // Steps
-  let step = 1;
-  const showStep = (n) => {
-    step = n;
-    document.querySelectorAll('.stepPane').forEach(p => p.style.display = (p.dataset.step == n ? 'block' : 'none'));
-    stepInfo.textContent = `Step ${n}/3`;
-    scrollToFlow();
-  };
-  $('next1').onclick = () => {
-    if(!state.message || state.message.length < 3){
-      toast('Kurz ’ne Message rein, bitte.');
-      msg.focus(); return;
-    }
-    showStep(2);
-  };
-  $('back2').onclick = () => showStep(1);
-  $('next2').onclick = () => showStep(3);
-  $('back3').onclick = () => showStep(2);
-
-  // Deko chips
-  $('dekoRow').addEventListener('click', (e) => {
-    const b = e.target.closest('button[data-icing]');
-    if(!b) return;
-    state.icing = b.dataset.icing;
-    setActiveChips($('dekoRow'), (x)=>x===b);
-    pushHist();
-    drawShape(); updateRarity(); saveDraftV2();
-    toast('Style gesetzt.');
-  });
-  $('sprRow').addEventListener('click', (e) => {
-    const b = e.target.closest('button[data-spr]');
-    if(!b) return;
-    state.spr = b.dataset.spr;
-    setActiveChips($('sprRow'), (x)=>x===b);
-    pushHist();
-    drawShape(); saveDraftV2();
-    toast('Sprinkles gesetzt.');
-  });
-
-  $('saveDraft').onclick = () => { saveDraftV2(); toast('Entwurf gespeichert.'); };
-
-  $('payBtn').onclick = () => {
-    saveDraftV2();
-    toast('Demo: Zahlung kommt als nächstes (Stripe Link später).');
-  };
-
-  // Stempel
-  const getStamps = () => parseInt(localStorage.getItem(CFG.stampsKey) || "0", 10) || 0;
-  const setStamps = (n) => localStorage.setItem(CFG.stampsKey, String(Math.max(0,n)));
-  const renderStamps = () => { const s = getStamps(); if(stampsEl) stampsEl.textContent = String(s); };
-  renderStamps();
-  $('addStamp').onclick = () => {
-    const s = getStamps() + 1;
-    setStamps(s);
-    renderStamps();
-    toast(s >= 10 ? '10 Stempel! Belohnung (Demo).' : '+1 Stempel.');
-  };
-
-  // Hall actions
-  $('btnHall').onclick = () => document.getElementById('hall').scrollIntoView({behavior:'smooth'});
-  $('copyCodeBtn').onclick = async () => {
-    const code = btoa(JSON.stringify({v:2, rid: state.rid, m: state.message, p: state.pack, i: state.icing, s: state.spr, sh: state.shape}));
-    try{ await navigator.clipboard.writeText(code); toast('Design-Code kopiert.'); }
-    catch(e){ toast('Kopieren ging nicht (Browser).'); }
-  };
-  $('shareBtn').onclick = async () => {
-    const shareText = `Mein OnlyKeks: "${state.message}"`;
-    const url = previewLink.value || (location.href.split('#')[0]);
-    if(navigator.share){
-      try{ await navigator.share({title:'OnlyKeks', text:shareText, url}); toast('Geteilt.'); } catch(e){}
-    } else {
-      try{ await navigator.clipboard.writeText(url); toast('Link kopiert.'); } catch(e){ toast('Share nicht verfügbar.'); }
-    }
-  };
-
-  // Service Worker kill (gegen cached black screen)
-  if('serviceWorker' in navigator){
-    navigator.serviceWorker.getRegistrations().then(rs => rs.forEach(r => r.unregister())).catch(()=>{});
+  // shape class
+  const cookie = $("cookie");
+  cookie.classList.remove("heart","star");
+  $("cookieInner").style.transform = "";
+  if(state.shape==="heart"){
+    cookie.classList.add("heart");
+  } else if(state.shape==="star"){
+    cookie.classList.add("star");
   }
+
+  // style impacts
+  const msg = $("cookieMsg");
+  msg.style.background = (state.style==="clean") ? "rgba(255,255,255,.35)" : (state.style==="playful" ? "rgba(255,255,255,.50)" : "rgba(255,255,255,.30)");
+  msg.style.fontWeight = (state.style==="bold") ? "950" : "900";
+
+  // rarity glow
+  const glow = $("glow");
+  glow.classList.add("on");
+  glow.style.background = `radial-gradient(circle at 50% 50%, ${cfg.glow} 0%, rgba(0,0,0,0) 60%)`;
+
+  // sprinkles
+  const spr = $("sprinkles");
+  spr.classList.toggle("on", !!cfg.sprinkles);
+
+  // shake on change for rare
+  if(cfg.shake){
+    cookie.classList.remove("shake");
+    void cookie.offsetWidth;
+    cookie.classList.add("shake");
+  }
+  if(withPop){
+    cookie.classList.remove("pop");
+    void cookie.offsetWidth;
+    cookie.classList.add("pop");
+  }
+
+  // hint
+  $("stageHint").textContent = (state.rarity==="legendary" && !LEGENDARY_ACTIVE)
+    ? "Legendary ist gerade nicht aktiv."
+    : "Tippe deine Message – der Keks reagiert.";
+}
+
+function updateControls(){
+  const cfg = RARITY_CONFIG[state.rarity];
+
+  // shape buttons
+  document.querySelectorAll("#shapeRow .chip").forEach(b=>{
+    const sh = b.dataset.shape;
+    b.classList.toggle("on", sh===state.shape);
+    b.disabled = !cfg.allowShape;
+    b.style.opacity = cfg.allowShape ? "1" : ".45";
+    b.style.cursor = cfg.allowShape ? "pointer" : "not-allowed";
+  });
+
+  // style buttons
+  document.querySelectorAll("#styleRow .chip").forEach(b=>{
+    const st = b.dataset.style;
+    b.classList.toggle("on", st===state.style);
+    b.disabled = !cfg.allowStyle;
+    b.style.opacity = cfg.allowStyle ? "1" : ".45";
+    b.style.cursor = cfg.allowStyle ? "pointer" : "not-allowed";
+  });
+
+  $("editHint").textContent = cfg.allowStyle
+    ? "Common–Rare: bisschen Style. Hauptsache die Message knallt."
+    : "Epic–Legendary: nur Message. Kein Basteln. Mehr Wirkung.";
+
+  // Legendary pill
+  $("legendaryState").textContent = LEGENDARY_ACTIVE ? "aktiv" : "aus";
+  $("legendaryPill").style.opacity = LEGENDARY_ACTIVE ? "1" : ".6";
+}
+
+function saveDraft(){
+  localStorage.setItem("ok_draft_v2", JSON.stringify(state));
+}
+
+function loadDraft(){
+  try{
+    const raw = localStorage.getItem("ok_draft_v2");
+    if(!raw) return;
+    const d = JSON.parse(raw);
+    Object.assign(state, d);
+  }catch(e){}
+}
+
+function escapeHtml(s){
+  return String(s).replace(/[&<>"']/g, m=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[m]));
+}
+
+/* =========================
+   Hall of Keks
+========================= */
+function seedHall(){
+  // Basis: unsere Sets + ein paar Varianten (nur local)
+  const base = SETS.map(s=>({
+    id: "hall_"+s.id,
+    rarity: s.rarity,
+    message: s.message,
+    label: s.label,
+    presetSetId: s.id
+  }));
+
+  // Ein paar sichere Varianten (rare/uncommon/common) fürs Gefühl
+  base.push({id:"hall_motiv1", rarity:"uncommon", message:"Du bist stärker als du denkst.", label:"Motivation", presetSetId:"yougotthis"});
+  base.push({id:"hall_rare2",  rarity:"rare", message:"Heute. Keine Ausreden.", label:"Push", presetSetId:"move"});
+  base.push({id:"hall_common2",rarity:"common", message:"Vermiss dich.", label:"Herz", presetSetId:"thinkofyou"});
+  base.push({id:"hall_epic2",  rarity:"epic", message:"Ich mein’s ernst.", label:"Herz", presetSetId:"sorry"});
+
+  // Legendary nur wenn aktiv
+  if(LEGENDARY_ACTIVE){
+    base.push({id:"hall_leg2", rarity:"legendary", message:"Sag’s. Und komm.", label:"Statement", presetSetId:"comeNow"});
+  }
+
+  // Sortierung
+  const rank = {legendary:0, epic:1, rare:2, uncommon:3, common:4};
+  base.sort((a,b)=> (rank[a.rarity]??9) - (rank[b.rarity]??9));
+
+  return base;
+}
+
+function renderHall(){
+  const hall = seedHall();
+  const hallRail = $("hallRail");
+  const vipRail = $("vipRail");
+  hallRail.innerHTML="";
+  vipRail.innerHTML="";
+
+  hall.forEach(item=>{
+    const cfg = RARITY_CONFIG[item.rarity];
+    const el = document.createElement("div");
+    el.className="hallItem";
+
+    const miniShape = (SETS.find(s=>s.id===item.presetSetId)?.shape) || "smiley";
+
+    el.innerHTML = `
+      <div class="setTop">
+        <div class="rarityTag"><i style="background:${cfg.color}"></i>${cfg.label}</div>
+        <div class="pill" style="font-size:12px">${item.label}</div>
+      </div>
+      <div class="hallMini">
+        <div class="miniCookie ${miniShape}">
+          <b>${escapeHtml(item.message)}</b>
+        </div>
+      </div>
+      <div class="setName" style="font-size:16px;margin:0 0 6px">${escapeHtml(item.message)}</div>
+      <p class="setUse" style="margin:0">Klick → laden & gestalten</p>
+      <div class="divider"></div>
+      <button class="btn btnGhost" type="button" style="width:100%;justify-content:center">So einen gestalten</button>
+    `;
+
+    el.onclick = ()=>{
+      applySet(item.presetSetId);
+      $("msgInput").value = item.message;
+      state.message = item.message;
+      updateStage(true);
+      scrollToId("sets");
+    };
+
+    hallRail.appendChild(el);
+
+    if(item.rarity==="epic" || item.rarity==="legendary"){
+      const vip = el.cloneNode(true);
+      vip.classList.add("vip");
+      vip.onclick = el.onclick;
+      vipRail.appendChild(vip);
+    }
+  });
+}
+
+/* =========================
+   Share Code + Checkout (local demo)
+========================= */
+function hashMini(str){
+  // simple hash for demo (not crypto)
+  let h=2166136261;
+  for(let i=0;i<str.length;i++){
+    h ^= str.charCodeAt(i);
+    h = Math.imul(h, 16777619);
+  }
+  return (h>>>0).toString(36).slice(0,8).toUpperCase();
+}
+
+function doCheckout(){
+  // Demo: erzeugt orderId + shareCode, zeigt Share Button + QR Link Hinweis
+  const now = Date.now().toString(36).toUpperCase();
+  state.orderId = "OK_" + now;
+  state.shareCode = hashMini(state.orderId + "_" + state.rarity + "_" + state.setId);
+
+  saveDraft();
+
+  $("shareBtn").style.display = "inline-flex";
+  $("shareHint").style.display = "block";
+
+  $("checkoutBtn").textContent = "Keks ist bereit – Share?";
+  $("checkoutHint").textContent = "Demo-Checkout: Hier würdest du Stripe öffnen. Share-Link ist live.";
+
+  alert(
+`✅ Fast fertig.
+Share-Link: keks.html?share=${state.shareCode}
+QR-Reply-Link: keks.html?reply=${state.orderId}
+
+(Später: Stripe Payment Link an doCheckout() koppeln.)`
+  );
+}
+
+function doShare(){
+  const link = `${location.origin}${location.pathname.replace(/index\.html$/,'')}keks.html?share=${state.shareCode || ""}`;
+  navigator.clipboard?.writeText(link).catch(()=>{});
+  alert("Link kopiert (oder angezeigt):\n" + link);
+}
+
+/* =========================
+   Events
+========================= */
+function scrollToId(id){
+  const el = document.getElementById(id);
+  if(!el) return;
+  el.scrollIntoView({behavior:"smooth", block:"start"});
+}
+
+$("goSets").onclick = ()=>scrollToId("sets");
+$("openHall").onclick = ()=>scrollToId("hall");
+
+$("demo").onclick = ()=>{
+  applySet("move");
+  $("msgInput").value = "Beweg dein Arsch.";
+  state.message = "Beweg dein Arsch.";
+  updateStage(true);
+  scrollToId("sets");
+};
+
+$("surprise").onclick = ()=>{
+  // Surprise wählt zufällig (Legendary nur wenn aktiv)
+  const pool = SETS.filter(s=> s.rarity!=="legendary" || LEGENDARY_ACTIVE);
+  const pick = pool[Math.floor(Math.random()*pool.length)];
+  applySet(pick.id);
+
+  // kleine random Message Variation
+  const variants = {
+    thinkofyou:["Ich denk an dich.","Vermiss dich.","Nur kurz: Du fehlst."],
+    yougotthis:["Du packst das.","Heute wird dein Tag.","Kopf hoch. Weiter."],
+    move:["Beweg dein Arsch.","Heute. Keine Ausreden.","Aufstehen. Machen."],
+    sorry:["Sorry.","Ich mein’s ernst.","Tut mir leid."],
+    comeNow:["Komm. Jetzt.","Sag’s. Und komm.","Heute Nacht. Du & ick."]
+  };
+  const v = variants[pick.id];
+  if(v){
+    const m = v[Math.floor(Math.random()*v.length)];
+    state.message = m;
+    $("msgInput").value = m;
+    updateStage(true);
+  }
+  scrollToId("sets");
+};
+
+$("msgInput").addEventListener("input", ()=>{
+  state.message = $("msgInput").value.trim() || "…";
+  updateStage(false);
+  saveDraft();
+});
+
+document.querySelectorAll("#shapeRow .chip").forEach(b=>{
+  b.onclick=()=>{
+    const cfg = RARITY_CONFIG[state.rarity];
+    if(!cfg.allowShape) return;
+    state.shape = b.dataset.shape;
+    updateStage(true);
+    updateControls();
+    saveDraft();
+  };
+});
+
+document.querySelectorAll("#styleRow .chip").forEach(b=>{
+  b.onclick=()=>{
+    const cfg = RARITY_CONFIG[state.rarity];
+    if(!cfg.allowStyle) return;
+    state.style = b.dataset.style;
+    updateStage(true);
+    updateControls();
+    saveDraft();
+  };
+});
+
+document.querySelectorAll("#packRow .chip").forEach(b=>{
+  b.onclick=()=>{
+    state.pack = b.dataset.pack;
+    document.querySelectorAll("#packRow .chip").forEach(x=>x.classList.toggle("on", x.dataset.pack===state.pack));
+    // Legendary Empfehlung
+    if(state.rarity==="legendary"){
+      // softly nudge premium
+      if(state.pack!=="premium"){
+        $("checkoutHint").textContent = "Tipp: Für Legendary wird Premium oft genommen.";
+      }
+    } else {
+      $("checkoutHint").textContent = "Zahlung sicher & einmalig. Danach bekommst du Share-Link + QR-Reply.";
+    }
+    saveDraft();
+  };
+});
+
+$("checkoutBtn").onclick = doCheckout;
+$("shareBtn").onclick = doShare;
+
+/* =========================
+   INIT
+========================= */
+(function init(){
+  // Legendary state pill
+  $("legendaryState").textContent = LEGENDARY_ACTIVE ? "aktiv" : "aus";
+
+  loadDraft();
+
+  // If draft has legendary but flag off -> downgrade to epic
+  if(state.rarity==="legendary" && !LEGENDARY_ACTIVE){
+    applySet("sorry");
+  } else {
+    // Apply current state
+    $("msgInput").value = state.message || "Ich denk an dich.";
+    updateStage(true);
+    updateControls();
+  }
+
+  // default pack selection UI
+  document.querySelectorAll("#packRow .chip").forEach(x=>x.classList.toggle("on", x.dataset.pack===state.pack));
+
+  renderSets();
+  renderHall();
 })();
 </script>
 </body>

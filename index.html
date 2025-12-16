@@ -75,6 +75,11 @@
       background: linear-gradient(180deg, rgba(255,79,163,.22), rgba(255,79,163,.10));
       border-color: rgba(255,79,163,.5);
     }
+    .btn.vip{
+      border-color: rgba(199,164,76,.55);
+      background: linear-gradient(180deg, rgba(17,17,17,.92), rgba(17,17,17,.82));
+      color:#fff;
+    }
     .hero{padding:28px 18px 14px}
     .grid{display:grid;grid-template-columns:1.25fr .75fr;gap:18px;align-items:start}
     @media (max-width: 860px){ .grid{grid-template-columns:1fr} }
@@ -99,40 +104,7 @@
     }
     .card .hd{padding:14px 14px 10px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:10px}
     .card .bd{padding:14px}
-    .keksPreview{
-      width:100%;aspect-ratio: 1.35/1;
-      border-radius: 22px;
-      background: radial-gradient(circle at 30% 30%, #fff, #f9d9bd 40%, #d28c55 92%);
-      border:1px solid rgba(0,0,0,.10);
-      position:relative;overflow:hidden;
-    }
-    .sprinkles{position:absolute;inset:0;opacity:.9}
-    .sprinkles i{
-      position:absolute;display:block;width:10px;height:4px;border-radius:999px;
-      background: rgba(255,79,163,.9);
-      transform: rotate(var(--r));
-      left:var(--x);top:var(--y);
-    }
-    .icing{
-      position:absolute;left:8%;top:10%;right:8%;bottom:18%;
-      border-radius: 26px;
-      background: rgba(255,255,255,.55);
-      border:1px solid rgba(255,79,163,.18);
-      backdrop-filter: blur(2px);
-    }
-    .msgOnCookie{
-      position:absolute;left:10%;right:10%;top:22%;
-      font-weight:950;font-size:18px;line-height:1.15;
-      text-align:center;color:#111;
-      text-shadow: 0 2px 10px rgba(255,255,255,.6);
-      word-break: break-word;
-    }
-    .miniRow{display:flex;gap:10px;flex-wrap:wrap}
-    .chip{
-      padding:8px 10px;border-radius:999px;border:1px solid var(--line);
-      background: rgba(255,255,255,.7);font-weight:900;font-size:13px;cursor:pointer;
-    }
-    .chip.active{border-color: rgba(255,79,163,.55); background: rgba(255,79,163,.10)}
+
     .section{padding:14px 18px}
     .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
     @media (max-width: 860px){ .steps{grid-template-columns:1fr} }
@@ -250,7 +222,7 @@
       to{ transform: translateY(110vh) rotate(calc(var(--r) + 120deg)); opacity:0 }
     }
 
-    /* === INTRO (Vorgabe A): niemals schwarzer Screen === */
+    /* INTRO: niemals schwarzer Screen */
     #intro{
       position:fixed;inset:0;z-index:9999;
       display:flex;align-items:center;justify-content:center;
@@ -283,6 +255,22 @@
       padding:10px 12px;border-radius:999px;
       font-weight:950;cursor:pointer;
     }
+
+    /* Live SVG preview */
+    .cookieWrap{
+      width:100%;
+      border-radius: 22px;
+      border:1px solid rgba(0,0,0,.10);
+      background: rgba(255,255,255,.65);
+      padding: 10px;
+      overflow:hidden;
+    }
+    .miniRow{display:flex;gap:10px;flex-wrap:wrap}
+    .chip{
+      padding:8px 10px;border-radius:999px;border:1px solid var(--line);
+      background: rgba(255,255,255,.7);font-weight:900;font-size:13px;cursor:pointer;
+    }
+    .chip.active{border-color: rgba(255,79,163,.55); background: rgba(255,79,163,.10)}
   </style>
 </head>
 
@@ -290,12 +278,11 @@
   <!-- Keksregen -->
   <div class="rain" id="rain" aria-hidden="true"></div>
 
-  <!-- INTRO (Vorgabe A) -->
+  <!-- INTRO -->
   <div id="intro" aria-hidden="false">
     <div class="box">
-      <!-- Optional: Wenn du ein Video hast, Source setzen. Ohne Source auto-skippt es schnell. -->
       <video id="introVid" playsinline muted preload="auto">
-        <!-- <source src="assets/intro.mp4" type="video/mp4"> -->
+        <source src="assets/intro.mp4" type="video/mp4">
       </video>
       <div class="overlay">
         <div class="brandline">
@@ -332,6 +319,7 @@
           <div class="row">
             <button class="btn cta" id="btnStart2">Jetzt gestalten</button>
             <button class="btn primary" id="btnAutoDemo">Demo-Message laden</button>
+            <button class="btn vip" id="btnSurprise">Überrasch mich</button>
             <button class="btn" id="btnPreview">Preview öffnen</button>
           </div>
 
@@ -350,7 +338,7 @@
               </div>
               <div class="step">
                 <b>2) Keks gestalten</b>
-                <div class="muted">Ein paar Deko-Optionen. Kontrolle ohne Stress.</div>
+                <div class="muted">Emoji-Formen + Deko. Kontrolle ohne Stress.</div>
               </div>
               <div class="step">
                 <b>3) Abschicken</b>
@@ -366,10 +354,23 @@
             <div style="color:var(--muted);font-weight:900;font-size:13px" id="rarity">Rarity: Classic</div>
           </div>
           <div class="bd">
-            <div class="keksPreview" id="cookie">
-              <div class="icing" id="icing"></div>
-              <div class="msgOnCookie" id="msgOnCookie">Deine Message hier.</div>
-              <div class="sprinkles" id="sprinkles"></div>
+            <div class="cookieWrap">
+              <svg id="cookieSvg" width="100%" height="260" viewBox="0 0 360 260" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Keks Vorschau">
+                <defs>
+                  <linearGradient id="cookieBase" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0" stop-color="#e2b17a"/>
+                    <stop offset="1" stop-color="#b87945"/>
+                  </linearGradient>
+                  <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
+                    <feDropShadow dx="0" dy="10" stdDeviation="10" flood-color="rgba(2,6,23,.20)"/>
+                  </filter>
+                </defs>
+                <g filter="url(#softShadow)" id="shapeLayer"></g>
+                <g id="chipLayer"></g>
+                <g id="glazeLayer"></g>
+                <g id="sprinkleLayer"></g>
+                <g id="textLayer"></g>
+              </svg>
             </div>
 
             <div class="hr"></div>
@@ -406,6 +407,18 @@
           </div>
 
           <div class="field">
+            <label>Emoji-Keksform</label>
+            <div class="miniRow" id="shapeRow">
+              <button class="chip active" data-shape="circle">Classic</button>
+              <button class="chip" data-shape="heart">❤️ Herz</button>
+              <button class="chip" data-shape="star">⭐ Stern</button>
+              <button class="chip" data-shape="smiley">🙂 Smiley</button>
+              <button class="chip" data-shape="tree">🎄 Baum</button>
+            </div>
+            <div class="muted">Dit ist die Emoji-Form. Preview zeigt’s sofort.</div>
+          </div>
+
+          <div class="field">
             <label>Pack wählen</label>
             <div class="packTiles" id="packTiles">
               <div class="tile active" data-pack="quick">
@@ -437,6 +450,7 @@
           <div class="row">
             <button class="btn cta" id="next1">Weiter</button>
             <button class="btn" id="saveDraft">Entwurf speichern</button>
+            <button class="btn vip" id="surprise2">Überrasch mich</button>
           </div>
         </div>
 
@@ -467,7 +481,7 @@
           <div class="field">
             <label>Preview-Link</label>
             <input id="previewLink" readonly />
-            <div class="muted">Teilen (Demo): Preview liest deinen Draft. Cross-Device Token kommt später.</div>
+            <div class="muted">Preview liest deinen Draft. Cross-Device Token/Backend kommt als nächstes.</div>
           </div>
 
           <div class="field">
@@ -491,7 +505,7 @@
               <input id="plz" placeholder="PLZ" />
               <input id="ort" placeholder="Ort" />
             </div>
-            <div class="muted">Für Demo reicht irgendwas. Später: echte Validierung + Versandinfos.</div>
+            <div class="muted">Demo reicht. Später: Validierung + Versandinfos + Partner-Flow.</div>
           </div>
 
           <div class="row">
@@ -531,18 +545,17 @@
           <div class="hr"></div>
 
           <div class="row">
-            <button class="btn" id="shareBtn">Design teilen</button>
+            <button class="btn vip" id="shareBtn">Design teilen</button>
             <button class="btn primary" id="copyCodeBtn">Design-Code kopieren</button>
           </div>
 
           <p class="muted" style="margin:10px 0 0">
-            Share-Loop ist Pflicht: jeder geteilte Keks ist ein Mini-Funnel. Dit ist Viralität ohne Gelaber.
+            Share-Loop ist Pflicht: jeder geteilte Keks ist ein Mini-Funnel. Viralität ohne Gelaber.
           </p>
         </div>
       </div>
     </section>
 
-    <!-- Footer sections (als echte Anker) -->
     <footer class="foot">
       <div class="hr"></div>
       <div class="row" style="gap:12px">
@@ -601,7 +614,14 @@
 
 <script>
 (() => {
-  // === Intro (Vorgabe A): niemals schwarz, immer auto-skip ===
+  // Helper: Base-Pfad (funktioniert auf GitHub Pages + lokal)
+  const basePath = (() => {
+    const p = location.pathname;
+    return p.endsWith('/index.html') ? p.replace(/index\.html$/,'') : (p.endsWith('/') ? p : p.replace(/[^/]+$/,''));
+  })();
+  const abs = (file) => location.origin + basePath + file;
+
+  // === Intro: niemals schwarz, autoplay try, fallback, skip ===
   const intro = document.getElementById('intro');
   const vid = document.getElementById('introVid');
   const skip = document.getElementById('introSkip');
@@ -617,15 +637,17 @@
   }
   document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') hideIntro(); });
 
-  const hasSource = !!(vid && vid.querySelector('source') && (vid.querySelector('source').getAttribute('src')||"").trim());
+  // robust: wenn Video fehlt oder nicht playbar -> auto-skip
+  const srcEl = vid ? vid.querySelector('source') : null;
+  const hasSource = !!(srcEl && (srcEl.getAttribute('src')||"").trim());
   setTimeout(()=>{ if(intro && !intro.classList.contains('hidden')) hideIntro(); }, hasSource ? 2200 : 800);
   (async ()=>{
-    if(!vid) return;
-    if(!hasSource) return;
+    if(!vid || !hasSource) return;
     try{
       await vid.play();
-      vid.addEventListener('loadeddata', ()=> setTimeout(()=>{ if(intro && !intro.classList.contains('hidden')) hideIntro(); }, 900), {once:true});
       vid.addEventListener('ended', hideIntro, {once:true});
+      // falls Video hängt: nach 6s raus
+      setTimeout(()=>{ if(intro && !intro.classList.contains('hidden')) hideIntro(); }, 6000);
     }catch(e){ hideIntro(); }
   })();
 
@@ -655,10 +677,13 @@
   $('consentNeed').onclick = () => { localStorage.setItem(consentKey,'need'); consent.style.display='none'; toast('Nur das Nötigste.'); };
   $('consentInfo').onclick = () => { location.href = './privacy.html'; };
 
-  // === Draft/State v2 ===
+  // === State ===
   const CFG = {
     draftKey: "onlykeks_draft_v2",
-    stampsKey: "onlykeks_stamps_v1"
+    draftByRidPrefix: "onlykeks_draft_rid_",
+    stampsKey: "onlykeks_stamps_v1",
+    replyByOrderPrefix: "onlykeks_reply_order_",
+    replyByRidPrefix: "onlykeks_reply_rid_"
   };
 
   const state = {
@@ -668,24 +693,168 @@
     pack: localStorage.getItem('ok_pack') || 'quick',
     icing: localStorage.getItem('ok_icing') || 'soft',
     spr: localStorage.getItem('ok_spr') || 'light',
+    shape: localStorage.getItem('ok_shape') || 'circle',
   };
   localStorage.setItem('ok_order', state.orderId);
   localStorage.setItem('ok_rid', state.rid);
 
+  // History (Undo/Redo light – MVP)
+  const history = { stack: [], idx: -1 };
+  const snap = () => JSON.stringify({message:state.message, pack:state.pack, icing:state.icing, spr:state.spr, shape:state.shape});
+  const pushHist = () => {
+    const s = snap();
+    if(history.idx >= 0 && history.stack[history.idx] === s) return;
+    history.stack = history.stack.slice(0, history.idx+1);
+    history.stack.push(s);
+    history.idx = history.stack.length - 1;
+  };
+  const applySnap = (s) => {
+    try{
+      const o = JSON.parse(s);
+      state.message = o.message ?? state.message;
+      state.pack = o.pack ?? state.pack;
+      state.icing = o.icing ?? state.icing;
+      state.spr = o.spr ?? state.spr;
+      state.shape = o.shape ?? state.shape;
+    }catch(e){}
+  };
+
   // Elements
   const msg = $('message');
-  const msgOnCookie = $('msgOnCookie');
   const qrLink = $('qrLink');
   const previewLink = $('previewLink');
   const pack = $('pack');
   const packTiles = $('packTiles');
-  const sprinkles = $('sprinkles');
-  const icing = $('icing');
   const stepInfo = $('stepInfo');
   const stampsEl = $('stamps');
 
-  const setActiveChips = (container, predicate) => {
-    container.querySelectorAll('.chip').forEach(c => c.classList.toggle('active', predicate(c)));
+  // SVG layers
+  const shapeLayer = $('shapeLayer');
+  const chipLayer = $('chipLayer');
+  const glazeLayer = $('glazeLayer');
+  const sprinkleLayer = $('sprinkleLayer');
+  const textLayer = $('textLayer');
+
+  const svgEl = (tag, attrs) => {
+    const el = document.createElementNS("http://www.w3.org/2000/svg", tag);
+    for(const k in attrs) el.setAttribute(k, attrs[k]);
+    return el;
+  };
+
+  const glazeColors = (kind) => {
+    switch(kind){
+      case "pink": return { fill:"rgba(255,79,163,.18)", stroke:"rgba(255,79,163,.45)" };
+      case "vip": return { fill:"rgba(17,17,17,.14)", stroke:"rgba(199,164,76,.55)", ring:"rgba(199,164,76,.95)" };
+      default: return { fill:"rgba(255,255,255,.55)", stroke:"rgba(255,79,163,.18)" };
+    }
+  };
+
+  const wrapLines = (text, maxChars) => {
+    const words = text.split(/\s+/);
+    const lines = [];
+    let cur = "";
+    for(const w of words){
+      const next = cur ? (cur + " " + w) : w;
+      if(next.length <= maxChars){ cur = next; }
+      else { if(cur) lines.push(cur); cur = w; }
+    }
+    if(cur) lines.push(cur);
+    return lines;
+  };
+
+  const drawShape = () => {
+    shapeLayer.innerHTML = '';
+    chipLayer.innerHTML = '';
+    glazeLayer.innerHTML = '';
+    sprinkleLayer.innerHTML = '';
+    textLayer.innerHTML = '';
+
+    // Base cookie shape (emoji-ish)
+    const s = state.shape;
+    let base;
+    if(s === 'heart'){
+      base = svgEl('path', {
+        d: "M180 214 C130 184 92 156 92 124 C92 98 110 82 132 82 C150 82 164 92 180 108 C196 92 210 82 228 82 C250 82 268 98 268 124 C268 156 230 184 180 214 Z",
+        fill:"url(#cookieBase)", stroke:"rgba(15,23,42,.10)", "stroke-width":"2"
+      });
+    } else if(s === 'star'){
+      base = svgEl('path', {
+        d: "M180 58 L202 102 L250 108 L214 140 L224 188 L180 164 L136 188 L146 140 L110 108 L158 102 Z",
+        fill:"url(#cookieBase)", stroke:"rgba(15,23,42,.10)", "stroke-width":"2"
+      });
+    } else if(s === 'smiley'){
+      base = svgEl('circle', { cx:180, cy:130, r:92, fill:"url(#cookieBase)", stroke:"rgba(15,23,42,.10)", "stroke-width":"2" });
+    } else if(s === 'tree'){
+      base = svgEl('path', {
+        d: "M180 52 L214 104 L198 104 L226 150 L204 150 L236 206 L124 206 L156 150 L134 150 L162 104 L146 104 Z",
+        fill:"url(#cookieBase)", stroke:"rgba(15,23,42,.10)", "stroke-width":"2"
+      });
+    } else {
+      base = svgEl('circle', { cx:180, cy:130, r:92, fill:"url(#cookieBase)", stroke:"rgba(15,23,42,.10)", "stroke-width":"2" });
+    }
+    shapeLayer.appendChild(base);
+
+    // Choco chips
+    const chips = [[140,105,10],[210,100,7],[120,150,8],[235,155,11],[175,175,7],[160,85,6]];
+    chips.forEach(([x,y,r])=>{
+      chipLayer.appendChild(svgEl('circle',{cx:x, cy:y, r:r, fill:"rgba(75,42,27,.38)"}));
+    });
+
+    // Glaze
+    const gKind = state.icing === 'vip' ? 'vip' : (state.icing === 'pink' ? 'pink' : 'vanilla');
+    const c = glazeColors(gKind);
+
+    const glaze = (s === 'star')
+      ? svgEl('path',{ d:"M180 72 L196 104 L232 108 L206 128 L214 160 L180 144 L146 160 L154 128 L128 108 L164 104 Z", fill:c.fill, stroke:c.stroke, "stroke-width":"3", opacity:"0.95" })
+      : (s === 'heart')
+        ? svgEl('path',{ d:"M180 198 C140 170 110 150 110 126 C110 106 124 94 140 94 C154 94 166 102 180 116 C194 102 206 94 220 94 C236 94 250 106 250 126 C250 150 220 170 180 198 Z", fill:c.fill, stroke:c.stroke, "stroke-width":"3", opacity:"0.95" })
+        : (s === 'tree')
+          ? svgEl('path',{ d:"M180 76 L205 112 L194 112 L214 146 L198 146 L222 192 L138 192 L162 146 L146 146 L166 112 L155 112 Z", fill:c.fill, stroke:c.stroke, "stroke-width":"3", opacity:"0.95" })
+          : svgEl('circle',{ cx:180, cy:130, r:76, fill:c.fill, stroke:c.stroke, "stroke-width":"3", opacity:"0.95" });
+
+    glazeLayer.appendChild(glaze);
+    if(gKind === 'vip'){
+      // Gold ring
+      const ring = (s==='circle' || s==='smiley')
+        ? svgEl('circle',{cx:180, cy:130, r:78, fill:"none", stroke:c.ring, "stroke-width":"4", opacity:"0.95"})
+        : svgEl('path',{d:"M180 70 C125 85 110 155 160 200 C180 215 210 212 230 194 C270 156 255 86 180 70 Z", fill:"none", stroke:c.ring, "stroke-width":"3", opacity:"0.65"});
+      glazeLayer.appendChild(ring);
+    }
+
+    // Smiley face overlay
+    if(s === 'smiley'){
+      const eye1 = svgEl('circle',{cx:150, cy:120, r:7, fill:"rgba(15,23,42,.55)"});
+      const eye2 = svgEl('circle',{cx:210, cy:120, r:7, fill:"rgba(15,23,42,.55)"});
+      const mouth = svgEl('path',{d:"M145 155 C160 175 200 175 215 155", fill:"none", stroke:"rgba(15,23,42,.50)", "stroke-width":"6", "stroke-linecap":"round"});
+      textLayer.appendChild(eye1); textLayer.appendChild(eye2); textLayer.appendChild(mouth);
+    }
+
+    // Sprinkles
+    if(state.spr !== 'off'){
+      const n = state.spr === 'light' ? 10 : state.spr === 'medium' ? 18 : 28;
+      for(let i=0;i<n;i++){
+        const x = 90 + Math.random()*180;
+        const y = 70 + Math.random()*140;
+        const w = 10, h = 4;
+        const r = (Math.random()*160-80);
+        const isGold = (state.icing === 'vip' && Math.random()<0.25);
+        const rect = svgEl('rect',{x:x, y:y, width:w, height:h, rx:"999", fill: isGold ? "rgba(199,164,76,.95)" : "rgba(255,79,163,.9)", transform:`rotate(${r} ${x} ${y})`, opacity:"0.95"});
+        sprinkleLayer.appendChild(rect);
+      }
+    }
+
+    // Text on cookie
+    const text = (state.message||"").trim();
+    if(text){
+      const lines = wrapLines(text, 18).slice(0,4);
+      const startY = 126 - (lines.length-1)*14;
+      const fill = (state.icing === "vip") ? "rgba(199,164,76,.98)" : "rgba(15,23,42,.78)";
+      lines.forEach((ln, idx)=>{
+        const t = svgEl('text',{x:180, y:startY + idx*28, "font-size":"18", "font-weight":"900", "text-anchor":"middle", fill});
+        t.textContent = ln;
+        textLayer.appendChild(t);
+      });
+    }
   };
 
   const rarityText = () => {
@@ -694,56 +863,22 @@
     if(state.pack === 'custom') return 'Rare';
     return 'Classic';
   };
-
   const updateRarity = () => $('rarity').textContent = 'Rarity: ' + rarityText();
 
   const buildPreview = () => {
-    const base = location.origin + location.pathname.replace(/index\.html$/,'') + 'preview.html';
-    const url = base + '?rid=' + encodeURIComponent(state.rid);
-    previewLink.value = url;
+    previewLink.value = abs('preview.html') + '?rid=' + encodeURIComponent(state.rid);
   };
-
   const buildQr = () => {
-    const base = location.origin + location.pathname.replace(/index\.html$/,'') + 'keks.html';
-    const url = base + '?order=' + encodeURIComponent(state.orderId) + '&rid=' + encodeURIComponent(state.rid);
-    qrLink.value = url;
+    qrLink.value = abs('keks.html') + '?order=' + encodeURIComponent(state.orderId) + '&rid=' + encodeURIComponent(state.rid);
   };
 
-  const renderSprinkles = () => {
-    sprinkles.innerHTML = '';
-    if(state.spr === 'off') return;
-    const n = state.spr === 'light' ? 10 : state.spr === 'medium' ? 18 : 28;
-    for(let i=0;i<n;i++){
-      const el = document.createElement('i');
-      el.style.setProperty('--x', Math.round(Math.random()*92)+'%');
-      el.style.setProperty('--y', Math.round(Math.random()*82)+'%');
-      el.style.setProperty('--r', (Math.random()*160-80)+'deg');
-      if(state.icing === 'vip' && Math.random() < 0.25) el.style.background = 'rgba(199,164,76,.95)';
-      sprinkles.appendChild(el);
-    }
-  };
-
-  const renderIcing = () => {
-    if(state.icing === 'soft'){
-      icing.style.background = 'rgba(255,255,255,.55)';
-      icing.style.borderColor = 'rgba(255,79,163,.18)';
-    } else if(state.icing === 'pink'){
-      icing.style.background = 'rgba(255,79,163,.16)';
-      icing.style.borderColor = 'rgba(255,79,163,.35)';
-    } else {
-      icing.style.background = 'linear-gradient(180deg, rgba(17,17,17,.16), rgba(17,17,17,.06))';
-      icing.style.borderColor = 'rgba(199,164,76,.45)';
-    }
+  const setActiveChips = (container, predicate) => {
+    container.querySelectorAll('.chip').forEach(c => c.classList.toggle('active', predicate(c)));
   };
 
   const applyPackTiles = () => {
     pack.value = state.pack;
     packTiles.querySelectorAll('.tile').forEach(t => t.classList.toggle('active', t.dataset.pack === state.pack));
-  };
-
-  const applyMessage = () => {
-    msg.value = state.message;
-    msgOnCookie.textContent = (state.message || 'Deine Message hier.').slice(0, 110);
   };
 
   const saveDraftV2 = () => {
@@ -755,54 +890,108 @@
       pack: state.pack,
       icing: state.icing,
       spr: state.spr,
+      shape: state.shape,
       updatedAt: new Date().toISOString()
     };
-    localStorage.setItem(CFG.draftKey, JSON.stringify(draft));
+    const raw = JSON.stringify(draft);
+    localStorage.setItem(CFG.draftKey, raw);
+    localStorage.setItem(CFG.draftByRidPrefix + state.rid, raw);
+
     localStorage.setItem('ok_msg', state.message);
     localStorage.setItem('ok_pack', state.pack);
     localStorage.setItem('ok_icing', state.icing);
     localStorage.setItem('ok_spr', state.spr);
+    localStorage.setItem('ok_shape', state.shape);
   };
 
   // Init
-  applyMessage();
+  msg.value = state.message;
   applyPackTiles();
-  renderIcing();
-  renderSprinkles();
   updateRarity();
   buildPreview();
   buildQr();
+  pushHist();
+  drawShape();
   saveDraftV2();
 
-  // Buttons
+  // Flow
   const scrollToFlow = () => $('config').scrollIntoView({behavior:'smooth', block:'start'});
   $('btnStart').onclick = scrollToFlow;
   $('btnStart2').onclick = scrollToFlow;
-
   $('btnPreview').onclick = () => { saveDraftV2(); location.href = './preview.html?rid=' + encodeURIComponent(state.rid); };
 
   $('btnAutoDemo').onclick = () => {
     state.message = "Ick denk an dich. Ehrlich.";
-    applyMessage(); buildPreview(); buildQr(); saveDraftV2();
+    msg.value = state.message;
+    pushHist();
+    drawShape(); updateRarity(); buildPreview(); buildQr(); saveDraftV2();
     toast('Demo geladen.');
   };
 
-  // Templates
+  const surprise = () => {
+    const templates = [
+      "Ich denk an dich.",
+      "Beweg dein Arsch.",
+      "Du packst das.",
+      "Sorry. Lass reden.",
+      "Party heute?",
+      "Komm klar – aber mit Liebe.",
+      "Du fehlst hier."
+    ];
+    const packs = ["quick","custom","premium"];
+    const icings = ["soft","pink","vip"];
+    const sprs = ["light","medium","heavy","off"];
+    const shapes = ["circle","heart","star","smiley","tree"];
+
+    state.message = templates[Math.floor(Math.random()*templates.length)];
+    state.pack = packs[Math.floor(Math.random()*packs.length)];
+    state.icing = icings[Math.floor(Math.random()*icings.length)];
+    state.spr = sprs[Math.floor(Math.random()*sprs.length)];
+    state.shape = shapes[Math.floor(Math.random()*shapes.length)];
+
+    msg.value = state.message;
+
+    applyPackTiles();
+    setActiveChips($('dekoRow'), (x)=>x.dataset.icing === state.icing);
+    setActiveChips($('sprRow'), (x)=>x.dataset.spr === state.spr);
+    setActiveChips($('shapeRow'), (x)=>x.dataset.shape === state.shape);
+
+    pushHist();
+    drawShape(); updateRarity(); buildPreview(); buildQr(); saveDraftV2();
+    toast('Überraschung gesetzt.');
+  };
+  $('btnSurprise').onclick = surprise;
+  $('surprise2').onclick = () => { surprise(); scrollToFlow(); };
+
+  // Templates click
   $('templateRow').addEventListener('click', (e) => {
     const b = e.target.closest('button[data-tpl]');
     if(!b) return;
     state.message = b.dataset.tpl;
-    applyMessage(); buildPreview(); buildQr(); saveDraftV2();
+    msg.value = state.message;
     $('templateRow').querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
     b.classList.add('active');
+    pushHist();
+    drawShape(); buildPreview(); buildQr(); saveDraftV2();
     toast('Template gesetzt.');
   });
 
   // Message typing
   msg.addEventListener('input', () => {
     state.message = msg.value.trim();
-    msgOnCookie.textContent = (state.message || 'Deine Message hier.').slice(0,110);
-    buildPreview(); buildQr(); saveDraftV2();
+    pushHist();
+    drawShape(); buildPreview(); buildQr(); saveDraftV2();
+  });
+
+  // Shape chips
+  $('shapeRow').addEventListener('click', (e) => {
+    const b = e.target.closest('button[data-shape]');
+    if(!b) return;
+    state.shape = b.dataset.shape;
+    setActiveChips($('shapeRow'), (x)=>x===b);
+    pushHist();
+    drawShape(); buildPreview(); buildQr(); saveDraftV2();
+    toast('Form gesetzt.');
   });
 
   // Pack tiles
@@ -810,11 +999,13 @@
     const t = e.target.closest('.tile');
     if(!t) return;
     state.pack = t.dataset.pack;
-    applyPackTiles(); updateRarity(); saveDraftV2();
+    applyPackTiles();
+    pushHist();
+    drawShape(); updateRarity(); saveDraftV2();
     toast('Pack gewählt.');
   });
 
-  // Flow steps
+  // Steps
   let step = 1;
   const showStep = (n) => {
     step = n;
@@ -839,7 +1030,8 @@
     if(!b) return;
     state.icing = b.dataset.icing;
     setActiveChips($('dekoRow'), (x)=>x===b);
-    renderIcing(); renderSprinkles(); updateRarity(); saveDraftV2();
+    pushHist();
+    drawShape(); updateRarity(); saveDraftV2();
     toast('Style gesetzt.');
   });
   $('sprRow').addEventListener('click', (e) => {
@@ -847,7 +1039,8 @@
     if(!b) return;
     state.spr = b.dataset.spr;
     setActiveChips($('sprRow'), (x)=>x===b);
-    renderSprinkles(); saveDraftV2();
+    pushHist();
+    drawShape(); saveDraftV2();
     toast('Sprinkles gesetzt.');
   });
 
@@ -858,13 +1051,10 @@
     toast('Demo: Zahlung kommt als nächstes (Stripe Link später).');
   };
 
-  // Stempel (Early Reward, off-chain vorbereitet)
+  // Stempel
   const getStamps = () => parseInt(localStorage.getItem(CFG.stampsKey) || "0", 10) || 0;
   const setStamps = (n) => localStorage.setItem(CFG.stampsKey, String(Math.max(0,n)));
-  const renderStamps = () => {
-    const s = getStamps();
-    if(stampsEl) stampsEl.textContent = String(s);
-  };
+  const renderStamps = () => { const s = getStamps(); if(stampsEl) stampsEl.textContent = String(s); };
   renderStamps();
   $('addStamp').onclick = () => {
     const s = getStamps() + 1;
@@ -876,7 +1066,7 @@
   // Hall actions
   $('btnHall').onclick = () => document.getElementById('hall').scrollIntoView({behavior:'smooth'});
   $('copyCodeBtn').onclick = async () => {
-    const code = btoa(JSON.stringify({v:2, rid: state.rid, m: state.message, p: state.pack, i: state.icing, s: state.spr}));
+    const code = btoa(JSON.stringify({v:2, rid: state.rid, m: state.message, p: state.pack, i: state.icing, s: state.spr, sh: state.shape}));
     try{ await navigator.clipboard.writeText(code); toast('Design-Code kopiert.'); }
     catch(e){ toast('Kopieren ging nicht (Browser).'); }
   };
@@ -890,11 +1080,11 @@
     }
   };
 
-  // Wenn irgendwo noch ein Service Worker steckt: killen (damit der schwarze Screen nicht cached bleibt)
+  // Service Worker kill (gegen cached black screen)
   if('serviceWorker' in navigator){
     navigator.serviceWorker.getRegistrations().then(rs => rs.forEach(r => r.unregister())).catch(()=>{});
   }
 })();
 </script>
 </body>
-</html>
+  </html>

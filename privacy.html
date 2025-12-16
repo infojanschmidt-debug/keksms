@@ -6,78 +6,30 @@
   <title>OnlyKeks – Wie wir mit Daten umgehen</title>
   <meta name="theme-color" content="#ff4fa3" />
   <style>
-    :root{
-      --ink:#0f172a;
-      --muted:#475569;
-      --line:rgba(15,23,42,.10);
-      --pink:#ff4fa3;
-      --pink2:#ff7bc0;
-      --shadow: 0 10px 30px rgba(2,6,23,.08);
-      --r:22px;
-      --max: 860px;
-      --pad: 18px;
-    }
-    *{box-sizing:border-box}
-    body{
-      margin:0;
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
-      color:var(--ink);
-      background:
-        radial-gradient(900px 420px at 15% 0%, rgba(255,79,163,.18), transparent 55%),
-        linear-gradient(180deg, #fff 0%, #fff6fb 55%, #fff 100%);
-    }
-    .wrap{max-width:var(--max); margin:0 auto; padding: 22px var(--pad) 50px;}
-    .card{
-      background: rgba(255,255,255,.86);
-      border:1px solid var(--line);
-      border-radius: var(--r);
-      box-shadow: var(--shadow);
-      padding: 18px;
-    }
-    h1{margin:0 0 8px; font-size: 28px; letter-spacing:-.02em}
-    h2{margin:18px 0 8px; font-size: 18px}
-    p, li{color: rgba(15,23,42,.74); line-height:1.55}
-    a{color: rgba(15,23,42,.82)}
-    .pill{
-      display:inline-flex; gap:10px; align-items:center;
-      padding: 8px 12px;
-      border-radius: 999px;
-      border:1px solid rgba(255,79,163,.25);
-      background: rgba(255,79,163,.08);
-      font-weight:900;
-      color: rgba(255,79,163,.95);
-      font-size: 13px;
-      margin-top: 8px;
-    }
+    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;background:#fff;color:#111}
+    .wrap{max-width:860px;margin:0 auto;padding:18px}
+    .card{border:1px solid #ececec;border-radius:18px;padding:14px;background:rgba(255,255,255,.95)}
+    .muted{color:#666;line-height:1.55}
+    a{color:inherit}
   </style>
 </head>
 <body>
   <div class="wrap">
+    <h1>Wie wir mit Daten umgehen</h1>
     <div class="card">
-      <h1>Wie wir mit Daten umgehen</h1>
-      <div class="pill">Kurz. Menschlich. Ohne Verkauf.</div>
-
-      <p>OnlyKeks ist ein Geschenk-Produkt. Damit dein Keks-Entwurf nicht weg ist, speichern wir ein paar technische Infos im Browser (localStorage/Cookies). Mehr nicht. </p>
-
-      <h2>Was ist „notwendig“?</h2>
-      <ul>
-        <li>Entwurf (Message, Pack, Style) lokal speichern, damit du nicht neu tippen musst.</li>
-        <li>Token/Link, damit der Reply-Loop funktioniert.</li>
+      <p class="muted">
+        Kurz und klar: Im MVP speichern wir deinen Entwurf lokal in deinem Browser (localStorage),
+        damit dein Keks nicht verloren geht.
+      </p>
+      <ul class="muted">
+        <li><b>Kein Datenverkauf.</b></li>
+        <li><b>Kein Tracking-Zirkus</b> im MVP.</li>
+        <li>Später (optional): anonyme Statistik, damit wir verstehen, welche Kekse funktionieren.</li>
       </ul>
-
-      <h2>Was ist „optional“?</h2>
-      <ul>
-        <li>Anonyme Statistik (später), damit wir verstehen, welche Kekse gut ankommen.</li>
-      </ul>
-
-      <h2>Was wir nicht machen</h2>
-      <ul>
-        <li>Wir verkaufen keine Daten.</li>
-        <li>Wir bauen kein Werbe-Tracking ein.</li>
-        <li>Wir zwingen dich nicht in Accounts.</li>
-      </ul>
-
-      <p style="margin-top:18px"><a href="./">Zurück zur Seite</a></p>
+      <p class="muted">
+        Wenn du willst, dass alles weg ist: Browserdaten für diese Seite löschen.
+      </p>
+      <p class="muted"><a href="./">Zurück</a></p>
     </div>
   </div>
 </body>

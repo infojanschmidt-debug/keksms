@@ -13,7 +13,7 @@
     textarea,input{width:100%;padding:12px;border-radius:14px;border:1px solid #ececec;font:inherit}
     textarea{min-height:120px}
     button{padding:12px 14px;border-radius:999px;border:1px solid rgba(255,79,163,.5);background:rgba(255,79,163,.12);font-weight:900;cursor:pointer}
-    .pill{display:inline-flex;gap:8px;align-items:center;padding:8px 10px;border-radius:999px;border:1px solid rgba(255,79,163,.25);background:rgba(255,79,163,.06);font-weight:900;margin:8px 0}
+    .pill{display:inline-flex;gap:8px;align-items:center;padding:8px 10px;border-radius:999px;border:1px solid rgba(255,79,163,.25);background:rgba(255,79,163,.06);font-weight:900;margin:8px 0;flex-wrap:wrap}
   </style>
 </head>
 <body>
@@ -29,12 +29,19 @@
 
       <div style="height:10px"></div>
       <button id="send">Antwort speichern (Demo)</button>
-      <p class="muted" style="margin-top:10px">Demo: Speichert lokal. Später: echte Speicherung/Versand/Workflow.</p>
+      <p class="muted" style="margin-top:10px">
+        Demo: Speichert lokal im Browser des Empfängers. Nächster Schritt ist Backend/Token-Sharing, damit der Absender es wirklich sieht.
+      </p>
     </div>
   </div>
 
 <script>
 (() => {
+  const CFG = {
+    replyByOrderPrefix: "onlykeks_reply_order_",
+    replyByRidPrefix: "onlykeks_reply_rid_"
+  };
+
   const q = new URLSearchParams(location.search);
   const order = q.get('order') || 'unknown';
   const rid = q.get('rid') || 'unknown';
@@ -44,7 +51,11 @@
   document.getElementById('send').onclick = () => {
     const txt = document.getElementById('reply').value.trim();
     if(txt.length < 2){ alert('Kurz was schreiben, bitte.'); return; }
-    localStorage.setItem('onlykeks_reply_' + order, JSON.stringify({ order, rid, txt, at: new Date().toISOString() }));
+
+    const payload = { order, rid, txt, at: new Date().toISOString() };
+    localStorage.setItem(CFG.replyByOrderPrefix + order, JSON.stringify(payload));
+    localStorage.setItem(CFG.replyByRidPrefix + rid, JSON.stringify(payload));
+
     alert('Gespeichert (Demo). Später geht das als echte Post raus.');
   };
 })();

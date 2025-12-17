@@ -349,36 +349,7 @@
   };
 
   const $ = (id)=>document.getElementById(id);
-
-  /* =========================
-     INTRO
-  ========================= */
-  (function intro(){
-    const intro = $("intro");
-    const vid = $("introVid");
-    const skip = $("introSkip");
-
-    function hide(){
-      intro.style.display="none";
-      intro.setAttribute("aria-hidden","true");
-      try{vid.pause();}catch(e){}
-    }
-    skip.addEventListener("click", (e)=>{e.preventDefault(); hide();});
-    document.addEventListener("keydown",(e)=>{ if(e.key==="Escape") hide(); });
-    vid.addEventListener("ended", hide);
-    setTimeout(()=>{ if(intro.style.display!=="none") hide(); }, 9000);
-
-    (async ()=>{
-      try{ await vid.play(); }
-      catch(e){
-        intro.addEventListener("click", async (ev)=>{
-          if(ev.target && ev.target.id==="introSkip") return;
-          try{ await vid.play(); }catch(e2){ hide(); }
-        }, {once:true});
-      }
-    })();
-  })();
-
+  
   /* =========================
      CONSENT
   ========================= */
@@ -902,6 +873,7 @@ QR-Reply-Link: keks.html?reply=${state.orderId}`
 </script>
 </body>
 </html>
+
 
 
 

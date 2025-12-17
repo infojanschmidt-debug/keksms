@@ -3,20 +3,19 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>OnlyKeks – Post, die schmeckt</title>
-  <meta name="description" content="Schick eine Nachricht als Keks. QR scan → echte Antwort zurück. Schnell, persönlich, viral." />
+  <title>OnlyKeks – 3D Konfigurator</title>
   <meta name="theme-color" content="#0E0E11" />
   <style>
     :root{
       --bg:#0E0E11;
-      --panel: rgba(21,21,28,.66);
+      --panel:#15151C;
       --stroke: rgba(255,255,255,.10);
       --text:#F2F2F4;
       --muted:#B9BBC6;
       --gold:#E6C27A;
       --pink:#ff4fa3;
-      --shadow: 0 24px 60px rgba(0,0,0,.55);
-      --shadowSoft: 0 12px 30px rgba(0,0,0,.35);
+      --cookie:#B8895B;
+      --shadow: 0 20px 60px rgba(0,0,0,.55);
       --r:18px;
 
       --common:#b9b9b9;
@@ -29,872 +28,988 @@
     html,body{height:100%}
     body{
       margin:0;
+      background: radial-gradient(1200px 600px at 50% 0%, #181823 0%, var(--bg) 55%, #0a0a0d 100%);
       color:var(--text);
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
-      background: radial-gradient(1200px 700px at 50% 20%, #1a1a24 0%, var(--bg) 55%, #09090c 100%);
-      overflow:hidden;
-    }
-    a{color:inherit}
-
-    /* Intro */
-    .intro{
-      position:fixed; inset:0; z-index:9999;
-      display:grid; place-items:center;
-      background: radial-gradient(1200px 700px at 50% 20%, #1a1a24 0%, var(--bg) 55%, #09090c 100%);
-    }
-    .intro video{
-      width:min(980px, 92vw);
-      height:auto;
-      border-radius:24px;
-      border:1px solid rgba(255,255,255,.10);
-      box-shadow: var(--shadow);
-      background:#000;
-    }
-    .introBar{
-      position:absolute; left:18px; right:18px; bottom:16px;
-      display:flex; gap:10px; justify-content:space-between; align-items:center; flex-wrap:wrap;
-      color:rgba(185,187,198,.9);
-      font-size:12px;
+      font-family: ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
+      -webkit-font-smoothing:antialiased;
+      overflow-x:hidden;
     }
 
-    /* Stage */
-    .stage{position:relative; width:100%; height:100vh;}
-    canvas#keks3d{width:100%; height:100vh; display:block; outline:none; background:transparent;}
+    /* FAIL-OPEN: App ist IMMER sichtbar */
+    #app{display:block; opacity:1}
 
-    .uiOverlay{position:absolute; inset:0; pointer-events:none;}
-    .topBar{
-      pointer-events:auto;
-      position:absolute; left:18px; right:18px; top:16px;
-      display:flex; align-items:center; justify-content:space-between; gap:12px;
+    .wrap{max-width:1120px; margin:0 auto; padding:18px 14px 60px}
+    header{
+      display:flex; align-items:center; justify-content:space-between;
+      gap:12px; padding:10px 0 16px;
     }
-    .row{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
     .brand{
-      display:flex; align-items:center; gap:10px;
-      padding:10px 14px;
-      border:1px solid var(--stroke);
-      border-radius:999px;
-      background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.02));
-      box-shadow: var(--shadowSoft);
-      backdrop-filter: blur(12px);
+      display:flex; align-items:center; gap:12px;
     }
     .logo{
-      width:34px;height:34px;border-radius:12px;
-      display:grid;place-items:center;
-      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.14) 0 35%, rgba(230,194,122,.18) 36% 100%);
-      border:1px solid rgba(255,255,255,.10);
-    }
-    .brand strong{font-weight:950; letter-spacing:.2px}
-    .pill{
-      font-size:12px;
-      padding:8px 10px;
-      border-radius:999px;
+      width:42px;height:42px;border-radius:14px;
+      background: radial-gradient(circle at 35% 35%, #ffd9b8, #b8895b 55%, #6d4a2a 110%);
+      box-shadow: 0 12px 30px rgba(0,0,0,.45);
       border:1px solid rgba(255,255,255,.12);
-      background: rgba(0,0,0,.22);
-      color: var(--muted);
+    }
+    h1{font-size:18px; margin:0; letter-spacing:.2px}
+    .sub{color:var(--muted); font-size:12.5px; margin-top:2px}
+    .pill{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:8px 10px; border-radius:999px;
+      background: rgba(21,21,28,.66);
+      border:1px solid var(--stroke);
+      box-shadow: 0 10px 25px rgba(0,0,0,.35);
+      font-size:12px; color:var(--muted);
+      user-select:none;
+    }
+    .dot{width:9px;height:9px;border-radius:50%}
+    .btn{
+      appearance:none; border:1px solid var(--stroke);
+      background: rgba(21,21,28,.72);
+      color:var(--text);
+      border-radius:14px;
+      padding:10px 12px;
+      font-weight:650;
+      cursor:pointer;
+      transition: transform .08s ease, border-color .15s ease, background .15s ease;
+    }
+    .btn:active{transform: translateY(1px)}
+    .btn.primary{
+      background: linear-gradient(180deg, rgba(230,194,122,.18), rgba(21,21,28,.72));
+      border-color: rgba(230,194,122,.35);
+    }
+    .btn.ghost{background:transparent}
+    .grid{
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap:14px;
+      align-items:start;
+    }
+    @media (max-width: 960px){
+      .grid{grid-template-columns:1fr; }
+    }
+
+    .card{
+      background: rgba(21,21,28,.66);
+      border:1px solid var(--stroke);
+      border-radius: var(--r);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .card .hd{
+      padding:14px 14px 10px;
+      border-bottom:1px solid rgba(255,255,255,.06);
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
+    }
+    .title{font-weight:800; letter-spacing:.2px}
+    .muted{color:var(--muted)}
+    .card .bd{padding:14px}
+    .row{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
+
+    .stage{
+      position:relative;
+      min-height: 520px;
+      background:
+        radial-gradient(520px 320px at 50% 30%, rgba(255,255,255,.08), rgba(255,255,255,0) 60%),
+        radial-gradient(700px 380px at 50% 120%, rgba(230,194,122,.06), rgba(0,0,0,0) 62%);
+    }
+    .stageTop{
+      padding:14px;
+      display:flex; align-items:center; justify-content:space-between; gap:12px;
+    }
+    .big{
+      font-size:28px; line-height:1.05; margin:0;
+      letter-spacing:-.4px;
+    }
+    .lead{margin:8px 0 0; color:var(--muted); max-width:56ch}
+    .canvasWrap{
+      position:relative;
+      margin:10px 14px 14px;
+      border-radius: 22px;
+      border: 1px solid rgba(255,255,255,.10);
+      overflow:hidden;
+      background: radial-gradient(600px 320px at 50% 25%, rgba(255,255,255,.06), rgba(0,0,0,.15) 65%);
+      min-height: 360px;
+      box-shadow: 0 28px 90px rgba(0,0,0,.65);
+    }
+    canvas{display:block; width:100%; height:360px}
+    .glow{
+      position:absolute; inset:-2px;
+      pointer-events:none;
+      border-radius: 24px;
+      box-shadow: 0 0 0 rgba(0,0,0,0);
+      transition: box-shadow .22s ease;
     }
     .badge{
       display:inline-flex; align-items:center; gap:8px;
-      padding:8px 10px;
-      border-radius:999px;
-      border:1px solid rgba(230,194,122,.35);
-      background: rgba(230,194,122,.08);
-      color: var(--gold);
-      font-weight:900;
-      font-size:12px;
-      white-space:nowrap;
+      padding:8px 10px; border-radius:999px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.22);
+      font-size:12px; color:var(--muted);
+      user-select:none;
     }
-    .dot{width:10px;height:10px;border-radius:99px;background:var(--common);}
-
-    .btn{
-      pointer-events:auto;
-      appearance:none; border:1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.06);
-      color: var(--text);
-      height:44px;
-      padding:0 14px;
-      border-radius:14px;
-      font-weight:900;
-      letter-spacing:.2px;
+    .badge strong{color:var(--text)}
+    .split{display:flex; gap:10px; flex-wrap:wrap; align-items:center; justify-content:space-between}
+    .chips{display:flex; gap:8px; flex-wrap:wrap}
+    .chip{
+      padding:8px 10px; border-radius:999px;
+      border:1px solid var(--stroke);
+      background: rgba(21,21,28,.72);
+      color:var(--muted);
       cursor:pointer;
       user-select:none;
-      -webkit-tap-highlight-color: transparent;
-      transition: transform .18s cubic-bezier(.2,.9,.2,1), box-shadow .18s cubic-bezier(.2,.9,.2,1), background .18s;
-      box-shadow: 0 14px 40px rgba(0,0,0,.35);
+      font-size:12.5px;
     }
-    .btn:hover{transform: translateY(-1px); background: rgba(255,255,255,.08)}
-    .btn:active{transform: translateY(1px) scale(.99); box-shadow:none}
-    .btnPrimary{
-      background: linear-gradient(180deg, rgba(230,194,122,.98), rgba(184,137,91,.98));
-      border-color: rgba(230,194,122,.45);
-      color: #14141A;
-    }
-    .btnGhost{background: rgba(0,0,0,.22)}
-    .btnDanger{background: rgba(255,79,163,.14); border-color: rgba(255,79,163,.24)}
-
-    .panel{
-      pointer-events:auto;
-      position:absolute;
-      right:18px;
-      top:78px;
-      width: min(420px, calc(100% - 36px));
-      border:1px solid rgba(255,255,255,.10);
-      background: var(--panel);
-      border-radius: var(--r);
-      box-shadow: var(--shadow);
-      backdrop-filter: blur(14px);
-      padding:16px;
-    }
-    .h1{margin:0 0 8px; font-size: clamp(28px, 3.2vw, 44px); line-height:1.05; font-weight:980}
-    .sub{margin:0 0 12px; color: var(--muted); line-height:1.45; font-size: 14.5px}
-    .hr{height:1px; background: rgba(255,255,255,.10); margin:12px 0}
-    .label{font-size:12px; color: rgba(185,187,198,.9); font-weight:900; margin:10px 0 6px}
-    .input{
-      width:100%;
-      height:46px;
-      border-radius:14px;
-      border:1px solid rgba(255,255,255,.12);
-      background: rgba(0,0,0,.18);
-      color: var(--text);
-      padding:0 14px;
-      font-size:16px;
-      font-weight:850;
-      outline:none;
-    }
-    .chip{
-      pointer-events:auto;
-      border:1px solid rgba(255,255,255,.12);
-      background: rgba(0,0,0,.18);
-      color: var(--text);
-      padding:10px 12px;
-      border-radius:999px;
-      font-weight:900;
-      font-size:13px;
-      cursor:pointer;
-      transition: transform .16s cubic-bezier(.2,.9,.2,1), background .16s;
-    }
-    .chip:hover{transform: translateY(-1px); background: rgba(255,255,255,.06)}
-    .chip.on{border-color: rgba(230,194,122,.40); background: rgba(230,194,122,.10); color: var(--gold)}
-    .hint{margin:10px 0 0; color: rgba(185,187,198,.85); font-size:12.5px; line-height:1.45}
-
-    .bottomBar{
-      pointer-events:auto;
-      position:absolute;
-      left:18px; right:18px; bottom:16px;
-      display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;
-    }
-    .trust{
-      display:flex; gap:8px; flex-wrap:wrap; align-items:center;
-      color: rgba(185,187,198,.9);
-      font-size:12px;
-    }
-    .trust span{
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(0,0,0,.20);
-      border-radius:999px;
-      padding:8px 10px;
+    .chip.on{
+      color:var(--text);
+      border-color: rgba(255,255,255,.22);
+      background: rgba(255,255,255,.06);
     }
 
-    .consent{
-      position:fixed; left:12px; right:12px; bottom:12px; z-index:9998;
-      max-width:980px; margin:0 auto;
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(21,21,28,.86);
+    .setScroller{
+      display:flex; gap:10px; overflow:auto; padding:2px 0 8px;
+      scroll-snap-type:x mandatory;
+    }
+    .set{
+      flex: 0 0 260px;
+      scroll-snap-align:start;
       border-radius:18px;
-      box-shadow: var(--shadow);
+      border:1px solid rgba(255,255,255,.10);
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(21,21,28,.72));
       padding:12px;
-      display:none;
-      backdrop-filter: blur(14px);
+      cursor:pointer;
+      transition: transform .1s ease, border-color .15s ease;
     }
-    .consentRow{display:flex; gap:10px; align-items:center; justify-content:space-between; flex-wrap:wrap}
-    .consent p{margin:0; color: rgba(185,187,198,.95); font-size:13px; line-height:1.35}
-    .consent strong{color:var(--text)}
+    .set:hover{transform: translateY(-1px)}
+    .set .name{font-weight:800}
+    .set .desc{font-size:12.5px; color:var(--muted); margin-top:6px; min-height:34px}
+    .set .meta{display:flex; justify-content:space-between; margin-top:10px; font-size:12px; color:var(--muted)}
+    .set.active{border-color: rgba(230,194,122,.35)}
 
-    body.godmode .panel{display:none}
-    body.godmode .trust{display:none}
-    body.godmode .btnGod{background: rgba(230,194,122,.14); border-color: rgba(230,194,122,.30)}
+    textarea,input{
+      width:100%;
+      padding:12px 12px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.18);
+      color:var(--text);
+      outline:none;
+      font-size:14px;
+    }
+    textarea{min-height: 92px; resize: vertical}
+    .hint{font-size:12px; color:var(--muted); margin-top:8px}
+    .hr{height:1px; background: rgba(255,255,255,.06); margin:14px 0}
+
+    .mini{
+      display:flex; gap:10px; flex-wrap:wrap;
+    }
+    .kv{
+      flex:1 1 170px;
+      padding:10px 10px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.08);
+      background: rgba(0,0,0,.18);
+    }
+    .kv .k{font-size:11px; color:var(--muted)}
+    .kv .v{margin-top:4px; font-weight:800}
+
+    .hall{
+      display:flex; gap:10px; overflow:auto; padding:2px 0 8px;
+    }
+    .hallItem{
+      flex: 0 0 240px;
+      border-radius:18px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.18);
+      padding:12px;
+      cursor:pointer;
+      transition: transform .1s ease, border-color .15s ease;
+      position:relative;
+      overflow:hidden;
+    }
+    .hallItem:hover{transform: translateY(-1px)}
+    .hallItem .t{font-weight:900}
+    .hallItem .m{margin-top:6px; color:var(--muted); font-size:12.5px; min-height:38px}
+    .hallItem .f{display:flex; justify-content:space-between; margin-top:10px; font-size:12px; color:var(--muted)}
+    .vip{
+      border-color: rgba(230,194,122,.35);
+    }
+    .vip::after{
+      content:"VIP";
+      position:absolute; top:10px; right:10px;
+      font-size:11px; letter-spacing:.6px;
+      padding:6px 8px; border-radius:999px;
+      background: rgba(0,0,0,.35);
+      border:1px solid rgba(230,194,122,.35);
+      color: var(--gold);
+    }
+
+    .qrBox{
+      display:flex; gap:12px; align-items:center; flex-wrap:wrap;
+    }
+    #qr{
+      width:132px; height:132px;
+      border-radius:16px;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,.10);
+      background:#0b0b0f;
+      display:flex; align-items:center; justify-content:center;
+    }
+    .toast{
+      position:fixed; left:50%; bottom:18px;
+      transform:translateX(-50%);
+      background: rgba(0,0,0,.65);
+      border:1px solid rgba(255,255,255,.12);
+      color:var(--text);
+      padding:10px 12px;
+      border-radius:14px;
+      box-shadow: 0 20px 50px rgba(0,0,0,.55);
+      font-size:13px;
+      opacity:0; pointer-events:none;
+      transition: opacity .15s ease;
+    }
+    .toast.on{opacity:1}
+    .fineprint{font-size:12px; color:var(--muted); margin-top:10px}
+    a{color:var(--text); text-decoration:none; border-bottom:1px dashed rgba(255,255,255,.25)}
   </style>
 </head>
 
 <body>
-
-  <!-- Intro Video (assets/Intro.mp4) -->
-  <div class="intro" id="intro">
-    <video id="introVid" playsinline muted preload="auto">
-      <source src="assets/Intro.mp4" type="video/mp4">
-    </video>
-    <div class="introBar">
-      <span>Wenn Autoplay blockt: Klick ins Video.</span>
-      <button class="btn btnGhost" id="skipIntro" type="button">Skip</button>
-    </div>
-  </div>
-
-  <section class="stage" aria-label="3D Keks Konfigurator">
-    <canvas id="keks3d" tabindex="0"></canvas>
-
-    <div class="uiOverlay">
-      <div class="topBar">
-        <div class="row">
-          <div class="brand">
-            <div class="logo">🍪</div>
-            <strong>OnlyKeks</strong>
-            <span class="pill">Post, die schmeckt</span>
-          </div>
-
-          <div class="badge">
-            <span class="dot" id="rarityDot"></span>
-            <span id="rarityText">COMMON</span>
+  <div id="app">
+    <div class="wrap">
+      <header>
+        <div class="brand">
+          <div class="logo" aria-hidden="true"></div>
+          <div>
+            <h1>OnlyKeks</h1>
+            <div class="sub">Echter 3D-Keks. Minimal UI. Maximal Wirkung.</div>
           </div>
         </div>
 
         <div class="row">
-          <button class="btn btnGhost" id="btnHall" type="button">Hall of Keks</button>
-          <button class="btn btnGhost btnGod" id="btnGod" type="button">Godmode</button>
-          <button class="btn btnPrimary" id="btnSurprise" type="button">Überrasch mich</button>
+          <div class="pill" id="rarityPill"><span class="dot" id="rarityDot"></span><span id="rarityLabel">COMMON</span></div>
+          <button class="btn ghost" id="btnSurprise">Überrasch mich</button>
+          <button class="btn" id="btnShare">Keks teilen</button>
+        </div>
+      </header>
+
+      <div class="grid">
+        <!-- LEFT: Bühne -->
+        <div class="card stage">
+          <div class="stageTop">
+            <div>
+              <p class="big" style="margin:0">Schick ’ne Message. Als Keks.</p>
+              <p class="lead">Empfänger scannt – antwortet direkt. Rarity entscheidet Style & Wirkung.</p>
+              <div class="row" style="margin-top:10px">
+                <span class="badge"><strong id="ruleA">Common–Rare</strong> <span class="muted">bisschen Style</span></span>
+                <span class="badge"><strong id="ruleB">Epic–Legendary</strong> <span class="muted">weniger basteln, mehr Wirkung</span></span>
+              </div>
+            </div>
+
+            <div class="row">
+              <button class="btn primary" id="btnCheckout">Keks losschicken</button>
+            </div>
+          </div>
+
+          <div class="canvasWrap" id="canvasWrap">
+            <div class="glow" id="glow"></div>
+            <canvas id="c"></canvas>
+          </div>
+
+          <div class="bd">
+            <div class="split">
+              <div class="chips" id="shapeChips"></div>
+              <div class="chips" id="decoChips"></div>
+            </div>
+
+            <div class="hr"></div>
+
+            <div class="mini">
+              <div class="kv"><div class="k">Set</div><div class="v" id="kvSet">–</div></div>
+              <div class="kv"><div class="k">Form</div><div class="v" id="kvShape">–</div></div>
+              <div class="kv"><div class="k">Deko</div><div class="v" id="kvDeco">–</div></div>
+              <div class="kv"><div class="k">Share-Code</div><div class="v" id="kvShare">–</div></div>
+            </div>
+
+            <div class="fineprint">✓ Kein Abo ✓ Keine Datenverkäufe</div>
+          </div>
+        </div>
+
+        <!-- RIGHT: Controls / Hall / Share -->
+        <div class="card">
+          <div class="hd">
+            <div class="title">Konfigurator</div>
+            <div class="muted" style="font-size:12px">Draft wird lokal gespeichert</div>
+          </div>
+
+          <div class="bd">
+            <div class="title" style="font-size:13px">Message</div>
+            <textarea id="msg" maxlength="120" placeholder="Kurz. Klar. Wirkung."></textarea>
+            <div class="hint"><span id="count">0</span>/120 Zeichen</div>
+
+            <div class="hr"></div>
+
+            <div class="title" style="font-size:13px; margin-bottom:8px">Set wählen</div>
+            <div class="setScroller" id="setScroller"></div>
+
+            <div class="hr"></div>
+
+            <div class="title" style="font-size:13px; margin-bottom:8px">Hall of Keks</div>
+            <div class="hall" id="hall"></div>
+
+            <div class="hr"></div>
+
+            <div class="title" style="font-size:13px; margin-bottom:8px">Share + QR</div>
+            <div class="qrBox">
+              <div id="qr" aria-label="QR Code"></div>
+              <div style="flex:1; min-width: 220px">
+                <input id="shareUrl" readonly />
+                <div class="row" style="margin-top:10px">
+                  <button class="btn" id="btnCopy">Link kopieren</button>
+                  <button class="btn ghost" id="btnReset">Reset</button>
+                </div>
+                <div class="fineprint">Share lädt den Keks exakt so (Set, Rarity, Form, Deko, Message).</div>
+              </div>
+            </div>
+
+          </div>
         </div>
       </div>
 
-      <aside class="panel" id="panel">
-        <h1 class="h1">Schick ’ne Message. Als Keks.</h1>
-        <p class="sub">Echter 3D-Keks. Minimal UI. Maximal Wirkung. Empfänger scannt – antwortet direkt.</p>
-
-        <div class="label">Message</div>
-        <input class="input" id="msgInput" maxlength="32" value="Ich denk an dich." aria-label="Message" />
-
-        <div class="hr"></div>
-
-        <div class="label">Set wählen</div>
-        <div class="row" id="setRow"></div>
-
-        <div class="label">Form</div>
-        <div class="row" id="shapeRow">
-          <button class="chip on" data-shape="circle" type="button">Kreis</button>
-          <button class="chip" data-shape="heart" type="button">Herz</button>
-          <button class="chip" data-shape="star" type="button">Stern</button>
-        </div>
-
-        <div class="label">Deko</div>
-        <div class="row" id="decoRow">
-          <button class="chip on" data-deco="sprinkles" type="button">Sprinkles</button>
-          <button class="chip" data-deco="gold" type="button">Gold</button>
-        </div>
-
-        <div class="hr"></div>
-
-        <div class="row">
-          <button class="btn btnPrimary" id="checkoutBtn" type="button" style="flex:1">Keks losschicken</button>
-          <button class="btn btnGhost" id="shareBtn" type="button" style="display:none; flex:1">Keks teilen</button>
-        </div>
-
-        <p class="hint" id="hint">Common–Rare: bisschen Style. Epic–Legendary: weniger basteln, mehr Wirkung.</p>
-      </aside>
-
-      <div class="bottomBar">
-        <div class="trust">
-          <span>✓ Kein Abo</span>
-          <span>✓ Keine Datenverkäufe</span>
-          <span><a href="./privacy.html">Wie wir mit Daten umgehen</a></span>
-        </div>
-        <div class="row">
-          <button class="btn btnDanger" id="btnExitGod" type="button" style="display:none">Exit Godmode</button>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Consent -->
-  <div class="consent" id="consent">
-    <div class="consentRow">
-      <p>
-        <strong>Kurzer Cookie-Keks:</strong> Wir speichern den Entwurf lokal, damit nix verloren geht. Optional hilft anonymes Feedback.
-        <span style="display:block;margin-top:6px"><a href="./privacy.html">Wie wir mit Daten umgehen</a></span>
-      </p>
-      <div class="row" style="margin:0">
-        <button class="btn btnPrimary" id="consentAll">Alles klar</button>
-        <button class="btn btnGhost" id="consentNeed">Nur das Nötigste</button>
-      </div>
+      <div class="toast" id="toast">Gespeichert.</div>
     </div>
   </div>
 
-<script type="module">
-  import * as THREE from "https://unpkg.com/three@0.160.0/build/three.module.js";
-  import { OrbitControls } from "https://unpkg.com/three@0.160.0/examples/jsm/controls/OrbitControls.js";
+  <!-- Libraries -->
+  <script src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
 
-  /* =========================
-     CONFIG / STORAGE
-  ========================= */
-  const LEGENDARY_ACTIVE = true;
-
-  const RARITY = {
-    common:    { label:"COMMON",    css:"--common",    glow:0.18, ring:false, spr:0.55 },
-    uncommon:  { label:"UNCOMMON",  css:"--uncommon",  glow:0.24, ring:false, spr:0.75 },
-    rare:      { label:"RARE",      css:"--rare",      glow:0.30, ring:false, spr:0.95 },
-    epic:      { label:"EPIC",      css:"--epic",      glow:0.42, ring:true,  spr:0.35 },
-    legendary: { label:"LEGENDARY", css:"--legendary", glow:0.55, ring:true,  spr:0.15 },
-  };
-
-  const SETS = [
-    { id:"thinkofyou", name:"Ich denk an dich",  rarity:"common",    shape:"circle", message:"Ich denk an dich." },
-    { id:"yougotthis", name:"Du packst das",     rarity:"uncommon",  shape:"star",   message:"Du packst das."   },
-    { id:"move",       name:"Beweg dein Arsch.", rarity:"rare",      shape:"circle", message:"Beweg dein Arsch." },
-    { id:"sorry",      name:"Sorry.",            rarity:"epic",      shape:"heart",  message:"Sorry."          },
-    { id:"comeNow",    name:"Komm. Jetzt.",      rarity:"legendary", shape:"heart",  message:"Komm. Jetzt."    },
-  ];
-
-  const STORAGE_KEY_DRAFT = "ok_draft_v4";
-  const STORAGE_KEY_SHARE = "ok_share_map_v1";   // shareCode -> snapshot
-  const STORAGE_KEY_HALL  = "ok_hall_v1";        // array feed
-
-  const state = {
-    setId:"thinkofyou",
-    rarity:"common",
-    shape:"circle",
-    message:"Ich denk an dich.",
-    decoSprinkles:true,
-    decoGold:false,
-    orderId:null,
-    shareCode:null,
-    seed:"DEMO"
-  };
-
-  const $ = (id)=>document.getElementById(id);
-
-  function getCssVar(name){
-    return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
-  }
-
-  function saveDraft(){ localStorage.setItem(STORAGE_KEY_DRAFT, JSON.stringify(state)); }
-  function loadDraft(){
-    try{ const raw = localStorage.getItem(STORAGE_KEY_DRAFT); if(!raw) return;
-      Object.assign(state, JSON.parse(raw));
-    }catch{}
-  }
-
-  function loadJSON(key, fallback){
-    try{ const v = localStorage.getItem(key); return v ? JSON.parse(v) : fallback; }catch{ return fallback; }
-  }
-  function saveJSON(key, obj){ localStorage.setItem(key, JSON.stringify(obj)); }
-
-  /* =========================
-     CONSENT
-  ========================= */
-  (function consent(){
-    const key="ok_consent_v2";
-    const c = $("consent");
-    const v = localStorage.getItem(key);
-    if(!v){ c.style.display="block"; }
-    $("consentAll").onclick=()=>{ localStorage.setItem(key,"all"); c.style.display="none"; };
-    $("consentNeed").onclick=()=>{ localStorage.setItem(key,"need"); c.style.display="none"; };
-  })();
-
-  /* =========================
-     INTRO VIDEO (Autoplay + Fallback)
-  ========================= */
-  const intro = $("intro");
-  const introVid = $("introVid");
-  const skipIntro = $("skipIntro");
-
-  function endIntro(){
-    intro.style.display="none";
-    introVid.pause();
-  }
-  skipIntro.onclick = endIntro;
-
-  (async function(){
-    try{
-      introVid.muted = true;
-      introVid.playsInline = true;
-      await introVid.play();
-      introVid.onended = endIntro;
-      intro.onclick = endIntro; // click anywhere = skip
-      // fallback timeout: wenn Video hängt
-      setTimeout(()=>{ if(intro.style.display!=="none") endIntro(); }, 6500);
-    }catch{
-      // Autoplay block -> user click
-      introVid.controls = true;
-      intro.onclick = ()=> introVid.play().then(()=>{ introVid.onended=endIntro; }).catch(()=>{});
-    }
-  })();
-
-  /* =========================
-     UI
-  ========================= */
-  function setRarityUI(){
-    const r = RARITY[state.rarity] || RARITY.common;
-    $("rarityText").textContent = r.label;
-    $("rarityDot").style.background = getCssVar(r.css) || "#bbb";
-    $("hint").textContent = (state.rarity==="epic"||state.rarity==="legendary")
-      ? "Epic/Legendary: Fokus auf Wirkung. Weniger Deko-Gedöns."
-      : "Common–Rare: bisschen Style. Kurz. Direkt.";
-  }
-
-  function renderSetRow(){
-    const row = $("setRow");
-    row.innerHTML = "";
-    SETS.forEach(s=>{
-      const disabled = (s.rarity==="legendary" && !LEGENDARY_ACTIVE);
-      const b = document.createElement("button");
-      b.className = "chip" + (state.setId===s.id ? " on" : "");
-      b.type = "button";
-      b.textContent = s.name;
-      if(disabled){ b.style.opacity=".45"; b.style.cursor="not-allowed"; }
-      b.onclick = ()=>{ if(!disabled) applySet(s.id); };
-      row.appendChild(b);
-    });
-  }
-
-  function setChipsActive(containerId, key, value){
-    document.querySelectorAll(`#${containerId} .chip`).forEach(b=>{
-      b.classList.toggle("on", b.dataset[key] === value);
-    });
-  }
-
-  function toggleDecoChip(){
-    document.querySelectorAll("#decoRow .chip").forEach(b=>{
-      const k = b.dataset.deco;
-      const on = (k==="sprinkles" ? state.decoSprinkles : state.decoGold);
-      b.classList.toggle("on", !!on);
-    });
-  }
-
-  function applySet(id){
-    const s = SETS.find(x=>x.id===id) || SETS[0];
-    state.setId = s.id;
-    state.rarity = s.rarity;
-    state.shape = s.shape;
-    state.message = s.message;
-
-    if(state.rarity==="legendary" && !LEGENDARY_ACTIVE){
-      Object.assign(state, { setId:"sorry", rarity:"epic", shape:"heart", message:"Sorry." });
-    }
-    $("msgInput").value = state.message;
-
-    // Seed stabilisieren pro Set + Text (damit Optik “lebt” aber nicht jittert)
-    state.seed = (state.shareCode || "DRAFT") + "_" + state.setId + "_" + state.message;
-
-    renderSetRow();
-    setChipsActive("shapeRow","shape",state.shape);
-    setRarityUI();
-    update3DFromState();
-    saveDraft();
-  }
-
-  /* =========================
-     Deterministic RNG (Seeded)
-  ========================= */
-  function xfnv1a(str){
-    let h=2166136261;
-    for(let i=0;i<str.length;i++){ h ^= str.charCodeAt(i); h = Math.imul(h, 16777619); }
-    return h>>>0;
-  }
-  function mulberry32(a){
-    return function(){
-      let t = a += 0x6D2B79F5;
-      t = Math.imul(t ^ (t >>> 15), t | 1);
-      t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
-      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  <script>
+    // -----------------------------
+    // State / Config
+    // -----------------------------
+    const RARITIES = ["common","uncommon","rare","epic","legendary"];
+    const RARITY_UI = {
+      common:   {label:"COMMON",   color:getCss("--common"),    glow:"0 0 0 rgba(0,0,0,0)", locks:{decoMax:1, allowGold:false}},
+      uncommon: {label:"UNCOMMON", color:getCss("--uncommon"),  glow:"0 0 38px rgba(46,204,113,.22)", locks:{decoMax:1, allowGold:false}},
+      rare:     {label:"RARE",     color:getCss("--rare"),      glow:"0 0 45px rgba(74,163,255,.22)", locks:{decoMax:2, allowGold:false}},
+      epic:     {label:"EPIC",     color:getCss("--epic"),      glow:"0 0 55px rgba(181,107,255,.26)", locks:{decoMax:1, allowGold:true}},
+      legendary:{label:"LEGENDARY",color:getCss("--legendary"), glow:"0 0 70px rgba(246,210,106,.30)", locks:{decoMax:1, allowGold:true}}
     };
-  }
 
-  /* =========================
-     THREE: Scene
-  ========================= */
-  const canvas = $("keks3d");
-  const renderer = new THREE.WebGLRenderer({ canvas, antialias:true, alpha:true });
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.6));
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.outputColorSpace = THREE.SRGBColorSpace;
-  renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 1.05;
-  renderer.shadowMap.enabled = true;
-  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    const SHAPES = [
+      {id:"circle", label:"Kreis"},
+      {id:"heart",  label:"Herz"},
+      {id:"star",   label:"Stern"},
+      {id:"smile",  label:"Smiley"},
+      {id:"tree",   label:"Tannenbaum"},
+    ];
 
-  const scene = new THREE.Scene();
-  scene.fog = new THREE.Fog(0x0e0e11, 8, 22);
+    const DECOS = [
+      {id:"sprinkles", label:"Sprinkles"},
+      {id:"gold", label:"Gold"},
+    ];
 
-  const camera = new THREE.PerspectiveCamera(40, window.innerWidth/window.innerHeight, 0.1, 80);
-  camera.position.set(0.0, 1.55, 6.2);
+    // 5 Beispiel-Sets (rarity-like)
+    const SETS = [
+      {id:"street", name:"Street Pop", desc:"Knackige Message, klare Kante. Wirkt sofort.", baseRarity:"rare", shape:"circle", deco:["sprinkles"]},
+      {id:"love", name:"Herz-Alarm", desc:"Emotional, direkt. Für Kati-Vibes und Rückantwort.", baseRarity:"uncommon", shape:"heart", deco:["sprinkles"]},
+      {id:"boss", name:"Boss-Mode", desc:"Wenig basteln, mehr Wirkung. Premium-Punch.", baseRarity:"epic", shape:"star", deco:["gold"]},
+      {id:"winter", name:"Winter Drop", desc:"Keks-Schnee, ruhig aber präsent. Seasonal.", baseRarity:"rare", shape:"tree", deco:["sprinkles"]},
+      {id:"myth", name:"Legendary Mythic", desc:"VIP-Look. Gold-Akzent. Maximum Prestige.", baseRarity:"legendary", shape:"star", deco:["gold"]},
+    ];
 
-  const controls = new OrbitControls(camera, renderer.domElement);
-  controls.enableDamping = true;
-  controls.dampingFactor = 0.06;
-  controls.minDistance = 3.0;
-  controls.maxDistance = 9.0;
-  controls.maxPolarAngle = Math.PI * 0.48;
-  controls.target.set(0, 1.15, 0);
+    const HALL = [
+      {id:"h1", rarity:"legendary", label:"VIP", message:"Nur Gehirn = nur Keks.", set:"myth", shape:"star", deco:["gold"]},
+      {id:"h2", rarity:"epic", label:"Epic", message:"Beweg dein Arsch.", set:"boss", shape:"star", deco:["gold"]},
+      {id:"h3", rarity:"rare", label:"Rare", message:"Meld dich. Jetzt.", set:"street", shape:"circle", deco:["sprinkles"]},
+      {id:"h4", rarity:"uncommon", label:"Uncommon", message:"Vermiss dich.", set:"love", shape:"heart", deco:["sprinkles"]},
+      {id:"h5", rarity:"common", label:"Common", message:"Komm klar.", set:"street", shape:"circle", deco:["sprinkles"]},
+    ];
 
-  scene.add(new THREE.HemisphereLight(0xffffff, 0x101014, 0.55));
+    const LS_KEY = "onlykeks_draft_v2";
 
-  const key = new THREE.DirectionalLight(0xffffff, 1.25);
-  key.position.set(2.6, 6.0, 3.8);
-  key.castShadow = true;
-  key.shadow.mapSize.set(2048, 2048);
-  key.shadow.camera.near = 0.5; key.shadow.camera.far = 30;
-  key.shadow.camera.left = -6; key.shadow.camera.right = 6;
-  key.shadow.camera.top = 6; key.shadow.camera.bottom = -6;
-  scene.add(key);
+    let state = loadDraft() ?? {
+      rarity: "common",
+      setId: "street",
+      shape: "circle",
+      deco: ["sprinkles"],
+      message: ""
+    };
 
-  const rim = new THREE.DirectionalLight(0xE6C27A, 0.55);
-  rim.position.set(-4.5, 2.2, -3.5);
-  scene.add(rim);
+    // -----------------------------
+    // UI Elements
+    // -----------------------------
+    const $ = (s)=>document.querySelector(s);
+    const rarityPill = $("#rarityPill");
+    const rarityDot = $("#rarityDot");
+    const rarityLabel = $("#rarityLabel");
+    const glow = $("#glow");
+    const msg = $("#msg");
+    const count = $("#count");
+    const setScroller = $("#setScroller");
+    const shapeChips = $("#shapeChips");
+    const decoChips = $("#decoChips");
+    const hall = $("#hall");
+    const toast = $("#toast");
+    const shareUrl = $("#shareUrl");
+    const kvSet = $("#kvSet"), kvShape=$("#kvShape"), kvDeco=$("#kvDeco"), kvShare=$("#kvShare");
+    const btnSurprise = $("#btnSurprise");
+    const btnShare = $("#btnShare");
+    const btnCopy = $("#btnCopy");
+    const btnReset = $("#btnReset");
+    const btnCheckout = $("#btnCheckout");
 
-  const fill = new THREE.PointLight(0xB8895B, 0.22, 18);
-  fill.position.set(0.0, 2.2, 2.4);
-  scene.add(fill);
+    // -----------------------------
+    // Build UI
+    // -----------------------------
+    function buildChips(){
+      shapeChips.innerHTML = "";
+      SHAPES.forEach(s=>{
+        const el = document.createElement("div");
+        el.className = "chip";
+        el.textContent = s.label;
+        el.onclick = ()=>{ state.shape = s.id; persist(); syncAll(); };
+        el.dataset.id = s.id;
+        shapeChips.appendChild(el);
+      });
 
-  const floor = new THREE.Mesh(
-    new THREE.PlaneGeometry(24, 24),
-    new THREE.ShadowMaterial({ opacity: 0.28 })
-  );
-  floor.rotation.x = -Math.PI/2;
-  floor.position.y = 0;
-  floor.receiveShadow = true;
-  scene.add(floor);
-
-  const cookieGroup = new THREE.Group();
-  scene.add(cookieGroup);
-
-  const cookieMat = new THREE.MeshStandardMaterial({ color: 0xC9935A, roughness: 0.95, metalness: 0.0 });
-  const goldMat   = new THREE.MeshStandardMaterial({ color: 0xE6C27A, roughness: 0.25, metalness: 0.75 });
-  const sprinkleMat = new THREE.MeshStandardMaterial({ color: 0xff4fa3, roughness: 0.35, metalness: 0.1 });
-  const sprinkleGoldMat = new THREE.MeshStandardMaterial({ color: 0xE6C27A, roughness: 0.25, metalness: 0.75 });
-
-  let cookieMesh = new THREE.Mesh(new THREE.CylinderGeometry(1.35, 1.45, 0.35, 48, 1, false), cookieMat);
-  cookieMesh.castShadow = true;
-  cookieMesh.position.set(0, 1.05, 0);
-  cookieGroup.add(cookieMesh);
-
-  const glaze = new THREE.Mesh(new THREE.TorusGeometry(1.05, 0.08, 16, 64), goldMat);
-  glaze.castShadow = true;
-  glaze.position.set(0, 1.18, 0);
-  glaze.rotation.x = Math.PI/2;
-  cookieGroup.add(glaze);
-
-  const sprinkleGeo = new THREE.CapsuleGeometry(0.08, 0.10, 4, 8);
-  const sprinkleCount = 48;
-  const sprinkles = new THREE.InstancedMesh(sprinkleGeo, sprinkleMat, sprinkleCount);
-  sprinkles.castShadow = true;
-  cookieGroup.add(sprinkles);
-
-  // Text texture
-  const textCanvas = document.createElement("canvas");
-  textCanvas.width = 1024; textCanvas.height = 512;
-  const tctx = textCanvas.getContext("2d");
-  const textTex = new THREE.CanvasTexture(textCanvas);
-  textTex.colorSpace = THREE.SRGBColorSpace;
-  const textMat = new THREE.MeshBasicMaterial({ map: textTex, transparent: true });
-  const textPlane = new THREE.Mesh(new THREE.PlaneGeometry(2.1, 1.05), textMat);
-  textPlane.position.set(0, 1.32, 0.06);
-  textPlane.rotation.x = -0.22;
-  cookieGroup.add(textPlane);
-
-  function roundRect(ctx, x, y, w, h, r){
-    ctx.beginPath();
-    ctx.moveTo(x+r, y);
-    ctx.arcTo(x+w, y, x+w, y+h, r);
-    ctx.arcTo(x+w, y+h, x, y+h, r);
-    ctx.arcTo(x, y+h, x, y, r);
-    ctx.arcTo(x, y, x+w, y, r);
-    ctx.closePath();
-  }
-  function wrapLines(text, maxChars){
-    const words = String(text||"").trim().split(/\s+/);
-    if(!words[0]) return [];
-    const lines=[]; let cur="";
-    for(const w of words){
-      const next = cur ? (cur+" "+w) : w;
-      if(next.length<=maxChars) cur=next;
-      else{ if(cur) lines.push(cur); cur=w; }
+      decoChips.innerHTML = "";
+      DECOS.forEach(d=>{
+        const el = document.createElement("div");
+        el.className = "chip";
+        el.textContent = d.label;
+        el.onclick = ()=>toggleDeco(d.id);
+        el.dataset.id = d.id;
+        decoChips.appendChild(el);
+      });
     }
-    if(cur) lines.push(cur);
-    return lines;
-  }
-  function drawText(msg, rarity){
-    const r = RARITY[rarity] || RARITY.common;
-    tctx.clearRect(0,0,textCanvas.width,textCanvas.height);
 
-    tctx.fillStyle = "rgba(255,255,255,0.10)";
-    roundRect(tctx, 80, 120, 864, 270, 48);
-    tctx.fill();
+    function buildSets(){
+      setScroller.innerHTML = "";
+      SETS.forEach(s=>{
+        const el = document.createElement("div");
+        el.className = "set";
+        el.dataset.id = s.id;
+        el.innerHTML = `
+          <div class="name">${escapeHtml(s.name)}</div>
+          <div class="desc">${escapeHtml(s.desc)}</div>
+          <div class="meta">
+            <span>${s.baseRarity.toUpperCase()}</span>
+            <span>${shapeLabel(s.shape)}</span>
+          </div>
+        `;
+        el.onclick = ()=>{
+          state.setId = s.id;
+          // Set applies defaults, but keep user message
+          state.shape = s.shape;
+          state.deco = [...s.deco];
+          state.rarity = s.baseRarity;
+          persist(); syncAll();
+        };
+        setScroller.appendChild(el);
+      });
+    }
 
-    tctx.textAlign="center"; tctx.textBaseline="middle";
-    tctx.fillStyle = (rarity==="legendary"||rarity==="epic") ? "rgba(230,194,122,0.95)" : "rgba(240,240,244,0.92)";
-    tctx.font = "900 74px system-ui, -apple-system, Segoe UI, Roboto, Arial";
+    function buildHall(){
+      hall.innerHTML = "";
+      HALL.forEach(h=>{
+        const el = document.createElement("div");
+        const isVip = (h.rarity==="epic" || h.rarity==="legendary");
+        el.className = "hallItem" + (isVip ? " vip" : "");
+        el.innerHTML = `
+          <div class="t">${escapeHtml(h.label)} · ${h.rarity.toUpperCase()}</div>
+          <div class="m">${escapeHtml(h.message)}</div>
+          <div class="f">
+            <span>${escapeHtml(setName(h.set))}</span>
+            <span>${shapeLabel(h.shape)}</span>
+          </div>
+        `;
+        el.onclick = ()=>{
+          state.rarity = h.rarity;
+          state.setId = h.set;
+          state.shape = h.shape;
+          state.deco = [...h.deco];
+          state.message = h.message;
+          persist(); syncAll();
+        };
+        hall.appendChild(el);
+      });
+    }
 
-    const lines = wrapLines(msg, 18).slice(0,3);
-    const startY = 255 - (lines.length-1)*64;
-    lines.forEach((ln,i)=> tctx.fillText(ln, 512, startY + i*80));
-
-    tctx.fillStyle = "rgba(185,187,198,0.70)";
-    tctx.font = "800 26px system-ui, -apple-system, Segoe UI, Roboto, Arial";
-    tctx.fillText(r.label, 512, 420);
-
-    textTex.needsUpdate = true;
-  }
-
-  let lastShape = null;
-  function rebuildShape(shape){
-    if(shape === lastShape) return;
-    lastShape = shape;
-
-    const old = cookieMesh.geometry;
-    let geom;
-
-    if(shape==="heart"){
-      const s = new THREE.Shape();
-      s.moveTo(0, 0.55);
-      s.bezierCurveTo(0.8, 1.25, 1.65, 0.55, 0, -1.0);
-      s.bezierCurveTo(-1.65, 0.55, -0.8, 1.25, 0, 0.55);
-      geom = new THREE.ExtrudeGeometry(s, { depth:0.35, bevelEnabled:true, bevelSize:0.08, bevelThickness:0.06, bevelSegments:4, steps:1 });
-      geom.center();
-    } else if(shape==="star"){
-      const star = new THREE.Shape();
-      const spikes=5, outerR=1.45, innerR=0.70;
-      for(let i=0;i<spikes*2;i++){
-        const a=(i/(spikes*2))*Math.PI*2 - Math.PI/2;
-        const rr=(i%2===0)?outerR:innerR;
-        const x=Math.cos(a)*rr, y=Math.sin(a)*rr;
-        if(i===0) star.moveTo(x,y); else star.lineTo(x,y);
+    // -----------------------------
+    // Rules / Locks
+    // -----------------------------
+    function toggleDeco(id){
+      const locks = RARITY_UI[state.rarity].locks;
+      // Legendary/Epic allow gold; lower rarities don't
+      if(id === "gold" && !locks.allowGold){
+        toastMsg("Gold ist erst ab EPIC verfügbar.");
+        return;
       }
-      star.closePath();
-      geom = new THREE.ExtrudeGeometry(star, { depth:0.35, bevelEnabled:true, bevelSize:0.08, bevelThickness:0.06, bevelSegments:4, steps:1 });
-      geom.center();
-    } else {
-      geom = new THREE.CylinderGeometry(1.35, 1.45, 0.35, 48, 1, false);
+      const has = state.deco.includes(id);
+      let next = has ? state.deco.filter(x=>x!==id) : [...state.deco, id];
+
+      // enforce max
+      if(next.length > locks.decoMax){
+        next = next.slice(next.length - locks.decoMax);
+      }
+      state.deco = next;
+      persist(); syncAll();
     }
 
-    cookieMesh.geometry = geom;
-    old.dispose();
-  }
-
-  function placeSprinklesDeterministic(enabled){
-    if(!enabled){ sprinkles.visible=false; return; }
-    sprinkles.visible=true;
-
-    const seed = xfnv1a(state.seed || "DRAFT");
-    const rnd = mulberry32(seed);
-
-    for(let i=0;i<sprinkleCount;i++){
-      const a = rnd()*Math.PI*2;
-      const r = 0.18 + rnd()*1.05;
-      const x = Math.cos(a)*r;
-      const z = Math.sin(a)*r;
-      const y = 1.25 + rnd()*0.05;
-      const rotY = rnd()*Math.PI;
-      const rotZ = rnd()*Math.PI;
-
-      const m = new THREE.Matrix4();
-      const q = new THREE.Quaternion().setFromEuler(new THREE.Euler(0, rotY, rotZ));
-      m.compose(new THREE.Vector3(x,y,z), q, new THREE.Vector3(1,1,1));
-      sprinkles.setMatrixAt(i, m);
+    // -----------------------------
+    // Persistence
+    // -----------------------------
+    function persist(){
+      localStorage.setItem(LS_KEY, JSON.stringify(state));
+      toastMsg("Gespeichert.");
     }
-    sprinkles.instanceMatrix.needsUpdate = true;
-  }
-
-  // “Glow” via light intensities (cheap but wirkt). MVP.
-  function applyRarityLook(){
-    const r = RARITY[state.rarity] || RARITY.common;
-    const glowColor = new THREE.Color(getCssVar(r.css) || "#bbb");
-
-    // Cookie tint
-    const base = new THREE.Color(0xC9935A).lerp(glowColor, 0.10);
-    cookieMat.color.copy(base);
-
-    // Ring visibility
-    glaze.visible = !!(state.decoGold || r.ring);
-    // Sprinkles material switch only (no re-create)
-    sprinkles.material = state.decoGold ? sprinkleGoldMat : sprinkleMat;
-
-    // Lights: “premium spotlight”
-    rim.color = (state.rarity==="legendary" || state.rarity==="epic") ? new THREE.Color(0xE6C27A) : glowColor;
-    rim.intensity = 0.45 + r.glow;
-
-    fill.intensity = 0.18 + r.glow*0.35;
-    renderer.toneMappingExposure = document.body.classList.contains("godmode") ? 1.12 : (1.04 + r.glow*0.06);
-  }
-
-  function update3DFromState(){
-    const r = RARITY[state.rarity] || RARITY.common;
-
-    rebuildShape(state.shape);
-    drawText(state.message, state.rarity);
-
-    const sprEnabled = state.decoSprinkles && (r.spr > 0.2);
-    placeSprinklesDeterministic(sprEnabled);
-
-    applyRarityLook();
-
-    setRarityUI();
-    renderSetRow();
-    toggleDecoChip();
-    saveDraft();
-  }
-
-  /* =========================
-     GODMODE
-  ========================= */
-  function setGodmode(on){
-    document.body.classList.toggle("godmode", !!on);
-    $("btnExitGod").style.display = on ? "inline-flex" : "none";
-
-    if(on){
-      controls.minDistance=2.3; controls.maxDistance=6.5; controls.maxPolarAngle=Math.PI*0.58;
-    } else {
-      controls.minDistance=3.0; controls.maxDistance=9.0; controls.maxPolarAngle=Math.PI*0.48;
+    function loadDraft(){
+      try{
+        const raw = localStorage.getItem(LS_KEY);
+        if(!raw) return null;
+        return JSON.parse(raw);
+      }catch(e){ return null; }
     }
-    update3DFromState();
-  }
 
-  /* =========================
-     SHARE / CHECKOUT / HALL (MVP local)
-  ========================= */
-  function hashMini(str){
-    let h=2166136261;
-    for(let i=0;i<str.length;i++){ h ^= str.charCodeAt(i); h = Math.imul(h, 16777619); }
-    return (h>>>0).toString(36).slice(0,8).toUpperCase();
-  }
+    // -----------------------------
+    // Share / Encode
+    // -----------------------------
+    function encodeState(s){
+      const json = JSON.stringify(s);
+      return btoa(unescape(encodeURIComponent(json)));
+    }
+    function decodeState(str){
+      const json = decodeURIComponent(escape(atob(str)));
+      return JSON.parse(json);
+    }
+    function shareCodeFor(s){
+      // simple stable-ish short code
+      const base = encodeState(s).slice(0,18);
+      return base.replace(/[^a-zA-Z0-9]/g,"").slice(0,12).toUpperCase();
+    }
+    function buildShareUrl(){
+      const code = encodeState(state);
+      const url = new URL(location.href);
+      url.searchParams.set("share", code);
+      return url.toString();
+    }
 
-  function persistShareSnapshot(){
-    const map = loadJSON(STORAGE_KEY_SHARE, {});
-    map[state.shareCode] = {
-      at: Date.now(),
-      state: { ...state }
-    };
-    saveJSON(STORAGE_KEY_SHARE, map);
-  }
+    // -----------------------------
+    // Sync UI
+    // -----------------------------
+    function syncAll(){
+      // rarity pill + glow
+      const r = RARITY_UI[state.rarity];
+      rarityDot.style.background = r.color;
+      rarityLabel.textContent = r.label;
+      glow.style.boxShadow = r.glow;
 
-  function pushHallItem(){
-    const hall = loadJSON(STORAGE_KEY_HALL, []);
-    hall.unshift({
-      id: state.shareCode,
-      rarity: state.rarity,
-      message: state.message,
-      shape: state.shape,
-      ts: Date.now()
+      // chips active
+      [...shapeChips.children].forEach(c=>c.classList.toggle("on", c.dataset.id===state.shape));
+      [...decoChips.children].forEach(c=>c.classList.toggle("on", state.deco.includes(c.dataset.id)));
+
+      // set active
+      [...setScroller.children].forEach(el=>el.classList.toggle("active", el.dataset.id===state.setId));
+
+      // message
+      msg.value = state.message || "";
+      count.textContent = (state.message || "").length;
+
+      // KV
+      kvSet.textContent = setName(state.setId);
+      kvShape.textContent = shapeLabel(state.shape);
+      kvDeco.textContent = state.deco.length ? state.deco.map(decoLabel).join(", ") : "–";
+      const sc = shareCodeFor(state);
+      kvShare.textContent = sc;
+
+      // share url + qr
+      const url = buildShareUrl();
+      shareUrl.value = url;
+      renderQR(url);
+
+      // apply locks visuals
+      const locks = RARITY_UI[state.rarity].locks;
+      // disable gold chip if locked
+      [...decoChips.children].forEach(c=>{
+        if(c.dataset.id==="gold"){
+          c.style.opacity = locks.allowGold ? "1" : ".45";
+          c.style.pointerEvents = locks.allowGold ? "auto" : "auto"; // still clickable to show toast
+        }
+      });
+
+      // update 3D
+      updateCookieVisual();
+    }
+
+    function toastMsg(t){
+      toast.textContent = t;
+      toast.classList.add("on");
+      clearTimeout(toast._t);
+      toast._t = setTimeout(()=>toast.classList.remove("on"), 850);
+    }
+
+    function setName(id){
+      const s = SETS.find(x=>x.id===id);
+      return s ? s.name : "–";
+    }
+    function shapeLabel(id){
+      const s = SHAPES.find(x=>x.id===id);
+      return s ? s.label : id;
+    }
+    function decoLabel(id){
+      const d = DECOS.find(x=>x.id===id);
+      return d ? d.label : id;
+    }
+
+    function getCss(v){ return getComputedStyle(document.documentElement).getPropertyValue(v).trim(); }
+    function escapeHtml(s){ return (s??"").replace(/[&<>"']/g, m=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;" }[m])); }
+
+    // -----------------------------
+    // QR
+    // -----------------------------
+    let qrInst = null;
+    function renderQR(url){
+      const box = document.getElementById("qr");
+      box.innerHTML = "";
+      qrInst = new QRCode(box, {
+        text: url,
+        width: 120,
+        height: 120,
+        correctLevel: QRCode.CorrectLevel.M
+      });
+    }
+
+    // -----------------------------
+    // Events
+    // -----------------------------
+    msg.addEventListener("input", ()=>{
+      state.message = (msg.value || "").slice(0,120);
+      persist(); syncAll();
     });
-    hall.splice(60);
-    saveJSON(STORAGE_KEY_HALL, hall);
-  }
 
-  function doCheckout(){
-    const now = Date.now().toString(36).toUpperCase();
-    state.orderId = "OK_" + now;
-    state.shareCode = hashMini(state.orderId + "_" + state.rarity + "_" + state.setId + "_" + state.message);
-    state.seed = state.shareCode; // ab Checkout: Seed = shareCode (stabil!)
+    btnSurprise.onclick = ()=>{
+      // Surprise engine: random set + random rarity bias upward sometimes
+      const pickSet = SETS[Math.floor(Math.random()*SETS.length)];
+      const r = Math.random();
+      const pickRarity = r < .52 ? "common" : r < .74 ? "uncommon" : r < .88 ? "rare" : r < .97 ? "epic" : "legendary";
+      state.setId = pickSet.id;
+      state.rarity = pickRarity;
+      state.shape = pickSet.shape;
+      state.deco = [...pickSet.deco];
 
-    persistShareSnapshot();
-    pushHallItem();
-    saveDraft();
+      // enforce locks after random
+      const locks = RARITY_UI[state.rarity].locks;
+      state.deco = state.deco.filter(d => d!=="gold" || locks.allowGold).slice(0, locks.decoMax);
 
-    $("shareBtn").style.display = "inline-flex";
-    $("hint").textContent = "MVP: Share & Hall laufen lokal. Nächster Step: Stripe + Server-Persist.";
-
-    alert(
-`✅ Keks bereit.
-Share: keks.html?share=${state.shareCode}
-Reply: keks.html?reply=${state.orderId}&from=${state.shareCode}`
-    );
-  }
-
-  function doShare(){
-    const base = location.href.replace(/index\.html.*$/,"");
-    const link = base + "keks.html?share=" + (state.shareCode || "");
-    navigator.clipboard?.writeText(link).catch(()=>{});
-    alert("Link kopiert:\n" + link);
-  }
-
-  /* =========================
-     EVENTS
-  ========================= */
-  $("msgInput").addEventListener("input", ()=>{
-    state.message = $("msgInput").value.trim() || "…";
-    state.seed = (state.shareCode || "DRAFT") + "_" + state.setId + "_" + state.message;
-    update3DFromState();
-  });
-
-  document.querySelectorAll("#shapeRow .chip").forEach(b=>{
-    b.onclick=()=>{
-      state.shape=b.dataset.shape;
-      setChipsActive("shapeRow","shape",state.shape);
-      update3DFromState();
+      persist(); syncAll();
+      toastMsg("Überraschung geladen.");
     };
-  });
 
-  document.querySelectorAll("#decoRow .chip").forEach(b=>{
-    b.onclick=()=>{
-      const k=b.dataset.deco;
-      if(k==="sprinkles") state.decoSprinkles=!state.decoSprinkles;
-      if(k==="gold") state.decoGold=!state.decoGold;
-      toggleDecoChip();
-      update3DFromState();
+    btnShare.onclick = ()=> {
+      shareUrl.select();
+      document.execCommand("copy");
+      toastMsg("Share-Link kopiert.");
     };
-  });
-
-  $("btnSurprise").onclick=()=>{
-    const pool = SETS.filter(s=> s.rarity!=="legendary" || LEGENDARY_ACTIVE);
-    const pick = pool[Math.floor(Math.random()*pool.length)];
-    applySet(pick.id);
-
-    const variants = {
-      thinkofyou:["Ich denk an dich.","Vermiss dich.","Nur kurz: Du fehlst."],
-      yougotthis:["Du packst das.","Heute wird dein Tag.","Kopf hoch. Weiter."],
-      move:["Beweg dein Arsch.","Heute. Keine Ausreden.","Aufstehen. Machen."],
-      sorry:["Sorry.","Ich mein’s ernst.","Tut mir leid."],
-      comeNow:["Komm. Jetzt.","Sag’s. Und komm.","Heute Nacht. Du & ick."]
+    btnCopy.onclick = ()=> {
+      shareUrl.select();
+      document.execCommand("copy");
+      toastMsg("Link kopiert.");
     };
-    const v=variants[pick.id];
-    if(v){
-      state.message = v[Math.floor(Math.random()*v.length)];
-      $("msgInput").value = state.message;
-      state.seed = (state.shareCode || "DRAFT") + "_" + state.setId + "_" + state.message;
-      update3DFromState();
+    btnReset.onclick = ()=> {
+      localStorage.removeItem(LS_KEY);
+      state = { rarity:"common", setId:"street", shape:"circle", deco:["sprinkles"], message:"" };
+      persist(); syncAll();
+    };
+    btnCheckout.onclick = ()=>{
+      toastMsg("Checkout kommt als nächster Schritt (Stripe-Link).");
+    };
+
+    // -----------------------------
+    // Share loader
+    // -----------------------------
+    (function initShare(){
+      const p = new URLSearchParams(location.search);
+      const share = p.get("share");
+      if(!share) return;
+      try{
+        const incoming = decodeState(share);
+        // minimal validation
+        if(incoming && incoming.rarity && incoming.shape){
+          state = {
+            rarity: incoming.rarity,
+            setId: incoming.setId ?? "street",
+            shape: incoming.shape,
+            deco: Array.isArray(incoming.deco) ? incoming.deco : [],
+            message: incoming.message ?? ""
+          };
+          persist();
+          toastMsg("Share-Keks geladen.");
+        }
+      }catch(e){
+        toastMsg("Share-Link ungültig.");
+      }
+    })();
+
+    // -----------------------------
+    // THREE.JS – 3D Cookie (stable)
+    // -----------------------------
+    const canvas = document.getElementById("c");
+    let renderer, scene, camera, cookieGroup, cookieMesh, icingMesh, sprinklePoints, textSprite;
+    let okWebGL = true;
+
+    function initThree(){
+      try{
+        renderer = new THREE.WebGLRenderer({canvas, antialias:true, alpha:true, powerPreference:"high-performance"});
+        renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+        renderer.setSize(canvas.clientWidth, 360, false);
+
+        scene = new THREE.Scene();
+
+        camera = new THREE.PerspectiveCamera(35, canvas.clientWidth/360, 0.1, 100);
+        camera.position.set(0, 1.1, 4.2);
+
+        const hemi = new THREE.HemisphereLight(0xffffff, 0x101018, 0.9);
+        scene.add(hemi);
+
+        const key = new THREE.DirectionalLight(0xffffff, 1.15);
+        key.position.set(2.2, 3.0, 2.0);
+        scene.add(key);
+
+        const rim = new THREE.DirectionalLight(0xffffff, 0.45);
+        rim.position.set(-2.0, 2.0, -2.4);
+        scene.add(rim);
+
+        cookieGroup = new THREE.Group();
+        scene.add(cookieGroup);
+
+        buildCookieGeometry();
+        window.addEventListener("resize", onResize);
+
+        animate();
+      }catch(e){
+        okWebGL = false;
+        fallback2D();
+      }
     }
-  };
 
-  $("btnGod").onclick=()=> setGodmode(!document.body.classList.contains("godmode"));
-  $("btnExitGod").onclick=()=> setGodmode(false);
-
-  $("btnHall").onclick=()=>{ location.href="./keks.html"; };
-
-  $("checkoutBtn").onclick=doCheckout;
-  $("shareBtn").onclick=doShare;
-
-  /* =========================
-     INIT
-  ========================= */
-  (function init(){
-    loadDraft();
-    if(state.rarity==="legendary" && !LEGENDARY_ACTIVE){
-      Object.assign(state, { setId:"sorry", rarity:"epic", shape:"heart", message:"Sorry." });
+    function onResize(){
+      if(!renderer || !camera) return;
+      const w = canvas.clientWidth;
+      camera.aspect = w/360;
+      camera.updateProjectionMatrix();
+      renderer.setSize(w, 360, false);
     }
-    $("msgInput").value = state.message || "Ich denk an dich.";
-    renderSetRow();
-    setChipsActive("shapeRow","shape",state.shape);
-    toggleDecoChip();
-    setRarityUI();
-    state.seed = state.shareCode || ("DRAFT_" + state.setId + "_" + state.message);
-    update3DFromState();
-  })();
 
-  /* =========================
-     LOOP
-  ========================= */
-  let t0 = performance.now();
-  function tick(){
-    requestAnimationFrame(tick);
-    const t = (performance.now()-t0)*0.001;
-    cookieGroup.rotation.y = Math.sin(t*0.35)*0.12;
-    cookieGroup.position.y = Math.sin(t*0.8)*0.03;
-    controls.update();
-    renderer.render(scene, camera);
-  }
-  tick();
+    function buildCookieGeometry(){
+      // clean rebuild
+      while(cookieGroup.children.length) cookieGroup.remove(cookieGroup.children[0]);
 
-  window.addEventListener("resize", ()=>{
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    camera.aspect = window.innerWidth/window.innerHeight;
-    camera.updateProjectionMatrix();
-  });
-</script>
+      // base cookie
+      const baseGeo = new THREE.CylinderGeometry(1.35, 1.35, 0.34, 48, 1, false);
+      const cookieMat = new THREE.MeshStandardMaterial({
+        color: new THREE.Color(getCss("--cookie")),
+        roughness: 0.85,
+        metalness: 0.02
+      });
+      cookieMesh = new THREE.Mesh(baseGeo, cookieMat);
+      cookieMesh.rotation.x = Math.PI * 0.08;
+      cookieGroup.add(cookieMesh);
+
+      // icing plate (slight offset)
+      const icingGeo = new THREE.CylinderGeometry(1.22, 1.22, 0.06, 48, 1, false);
+      const icingMat = new THREE.MeshStandardMaterial({
+        color: 0xF5EFEA,
+        roughness: 0.55,
+        metalness: 0.02,
+        transparent:true,
+        opacity: 0.92
+      });
+      icingMesh = new THREE.Mesh(icingGeo, icingMat);
+      icingMesh.position.y = 0.18;
+      icingMesh.rotation.x = cookieMesh.rotation.x;
+      cookieGroup.add(icingMesh);
+
+      // sprinkles as points
+      sprinklePoints = makeSprinkles();
+      cookieGroup.add(sprinklePoints);
+
+      // message sprite (canvas texture)
+      textSprite = makeTextSprite("");
+      textSprite.position.set(0, 0.28, 0.02);
+      textSprite.scale.set(2.2, 1.1, 1);
+      cookieGroup.add(textSprite);
+
+      // initial shape effect by scaling profile
+      applyShapeToMesh();
+
+      // initial deco visibility
+      applyDecoToMesh();
+
+      // initial rarity tint
+      applyRarityToMesh();
+    }
+
+    function makeSprinkles(){
+      const count = 120;
+      const geom = new THREE.BufferGeometry();
+      const pos = new Float32Array(count*3);
+      for(let i=0;i<count;i++){
+        const a = Math.random()*Math.PI*2;
+        const r = Math.sqrt(Math.random())*1.08;
+        pos[i*3+0] = Math.cos(a)*r;
+        pos[i*3+1] = 0.22 + (Math.random()*0.02);
+        pos[i*3+2] = Math.sin(a)*r;
+      }
+      geom.setAttribute("position", new THREE.BufferAttribute(pos, 3));
+      const mat = new THREE.PointsMaterial({ size:0.05, color: new THREE.Color(getCss("--pink")), transparent:true, opacity:0.95 });
+      return new THREE.Points(geom, mat);
+    }
+
+    function makeTextSprite(text){
+      const c = document.createElement("canvas");
+      c.width = 1024; c.height = 512;
+      const ctx = c.getContext("2d");
+      ctx.clearRect(0,0,c.width,c.height);
+
+      const tex = new THREE.CanvasTexture(c);
+      tex.anisotropy = 4;
+      const mat = new THREE.SpriteMaterial({ map: tex, transparent:true, opacity: 0.98 });
+      const spr = new THREE.Sprite(mat);
+      spr.userData._canvas = c;
+      spr.userData._ctx = ctx;
+      return spr;
+    }
+
+    function drawTextOnSprite(spr, text){
+      const c = spr.userData._canvas;
+      const ctx = spr.userData._ctx;
+      ctx.clearRect(0,0,c.width,c.height);
+
+      // soft background plate
+      ctx.fillStyle = "rgba(0,0,0,0)";
+      ctx.fillRect(0,0,c.width,c.height);
+
+      // message
+      const t = (text || "").trim();
+      const display = t.length ? t : " ";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+
+      // auto-size
+      let size = 74;
+      ctx.font = `800 ${size}px system-ui, -apple-system, Segoe UI, Roboto, Arial`;
+      while(ctx.measureText(display).width > 880 && size > 44){
+        size -= 2;
+        ctx.font = `800 ${size}px system-ui, -apple-system, Segoe UI, Roboto, Arial`;
+      }
+
+      // stroke + fill for readability
+      ctx.lineWidth = 10;
+      ctx.strokeStyle = "rgba(0,0,0,.35)";
+      ctx.fillStyle = "rgba(35,35,45,.96)";
+      ctx.strokeText(display, c.width/2, c.height/2);
+      ctx.fillText(display, c.width/2, c.height/2);
+
+      spr.material.map.needsUpdate = true;
+    }
+
+    function applyRarityToMesh(){
+      const r = RARITY_UI[state.rarity];
+      // subtle tint on icing
+      const col = new THREE.Color(r.color);
+      icingMesh.material.color = new THREE.Color(0xF5EFEA).lerp(col, (state.rarity==="common") ? 0.03 : 0.10);
+      // gold mode adds a warmer cookie sheen
+      if(state.rarity==="legendary"){
+        cookieMesh.material.roughness = 0.62;
+      }else{
+        cookieMesh.material.roughness = 0.85;
+      }
+    }
+
+    function applyDecoToMesh(){
+      const hasSprinkles = state.deco.includes("sprinkles");
+      const hasGold = state.deco.includes("gold");
+      sprinklePoints.visible = hasSprinkles;
+
+      // gold effect: adjust icing + add a gold rim via emissive-ish feel
+      if(hasGold){
+        icingMesh.material.color = new THREE.Color(0xF7E2B2);
+        icingMesh.material.roughness = 0.35;
+      }else{
+        icingMesh.material.color = new THREE.Color(0xF5EFEA);
+        icingMesh.material.roughness = 0.55;
+      }
+      applyRarityToMesh();
+    }
+
+    function applyShapeToMesh(){
+      // cheat: different silhouettes by scaling + slight warp. Stable and fast.
+      const s = state.shape;
+      cookieGroup.scale.set(1,1,1);
+
+      if(s==="circle"){ cookieGroup.scale.set(1,1,1); }
+      if(s==="heart"){ cookieGroup.scale.set(1.0,1.0,0.92); cookieGroup.rotation.y = 0.15; }
+      if(s==="star"){ cookieGroup.scale.set(0.98,1.0,0.98); cookieGroup.rotation.y = 0.55; }
+      if(s==="smile"){ cookieGroup.scale.set(1.02,1.0,0.95); cookieGroup.rotation.y = -0.2; }
+      if(s==="tree"){ cookieGroup.scale.set(0.92,1.0,1.02); cookieGroup.rotation.y = 0.25; }
+    }
+
+    function updateCookieVisual(){
+      if(!okWebGL) return;
+      // apply locks after manual changes
+      const locks = RARITY_UI[state.rarity].locks;
+      state.deco = state.deco.filter(d => d!=="gold" || locks.allowGold).slice(0, locks.decoMax);
+
+      applyShapeToMesh();
+      applyDecoToMesh();
+      applyRarityToMesh();
+      drawTextOnSprite(textSprite, state.message);
+    }
+
+    function animate(){
+      if(!okWebGL) return;
+      requestAnimationFrame(animate);
+
+      const t = performance.now()*0.001;
+      cookieGroup.rotation.y += 0.0042;
+      cookieGroup.position.y = Math.sin(t*1.15)*0.045;
+
+      renderer.render(scene, camera);
+    }
+
+    function fallback2D(){
+      // If WebGL dies, we still show a nice 2D cookie so: NO BLACK SCREEN.
+      const wrap = document.getElementById("canvasWrap");
+      wrap.innerHTML = `
+        <div style="padding:14px">
+          <div style="border-radius:22px;border:1px solid rgba(255,255,255,.10);background:rgba(0,0,0,.18);padding:18px;min-height:320px;display:flex;align-items:center;justify-content:center">
+            <div style="width:240px;height:240px;border-radius:999px;background:radial-gradient(circle at 35% 35%, #ffd9b8, #b8895b 60%, #6d4a2a 120%);border:1px solid rgba(255,255,255,.12);box-shadow:0 28px 90px rgba(0,0,0,.65);display:flex;align-items:center;justify-content:center;text-align:center;padding:22px;font-weight:900;line-height:1.05">
+              ${escapeHtml(state.message || " ")}
+            </div>
+          </div>
+          <div class="fineprint" style="margin-top:10px">WebGL nicht verfügbar – UI läuft weiter (fail-open).</div>
+        </div>
+      `;
+      toastMsg("WebGL Fallback aktiv.");
+    }
+
+    // -----------------------------
+    // Init
+    // -----------------------------
+    buildChips();
+    buildSets();
+    buildHall();
+
+    // initial fill
+    syncAll();
+
+    // start 3D
+    initThree();
+
+    function getCss(v){ return getComputedStyle(document.documentElement).getPropertyValue(v).trim(); }
+  </script>
 </body>
 </html>
-

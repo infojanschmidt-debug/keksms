@@ -250,7 +250,15 @@
 <div class="intro" id="intro">
   <div class="introBrand">OnlyKeks</div>
   <button class="introSkip" id="introSkip" type="button">Skip</button>
-  <video id="introVid" playsinline muted preload="auto">
+  <video
+  id="introVid"
+  playsinline
+  muted
+  autoplay
+  preload="auto"
+  poster="assets/intro-poster.jpg"
+  style="display:block;width:100%;height:100%;object-fit:cover;background:#000"
+>
     <source src="assets/Intro.mp4" type="video/mp4">
   </video>
 </div>
@@ -934,3 +942,4 @@ QR-Reply-Link: keks.html?reply=${state.orderId}`
 </script>
 </body>
 </html>
+

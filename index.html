@@ -6,22 +6,15 @@
   <title>OnlyKeks – Post, die schmeckt</title>
   <meta name="description" content="Schick eine Nachricht als Keks. QR scan → echte Antwort zurück. Schnell, persönlich, viral." />
   <meta name="theme-color" content="#0E0E11" />
-  <meta property="og:title" content="OnlyKeks – Post, die schmeckt" />
-  <meta property="og:description" content="Message als Keks. QR-Reply-Loop. 3 Steps. Fertig." />
-  <meta property="og:type" content="website" />
-
   <style>
     :root{
       --bg:#0E0E11;
-      --bg2:#131319;
       --panel: rgba(21,21,28,.66);
-      --panelSolid:#15151C;
       --stroke: rgba(255,255,255,.10);
       --text:#F2F2F4;
       --muted:#B9BBC6;
       --gold:#E6C27A;
-      --cookie:#B8895B;
-      --pink:#ff4fa3; /* nur für sprinkles/seltene Highlights */
+      --pink:#ff4fa3;
       --shadow: 0 24px 60px rgba(0,0,0,.55);
       --shadowSoft: 0 12px 30px rgba(0,0,0,.35);
       --r:18px;
@@ -39,32 +32,42 @@
       color:var(--text);
       font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
       background: radial-gradient(1200px 700px at 50% 20%, #1a1a24 0%, var(--bg) 55%, #09090c 100%);
-      overflow-x:hidden;
+      overflow:hidden;
     }
     a{color:inherit}
 
-    /* Fullscreen Stage */
-    .stage{
-      position:relative;
-      min-height:100vh;
-      width:100%;
+    /* Intro */
+    .intro{
+      position:fixed; inset:0; z-index:9999;
+      display:grid; place-items:center;
+      background: radial-gradient(1200px 700px at 50% 20%, #1a1a24 0%, var(--bg) 55%, #09090c 100%);
     }
-    canvas#keks3d{
-      width:100%;
-      height:100vh;
-      display:block;
-      outline:none;
-      background: transparent;
+    .intro video{
+      width:min(980px, 92vw);
+      height:auto;
+      border-radius:24px;
+      border:1px solid rgba(255,255,255,.10);
+      box-shadow: var(--shadow);
+      background:#000;
+    }
+    .introBar{
+      position:absolute; left:18px; right:18px; bottom:16px;
+      display:flex; gap:10px; justify-content:space-between; align-items:center; flex-wrap:wrap;
+      color:rgba(185,187,198,.9);
+      font-size:12px;
     }
 
-    /* Overlay UI */
+    /* Stage */
+    .stage{position:relative; width:100%; height:100vh;}
+    canvas#keks3d{width:100%; height:100vh; display:block; outline:none; background:transparent;}
+
     .uiOverlay{position:absolute; inset:0; pointer-events:none;}
     .topBar{
       pointer-events:auto;
-      position:absolute;
-      left:18px; right:18px; top:16px;
+      position:absolute; left:18px; right:18px; top:16px;
       display:flex; align-items:center; justify-content:space-between; gap:12px;
     }
+    .row{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
     .brand{
       display:flex; align-items:center; gap:10px;
       padding:10px 14px;
@@ -89,7 +92,6 @@
       background: rgba(0,0,0,.22);
       color: var(--muted);
     }
-
     .badge{
       display:inline-flex; align-items:center; gap:8px;
       padding:8px 10px;
@@ -102,8 +104,6 @@
       white-space:nowrap;
     }
     .dot{width:10px;height:10px;border-radius:99px;background:var(--common);}
-
-    .row{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
 
     .btn{
       pointer-events:auto;
@@ -131,7 +131,6 @@
     .btnGhost{background: rgba(0,0,0,.22)}
     .btnDanger{background: rgba(255,79,163,.14); border-color: rgba(255,79,163,.24)}
 
-    /* Right Panel */
     .panel{
       pointer-events:auto;
       position:absolute;
@@ -177,7 +176,6 @@
     .chip.on{border-color: rgba(230,194,122,.40); background: rgba(230,194,122,.10); color: var(--gold)}
     .hint{margin:10px 0 0; color: rgba(185,187,198,.85); font-size:12.5px; line-height:1.45}
 
-    /* Bottom CTA (mobile-friendly) */
     .bottomBar{
       pointer-events:auto;
       position:absolute;
@@ -196,7 +194,6 @@
       padding:8px 10px;
     }
 
-    /* Consent */
     .consent{
       position:fixed; left:12px; right:12px; bottom:12px; z-index:9998;
       max-width:980px; margin:0 auto;
@@ -212,144 +209,171 @@
     .consent p{margin:0; color: rgba(185,187,198,.95); font-size:13px; line-height:1.35}
     .consent strong{color:var(--text)}
 
-    /* Godmode: UI hidden */
     body.godmode .panel{display:none}
     body.godmode .trust{display:none}
     body.godmode .btnGod{background: rgba(230,194,122,.14); border-color: rgba(230,194,122,.30)}
   </style>
 </head>
+
 <body>
-    <source src="assets/Intro.mp4" type="video/mp4">
-  </video>
-</div>
 
-<section class="stage" aria-label="3D Keks Konfigurator">
-  <canvas id="keks3d" tabindex="0"></canvas>
+  <!-- Intro Video (assets/Intro.mp4) -->
+  <div class="intro" id="intro">
+    <video id="introVid" playsinline muted preload="auto">
+      <source src="assets/Intro.mp4" type="video/mp4">
+    </video>
+    <div class="introBar">
+      <span>Wenn Autoplay blockt: Klick ins Video.</span>
+      <button class="btn btnGhost" id="skipIntro" type="button">Skip</button>
+    </div>
+  </div>
 
-  <div class="uiOverlay">
-    <div class="topBar">
-      <div class="row">
-        <div class="brand">
-          <div class="logo">🍪</div>
-          <strong>OnlyKeks</strong>
-          <span class="pill">Post, die schmeckt</span>
+  <section class="stage" aria-label="3D Keks Konfigurator">
+    <canvas id="keks3d" tabindex="0"></canvas>
+
+    <div class="uiOverlay">
+      <div class="topBar">
+        <div class="row">
+          <div class="brand">
+            <div class="logo">🍪</div>
+            <strong>OnlyKeks</strong>
+            <span class="pill">Post, die schmeckt</span>
+          </div>
+
+          <div class="badge">
+            <span class="dot" id="rarityDot"></span>
+            <span id="rarityText">COMMON</span>
+          </div>
         </div>
 
-        <div class="badge" id="rarityBadge">
-          <span class="dot" id="rarityDot"></span>
-          <span id="rarityText">COMMON</span>
+        <div class="row">
+          <button class="btn btnGhost" id="btnHall" type="button">Hall of Keks</button>
+          <button class="btn btnGhost btnGod" id="btnGod" type="button">Godmode</button>
+          <button class="btn btnPrimary" id="btnSurprise" type="button">Überrasch mich</button>
         </div>
       </div>
 
-      <div class="row">
-        <button class="btn btnGhost" id="btnHall" type="button">Hall of Keks</button>
-        <button class="btn btnGhost btnGod" id="btnGod" type="button">Godmode</button>
-        <button class="btn btnPrimary" id="btnSurprise" type="button">Überrasch mich</button>
+      <aside class="panel" id="panel">
+        <h1 class="h1">Schick ’ne Message. Als Keks.</h1>
+        <p class="sub">Echter 3D-Keks. Minimal UI. Maximal Wirkung. Empfänger scannt – antwortet direkt.</p>
+
+        <div class="label">Message</div>
+        <input class="input" id="msgInput" maxlength="32" value="Ich denk an dich." aria-label="Message" />
+
+        <div class="hr"></div>
+
+        <div class="label">Set wählen</div>
+        <div class="row" id="setRow"></div>
+
+        <div class="label">Form</div>
+        <div class="row" id="shapeRow">
+          <button class="chip on" data-shape="circle" type="button">Kreis</button>
+          <button class="chip" data-shape="heart" type="button">Herz</button>
+          <button class="chip" data-shape="star" type="button">Stern</button>
+        </div>
+
+        <div class="label">Deko</div>
+        <div class="row" id="decoRow">
+          <button class="chip on" data-deco="sprinkles" type="button">Sprinkles</button>
+          <button class="chip" data-deco="gold" type="button">Gold</button>
+        </div>
+
+        <div class="hr"></div>
+
+        <div class="row">
+          <button class="btn btnPrimary" id="checkoutBtn" type="button" style="flex:1">Keks losschicken</button>
+          <button class="btn btnGhost" id="shareBtn" type="button" style="display:none; flex:1">Keks teilen</button>
+        </div>
+
+        <p class="hint" id="hint">Common–Rare: bisschen Style. Epic–Legendary: weniger basteln, mehr Wirkung.</p>
+      </aside>
+
+      <div class="bottomBar">
+        <div class="trust">
+          <span>✓ Kein Abo</span>
+          <span>✓ Keine Datenverkäufe</span>
+          <span><a href="./privacy.html">Wie wir mit Daten umgehen</a></span>
+        </div>
+        <div class="row">
+          <button class="btn btnDanger" id="btnExitGod" type="button" style="display:none">Exit Godmode</button>
+        </div>
       </div>
     </div>
+  </section>
 
-    <aside class="panel" id="panel">
-      <h1 class="h1">Schick ’ne Message. Als Keks.</h1>
-      <p class="sub">Echter 3D-Keks. Minimal UI. Maximal Wirkung. Der Empfänger scannt QR und antwortet direkt.</p>
-
-      <div class="label">Message</div>
-      <input class="input" id="msgInput" maxlength="32" value="Ich denk an dich." aria-label="Message" />
-
-      <div class="hr"></div>
-
-      <div class="label">Set wählen</div>
-      <div class="row" id="setRow"></div>
-
-      <div class="label">Form</div>
-      <div class="row" id="shapeRow">
-        <button class="chip on" data-shape="circle" type="button">Kreis</button>
-        <button class="chip" data-shape="heart" type="button">Herz</button>
-        <button class="chip" data-shape="star" type="button">Stern</button>
-      </div>
-
-      <div class="label">Deko</div>
-      <div class="row" id="decoRow">
-        <button class="chip on" data-deco="sprinkles" type="button">Sprinkles</button>
-        <button class="chip" data-deco="gold" type="button">Gold</button>
-      </div>
-
-      <div class="hr"></div>
-
-      <div class="row">
-        <button class="btn btnPrimary" id="checkoutBtn" type="button" style="flex:1">Keks losschicken</button>
-        <button class="btn btnGhost" id="shareBtn" type="button" style="display:none; flex:1">Keks teilen</button>
-      </div>
-
-      <p class="hint" id="hint">Common–Rare: bisschen Style. Epic–Legendary: weniger Basteln, mehr Wirkung.</p>
-    </aside>
-
-    <div class="bottomBar">
-      <div class="trust">
-        <span>✓ Kein Abo</span>
-        <span>✓ Keine Datenverkäufe</span>
-        <span><a href="./privacy.html">Wie wir mit Daten umgehen</a></span>
-      </div>
-      <div class="row">
-        <button class="btn btnDanger" id="btnExitGod" type="button" style="display:none">Exit Godmode</button>
+  <!-- Consent -->
+  <div class="consent" id="consent">
+    <div class="consentRow">
+      <p>
+        <strong>Kurzer Cookie-Keks:</strong> Wir speichern den Entwurf lokal, damit nix verloren geht. Optional hilft anonymes Feedback.
+        <span style="display:block;margin-top:6px"><a href="./privacy.html">Wie wir mit Daten umgehen</a></span>
+      </p>
+      <div class="row" style="margin:0">
+        <button class="btn btnPrimary" id="consentAll">Alles klar</button>
+        <button class="btn btnGhost" id="consentNeed">Nur das Nötigste</button>
       </div>
     </div>
   </div>
-</section>
-
-<!-- Consent -->
-<div class="consent" id="consent">
-  <div class="consentRow">
-    <p>
-      <strong>Kurzer Cookie-Keks:</strong> Wir speichern den Entwurf lokal, damit nix verloren geht. Optional hilft uns anonymes Feedback.
-      <span style="display:block;margin-top:6px"><a href="./privacy.html">Wie wir mit Daten umgehen</a></span>
-    </p>
-    <div class="row" style="margin:0">
-      <button class="btn btnPrimary" id="consentAll">Alles klar</button>
-      <button class="btn btnGhost" id="consentNeed">Nur das Nötigste</button>
-    </div>
-  </div>
-</div>
 
 <script type="module">
   import * as THREE from "https://unpkg.com/three@0.160.0/build/three.module.js";
   import { OrbitControls } from "https://unpkg.com/three@0.160.0/examples/jsm/controls/OrbitControls.js";
 
   /* =========================
-     CONFIG
+     CONFIG / STORAGE
   ========================= */
   const LEGENDARY_ACTIVE = true;
 
   const RARITY = {
-    common:    { label:"COMMON",    css:"--common",    glow:0.22, gold:0.00, spr:0.45 },
-    uncommon:  { label:"UNCOMMON",  css:"--uncommon",  glow:0.30, gold:0.05, spr:0.60 },
-    rare:      { label:"RARE",      css:"--rare",      glow:0.38, gold:0.12, spr:0.75 },
-    epic:      { label:"EPIC",      css:"--epic",      glow:0.48, gold:0.20, spr:0.30 },
-    legendary: { label:"LEGENDARY", css:"--legendary", glow:0.60, gold:0.35, spr:0.10 },
+    common:    { label:"COMMON",    css:"--common",    glow:0.18, ring:false, spr:0.55 },
+    uncommon:  { label:"UNCOMMON",  css:"--uncommon",  glow:0.24, ring:false, spr:0.75 },
+    rare:      { label:"RARE",      css:"--rare",      glow:0.30, ring:false, spr:0.95 },
+    epic:      { label:"EPIC",      css:"--epic",      glow:0.42, ring:true,  spr:0.35 },
+    legendary: { label:"LEGENDARY", css:"--legendary", glow:0.55, ring:true,  spr:0.15 },
   };
 
   const SETS = [
-    { id:"thinkofyou", name:"Ich denk an dich", use:"Kleine Geste. Große Wirkung.", rarity:"common",    shape:"circle", message:"Ich denk an dich." },
-    { id:"yougotthis", name:"Du packst das",   use:"Motivation ohne Kitsch.",      rarity:"uncommon",  shape:"star",   message:"Du packst das."   },
-    { id:"move",       name:"Beweg dein Arsch.",use:"Ehrlich. Direkt. Wirkt.",     rarity:"rare",      shape:"circle", message:"Beweg dein Arsch." },
-    { id:"sorry",      name:"Sorry.",         use:"Wenn Worte schwerfallen.",     rarity:"epic",      shape:"heart",  message:"Sorry."          },
-    { id:"comeNow",    name:"Komm. Jetzt.",   use:"Statement-Keks.",              rarity:"legendary", shape:"heart",  message:"Komm. Jetzt."    },
+    { id:"thinkofyou", name:"Ich denk an dich",  rarity:"common",    shape:"circle", message:"Ich denk an dich." },
+    { id:"yougotthis", name:"Du packst das",     rarity:"uncommon",  shape:"star",   message:"Du packst das."   },
+    { id:"move",       name:"Beweg dein Arsch.", rarity:"rare",      shape:"circle", message:"Beweg dein Arsch." },
+    { id:"sorry",      name:"Sorry.",            rarity:"epic",      shape:"heart",  message:"Sorry."          },
+    { id:"comeNow",    name:"Komm. Jetzt.",      rarity:"legendary", shape:"heart",  message:"Komm. Jetzt."    },
   ];
 
-  const STORAGE_KEY = "ok_draft_v3";
+  const STORAGE_KEY_DRAFT = "ok_draft_v4";
+  const STORAGE_KEY_SHARE = "ok_share_map_v1";   // shareCode -> snapshot
+  const STORAGE_KEY_HALL  = "ok_hall_v1";        // array feed
 
   const state = {
-    setId: "thinkofyou",
-    rarity: "common",
-    shape: "circle",
-    message: "Ich denk an dich.",
-    decoSprinkles: true,
-    decoGold: false,
-    orderId: null,
-    shareCode: null
+    setId:"thinkofyou",
+    rarity:"common",
+    shape:"circle",
+    message:"Ich denk an dich.",
+    decoSprinkles:true,
+    decoGold:false,
+    orderId:null,
+    shareCode:null,
+    seed:"DEMO"
   };
 
   const $ = (id)=>document.getElementById(id);
-  
+
+  function getCssVar(name){
+    return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+  }
+
+  function saveDraft(){ localStorage.setItem(STORAGE_KEY_DRAFT, JSON.stringify(state)); }
+  function loadDraft(){
+    try{ const raw = localStorage.getItem(STORAGE_KEY_DRAFT); if(!raw) return;
+      Object.assign(state, JSON.parse(raw));
+    }catch{}
+  }
+
+  function loadJSON(key, fallback){
+    try{ const v = localStorage.getItem(key); return v ? JSON.parse(v) : fallback; }catch{ return fallback; }
+  }
+  function saveJSON(key, obj){ localStorage.setItem(key, JSON.stringify(obj)); }
+
   /* =========================
      CONSENT
   ========================= */
@@ -363,28 +387,44 @@
   })();
 
   /* =========================
-     UI RENDER
+     INTRO VIDEO (Autoplay + Fallback)
   ========================= */
-  function getCssVar(name){
-    return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
-  }
+  const intro = $("intro");
+  const introVid = $("introVid");
+  const skipIntro = $("skipIntro");
 
-  function saveDraft(){
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  function endIntro(){
+    intro.style.display="none";
+    introVid.pause();
   }
-  function loadDraft(){
+  skipIntro.onclick = endIntro;
+
+  (async function(){
     try{
-      const raw = localStorage.getItem(STORAGE_KEY);
-      if(!raw) return;
-      const d = JSON.parse(raw);
-      Object.assign(state, d);
-    }catch(e){}
-  }
+      introVid.muted = true;
+      introVid.playsInline = true;
+      await introVid.play();
+      introVid.onended = endIntro;
+      intro.onclick = endIntro; // click anywhere = skip
+      // fallback timeout: wenn Video hängt
+      setTimeout(()=>{ if(intro.style.display!=="none") endIntro(); }, 6500);
+    }catch{
+      // Autoplay block -> user click
+      introVid.controls = true;
+      intro.onclick = ()=> introVid.play().then(()=>{ introVid.onended=endIntro; }).catch(()=>{});
+    }
+  })();
 
+  /* =========================
+     UI
+  ========================= */
   function setRarityUI(){
     const r = RARITY[state.rarity] || RARITY.common;
     $("rarityText").textContent = r.label;
     $("rarityDot").style.background = getCssVar(r.css) || "#bbb";
+    $("hint").textContent = (state.rarity==="epic"||state.rarity==="legendary")
+      ? "Epic/Legendary: Fokus auf Wirkung. Weniger Deko-Gedöns."
+      : "Common–Rare: bisschen Style. Kurz. Direkt.";
   }
 
   function renderSetRow(){
@@ -396,14 +436,8 @@
       b.className = "chip" + (state.setId===s.id ? " on" : "");
       b.type = "button";
       b.textContent = s.name;
-      if(disabled){
-        b.style.opacity=".45";
-        b.style.cursor="not-allowed";
-      }
-      b.onclick = ()=>{
-        if(disabled) return;
-        applySet(s.id);
-      };
+      if(disabled){ b.style.opacity=".45"; b.style.cursor="not-allowed"; }
+      b.onclick = ()=>{ if(!disabled) applySet(s.id); };
       row.appendChild(b);
     });
   }
@@ -414,27 +448,6 @@
     });
   }
 
-  function applySet(id){
-    const s = SETS.find(x=>x.id===id) || SETS[0];
-    state.setId = s.id;
-    state.rarity = s.rarity;
-    state.shape = s.shape;
-    state.message = s.message;
-    $("msgInput").value = state.message;
-
-    // Legendary, wenn ausgeschaltet -> fallback
-    if(state.rarity==="legendary" && !LEGENDARY_ACTIVE){
-      state.setId="sorry"; state.rarity="epic"; state.shape="heart"; state.message="Sorry.";
-      $("msgInput").value = state.message;
-    }
-
-    renderSetRow();
-    setChipsActive("shapeRow","shape",state.shape);
-    setRarityUI();
-    update3DFromState();
-    saveDraft();
-  }
-
   function toggleDecoChip(){
     document.querySelectorAll("#decoRow .chip").forEach(b=>{
       const k = b.dataset.deco;
@@ -443,8 +456,47 @@
     });
   }
 
+  function applySet(id){
+    const s = SETS.find(x=>x.id===id) || SETS[0];
+    state.setId = s.id;
+    state.rarity = s.rarity;
+    state.shape = s.shape;
+    state.message = s.message;
+
+    if(state.rarity==="legendary" && !LEGENDARY_ACTIVE){
+      Object.assign(state, { setId:"sorry", rarity:"epic", shape:"heart", message:"Sorry." });
+    }
+    $("msgInput").value = state.message;
+
+    // Seed stabilisieren pro Set + Text (damit Optik “lebt” aber nicht jittert)
+    state.seed = (state.shareCode || "DRAFT") + "_" + state.setId + "_" + state.message;
+
+    renderSetRow();
+    setChipsActive("shapeRow","shape",state.shape);
+    setRarityUI();
+    update3DFromState();
+    saveDraft();
+  }
+
   /* =========================
-     3D: Scene setup (procedural cookie, no external model needed)
+     Deterministic RNG (Seeded)
+  ========================= */
+  function xfnv1a(str){
+    let h=2166136261;
+    for(let i=0;i<str.length;i++){ h ^= str.charCodeAt(i); h = Math.imul(h, 16777619); }
+    return h>>>0;
+  }
+  function mulberry32(a){
+    return function(){
+      let t = a += 0x6D2B79F5;
+      t = Math.imul(t ^ (t >>> 15), t | 1);
+      t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+  }
+
+  /* =========================
+     THREE: Scene
   ========================= */
   const canvas = $("keks3d");
   const renderer = new THREE.WebGLRenderer({ canvas, antialias:true, alpha:true });
@@ -470,19 +522,15 @@
   controls.maxPolarAngle = Math.PI * 0.48;
   controls.target.set(0, 1.15, 0);
 
-  const hemi = new THREE.HemisphereLight(0xffffff, 0x101014, 0.55);
-  scene.add(hemi);
+  scene.add(new THREE.HemisphereLight(0xffffff, 0x101014, 0.55));
 
   const key = new THREE.DirectionalLight(0xffffff, 1.25);
   key.position.set(2.6, 6.0, 3.8);
   key.castShadow = true;
   key.shadow.mapSize.set(2048, 2048);
-  key.shadow.camera.near = 0.5;
-  key.shadow.camera.far = 30;
-  key.shadow.camera.left = -6;
-  key.shadow.camera.right = 6;
-  key.shadow.camera.top = 6;
-  key.shadow.camera.bottom = -6;
+  key.shadow.camera.near = 0.5; key.shadow.camera.far = 30;
+  key.shadow.camera.left = -6; key.shadow.camera.right = 6;
+  key.shadow.camera.top = 6; key.shadow.camera.bottom = -6;
   scene.add(key);
 
   const rim = new THREE.DirectionalLight(0xE6C27A, 0.55);
@@ -493,7 +541,6 @@
   fill.position.set(0.0, 2.2, 2.4);
   scene.add(fill);
 
-  // Shadow floor
   const floor = new THREE.Mesh(
     new THREE.PlaneGeometry(24, 24),
     new THREE.ShadowMaterial({ opacity: 0.28 })
@@ -503,56 +550,34 @@
   floor.receiveShadow = true;
   scene.add(floor);
 
-  // Group for cookie
   const cookieGroup = new THREE.Group();
   scene.add(cookieGroup);
 
-  // Materials
-  const cookieMat = new THREE.MeshStandardMaterial({
-    color: 0xC9935A,
-    roughness: 0.95,
-    metalness: 0.0
-  });
+  const cookieMat = new THREE.MeshStandardMaterial({ color: 0xC9935A, roughness: 0.95, metalness: 0.0 });
+  const goldMat   = new THREE.MeshStandardMaterial({ color: 0xE6C27A, roughness: 0.25, metalness: 0.75 });
+  const sprinkleMat = new THREE.MeshStandardMaterial({ color: 0xff4fa3, roughness: 0.35, metalness: 0.1 });
+  const sprinkleGoldMat = new THREE.MeshStandardMaterial({ color: 0xE6C27A, roughness: 0.25, metalness: 0.75 });
 
-  const goldMat = new THREE.MeshStandardMaterial({
-    color: 0xE6C27A,
-    roughness: 0.25,
-    metalness: 0.75
-  });
-
-  const sprinkleMat = new THREE.MeshStandardMaterial({
-    color: 0xff4fa3,
-    roughness: 0.35,
-    metalness: 0.1
-  });
-
-  // Base geometry (circle cookie)
-  const baseGeo = new THREE.CylinderGeometry(1.35, 1.45, 0.35, 48, 1, false);
-  const cookieMesh = new THREE.Mesh(baseGeo, cookieMat);
+  let cookieMesh = new THREE.Mesh(new THREE.CylinderGeometry(1.35, 1.45, 0.35, 48, 1, false), cookieMat);
   cookieMesh.castShadow = true;
-  cookieMesh.receiveShadow = false;
   cookieMesh.position.set(0, 1.05, 0);
   cookieGroup.add(cookieMesh);
 
-  // Glaze ring
-  const glazeGeo = new THREE.TorusGeometry(1.05, 0.08, 16, 64);
-  const glaze = new THREE.Mesh(glazeGeo, goldMat);
+  const glaze = new THREE.Mesh(new THREE.TorusGeometry(1.05, 0.08, 16, 64), goldMat);
   glaze.castShadow = true;
   glaze.position.set(0, 1.18, 0);
   glaze.rotation.x = Math.PI/2;
   cookieGroup.add(glaze);
 
-  // Sprinkles (instanced)
   const sprinkleGeo = new THREE.CapsuleGeometry(0.08, 0.10, 4, 8);
-  const sprinkleCount = 42;
+  const sprinkleCount = 48;
   const sprinkles = new THREE.InstancedMesh(sprinkleGeo, sprinkleMat, sprinkleCount);
   sprinkles.castShadow = true;
   cookieGroup.add(sprinkles);
 
-  // Text as canvas texture on plane
+  // Text texture
   const textCanvas = document.createElement("canvas");
-  textCanvas.width = 1024;
-  textCanvas.height = 512;
+  textCanvas.width = 1024; textCanvas.height = 512;
   const tctx = textCanvas.getContext("2d");
   const textTex = new THREE.CanvasTexture(textCanvas);
   textTex.colorSpace = THREE.SRGBColorSpace;
@@ -561,33 +586,6 @@
   textPlane.position.set(0, 1.32, 0.06);
   textPlane.rotation.x = -0.22;
   cookieGroup.add(textPlane);
-
-  function drawText(msg, rarity){
-    const r = RARITY[rarity] || RARITY.common;
-    tctx.clearRect(0,0,textCanvas.width,textCanvas.height);
-
-    // subtle glass panel
-    tctx.fillStyle = "rgba(255,255,255,0.10)";
-    roundRect(tctx, 80, 120, 864, 270, 48);
-    tctx.fill();
-
-    // text
-    tctx.textAlign = "center";
-    tctx.textBaseline = "middle";
-    tctx.fillStyle = (rarity==="legendary" || rarity==="epic") ? "rgba(230,194,122,0.95)" : "rgba(240,240,244,0.92)";
-    tctx.font = "900 74px system-ui, -apple-system, Segoe UI, Roboto, Arial";
-
-    const lines = wrapLines(msg, 18).slice(0,3);
-    const startY = 255 - (lines.length-1)*64;
-    lines.forEach((ln, i)=> tctx.fillText(ln, 512, startY + i*80));
-
-    // tiny rarity hint
-    tctx.fillStyle = "rgba(185,187,198,0.70)";
-    tctx.font = "800 26px system-ui, -apple-system, Segoe UI, Roboto, Arial";
-    tctx.fillText(r.label, 512, 420);
-
-    textTex.needsUpdate = true;
-  }
 
   function roundRect(ctx, x, y, w, h, r){
     ctx.beginPath();
@@ -601,107 +599,129 @@
   function wrapLines(text, maxChars){
     const words = String(text||"").trim().split(/\s+/);
     if(!words[0]) return [];
-    const lines = [];
-    let cur = "";
+    const lines=[]; let cur="";
     for(const w of words){
-      const next = cur ? (cur + " " + w) : w;
-      if(next.length <= maxChars) cur = next;
-      else { if(cur) lines.push(cur); cur = w; }
+      const next = cur ? (cur+" "+w) : w;
+      if(next.length<=maxChars) cur=next;
+      else{ if(cur) lines.push(cur); cur=w; }
     }
     if(cur) lines.push(cur);
     return lines;
   }
+  function drawText(msg, rarity){
+    const r = RARITY[rarity] || RARITY.common;
+    tctx.clearRect(0,0,textCanvas.width,textCanvas.height);
 
+    tctx.fillStyle = "rgba(255,255,255,0.10)";
+    roundRect(tctx, 80, 120, 864, 270, 48);
+    tctx.fill();
+
+    tctx.textAlign="center"; tctx.textBaseline="middle";
+    tctx.fillStyle = (rarity==="legendary"||rarity==="epic") ? "rgba(230,194,122,0.95)" : "rgba(240,240,244,0.92)";
+    tctx.font = "900 74px system-ui, -apple-system, Segoe UI, Roboto, Arial";
+
+    const lines = wrapLines(msg, 18).slice(0,3);
+    const startY = 255 - (lines.length-1)*64;
+    lines.forEach((ln,i)=> tctx.fillText(ln, 512, startY + i*80));
+
+    tctx.fillStyle = "rgba(185,187,198,0.70)";
+    tctx.font = "800 26px system-ui, -apple-system, Segoe UI, Roboto, Arial";
+    tctx.fillText(r.label, 512, 420);
+
+    textTex.needsUpdate = true;
+  }
+
+  let lastShape = null;
   function rebuildShape(shape){
-    // reset
-    cookieGroup.remove(cookieMesh);
-    cookieMesh.geometry.dispose();
+    if(shape === lastShape) return;
+    lastShape = shape;
+
+    const old = cookieMesh.geometry;
+    let geom;
 
     if(shape==="heart"){
-      // simple “heart-ish” extrude
       const s = new THREE.Shape();
       s.moveTo(0, 0.55);
       s.bezierCurveTo(0.8, 1.25, 1.65, 0.55, 0, -1.0);
       s.bezierCurveTo(-1.65, 0.55, -0.8, 1.25, 0, 0.55);
-      const extrude = new THREE.ExtrudeGeometry(s, { depth:0.35, bevelEnabled:true, bevelSize:0.08, bevelThickness:0.06, bevelSegments:4, steps:1 });
-      extrude.center();
-      cookieMesh.geometry = extrude;
+      geom = new THREE.ExtrudeGeometry(s, { depth:0.35, bevelEnabled:true, bevelSize:0.08, bevelThickness:0.06, bevelSegments:4, steps:1 });
+      geom.center();
     } else if(shape==="star"){
       const star = new THREE.Shape();
-      const spikes = 5;
-      const outerR = 1.45, innerR = 0.70;
+      const spikes=5, outerR=1.45, innerR=0.70;
       for(let i=0;i<spikes*2;i++){
-        const a = (i/(spikes*2))*Math.PI*2 - Math.PI/2;
-        const r = (i%2===0) ? outerR : innerR;
-        const x = Math.cos(a)*r;
-        const y = Math.sin(a)*r;
+        const a=(i/(spikes*2))*Math.PI*2 - Math.PI/2;
+        const rr=(i%2===0)?outerR:innerR;
+        const x=Math.cos(a)*rr, y=Math.sin(a)*rr;
         if(i===0) star.moveTo(x,y); else star.lineTo(x,y);
       }
       star.closePath();
-      const extrude = new THREE.ExtrudeGeometry(star, { depth:0.35, bevelEnabled:true, bevelSize:0.08, bevelThickness:0.06, bevelSegments:4, steps:1 });
-      extrude.center();
-      cookieMesh.geometry = extrude;
+      geom = new THREE.ExtrudeGeometry(star, { depth:0.35, bevelEnabled:true, bevelSize:0.08, bevelThickness:0.06, bevelSegments:4, steps:1 });
+      geom.center();
     } else {
-      cookieMesh.geometry = new THREE.CylinderGeometry(1.35, 1.45, 0.35, 48, 1, false);
+      geom = new THREE.CylinderGeometry(1.35, 1.45, 0.35, 48, 1, false);
     }
 
-    cookieMesh.position.set(0, 1.05, 0);
-    cookieMesh.castShadow = true;
-    cookieGroup.add(cookieMesh);
+    cookieMesh.geometry = geom;
+    old.dispose();
   }
 
-  function placeSprinkles(enabled, goldChance){
+  function placeSprinklesDeterministic(enabled){
+    if(!enabled){ sprinkles.visible=false; return; }
+    sprinkles.visible=true;
+
+    const seed = xfnv1a(state.seed || "DRAFT");
+    const rnd = mulberry32(seed);
+
     for(let i=0;i<sprinkleCount;i++){
-      const a = Math.random()*Math.PI*2;
-      const r = 0.15 + Math.random()*1.05;
+      const a = rnd()*Math.PI*2;
+      const r = 0.18 + rnd()*1.05;
       const x = Math.cos(a)*r;
       const z = Math.sin(a)*r;
-      const y = 1.25 + Math.random()*0.05;
-      const rotY = Math.random()*Math.PI;
-      const rotZ = Math.random()*Math.PI;
+      const y = 1.25 + rnd()*0.05;
+      const rotY = rnd()*Math.PI;
+      const rotZ = rnd()*Math.PI;
 
       const m = new THREE.Matrix4();
       const q = new THREE.Quaternion().setFromEuler(new THREE.Euler(0, rotY, rotZ));
-      const s = new THREE.Vector3(1,1,1);
-
-      m.compose(new THREE.Vector3(x,y,z), q, s);
+      m.compose(new THREE.Vector3(x,y,z), q, new THREE.Vector3(1,1,1));
       sprinkles.setMatrixAt(i, m);
     }
-    sprinkles.visible = !!enabled;
-
-    // gold sprinkles via material switch (cheap, but wirkt)
-    if(state.decoGold){
-      sprinkles.material = new THREE.MeshStandardMaterial({
-        color: 0xE6C27A, roughness:0.25, metalness:0.75
-      });
-    } else {
-      sprinkles.material = sprinkleMat;
-    }
     sprinkles.instanceMatrix.needsUpdate = true;
+  }
+
+  // “Glow” via light intensities (cheap but wirkt). MVP.
+  function applyRarityLook(){
+    const r = RARITY[state.rarity] || RARITY.common;
+    const glowColor = new THREE.Color(getCssVar(r.css) || "#bbb");
+
+    // Cookie tint
+    const base = new THREE.Color(0xC9935A).lerp(glowColor, 0.10);
+    cookieMat.color.copy(base);
+
+    // Ring visibility
+    glaze.visible = !!(state.decoGold || r.ring);
+    // Sprinkles material switch only (no re-create)
+    sprinkles.material = state.decoGold ? sprinkleGoldMat : sprinkleMat;
+
+    // Lights: “premium spotlight”
+    rim.color = (state.rarity==="legendary" || state.rarity==="epic") ? new THREE.Color(0xE6C27A) : glowColor;
+    rim.intensity = 0.45 + r.glow;
+
+    fill.intensity = 0.18 + r.glow*0.35;
+    renderer.toneMappingExposure = document.body.classList.contains("godmode") ? 1.12 : (1.04 + r.glow*0.06);
   }
 
   function update3DFromState(){
     const r = RARITY[state.rarity] || RARITY.common;
 
-    // cookie base tint by rarity subtly
-    const base = new THREE.Color(0xC9935A);
-    const glow = new THREE.Color(getCssVar(r.css) || "#bbb");
-    base.lerp(glow, 0.10); // subtle
-    cookieMat.color.copy(base);
-
-    // ring intensity
-    glaze.visible = (state.decoGold || state.rarity==="legendary" || state.rarity==="epic");
-    glaze.material = (state.decoGold || state.rarity==="legendary" || state.rarity==="epic") ? goldMat : cookieMat;
-
-    // sprinkles by rarity & toggle
-    const sprEnabled = state.decoSprinkles && (r.spr > 0.15);
-    placeSprinkles(sprEnabled, r.gold);
-
-    // text
+    rebuildShape(state.shape);
     drawText(state.message, state.rarity);
 
-    // shape
-    rebuildShape(state.shape);
+    const sprEnabled = state.decoSprinkles && (r.spr > 0.2);
+    placeSprinklesDeterministic(sprEnabled);
+
+    applyRarityLook();
 
     setRarityUI();
     renderSetRow();
@@ -717,43 +737,61 @@
     $("btnExitGod").style.display = on ? "inline-flex" : "none";
 
     if(on){
-      controls.minDistance = 2.3;
-      controls.maxDistance = 6.5;
-      controls.maxPolarAngle = Math.PI * 0.58;
-      renderer.toneMappingExposure = 1.12;
+      controls.minDistance=2.3; controls.maxDistance=6.5; controls.maxPolarAngle=Math.PI*0.58;
     } else {
-      controls.minDistance = 3.0;
-      controls.maxDistance = 9.0;
-      controls.maxPolarAngle = Math.PI * 0.48;
-      renderer.toneMappingExposure = 1.05;
+      controls.minDistance=3.0; controls.maxDistance=9.0; controls.maxPolarAngle=Math.PI*0.48;
     }
+    update3DFromState();
   }
 
   /* =========================
-     SHARE / CHECKOUT (Demo)
+     SHARE / CHECKOUT / HALL (MVP local)
   ========================= */
   function hashMini(str){
     let h=2166136261;
-    for(let i=0;i<str.length;i++){
-      h ^= str.charCodeAt(i);
-      h = Math.imul(h, 16777619);
-    }
+    for(let i=0;i<str.length;i++){ h ^= str.charCodeAt(i); h = Math.imul(h, 16777619); }
     return (h>>>0).toString(36).slice(0,8).toUpperCase();
+  }
+
+  function persistShareSnapshot(){
+    const map = loadJSON(STORAGE_KEY_SHARE, {});
+    map[state.shareCode] = {
+      at: Date.now(),
+      state: { ...state }
+    };
+    saveJSON(STORAGE_KEY_SHARE, map);
+  }
+
+  function pushHallItem(){
+    const hall = loadJSON(STORAGE_KEY_HALL, []);
+    hall.unshift({
+      id: state.shareCode,
+      rarity: state.rarity,
+      message: state.message,
+      shape: state.shape,
+      ts: Date.now()
+    });
+    hall.splice(60);
+    saveJSON(STORAGE_KEY_HALL, hall);
   }
 
   function doCheckout(){
     const now = Date.now().toString(36).toUpperCase();
     state.orderId = "OK_" + now;
-    state.shareCode = hashMini(state.orderId + "_" + state.rarity + "_" + state.setId);
+    state.shareCode = hashMini(state.orderId + "_" + state.rarity + "_" + state.setId + "_" + state.message);
+    state.seed = state.shareCode; // ab Checkout: Seed = shareCode (stabil!)
+
+    persistShareSnapshot();
+    pushHallItem();
     saveDraft();
 
     $("shareBtn").style.display = "inline-flex";
-    $("hint").textContent = "Demo-Checkout: Später hängt hier Stripe dran. Share-Link ist live.";
+    $("hint").textContent = "MVP: Share & Hall laufen lokal. Nächster Step: Stripe + Server-Persist.";
 
     alert(
 `✅ Keks bereit.
-Share-Link: keks.html?share=${state.shareCode}
-QR-Reply-Link: keks.html?reply=${state.orderId}`
+Share: keks.html?share=${state.shareCode}
+Reply: keks.html?reply=${state.orderId}&from=${state.shareCode}`
     );
   }
 
@@ -765,16 +803,17 @@ QR-Reply-Link: keks.html?reply=${state.orderId}`
   }
 
   /* =========================
-     UI EVENTS
+     EVENTS
   ========================= */
   $("msgInput").addEventListener("input", ()=>{
     state.message = $("msgInput").value.trim() || "…";
+    state.seed = (state.shareCode || "DRAFT") + "_" + state.setId + "_" + state.message;
     update3DFromState();
   });
 
   document.querySelectorAll("#shapeRow .chip").forEach(b=>{
     b.onclick=()=>{
-      state.shape = b.dataset.shape;
+      state.shape=b.dataset.shape;
       setChipsActive("shapeRow","shape",state.shape);
       update3DFromState();
     };
@@ -782,15 +821,15 @@ QR-Reply-Link: keks.html?reply=${state.orderId}`
 
   document.querySelectorAll("#decoRow .chip").forEach(b=>{
     b.onclick=()=>{
-      const k = b.dataset.deco;
-      if(k==="sprinkles") state.decoSprinkles = !state.decoSprinkles;
-      if(k==="gold") state.decoGold = !state.decoGold;
+      const k=b.dataset.deco;
+      if(k==="sprinkles") state.decoSprinkles=!state.decoSprinkles;
+      if(k==="gold") state.decoGold=!state.decoGold;
       toggleDecoChip();
       update3DFromState();
     };
   });
 
-  $("btnSurprise").onclick = ()=>{
+  $("btnSurprise").onclick=()=>{
     const pool = SETS.filter(s=> s.rarity!=="legendary" || LEGENDARY_ACTIVE);
     const pick = pool[Math.floor(Math.random()*pool.length)];
     applySet(pick.id);
@@ -802,63 +841,49 @@ QR-Reply-Link: keks.html?reply=${state.orderId}`
       sorry:["Sorry.","Ich mein’s ernst.","Tut mir leid."],
       comeNow:["Komm. Jetzt.","Sag’s. Und komm.","Heute Nacht. Du & ick."]
     };
-    const v = variants[pick.id];
+    const v=variants[pick.id];
     if(v){
       state.message = v[Math.floor(Math.random()*v.length)];
       $("msgInput").value = state.message;
+      state.seed = (state.shareCode || "DRAFT") + "_" + state.setId + "_" + state.message;
       update3DFromState();
     }
   };
 
-  $("btnGod").onclick = ()=> setGodmode(!document.body.classList.contains("godmode"));
-  $("btnExitGod").onclick = ()=> setGodmode(false);
+  $("btnGod").onclick=()=> setGodmode(!document.body.classList.contains("godmode"));
+  $("btnExitGod").onclick=()=> setGodmode(false);
 
-  $("btnHall").onclick = ()=>{
-    // simpel: springt zur Hall via keks.html als Social Proof Hub (erstmal pragmatisch)
-    location.href = "./keks.html?share=" + (state.shareCode || "DEMO");
-  };
+  $("btnHall").onclick=()=>{ location.href="./keks.html"; };
 
-  $("checkoutBtn").onclick = doCheckout;
-  $("shareBtn").onclick = doShare;
-
-  function setChipsActive(containerId, key, value){
-    document.querySelectorAll(`#${containerId} .chip`).forEach(b=>{
-      b.classList.toggle("on", b.dataset[key] === value);
-    });
-  }
+  $("checkoutBtn").onclick=doCheckout;
+  $("shareBtn").onclick=doShare;
 
   /* =========================
      INIT
   ========================= */
   (function init(){
     loadDraft();
-
-    // wenn legendary aus und draft legendary -> downgrade
     if(state.rarity==="legendary" && !LEGENDARY_ACTIVE){
       Object.assign(state, { setId:"sorry", rarity:"epic", shape:"heart", message:"Sorry." });
     }
-
-    // render set chips
+    $("msgInput").value = state.message || "Ich denk an dich.";
     renderSetRow();
     setChipsActive("shapeRow","shape",state.shape);
     toggleDecoChip();
-    $("msgInput").value = state.message || "Ich denk an dich.";
     setRarityUI();
+    state.seed = state.shareCode || ("DRAFT_" + state.setId + "_" + state.message);
     update3DFromState();
   })();
 
   /* =========================
-     RENDER LOOP
+     LOOP
   ========================= */
   let t0 = performance.now();
   function tick(){
     requestAnimationFrame(tick);
-    const t = (performance.now() - t0) * 0.001;
-
-    // subtle idle motion (lebt)
-    cookieGroup.rotation.y = Math.sin(t * 0.35) * 0.12;
-    cookieGroup.position.y = Math.sin(t * 0.8) * 0.03;
-
+    const t = (performance.now()-t0)*0.001;
+    cookieGroup.rotation.y = Math.sin(t*0.35)*0.12;
+    cookieGroup.position.y = Math.sin(t*0.8)*0.03;
     controls.update();
     renderer.render(scene, camera);
   }
@@ -869,11 +894,6 @@ QR-Reply-Link: keks.html?reply=${state.orderId}`
     camera.aspect = window.innerWidth/window.innerHeight;
     camera.updateProjectionMatrix();
   });
-
 </script>
 </body>
 </html>
-
-
-
-

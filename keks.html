@@ -3,243 +3,270 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>OnlyKeks – Dein Keks</title>
-  <meta name="description" content="Ein Keks mit Message. QR gescannt? Antworte – oder schick deinen eigenen Keks." />
+  <title>OnlyKeks – Hall of Keks</title>
   <meta name="theme-color" content="#0E0E11" />
   <style>
     :root{
-      --bg:#0E0E11; --text:#F2F2F4; --muted:#B9BBC6;
-      --stroke:rgba(255,255,255,.10);
-      --panel: rgba(21,21,28,.72);
+      --bg:#0E0E11;
+      --panel:#15151C;
+      --stroke: rgba(255,255,255,.10);
+      --text:#F2F2F4;
+      --muted:#B9BBC6;
+      --gold:#E6C27A;
       --shadow: 0 24px 60px rgba(0,0,0,.55);
       --r:18px;
-      --gold:#E6C27A;
-      --common:#b9b9b9; --uncommon:#2ecc71; --rare:#4aa3ff; --epic:#b56bff; --legendary:#f6d26a;
+
+      --common:#b9b9b9;
+      --uncommon:#2ecc71;
+      --rare:#4aa3ff;
+      --epic:#b56bff;
+      --legendary:#f6d26a;
     }
     *{box-sizing:border-box}
     body{
       margin:0;
-      font-family: ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial;
       color:var(--text);
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
       background: radial-gradient(1200px 700px at 50% 20%, #1a1a24 0%, var(--bg) 55%, #09090c 100%);
+      min-height:100vh;
     }
-    .wrap{max-width:920px;margin:0 auto;padding:18px}
-    .top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
-    .brand{display:flex;align-items:center;gap:10px;font-weight:950}
-    .logo{width:34px;height:34px;border-radius:12px;display:grid;place-items:center;border:1px solid var(--stroke);background:rgba(255,255,255,.06)}
-    .badge{display:inline-flex;align-items:center;gap:8px;padding:8px 10px;border-radius:999px;border:1px solid var(--stroke);background:rgba(0,0,0,.22);color:var(--muted);font-weight:900;font-size:12px}
-    .dot{width:10px;height:10px;border-radius:99px;background:var(--common)}
-    .card{
+    a{color:inherit}
+    .wrap{max-width:1100px; margin:0 auto; padding:18px;}
+    .top{display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap;}
+    .brand{
+      display:flex; align-items:center; gap:10px;
+      padding:10px 14px;
       border:1px solid var(--stroke);
-      background: var(--panel);
-      border-radius: var(--r);
-      box-shadow: var(--shadow);
-      padding:16px;
-      backdrop-filter: blur(14px);
+      border-radius:999px;
+      background: rgba(0,0,0,.22);
+      box-shadow: 0 12px 30px rgba(0,0,0,.35);
     }
-    .h{margin:0 0 6px;font-size:22px;font-weight:980}
-    .sub{margin:0 0 12px;color:var(--muted);line-height:1.45}
-    .cookieBox{
-      border:1px solid rgba(255,255,255,.10);
-      border-radius: 18px;
-      background: rgba(0,0,0,.20);
-      padding:14px;
-      display:grid; gap:12px;
-    }
-    .cookie{
-      width:min(320px, 82vw);
-      aspect-ratio:1/1;
-      margin:0 auto;
-      border-radius:50%;
-      background: radial-gradient(circle at 30% 25%, #fff7df 0 22%, #f8d9a4 23% 55%, #e7b46b 56% 100%);
-      border:1px solid rgba(255,255,255,.10);
-      box-shadow: 0 22px 60px rgba(0,0,0,.35);
-      display:grid; place-items:center;
-      position:relative;
-      overflow:hidden;
-    }
-    .cookie.heart{border-radius: 18% 18% 35% 35%/18% 18% 45% 45%; transform: rotate(45deg);}
-    .cookie.heart .msg{transform: rotate(-45deg);}
-    .cookie.star{clip-path: polygon(50% 2%, 61% 35%, 98% 35%, 68% 56%, 79% 92%, 50% 72%, 21% 92%, 32% 56%, 2% 35%, 39% 35%); border-radius:0}
-    .glow{position:absolute;inset:-16%;border-radius:50%;filter:blur(18px);opacity:.9;pointer-events:none}
-    .msg{
-      font-weight:980;
-      font-size: clamp(18px, 4.7vw, 30px);
-      line-height:1.05;
-      color: rgba(15,15,20,.90);
-      background: rgba(255,255,255,.40);
-      padding: 10px 12px;
-      border-radius:16px;
-      max-width:92%;
-      text-align:center;
-      text-shadow: 0 2px 0 rgba(255,255,255,.45);
-    }
-    .row{display:flex;gap:10px;flex-wrap:wrap}
+    .logo{width:34px;height:34px;border-radius:12px;display:grid;place-items:center;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.10)}
     .btn{
-      appearance:none;
-      border:1px solid rgba(255,255,255,.10);
+      appearance:none; border:1px solid rgba(255,255,255,.10);
       background: rgba(255,255,255,.06);
       color: var(--text);
-      height:44px;
-      padding:0 14px;
+      height:44px; padding:0 14px;
       border-radius:14px;
       font-weight:900;
       cursor:pointer;
-      box-shadow: 0 14px 40px rgba(0,0,0,.35);
     }
-    .btnPrimary{background: linear-gradient(180deg, rgba(230,194,122,.98), rgba(184,137,91,.98)); border-color: rgba(230,194,122,.45); color:#14141A}
-    .btnGhost{background: rgba(0,0,0,.22)}
+    .btnPrimary{background: linear-gradient(180deg, rgba(230,194,122,.98), rgba(184,137,91,.98)); color:#14141A; border-color: rgba(230,194,122,.45);}
+    .grid{display:grid; grid-template-columns: 1.2fr .8fr; gap:14px; margin-top:14px;}
+    @media (max-width: 940px){ .grid{grid-template-columns:1fr;} }
+    .card{
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(21,21,28,.66);
+      border-radius: var(--r);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(14px);
+      padding:14px;
+    }
+    .h1{margin:0 0 6px; font-size: clamp(26px, 3vw, 40px); font-weight:980; line-height:1.05;}
+    .sub{margin:0 0 10px; color: rgba(185,187,198,.9); line-height:1.45;}
+    .pill{display:inline-flex; gap:8px; align-items:center; padding:8px 10px; border-radius:999px; border:1px solid rgba(255,255,255,.12); background: rgba(0,0,0,.20); color: rgba(185,187,198,.9); font-size:12px; font-weight:900;}
+    .dot{width:10px;height:10px;border-radius:99px;background:var(--common);}
+    .list{display:grid; gap:10px;}
+    .item{
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.18);
+      border-radius:16px;
+      padding:12px;
+      display:flex; justify-content:space-between; gap:10px; align-items:center;
+      cursor:pointer;
+    }
+    .item strong{font-weight:950}
+    .vip{
+      border-color: rgba(230,194,122,.32);
+      box-shadow: 0 0 0 1px rgba(230,194,122,.20), 0 18px 60px rgba(230,194,122,.08);
+    }
+    .muted{color: rgba(185,187,198,.85); font-size:12.5px; line-height:1.45;}
     .input{
-      width:100%;
-      height:46px;
-      border-radius:14px;
+      width:100%; height:46px; border-radius:14px;
       border:1px solid rgba(255,255,255,.12);
       background: rgba(0,0,0,.18);
       color: var(--text);
       padding:0 14px;
-      font-size:16px;
-      font-weight:850;
+      font-size:15px; font-weight:850;
       outline:none;
     }
-    .hint{margin:0;color:rgba(185,187,198,.90);font-size:12.5px;line-height:1.45}
-    .vip{border-color: rgba(230,194,122,.22)}
   </style>
 </head>
 <body>
-<div class="wrap">
-  <div class="top">
-    <div class="brand"><div class="logo">🍪</div>OnlyKeks</div>
-    <div class="badge"><span class="dot" id="dot"></span><span id="rarity">COMMON</span></div>
-  </div>
-
-  <div class="card" id="mainCard">
-    <div class="h" id="title">Dein Keks ist da.</div>
-    <p class="sub" id="subtitle">Wenn du willst: antworte kurz – oder schick selbst einen.</p>
-
-    <div class="cookieBox">
-      <div class="cookie" id="cookie">
-        <div class="glow" id="glow"></div>
-        <div class="msg" id="msg">Ich denk an dich.</div>
-      </div>
-
-      <div id="replyBlock" style="display:none">
-        <div class="row">
-          <input class="input" id="replyInput" maxlength="64" placeholder="Deine Antwort…" />
-          <button class="btn btnGhost" id="sendReply" type="button">Antwort senden</button>
+  <div class="wrap">
+    <div class="top">
+      <div class="brand">
+        <div class="logo">🍪</div>
+        <div>
+          <div style="font-weight:950">OnlyKeks</div>
+          <div style="font-size:12px;color:rgba(185,187,198,.85)">Hall of Keks / Share / Reply</div>
         </div>
-        <p class="hint">Demo: Antwort wird lokal gespeichert. Später: echtes Reply-System.</p>
+      </div>
+      <div style="display:flex; gap:10px; flex-wrap:wrap">
+        <button class="btn" id="copyLink">Link kopieren</button>
+        <a class="btn btnPrimary" href="./index.html" style="display:inline-flex;align-items:center;text-decoration:none">Neuen Keks bauen</a>
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="card">
+        <h1 class="h1" id="title">Hall of Keks</h1>
+        <p class="sub" id="desc">Hier landen deine letzten Kreationen (MVP lokal). Klick ein Item → öffnet den Share-Keks.</p>
+        <div class="list" id="hall"></div>
+        <p class="muted" style="margin-top:10px">Nächster Step: echtes Backend (Public Feed), aber MVP-Loop ist schon da, verstehste.</p>
       </div>
 
-      <div class="row">
-        <button class="btn btnPrimary" id="cta" type="button" style="flex:1">So einen auch verschicken</button>
-        <button class="btn btnGhost" id="share" type="button" style="flex:1">Link kopieren</button>
-      </div>
+      <div class="card">
+        <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-bottom:8px">
+          <span class="pill"><span class="dot" id="dot"></span><span id="rar">COMMON</span></span>
+          <span class="pill" id="codePill">—</span>
+        </div>
+        <h2 style="margin:0 0 6px; font-size:20px; font-weight:950">Share-Ansicht</h2>
+        <p class="muted" id="shareInfo">Wenn du über einen Share-Link hier landest, siehst du den Keks-Snapshot. (In MVP lokal.)</p>
 
-      <p class="hint" id="foot">QR gescannt? Dann bist du genau richtig.</p>
+        <div style="height:10px"></div>
+        <div class="muted" style="font-weight:900;margin-bottom:6px">Antwort (Reply-Loop)</div>
+        <input class="input" id="replyMsg" maxlength="32" placeholder="Deine Antwort…" />
+        <div style="height:10px"></div>
+        <button class="btn btnPrimary" id="sendReply" type="button" style="width:100%">Antwort als Keks anlegen</button>
+        <p class="muted" style="margin-top:10px">
+          MVP: Antwort erzeugt neuen Draft + Share-Code (lokal). Später: echte Zustellung/QR-Reply-Chain serverseitig.
+        </p>
+      </div>
     </div>
   </div>
-</div>
 
 <script>
-  const STORAGE_KEY = "ok_draft_v3";
+  const STORAGE_KEY_SHARE = "ok_share_map_v1";
+  const STORAGE_KEY_HALL  = "ok_hall_v1";
+  const STORAGE_KEY_DRAFT = "ok_draft_v4";
+
   const RARITY = {
-    common:{label:"COMMON", colorVar:"--common", glow:"rgba(185,185,185,.55)", vip:false},
-    uncommon:{label:"UNCOMMON", colorVar:"--uncommon", glow:"rgba(46,204,113,.50)", vip:false},
-    rare:{label:"RARE", colorVar:"--rare", glow:"rgba(74,163,255,.55)", vip:false},
-    epic:{label:"EPIC", colorVar:"--epic", glow:"rgba(181,107,255,.60)", vip:true},
-    legendary:{label:"LEGENDARY", colorVar:"--legendary", glow:"rgba(246,210,106,.65)", vip:true},
+    common:    { label:"COMMON",    css:"--common" },
+    uncommon:  { label:"UNCOMMON",  css:"--uncommon" },
+    rare:      { label:"RARE",      css:"--rare" },
+    epic:      { label:"EPIC",      css:"--epic" },
+    legendary: { label:"LEGENDARY", css:"--legendary" },
   };
-  function cssVar(v){ return getComputedStyle(document.documentElement).getPropertyValue(v).trim(); }
-  function qs(name){ return new URL(location.href).searchParams.get(name); }
 
-  function loadFromStorage(){
-    try{
-      const raw = localStorage.getItem(STORAGE_KEY);
-      if(!raw) return null;
-      return JSON.parse(raw);
-    }catch(e){ return null; }
+  const $ = (id)=>document.getElementById(id);
+  function loadJSON(key, fallback){ try{ const v=localStorage.getItem(key); return v?JSON.parse(v):fallback; }catch{ return fallback; } }
+  function saveJSON(key, obj){ localStorage.setItem(key, JSON.stringify(obj)); }
+  function cssVar(name){ return getComputedStyle(document.documentElement).getPropertyValue(name).trim(); }
+
+  function setBadge(rarity, code){
+    const r = RARITY[rarity] || RARITY.common;
+    $("rar").textContent = r.label;
+    $("dot").style.background = cssVar(r.css) || "#bbb";
+    $("codePill").textContent = code ? ("CODE: "+code) : "—";
   }
 
-  function fallbackFromShare(shareCode){
-    const presets = [
-      {rarity:"common",shape:"circle",message:"Ich denk an dich."},
-      {rarity:"uncommon",shape:"star",message:"Du packst das."},
-      {rarity:"rare",shape:"circle",message:"Beweg dein Arsch."},
-      {rarity:"epic",shape:"heart",message:"Sorry."},
-      {rarity:"legendary",shape:"heart",message:"Komm. Jetzt."}
-    ];
-    const idx = (parseInt((shareCode||"0").slice(-1),36) || 0) % presets.length;
-    return presets[idx];
+  function qs(){
+    const p = new URLSearchParams(location.search);
+    return {
+      share: p.get("share"),
+      reply: p.get("reply"),
+      from:  p.get("from")
+    };
   }
 
-  function apply(d){
-    const rarity = (d.rarity||"common").toLowerCase();
-    const cfg = RARITY[rarity] || RARITY.common;
+  function renderHall(){
+    const hall = loadJSON(STORAGE_KEY_HALL, []);
+    const el = $("hall");
+    el.innerHTML = "";
 
-    document.getElementById("rarity").textContent = cfg.label;
-    document.getElementById("dot").style.background = cssVar(cfg.colorVar) || "#bbb";
-    document.getElementById("msg").textContent = d.message || "…";
-
-    const cookie = document.getElementById("cookie");
-    cookie.classList.remove("heart","star");
-    if(d.shape==="heart") cookie.classList.add("heart");
-    if(d.shape==="star") cookie.classList.add("star");
-
-    document.getElementById("glow").style.background =
-      `radial-gradient(circle at 50% 50%, ${cfg.glow} 0%, rgba(0,0,0,0) 60%)`;
-
-    document.getElementById("mainCard").classList.toggle("vip", !!cfg.vip);
-    document.getElementById("subtitle").textContent = cfg.vip
-      ? "Selten. Besonders. Wenn du willst: antworte – oder schick selbst einen."
-      : "Wenn du willst: antworte kurz – oder schick selbst einen.";
-  }
-
-  (function init(){
-    const share = qs("share");
-    const reply = qs("reply");
-
-    let design = loadFromStorage();
-
-    if(reply){
-      document.getElementById("title").textContent = "QR gescannt. Antwort gefällig?";
-      document.getElementById("subtitle").textContent = "Schreib kurz zurück – der Loop lebt.";
-      document.getElementById("replyBlock").style.display = "block";
-      if(!design || design.orderId !== reply){
-        design = fallbackFromShare("0");
-      }
-    } else if(share){
-      document.getElementById("title").textContent = "Keks-Design geladen.";
-      document.getElementById("subtitle").textContent = "Gefällt dir? Dann schick deinen eigenen.";
-      if(!design || design.shareCode !== share){
-        design = fallbackFromShare(share);
-      }
-    } else {
-      design = design || fallbackFromShare("0");
+    if(!hall.length){
+      el.innerHTML = `<div class="muted">Noch leer. Bau deinen ersten Keks auf der Startseite.</div>`;
+      return;
     }
 
-    apply(design);
+    // Sort: legendary -> ... -> common (simple)
+    const order = { legendary:5, epic:4, rare:3, uncommon:2, common:1 };
+    hall.sort((a,b)=>(order[b.rarity]||0)-(order[a.rarity]||0) || (b.ts-a.ts));
 
-    document.getElementById("cta").onclick = ()=> location.href = "./index.html";
+    hall.slice(0, 40).forEach(item=>{
+      const vip = (item.rarity==="epic" || item.rarity==="legendary") ? " vip" : "";
+      const div = document.createElement("div");
+      div.className = "item" + vip;
+      div.innerHTML = `
+        <div>
+          <strong>${item.message || "…"} </strong>
+          <div class="muted">${(RARITY[item.rarity]?.label||"COMMON")} · ${item.shape || "circle"}</div>
+        </div>
+        <div class="muted">${item.id}</div>
+      `;
+      div.onclick = ()=> location.href = "./keks.html?share=" + encodeURIComponent(item.id);
+      el.appendChild(div);
+    });
+  }
 
-    document.getElementById("share").onclick = async ()=>{
-      try{
-        await navigator.clipboard.writeText(location.href);
-        alert("Link kopiert.");
-      }catch(e){
-        alert("Hier ist der Link:\n" + location.href);
-      }
+  function loadShareSnapshot(shareCode){
+    const map = loadJSON(STORAGE_KEY_SHARE, {});
+    return map?.[shareCode]?.state || null;
+  }
+
+  function copyCurrentLink(){
+    navigator.clipboard?.writeText(location.href).catch(()=>{});
+    alert("Link kopiert.");
+  }
+
+  function createReply(){
+    const text = ($("replyMsg").value || "").trim();
+    if(!text){ alert("Schreib wat rein, diggi."); return; }
+
+    const q = qs();
+    const fromShare = q.share || q.from || "UNKNOWN";
+
+    // minimaler Reply-Draft: neue Message, Rest vom Original (wenn vorhanden)
+    const original = q.share ? loadShareSnapshot(q.share) : null;
+
+    const draft = original ? { ...original } : {
+      setId:"thinkofyou", rarity:"common", shape:"circle",
+      message:"Ich denk an dich.", decoSprinkles:true, decoGold:false
     };
 
-    const send = document.getElementById("sendReply");
-    if(send){
-      send.onclick = ()=>{
-        const val = (document.getElementById("replyInput").value||"").trim();
-        if(!val){ alert("Schreib wenigstens ein Wort."); return; }
-        localStorage.setItem("ok_last_reply", JSON.stringify({at:Date.now(), text:val}));
-        alert("Antwort gespeichert (Demo). Später geht das als echte Rückpost raus.");
-        document.getElementById("replyInput").value="";
-      };
+    draft.message = text;
+    draft.setId = "reply";
+    draft.rarity = (original?.rarity==="legendary"||original?.rarity==="epic") ? "rare" : "uncommon"; // MVP-Logic
+    draft.orderId = "REPLY_" + Date.now().toString(36).toUpperCase();
+    draft.shareCode = (Math.random().toString(36).slice(2,10).toUpperCase());
+    draft.seed = draft.shareCode;
+
+    // Save as new draft for index
+    localStorage.setItem(STORAGE_KEY_DRAFT, JSON.stringify(draft));
+
+    // Also push to hall
+    const hall = loadJSON(STORAGE_KEY_HALL, []);
+    hall.unshift({ id:draft.shareCode, rarity:draft.rarity, message:draft.message, shape:draft.shape, ts:Date.now() });
+    hall.splice(60);
+    saveJSON(STORAGE_KEY_HALL, hall);
+
+    alert("Antwort angelegt. Jetzt geht’s rüber zum Konfigurator.");
+    location.href = "./index.html";
+  }
+
+  // INIT
+  (function(){
+    const q = qs();
+    renderHall();
+
+    if(q.share){
+      const snap = loadShareSnapshot(q.share);
+      if(snap){
+        $("title").textContent = "Share-Keks";
+        $("desc").textContent = "Snapshot geladen (lokal). In der echten Version wäre dit public & viral.";
+        setBadge(snap.rarity, q.share);
+        $("shareInfo").textContent = `Du siehst den Keks aus Share-Code ${q.share}. Message: „${snap.message}“`;
+      } else {
+        setBadge("common", q.share);
+        $("shareInfo").textContent = "Kein Snapshot gefunden. (MVP lokal: Link funktioniert nur auf dem Gerät, wo er erstellt wurde.)";
+      }
+    } else {
+      setBadge("common", null);
     }
+
+    $("copyLink").onclick = copyCurrentLink;
+    $("sendReply").onclick = createReply;
   })();
 </script>
 </body>

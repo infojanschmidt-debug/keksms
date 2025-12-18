@@ -1,325 +1,311 @@
 <!doctype html>
 <html lang="de">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <title>OnlyKeks – Post, die schmeckt</title>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>OnlyKeks – Post, die schmeckt.</title>
 
-  <!-- META -->
-  <meta name="description" content="Du schreibst eine Botschaft. Wir machen daraus einen echten Keks." />
-  <meta name="theme-color" content="#fff1f7" />
+  <meta name="theme-color" content="#fff3ea"/>
+  <meta name="description" content="Du schreibst eine Botschaft. Wir machen daraus einen echten Keks."/>
 
-  <!-- RESET / BASE -->
-  <style>
-    *,*::before,*::after{box-sizing:border-box}
-    html,body{margin:0;padding:0}
-    body{
-      font-family: system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
-      color:#3a2a1f;
-      background:#fff6fa;
-      -webkit-font-smoothing:antialiased;
-      overflow-x:hidden;
-    }
-    button{font:inherit;border:0;background:none}
-  </style>
-
-  <!-- DESIGN TOKENS -->
   <style>
     :root{
-      --vanilla:#fff6fa;
-      --vanilla-soft:#fff1f7;
-      --cookie:#d7a36a;
-      --cookie-dark:#c98e55;
-      --rose:#ff4fa3;
-      --rose-soft:#ff7bbf;
-      --text:#3a2a1f;
-      --muted:#8a7a6a;
+      --vanilla:#fff3ea;
+      --cream:#fff9f4;
+      --candy:#ff4fa3;
+      --candy-soft:#ff7bbf;
+      --choco:#c98e55;
+      --ink:#3a2a1f;
+      --muted:#9c8f86;
       --radius-xl:28px;
       --radius-pill:999px;
       --shadow-soft:0 18px 60px rgba(255,105,180,.18);
-    }
-  </style>
-
-  <!-- LAYOUT -->
-  <style>
-    .wrap{
-      max-width:420px;
-      margin:0 auto;
-      padding:16px 16px 120px;
+      --shadow-card:0 12px 36px rgba(0,0,0,.08);
     }
 
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0}
+    body{
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Inter, sans-serif;
+      color:var(--ink);
+      background:linear-gradient(180deg, var(--vanilla), var(--cream));
+    }
+
+    /* HEADER */
     header{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      padding:6px 0 12px;
-      font-weight:700;
+      position:sticky; top:0; z-index:5;
+      background:linear-gradient(180deg, rgba(255,243,234,.9), rgba(255,243,234,.6));
+      backdrop-filter:saturate(1.05);
+      padding:10px 16px;
     }
-    header small{
-      display:block;
-      font-weight:500;
-      font-size:12px;
-      color:var(--muted);
+    .hdr{
+      display:flex; align-items:center; justify-content:space-between;
+      max-width:520px; margin:0 auto;
     }
-    header a{
-      font-size:13px;
-      color:var(--muted);
-      text-decoration:none;
+    .logo{
+      font-weight:900; letter-spacing:.2px;
+    }
+    .sub{
+      font-size:12px; color:var(--muted); margin-top:-2px;
+    }
+    .hdr a{
+      font-size:13px; color:var(--ink); text-decoration:none;
+      opacity:.8;
     }
 
-    /* HERO */
-    .hero{
+    /* LAYOUT */
+    main{max-width:520px;margin:0 auto;padding:12px 16px 140px}
+    section{margin:18px 0}
+
+    /* HERO / 3D STAGE */
+    .stageWrap{
+      margin-top:8px;
       text-align:center;
-      padding:6px 0 18px;
     }
-    .hero h1{
-      font-size:28px;
-      line-height:1.1;
-      margin:14px 0 8px;
-    }
-    .hero p{
-      font-size:15px;
-      color:var(--muted);
-      margin:0 0 12px;
-    }
-    .hero .context{
-      font-size:13px;
-      color:#6f5a49;
-      margin-bottom:14px;
-    }
-    .cta{
-      display:inline-block;
-      padding:14px 22px;
-      border-radius:var(--radius-pill);
-      background:linear-gradient(180deg,var(--rose-soft),var(--rose));
-      color:#fff;
-      font-weight:800;
-      box-shadow:var(--shadow-soft);
-    }
-    .mini-proof{
-      margin-top:10px;
-      font-size:12px;
-      color:var(--muted);
-    }
-
-    /* 3D STAGE */
-    .k3d{
-      margin:18px 0 10px;
-    }
-    .k3dStage{
+    .stage{
       width:100%;
-      height:300px;
+      height:360px;
       border-radius:var(--radius-xl);
-      background:radial-gradient(120% 90% at 50% 20%,#fff,#ffe6f0);
+      background:radial-gradient(120% 90% at 50% 20%, #ffffff, #ffe3ef);
       box-shadow:var(--shadow-soft);
       overflow:hidden;
       position:relative;
     }
-    .k3dHint{
-      margin-top:8px;
-      font-size:12px;
-      text-align:center;
-      color:var(--muted);
+    .hint{
+      font-size:13px; color:var(--muted); margin-top:8px;
     }
 
-    /* STYLE SELECT */
-    .styleRow{
-      display:flex;
-      gap:10px;
-      margin-top:12px;
-      overflow-x:auto;
-      padding-bottom:4px;
+    /* STATUS LABEL (NICK) */
+    .status{
+      margin-top:10px;
+      font-size:14px;
+      color:#6d5a4e;
+      min-height:20px;
+      transition:opacity .25s ease;
     }
-    .styleChip{
+
+    /* SURPRISE */
+    .surpriseBtn{
+      margin:14px auto 8px;
+      display:inline-flex; align-items:center; gap:8px;
+      padding:14px 22px;
+      border-radius:var(--radius-pill);
+      border:none;
+      font-weight:900;
+      font-size:16px;
+      color:white;
+      background:linear-gradient(180deg, var(--candy-soft), var(--candy));
+      box-shadow:0 14px 40px rgba(255,79,163,.35);
+    }
+
+    /* STYLE CHIPS */
+    .chips{
+      display:flex; gap:10px; overflow-x:auto;
+      padding:6px 2px;
+    }
+    .chip{
+      flex:0 0 auto;
       padding:10px 16px;
       border-radius:var(--radius-pill);
-      background:#fff;
-      border:2px solid rgba(255,105,180,.35);
-      font-weight:700;
-      box-shadow:0 10px 30px rgba(255,105,180,.12);
-      white-space:nowrap;
+      border:2px solid rgba(255,79,163,.35);
+      background:rgba(255,255,255,.75);
+      font-weight:800;
     }
-    .styleChip.isActive{
-      background:linear-gradient(180deg,var(--rose-soft),var(--rose));
-      color:#fff;
+    .chip.active{
+      background:linear-gradient(180deg, #ff7bbf, #ff4fa3);
+      color:white;
       border-color:rgba(255,255,255,.6);
     }
 
-    /* FORM */
-    .section{
-      margin-top:22px;
-    }
-    .section h2{
-      font-size:18px;
-      margin:0 0 6px;
-    }
-    .section small{
-      color:var(--muted);
-      font-size:13px;
-    }
+    /* TEXT */
     textarea{
       width:100%;
-      margin-top:10px;
-      padding:14px;
+      min-height:72px;
+      padding:14px 16px;
       border-radius:18px;
-      border:0;
-      background:#fff;
-      box-shadow:0 10px 30px rgba(0,0,0,.06);
-      font-size:15px;
+      border:none;
+      box-shadow:var(--shadow-card);
+      font-size:16px;
       resize:none;
     }
+    .chipsRow{margin-top:10px}
 
     /* STICKY CTA */
     .sticky{
-      position:fixed;
-      left:0;right:0;bottom:0;
-      background:#fff;
-      box-shadow:0 -10px 40px rgba(0,0,0,.08);
+      position:fixed; bottom:0; left:0; right:0;
+      background:rgba(255,249,244,.92);
+      backdrop-filter:blur(6px);
+      border-top:1px solid rgba(0,0,0,.05);
       padding:12px 16px;
     }
-    .sticky-inner{
-      max-width:420px;
-      margin:0 auto;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
+    .stickyInner{
+      max-width:520px;margin:0 auto;
+      display:flex; align-items:center; justify-content:space-between;
+      gap:10px;
     }
-    .sticky span{
-      font-size:14px;
-      color:var(--muted);
-    }
-    .sticky button{
-      padding:12px 18px;
+    .sticky span{font-size:14px;color:var(--muted)}
+    .cta{
+      padding:14px 22px;
       border-radius:var(--radius-pill);
-      background:linear-gradient(180deg,var(--cookie),var(--cookie-dark));
-      color:#fff;
-      font-weight:800;
+      border:none;
+      font-weight:900;
+      font-size:16px;
+      background:linear-gradient(180deg, var(--choco), #b47a43);
+      color:white;
+    }
+
+    /* CHECKOUT */
+    .sheet{
+      position:fixed; inset:0;
+      background:rgba(0,0,0,.35);
+      display:none; align-items:flex-end;
+    }
+    .sheet.open{display:flex}
+    .panel{
+      width:100%;
+      max-width:520px;
+      background:var(--cream);
+      border-radius:24px 24px 0 0;
+      padding:16px;
+      box-shadow:0 -10px 40px rgba(0,0,0,.2);
+    }
+    .panel h3{margin:4px 0 6px}
+    .panel input{
+      width:100%;
+      padding:12px 14px;
+      border-radius:14px;
+      border:none;
+      box-shadow:var(--shadow-card);
+      margin:6px 0;
+      font-size:15px;
+    }
+    .pay{
+      margin-top:10px;
+      width:100%;
+      padding:16px;
+      border-radius:var(--radius-pill);
+      border:none;
+      font-weight:900;
+      font-size:16px;
+      background:linear-gradient(180deg, var(--candy-soft), var(--candy));
+      color:white;
+    }
+    .trust{
+      text-align:center;
+      font-size:12px;color:var(--muted);margin-top:6px;
     }
   </style>
 </head>
 
 <body>
 
-<div class="wrap">
-
-  <!-- HEADER -->
-  <header>
+<header>
+  <div class="hdr">
     <div>
-      OnlyKeks
-      <small>3D-Keks. Ruhig. Lecker.</small>
+      <div class="logo">OnlyKeks</div>
+      <div class="sub">3D-Keks. Ruhig. Lecker.</div>
     </div>
-    <a href="#how">So geht’s</a>
-  </header>
-
-  <!-- HERO -->
-  <section class="hero">
-    <div class="k3d">
-      <div class="k3dStage" id="k3dStage"></div>
-      <div class="k3dHint">Tipp: Ziehen zum Drehen</div>
-    </div>
-
-    <h1>Post, die schmeckt.</h1>
-    <p>Du schreibst eine Botschaft. Wir machen daraus einen echten Keks.</p>
-    <div class="context">Für Geburtstage, kleine Entschuldigungen und „Ich denk an dich“.</div>
-    <a class="cta" href="#config">Keks gestalten</a>
-    <div class="mini-proof">Kein Abo · Keine Datenverkäufe · Geschenkbereit</div>
-  </section>
-
-  <!-- STYLE SELECT -->
-  <div class="styleRow">
-    <button class="styleChip isActive" data-style="classic">Classic</button>
-    <button class="styleChip" data-style="chunky">Chunky</button>
-    <button class="styleChip" data-style="soft">Soft</button>
+    <a href="#how">So funktioniert’s</a>
   </div>
+</header>
 
-  <!-- MESSAGE -->
-  <section class="section" id="config">
-    <h2>Deine Botschaft</h2>
-    <small>Kurz. Ehrlich. Von Herzen.</small>
-    <textarea rows="3" placeholder="z. B. Vermiss dich."></textarea>
+<main>
+
+  <!-- HERO / STAGE -->
+  <section class="stageWrap">
+    <div class="stage" id="k3dStage" aria-label="3D Keks Bühne"></div>
+    <div class="hint">Tipp: Ziehen zum Drehen</div>
+
+    <div class="status" id="status">Mach’s persönlich.</div>
+
+    <button class="surpriseBtn" id="surpriseBtn">Überrasch mich ✨</button>
+
+    <div class="chips" aria-label="Cookie-Stil">
+      <button class="chip active" data-style="classic">Classic</button>
+      <button class="chip" data-style="chunky">Chunky</button>
+      <button class="chip" data-style="soft">Soft</button>
+    </div>
   </section>
 
-</div>
+  <!-- TEXT -->
+  <section>
+    <textarea id="msg" placeholder="Kurz. Ehrlich. Von Herzen."></textarea>
+  </section>
+
+</main>
 
 <!-- STICKY CTA -->
 <div class="sticky">
-  <div class="sticky-inner">
-    <span>Dein Keks ist bereit.</span>
-    <button>Keks losschicken</button>
+  <div class="stickyInner">
+    <span id="ctaStatus">Schreib deine Botschaft.</span>
+    <button class="cta" id="checkoutBtn">Keks losschicken</button>
   </div>
 </div>
 
-<!-- THREE.JS -->
-<script type="module">
-import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js";
+<!-- CHECKOUT -->
+<div class="sheet" id="sheet">
+  <div class="panel">
+    <small>Du kannst alles noch ändern.</small>
+    <h3>Empfänger</h3>
+    <input placeholder="Name (optional)"/>
+    <input placeholder="Straße, Nr., PLZ Ort"/>
 
-/* ===== PERFORMANCE SETUP ===== */
-const stage = document.getElementById("k3dStage");
-const renderer = new THREE.WebGLRenderer({antialias:true,alpha:true});
-renderer.setPixelRatio(Math.min(window.devicePixelRatio,1.5));
-renderer.setSize(stage.clientWidth,stage.clientHeight);
-stage.appendChild(renderer.domElement);
+    <h3>Absender</h3>
+    <input placeholder="Dein Name (optional)"/>
 
-const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(35,stage.clientWidth/stage.clientHeight,0.1,50);
-camera.position.set(0,0.3,3.2);
+    <button class="pay">Jetzt losschicken</button>
+    <div class="trust">Kein Abo · Sicher bezahlen</div>
+  </div>
+</div>
 
-/* LIGHT */
-scene.add(new THREE.AmbientLight(0xffffff,0.4));
-const key = new THREE.DirectionalLight(0xffffff,1.1);
-key.position.set(2.5,3,2);
-scene.add(key);
+<script>
+  /* STATUS / CTA LOGIK */
+  const status = document.getElementById("status");
+  const msg = document.getElementById("msg");
+  const ctaStatus = document.getElementById("ctaStatus");
 
-/* COOKIE */
-const geo = new THREE.CylinderGeometry(1,1,0.34,72,2);
-const mat = new THREE.MeshStandardMaterial({color:0xd7a36a,roughness:0.78});
-const cookie = new THREE.Mesh(geo,mat);
-scene.add(cookie);
+  function updateStatus(text){
+    status.style.opacity = 0;
+    setTimeout(()=>{
+      status.textContent = text;
+      status.style.opacity = 1;
+    },120);
+  }
 
-/* SHADOW FAKE */
-const shadowGeo = new THREE.CircleGeometry(1.2,64);
-const shadowMat = new THREE.MeshBasicMaterial({color:0x000000,transparent:true,opacity:0.25});
-const shadow = new THREE.Mesh(shadowGeo,shadowMat);
-shadow.rotation.x=-Math.PI/2;
-shadow.position.y=-0.6;
-scene.add(shadow);
-
-/* INTERACTION */
-let rot=0,down=false,lastX=0;
-renderer.domElement.addEventListener("pointerdown",e=>{down=true;lastX=e.clientX});
-window.addEventListener("pointerup",()=>down=false);
-window.addEventListener("pointermove",e=>{
-  if(!down)return;
-  rot+=(e.clientX-lastX)*0.005;
-  lastX=e.clientX;
-});
-
-/* LOOP */
-function loop(){
-  requestAnimationFrame(loop);
-  cookie.rotation.y+=0.002;
-  cookie.rotation.y+=rot;
-  rot*=0.9;
-  renderer.render(scene,camera);
-}
-loop();
-
-/* STYLE SWITCH */
-document.querySelectorAll(".styleChip").forEach(btn=>{
-  btn.onclick=()=>{
-    document.querySelectorAll(".styleChip").forEach(b=>b.classList.remove("isActive"));
-    btn.classList.add("isActive");
-    if(btn.dataset.style==="chunky"){
-      cookie.scale.y=1.25; mat.roughness=0.86;
-    }else if(btn.dataset.style==="soft"){
-      cookie.scale.y=0.95; mat.roughness=0.62;
+  msg.addEventListener("input",()=>{
+    if(msg.value.trim().length){
+      updateStatus("Sitzt.");
+      ctaStatus.textContent = "Bereit zum Verschenken.";
     }else{
-      cookie.scale.y=1; mat.roughness=0.78;
+      updateStatus("Mach’s persönlich.");
+      ctaStatus.textContent = "Schreib deine Botschaft.";
     }
+  });
+
+  /* CHECKOUT */
+  const sheet = document.getElementById("sheet");
+  document.getElementById("checkoutBtn").onclick = ()=>sheet.classList.add("open");
+  sheet.onclick = e=>{ if(e.target===sheet) sheet.classList.remove("open"); };
+
+  /* STYLE CHIPS */
+  document.querySelectorAll(".chip").forEach(c=>{
+    c.onclick=()=>{
+      document.querySelectorAll(".chip").forEach(x=>x.classList.remove("active"));
+      c.classList.add("active");
+      updateStatus("Der fühlt sich richtig an.");
+      window.switchStyle?.(c.dataset.style);
+    }
+  });
+
+  /* SURPRISE */
+  document.getElementById("surpriseBtn").onclick=()=>{
+    updateStatus("Passt. Wenn du willst, noch feiner.");
+    window.randomPreset?.();
   };
-});
 </script>
+
+<!-- 3D MODULE -->
+<script type="module" src="./cookie3d.js"></script>
 
 </body>
 </html>

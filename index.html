@@ -3,401 +3,491 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>OnlyKeks – 3D Konfigurator</title>
-  <meta name="theme-color" content="#0E0E11" />
+  <title>OnlyKeks – Keks gestalten</title>
+  <meta name="theme-color" content="#FBF3E6" />
   <style>
     :root{
-      --bg:#0E0E11;
-      --panel:#15151C;
-      --stroke: rgba(255,255,255,.10);
-      --text:#F2F2F4;
-      --muted:#B9BBC6;
-      --gold:#E6C27A;
-      --pink:#ff4fa3;
+      /* Brand: warm, essbar, ruhig */
+      --vanilla:#FBF3E6;
+      --vanilla-2:#FFF8EE;
       --cookie:#B8895B;
-      --shadow: 0 20px 60px rgba(0,0,0,.55);
+      --cookie-2:#A97749;
+      --cocoa:#6A4428;
+      --ink:#1E1A16;
+      --muted:#6C625A;
+      --stroke: rgba(30,26,22,.12);
+      --shadow: 0 18px 50px rgba(30,26,22,.12);
       --r:18px;
 
-      --common:#b9b9b9;
-      --uncommon:#2ecc71;
-      --rare:#4aa3ff;
-      --epic:#b56bff;
-      --legendary:#f6d26a;
+      /* one accent max */
+      --accent:#E9A4B4; /* soft rosé */
+      --accent-2:#D68FA0;
+      --good:#2f7d4a;
+      --bg-grad: radial-gradient(1200px 680px at 50% 0%, #fffaf2 0%, var(--vanilla) 55%, #f6ead8 110%);
     }
+
     *{box-sizing:border-box}
     html,body{height:100%}
     body{
       margin:0;
-      background: radial-gradient(1200px 600px at 50% 0%, #181823 0%, var(--bg) 55%, #0a0a0d 100%);
-      color:var(--text);
+      background: var(--bg-grad);
+      color:var(--ink);
       font-family: ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
       -webkit-font-smoothing:antialiased;
       overflow-x:hidden;
     }
 
-    /* FAIL-OPEN: App ist IMMER sichtbar */
-    #app{display:block; opacity:1}
+    a{color:inherit; text-decoration:none; border-bottom:1px dashed rgba(30,26,22,.25)}
+    .wrap{max-width:1160px; margin:0 auto; padding:18px 14px 70px}
 
-    .wrap{max-width:1120px; margin:0 auto; padding:18px 14px 60px}
     header{
       display:flex; align-items:center; justify-content:space-between;
-      gap:12px; padding:10px 0 16px;
+      gap:12px; padding:10px 0 18px;
     }
-    .brand{
-      display:flex; align-items:center; gap:12px;
-    }
+    .brand{display:flex; align-items:center; gap:12px;}
     .logo{
       width:42px;height:42px;border-radius:14px;
-      background: radial-gradient(circle at 35% 35%, #ffd9b8, #b8895b 55%, #6d4a2a 110%);
-      box-shadow: 0 12px 30px rgba(0,0,0,.45);
-      border:1px solid rgba(255,255,255,.12);
+      background: radial-gradient(circle at 35% 35%, #ffe1c7, var(--cookie) 58%, #6d4a2a 125%);
+      border:1px solid rgba(30,26,22,.10);
+      box-shadow: 0 10px 30px rgba(30,26,22,.10);
     }
-    h1{font-size:18px; margin:0; letter-spacing:.2px}
-    .sub{color:var(--muted); font-size:12.5px; margin-top:2px}
-    .pill{
-      display:inline-flex; align-items:center; gap:8px;
-      padding:8px 10px; border-radius:999px;
-      background: rgba(21,21,28,.66);
-      border:1px solid var(--stroke);
-      box-shadow: 0 10px 25px rgba(0,0,0,.35);
-      font-size:12px; color:var(--muted);
-      user-select:none;
-    }
-    .dot{width:9px;height:9px;border-radius:50%}
+    .brand h1{font-size:16px; margin:0; letter-spacing:.2px}
+    .sub{font-size:12.5px; color:var(--muted); margin-top:2px}
+
+    .topActions{display:flex; align-items:center; gap:10px; flex-wrap:wrap}
     .btn{
-      appearance:none; border:1px solid var(--stroke);
-      background: rgba(21,21,28,.72);
-      color:var(--text);
+      appearance:none;
+      border:1px solid var(--stroke);
+      background: rgba(255,255,255,.55);
+      color:var(--ink);
       border-radius:14px;
       padding:10px 12px;
-      font-weight:650;
+      font-weight:750;
       cursor:pointer;
-      transition: transform .08s ease, border-color .15s ease, background .15s ease;
+      transition: transform .08s ease, background .15s ease, border-color .15s ease;
+      box-shadow: 0 10px 24px rgba(30,26,22,.06);
     }
-    .btn:active{transform: translateY(1px)}
+    .btn:active{transform:translateY(1px)}
     .btn.primary{
-      background: linear-gradient(180deg, rgba(230,194,122,.18), rgba(21,21,28,.72));
-      border-color: rgba(230,194,122,.35);
+      background: linear-gradient(180deg, rgba(233,164,180,.55), rgba(255,255,255,.55));
+      border-color: rgba(214,143,160,.45);
     }
-    .btn.ghost{background:transparent}
+    .btn.ghost{
+      background: transparent;
+      box-shadow:none;
+    }
+
     .grid{
       display:grid;
-      grid-template-columns: 1.2fr .8fr;
+      grid-template-columns: 1.15fr .85fr;
       gap:14px;
       align-items:start;
     }
-    @media (max-width: 960px){
-      .grid{grid-template-columns:1fr; }
+    @media (max-width: 980px){
+      .grid{grid-template-columns:1fr;}
     }
 
     .card{
-      background: rgba(21,21,28,.66);
+      background: rgba(255,255,255,.62);
       border:1px solid var(--stroke);
       border-radius: var(--r);
       box-shadow: var(--shadow);
       overflow:hidden;
+      backdrop-filter: blur(6px);
     }
-    .card .hd{
+    .hd{
       padding:14px 14px 10px;
-      border-bottom:1px solid rgba(255,255,255,.06);
-      display:flex; align-items:center; justify-content:space-between; gap:10px;
+      border-bottom:1px solid rgba(30,26,22,.08);
+      display:flex; align-items:flex-start; justify-content:space-between; gap:10px;
     }
-    .title{font-weight:800; letter-spacing:.2px}
+    .title{font-weight:900; letter-spacing:.2px}
     .muted{color:var(--muted)}
-    .card .bd{padding:14px}
-    .row{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
+    .bd{padding:14px}
 
-    .stage{
-      position:relative;
-      min-height: 520px;
-      background:
-        radial-gradient(520px 320px at 50% 30%, rgba(255,255,255,.08), rgba(255,255,255,0) 60%),
-        radial-gradient(700px 380px at 50% 120%, rgba(230,194,122,.06), rgba(0,0,0,0) 62%);
+    /* HERO / Stage */
+    .heroTop{
+      padding:14px 14px 10px;
+      display:flex; align-items:flex-start; justify-content:space-between; gap:12px;
     }
-    .stageTop{
-      padding:14px;
-      display:flex; align-items:center; justify-content:space-between; gap:12px;
+    .hBig{
+      font-size:34px; line-height:1.05; margin:0;
+      letter-spacing:-.6px;
     }
-    .big{
-      font-size:28px; line-height:1.05; margin:0;
-      letter-spacing:-.4px;
+    .lead{
+      margin:10px 0 0;
+      color:var(--muted);
+      max-width:60ch;
+      font-size:14.5px;
     }
-    .lead{margin:8px 0 0; color:var(--muted); max-width:56ch}
-    .canvasWrap{
+
+    .stageWrap{
       position:relative;
       margin:10px 14px 14px;
       border-radius: 22px;
-      border: 1px solid rgba(255,255,255,.10);
+      border: 1px solid rgba(30,26,22,.10);
       overflow:hidden;
-      background: radial-gradient(600px 320px at 50% 25%, rgba(255,255,255,.06), rgba(0,0,0,.15) 65%);
-      min-height: 360px;
-      box-shadow: 0 28px 90px rgba(0,0,0,.65);
+      background:
+        radial-gradient(680px 340px at 50% 22%, rgba(255,255,255,.75), rgba(255,255,255,0) 62%),
+        radial-gradient(900px 420px at 50% 120%, rgba(184,137,91,.14), rgba(0,0,0,0) 62%),
+        linear-gradient(180deg, rgba(255,248,238,.75), rgba(255,255,255,.45));
+      min-height: 420px;
+      box-shadow: 0 24px 70px rgba(30,26,22,.10);
     }
-    canvas{display:block; width:100%; height:360px}
-    .glow{
-      position:absolute; inset:-2px;
+    canvas{display:block; width:100%; height:420px}
+
+    .stageHint{
+      position:absolute; left:14px; bottom:12px;
+      display:flex; gap:8px; flex-wrap:wrap;
       pointer-events:none;
-      border-radius: 24px;
-      box-shadow: 0 0 0 rgba(0,0,0,0);
-      transition: box-shadow .22s ease;
     }
-    .badge{
+    .pill{
       display:inline-flex; align-items:center; gap:8px;
       padding:8px 10px; border-radius:999px;
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(0,0,0,.22);
+      background: rgba(255,255,255,.62);
+      border:1px solid rgba(30,26,22,.10);
       font-size:12px; color:var(--muted);
-      user-select:none;
+      box-shadow: 0 10px 24px rgba(30,26,22,.06);
     }
-    .badge strong{color:var(--text)}
-    .split{display:flex; gap:10px; flex-wrap:wrap; align-items:center; justify-content:space-between}
-    .chips{display:flex; gap:8px; flex-wrap:wrap}
+    .dot{width:8px;height:8px;border-radius:50%; background: var(--accent)}
+
+    /* Controls */
+    label{display:block; font-size:12.5px; font-weight:800; margin:0 0 8px}
+    textarea,input,select{
+      width:100%;
+      padding:12px 12px;
+      border-radius:14px;
+      border:1px solid rgba(30,26,22,.12);
+      background: rgba(255,255,255,.75);
+      color:var(--ink);
+      outline:none;
+      font-size:14px;
+    }
+    textarea{min-height:92px; resize:vertical}
+    .hint{font-size:12px; color:var(--muted); margin-top:8px}
+
+    .row{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
+    .hr{height:1px; background: rgba(30,26,22,.08); margin:14px 0}
+
+    .chipRow{display:flex; gap:8px; flex-wrap:wrap}
     .chip{
       padding:8px 10px; border-radius:999px;
-      border:1px solid var(--stroke);
-      background: rgba(21,21,28,.72);
+      border:1px solid rgba(30,26,22,.12);
+      background: rgba(255,255,255,.60);
       color:var(--muted);
       cursor:pointer;
       user-select:none;
       font-size:12.5px;
+      transition: transform .08s ease, background .15s ease, border-color .15s ease;
     }
+    .chip:active{transform: translateY(1px)}
     .chip.on{
-      color:var(--text);
-      border-color: rgba(255,255,255,.22);
-      background: rgba(255,255,255,.06);
+      color:var(--ink);
+      border-color: rgba(214,143,160,.45);
+      background: rgba(233,164,180,.25);
     }
 
-    .setScroller{
-      display:flex; gap:10px; overflow:auto; padding:2px 0 8px;
-      scroll-snap-type:x mandatory;
-    }
-    .set{
-      flex: 0 0 260px;
-      scroll-snap-align:start;
-      border-radius:18px;
-      border:1px solid rgba(255,255,255,.10);
-      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(21,21,28,.72));
-      padding:12px;
-      cursor:pointer;
-      transition: transform .1s ease, border-color .15s ease;
-    }
-    .set:hover{transform: translateY(-1px)}
-    .set .name{font-weight:800}
-    .set .desc{font-size:12.5px; color:var(--muted); margin-top:6px; min-height:34px}
-    .set .meta{display:flex; justify-content:space-between; margin-top:10px; font-size:12px; color:var(--muted)}
-    .set.active{border-color: rgba(230,194,122,.35)}
-
-    textarea,input{
-      width:100%;
-      padding:12px 12px;
-      border-radius:14px;
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(0,0,0,.18);
-      color:var(--text);
-      outline:none;
-      font-size:14px;
-    }
-    textarea{min-height: 92px; resize: vertical}
-    .hint{font-size:12px; color:var(--muted); margin-top:8px}
-    .hr{height:1px; background: rgba(255,255,255,.06); margin:14px 0}
-
-    .mini{
-      display:flex; gap:10px; flex-wrap:wrap;
-    }
-    .kv{
-      flex:1 1 170px;
-      padding:10px 10px;
-      border-radius:14px;
-      border:1px solid rgba(255,255,255,.08);
-      background: rgba(0,0,0,.18);
-    }
-    .kv .k{font-size:11px; color:var(--muted)}
-    .kv .v{margin-top:4px; font-weight:800}
-
+    /* Hall */
     .hall{
       display:flex; gap:10px; overflow:auto; padding:2px 0 8px;
     }
     .hallItem{
-      flex: 0 0 240px;
+      flex:0 0 260px;
       border-radius:18px;
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(0,0,0,.18);
+      border:1px solid rgba(30,26,22,.10);
+      background: rgba(255,255,255,.62);
       padding:12px;
       cursor:pointer;
       transition: transform .1s ease, border-color .15s ease;
-      position:relative;
-      overflow:hidden;
+      box-shadow: 0 12px 30px rgba(30,26,22,.06);
     }
-    .hallItem:hover{transform: translateY(-1px)}
+    .hallItem:hover{transform:translateY(-1px)}
     .hallItem .t{font-weight:900}
-    .hallItem .m{margin-top:6px; color:var(--muted); font-size:12.5px; min-height:38px}
+    .hallItem .m{margin-top:6px; color:var(--muted); font-size:12.5px; min-height:40px}
     .hallItem .f{display:flex; justify-content:space-between; margin-top:10px; font-size:12px; color:var(--muted)}
-    .vip{
-      border-color: rgba(230,194,122,.35);
-    }
-    .vip::after{
-      content:"VIP";
-      position:absolute; top:10px; right:10px;
-      font-size:11px; letter-spacing:.6px;
-      padding:6px 8px; border-radius:999px;
-      background: rgba(0,0,0,.35);
-      border:1px solid rgba(230,194,122,.35);
-      color: var(--gold);
-    }
 
-    .qrBox{
-      display:flex; gap:12px; align-items:center; flex-wrap:wrap;
+    /* Trust */
+    .trustBar{
+      display:grid; gap:10px;
+      grid-template-columns: repeat(3, minmax(0,1fr));
+      padding:14px;
     }
-    #qr{
-      width:132px; height:132px;
+    @media (max-width: 780px){
+      .trustBar{grid-template-columns:1fr;}
+    }
+    .trust{
+      border:1px solid rgba(30,26,22,.10);
+      background: rgba(255,255,255,.62);
       border-radius:16px;
-      overflow:hidden;
-      border:1px solid rgba(255,255,255,.10);
-      background:#0b0b0f;
-      display:flex; align-items:center; justify-content:center;
+      padding:12px;
+      box-shadow: 0 12px 30px rgba(30,26,22,.06);
     }
+    .trust b{display:block}
+    .trust span{color:var(--muted); font-size:12.5px}
+
+    details{
+      border:1px solid rgba(30,26,22,.10);
+      background: rgba(255,255,255,.62);
+      border-radius:16px;
+      padding:12px;
+      box-shadow: 0 12px 30px rgba(30,26,22,.06);
+    }
+    details + details{margin-top:10px}
+    summary{cursor:pointer; font-weight:900}
+    summary::-webkit-details-marker{display:none}
+    details p{margin:10px 0 0; color:var(--muted); font-size:13.5px}
+
+    /* Modal Checkout */
+    .modal{
+      position:fixed; inset:0;
+      background: rgba(30,26,22,.35);
+      display:none;
+      align-items:center; justify-content:center;
+      padding:18px;
+      z-index:50;
+    }
+    .modal.on{display:flex}
+    .modalCard{
+      width:min(720px, 100%);
+      border-radius:22px;
+      background: rgba(255,255,255,.92);
+      border:1px solid rgba(30,26,22,.14);
+      box-shadow: 0 30px 90px rgba(30,26,22,.25);
+      overflow:hidden;
+    }
+    .modalHd{
+      padding:14px 14px 10px;
+      display:flex; justify-content:space-between; align-items:center; gap:12px;
+      border-bottom:1px solid rgba(30,26,22,.10);
+    }
+    .x{border:1px solid rgba(30,26,22,.12); background:transparent; border-radius:12px; padding:8px 10px; cursor:pointer; font-weight:900}
+    .modalBd{padding:14px}
+    .summaryGrid{
+      display:grid; gap:10px;
+      grid-template-columns: 1fr 1fr;
+    }
+    @media (max-width: 720px){
+      .summaryGrid{grid-template-columns:1fr;}
+    }
+    .kv{
+      padding:10px;
+      border-radius:14px;
+      border:1px solid rgba(30,26,22,.10);
+      background: rgba(255,255,255,.72);
+    }
+    .kv .k{font-size:11px; color:var(--muted)}
+    .kv .v{margin-top:4px; font-weight:900}
+
+    .fineprint{font-size:12px; color:var(--muted); margin-top:10px}
+
     .toast{
       position:fixed; left:50%; bottom:18px;
       transform:translateX(-50%);
-      background: rgba(0,0,0,.65);
-      border:1px solid rgba(255,255,255,.12);
-      color:var(--text);
+      background: rgba(255,255,255,.88);
+      border:1px solid rgba(30,26,22,.12);
+      color:var(--ink);
       padding:10px 12px;
       border-radius:14px;
-      box-shadow: 0 20px 50px rgba(0,0,0,.55);
+      box-shadow: 0 20px 50px rgba(30,26,22,.18);
       font-size:13px;
       opacity:0; pointer-events:none;
       transition: opacity .15s ease;
+      z-index:60;
     }
     .toast.on{opacity:1}
-    .fineprint{font-size:12px; color:var(--muted); margin-top:10px}
-    a{color:var(--text); text-decoration:none; border-bottom:1px dashed rgba(255,255,255,.25)}
+
+    /* Small footer area */
+    footer{
+      margin-top:16px;
+      display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap;
+      color:var(--muted);
+      font-size:12.5px;
+      padding:8px 2px 0;
+    }
   </style>
 </head>
 
 <body>
-  <div id="app">
-    <div class="wrap">
-      <header>
-        <div class="brand">
-          <div class="logo" aria-hidden="true"></div>
-          <div>
-            <h1>OnlyKeks</h1>
-            <div class="sub">Echter 3D-Keks. Minimal UI. Maximal Wirkung.</div>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="pill" id="rarityPill"><span class="dot" id="rarityDot"></span><span id="rarityLabel">COMMON</span></div>
-          <button class="btn ghost" id="btnSurprise">Überrasch mich</button>
-          <button class="btn" id="btnShare">Keks teilen</button>
-        </div>
-      </header>
-
-      <div class="grid">
-        <!-- LEFT: Bühne -->
-        <div class="card stage">
-          <div class="stageTop">
-            <div>
-              <p class="big" style="margin:0">Schick ’ne Message. Als Keks.</p>
-              <p class="lead">Empfänger scannt – antwortet direkt. Rarity entscheidet Style & Wirkung.</p>
-              <div class="row" style="margin-top:10px">
-                <span class="badge"><strong id="ruleA">Common–Rare</strong> <span class="muted">bisschen Style</span></span>
-                <span class="badge"><strong id="ruleB">Epic–Legendary</strong> <span class="muted">weniger basteln, mehr Wirkung</span></span>
-              </div>
-            </div>
-
-            <div class="row">
-              <button class="btn primary" id="btnCheckout">Keks losschicken</button>
-            </div>
-          </div>
-
-          <div class="canvasWrap" id="canvasWrap">
-            <div class="glow" id="glow"></div>
-            <canvas id="c"></canvas>
-          </div>
-
-          <div class="bd">
-            <div class="split">
-              <div class="chips" id="shapeChips"></div>
-              <div class="chips" id="decoChips"></div>
-            </div>
-
-            <div class="hr"></div>
-
-            <div class="mini">
-              <div class="kv"><div class="k">Set</div><div class="v" id="kvSet">–</div></div>
-              <div class="kv"><div class="k">Form</div><div class="v" id="kvShape">–</div></div>
-              <div class="kv"><div class="k">Deko</div><div class="v" id="kvDeco">–</div></div>
-              <div class="kv"><div class="k">Share-Code</div><div class="v" id="kvShare">–</div></div>
-            </div>
-
-            <div class="fineprint">✓ Kein Abo ✓ Keine Datenverkäufe</div>
-          </div>
-        </div>
-
-        <!-- RIGHT: Controls / Hall / Share -->
-        <div class="card">
-          <div class="hd">
-            <div class="title">Konfigurator</div>
-            <div class="muted" style="font-size:12px">Draft wird lokal gespeichert</div>
-          </div>
-
-          <div class="bd">
-            <div class="title" style="font-size:13px">Message</div>
-            <textarea id="msg" maxlength="120" placeholder="Kurz. Klar. Wirkung."></textarea>
-            <div class="hint"><span id="count">0</span>/120 Zeichen</div>
-
-            <div class="hr"></div>
-
-            <div class="title" style="font-size:13px; margin-bottom:8px">Set wählen</div>
-            <div class="setScroller" id="setScroller"></div>
-
-            <div class="hr"></div>
-
-            <div class="title" style="font-size:13px; margin-bottom:8px">Hall of Keks</div>
-            <div class="hall" id="hall"></div>
-
-            <div class="hr"></div>
-
-            <div class="title" style="font-size:13px; margin-bottom:8px">Share + QR</div>
-            <div class="qrBox">
-              <div id="qr" aria-label="QR Code"></div>
-              <div style="flex:1; min-width: 220px">
-                <input id="shareUrl" readonly />
-                <div class="row" style="margin-top:10px">
-                  <button class="btn" id="btnCopy">Link kopieren</button>
-                  <button class="btn ghost" id="btnReset">Reset</button>
-                </div>
-                <div class="fineprint">Share lädt den Keks exakt so (Set, Rarity, Form, Deko, Message).</div>
-              </div>
-            </div>
-
-          </div>
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <div>
+          <h1>OnlyKeks</h1>
+          <div class="sub">3D-Keks. Ruhig. Lecker. Geschenkbereit.</div>
         </div>
       </div>
 
-      <div class="toast" id="toast">Gespeichert.</div>
+      <div class="topActions">
+        <button class="btn ghost" id="btnSurprise">Überrasch mich</button>
+        <button class="btn" id="btnShare">Link teilen</button>
+        <button class="btn primary" id="btnCheckoutTop">Keks losschicken</button>
+      </div>
+    </header>
+
+    <div class="grid">
+      <!-- LEFT: Hero + 3D Stage -->
+      <section class="card">
+        <div class="heroTop">
+          <div>
+            <p class="hBig">Post, die schmeckt.</p>
+            <p class="lead">Gestalte einen Keks mit deiner Botschaft. Sieht gut aus. Schmeckt gut. Kommt als echtes Geschenk an.</p>
+          </div>
+          <div class="row">
+            <button class="btn primary" id="btnCheckout">Keks losschicken</button>
+          </div>
+        </div>
+
+        <div class="stageWrap" id="stageWrap">
+          <canvas id="c"></canvas>
+          <div class="stageHint">
+            <span class="pill"><span class="dot"></span> 3D Vorschau (drehbar)</span>
+            <span class="pill">Weiches Design · Vanille & Keksbraun</span>
+          </div>
+        </div>
+
+        <div class="bd">
+          <div class="row" style="justify-content:space-between">
+            <div class="muted" style="font-size:13px">Draft wird lokal gespeichert.</div>
+            <div class="row">
+              <button class="btn ghost" id="btnReset">Reset</button>
+            </div>
+          </div>
+          <div class="fineprint">✓ Kein Abo ✓ Keine Datenverkäufe</div>
+        </div>
+      </section>
+
+      <!-- RIGHT: Controls + Hall + Share -->
+      <aside class="card">
+        <div class="hd">
+          <div class="title">Keks gestalten</div>
+          <div class="muted" style="font-size:12px">Einfach & schnell.</div>
+        </div>
+
+        <div class="bd">
+          <label for="msg">Deine Botschaft</label>
+          <textarea id="msg" maxlength="90" placeholder="Kurz. Klar. Lecker. (z.B. „Vermiss dich.“)"></textarea>
+          <div class="hint"><span id="count">0</span>/90 Zeichen</div>
+
+          <div class="hr"></div>
+
+          <label>Form</label>
+          <div class="chipRow" id="shapeChips"></div>
+
+          <div class="hr"></div>
+
+          <label>Extras</label>
+          <div class="chipRow" id="decoChips"></div>
+          <div class="hint">Weniger ist mehr – Hauptsache appetitlich.</div>
+
+          <div class="hr"></div>
+
+          <div class="row" style="justify-content:space-between; align-items:flex-end">
+            <div style="flex:1; min-width:220px">
+              <label for="shareUrl">Share-Link</label>
+              <input id="shareUrl" readonly />
+              <div class="hint">Öffnet exakt deinen Keks (Form, Extras, Text).</div>
+            </div>
+            <div class="row">
+              <button class="btn" id="btnCopy">Kopieren</button>
+            </div>
+          </div>
+
+          <div class="hr"></div>
+
+          <label>Hall of Keks</label>
+          <div class="hall" id="hall"></div>
+
+        </div>
+      </aside>
+    </div>
+
+    <!-- Trust / FAQ -->
+    <section class="trustBar" style="margin-top:14px">
+      <div class="trust">
+        <b>Lebensmittel & Allergene</b>
+        <span>Transparent vor dem Kauf. Kein Rätselraten.</span>
+      </div>
+      <div class="trust">
+        <b>Sicher bezahlen</b>
+        <span>Unkompliziert, ohne Abo, ohne Datenverkauf.</span>
+      </div>
+      <div class="trust">
+        <b>Geschenk-Logik</b>
+        <span>Sieht gut aus. Schmeckt gut. Kommt gut an.</span>
+      </div>
+    </section>
+
+    <section class="card" style="margin-top:14px">
+      <div class="hd">
+        <div class="title">FAQ</div>
+        <div class="muted" style="font-size:12px">Kurz & klar.</div>
+      </div>
+      <div class="bd">
+        <details>
+          <summary>Wie lange dauert der Versand?</summary>
+          <p>Typisch 2–4 Werktage. (Später hier live Daten / Cutoffs.)</p>
+        </details>
+        <details>
+          <summary>Ist das hier ein Abo?</summary>
+          <p>Nein. Einmal gestalten, einmal verschicken. Fertig.</p>
+        </details>
+        <details>
+          <summary>Kann ich den Link teilen?</summary>
+          <p>Ja. Der Share-Link lädt deinen Keks exakt so, wie du ihn gestaltet hast.</p>
+        </details>
+      </div>
+    </section>
+
+    <footer>
+      <div>© OnlyKeks</div>
+      <div>
+        <a href="#impressum">Impressum</a> · <a href="#datenschutz">Datenschutz</a> · <a href="#agb">AGB</a>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Checkout Modal -->
+  <div class="modal" id="modal">
+    <div class="modalCard" role="dialog" aria-modal="true" aria-label="Checkout">
+      <div class="modalHd">
+        <div>
+          <div class="title" style="font-size:15px">Keks losschicken</div>
+          <div class="muted" style="font-size:12px">Letzter Schritt. Ruhig, sauber.</div>
+        </div>
+        <button class="x" id="btnClose">×</button>
+      </div>
+      <div class="modalBd">
+        <div class="summaryGrid">
+          <div class="kv"><div class="k">Form</div><div class="v" id="kvShape">–</div></div>
+          <div class="kv"><div class="k">Extras</div><div class="v" id="kvDeco">–</div></div>
+          <div class="kv" style="grid-column:1/-1"><div class="k">Botschaft</div><div class="v" id="kvMsg">–</div></div>
+        </div>
+
+        <div class="hr"></div>
+
+        <label for="addr">Adresse</label>
+        <input id="addr" placeholder="Straße & Hausnr., PLZ Ort" />
+
+        <div class="row" style="margin-top:12px; justify-content:space-between">
+          <div class="fineprint">✓ Kein Abo ✓ Zahlung kommt als Stripe-Link</div>
+          <div class="row">
+            <button class="btn ghost" id="btnBack">Zurück</button>
+            <button class="btn primary" id="btnPay">Weiter zur Zahlung</button>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
-  <!-- Libraries -->
+  <div class="toast" id="toast">Gespeichert.</div>
+
+  <!-- Libs -->
   <script src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
 
   <script>
-    // -----------------------------
-    // State / Config
-    // -----------------------------
-    const RARITIES = ["common","uncommon","rare","epic","legendary"];
-    const RARITY_UI = {
-      common:   {label:"COMMON",   color:getCss("--common"),    glow:"0 0 0 rgba(0,0,0,0)", locks:{decoMax:1, allowGold:false}},
-      uncommon: {label:"UNCOMMON", color:getCss("--uncommon"),  glow:"0 0 38px rgba(46,204,113,.22)", locks:{decoMax:1, allowGold:false}},
-      rare:     {label:"RARE",     color:getCss("--rare"),      glow:"0 0 45px rgba(74,163,255,.22)", locks:{decoMax:2, allowGold:false}},
-      epic:     {label:"EPIC",     color:getCss("--epic"),      glow:"0 0 55px rgba(181,107,255,.26)", locks:{decoMax:1, allowGold:true}},
-      legendary:{label:"LEGENDARY",color:getCss("--legendary"), glow:"0 0 70px rgba(246,210,106,.30)", locks:{decoMax:1, allowGold:true}}
-    };
-
+    // ---------------------------------------
+    // State
+    // ---------------------------------------
     const SHAPES = [
       {id:"circle", label:"Kreis"},
       {id:"heart",  label:"Herz"},
@@ -408,70 +498,68 @@
 
     const DECOS = [
       {id:"sprinkles", label:"Sprinkles"},
-      {id:"gold", label:"Gold"},
-    ];
-
-    // 5 Beispiel-Sets (rarity-like)
-    const SETS = [
-      {id:"street", name:"Street Pop", desc:"Knackige Message, klare Kante. Wirkt sofort.", baseRarity:"rare", shape:"circle", deco:["sprinkles"]},
-      {id:"love", name:"Herz-Alarm", desc:"Emotional, direkt. Für Kati-Vibes und Rückantwort.", baseRarity:"uncommon", shape:"heart", deco:["sprinkles"]},
-      {id:"boss", name:"Boss-Mode", desc:"Wenig basteln, mehr Wirkung. Premium-Punch.", baseRarity:"epic", shape:"star", deco:["gold"]},
-      {id:"winter", name:"Winter Drop", desc:"Keks-Schnee, ruhig aber präsent. Seasonal.", baseRarity:"rare", shape:"tree", deco:["sprinkles"]},
-      {id:"myth", name:"Legendary Mythic", desc:"VIP-Look. Gold-Akzent. Maximum Prestige.", baseRarity:"legendary", shape:"star", deco:["gold"]},
+      {id:"choco", label:"Schoko-Drizzle"},
+      {id:"sugar", label:"Zuckerrand"},
     ];
 
     const HALL = [
-      {id:"h1", rarity:"legendary", label:"VIP", message:"Nur Gehirn = nur Keks.", set:"myth", shape:"star", deco:["gold"]},
-      {id:"h2", rarity:"epic", label:"Epic", message:"Beweg dein Arsch.", set:"boss", shape:"star", deco:["gold"]},
-      {id:"h3", rarity:"rare", label:"Rare", message:"Meld dich. Jetzt.", set:"street", shape:"circle", deco:["sprinkles"]},
-      {id:"h4", rarity:"uncommon", label:"Uncommon", message:"Vermiss dich.", set:"love", shape:"heart", deco:["sprinkles"]},
-      {id:"h5", rarity:"common", label:"Common", message:"Komm klar.", set:"street", shape:"circle", deco:["sprinkles"]},
+      {id:"h1", label:"Beliebt", message:"Vermiss dich.", shape:"heart", deco:["sprinkles"]},
+      {id:"h2", label:"Klassiker", message:"Für dich.", shape:"circle", deco:["sugar"]},
+      {id:"h3", label:"Frech", message:"Meld dich.", shape:"circle", deco:["choco"]},
+      {id:"h4", label:"Warm", message:"Du fehlst.", shape:"heart", deco:["sprinkles","sugar"]},
     ];
 
-    const LS_KEY = "onlykeks_draft_v2";
+    const LS_KEY = "onlykeks_draft_soft_v1";
 
     let state = loadDraft() ?? {
-      rarity: "common",
-      setId: "street",
       shape: "circle",
       deco: ["sprinkles"],
       message: ""
     };
 
-    // -----------------------------
-    // UI Elements
-    // -----------------------------
+    // ---------------------------------------
+    // Elements
+    // ---------------------------------------
     const $ = (s)=>document.querySelector(s);
-    const rarityPill = $("#rarityPill");
-    const rarityDot = $("#rarityDot");
-    const rarityLabel = $("#rarityLabel");
-    const glow = $("#glow");
     const msg = $("#msg");
     const count = $("#count");
-    const setScroller = $("#setScroller");
     const shapeChips = $("#shapeChips");
     const decoChips = $("#decoChips");
     const hall = $("#hall");
-    const toast = $("#toast");
     const shareUrl = $("#shareUrl");
-    const kvSet = $("#kvSet"), kvShape=$("#kvShape"), kvDeco=$("#kvDeco"), kvShare=$("#kvShare");
-    const btnSurprise = $("#btnSurprise");
-    const btnShare = $("#btnShare");
     const btnCopy = $("#btnCopy");
+    const btnShare = $("#btnShare");
+    const btnSurprise = $("#btnSurprise");
     const btnReset = $("#btnReset");
-    const btnCheckout = $("#btnCheckout");
+    const toast = $("#toast");
 
-    // -----------------------------
-    // Build UI
-    // -----------------------------
+    const modal = $("#modal");
+    const btnCheckout = $("#btnCheckout");
+    const btnCheckoutTop = $("#btnCheckoutTop");
+    const btnClose = $("#btnClose");
+    const btnBack = $("#btnBack");
+    const btnPay = $("#btnPay");
+
+    const kvShape = $("#kvShape");
+    const kvDeco = $("#kvDeco");
+    const kvMsg  = $("#kvMsg");
+    const addr   = $("#addr");
+
+    // ---------------------------------------
+    // UI builders
+    // ---------------------------------------
     function buildChips(){
       shapeChips.innerHTML = "";
       SHAPES.forEach(s=>{
         const el = document.createElement("div");
         el.className = "chip";
         el.textContent = s.label;
-        el.onclick = ()=>{ state.shape = s.id; persist(); syncAll(); };
         el.dataset.id = s.id;
+        el.onclick = ()=>{
+          state.shape = s.id;
+          persist();
+          syncAll();
+        };
         shapeChips.appendChild(el);
       });
 
@@ -480,35 +568,9 @@
         const el = document.createElement("div");
         el.className = "chip";
         el.textContent = d.label;
-        el.onclick = ()=>toggleDeco(d.id);
         el.dataset.id = d.id;
+        el.onclick = ()=>toggleDeco(d.id);
         decoChips.appendChild(el);
-      });
-    }
-
-    function buildSets(){
-      setScroller.innerHTML = "";
-      SETS.forEach(s=>{
-        const el = document.createElement("div");
-        el.className = "set";
-        el.dataset.id = s.id;
-        el.innerHTML = `
-          <div class="name">${escapeHtml(s.name)}</div>
-          <div class="desc">${escapeHtml(s.desc)}</div>
-          <div class="meta">
-            <span>${s.baseRarity.toUpperCase()}</span>
-            <span>${shapeLabel(s.shape)}</span>
-          </div>
-        `;
-        el.onclick = ()=>{
-          state.setId = s.id;
-          // Set applies defaults, but keep user message
-          state.shape = s.shape;
-          state.deco = [...s.deco];
-          state.rarity = s.baseRarity;
-          persist(); syncAll();
-        };
-        setScroller.appendChild(el);
       });
     }
 
@@ -516,52 +578,39 @@
       hall.innerHTML = "";
       HALL.forEach(h=>{
         const el = document.createElement("div");
-        const isVip = (h.rarity==="epic" || h.rarity==="legendary");
-        el.className = "hallItem" + (isVip ? " vip" : "");
+        el.className = "hallItem";
         el.innerHTML = `
-          <div class="t">${escapeHtml(h.label)} · ${h.rarity.toUpperCase()}</div>
+          <div class="t">${escapeHtml(h.label)}</div>
           <div class="m">${escapeHtml(h.message)}</div>
           <div class="f">
-            <span>${escapeHtml(setName(h.set))}</span>
             <span>${shapeLabel(h.shape)}</span>
+            <span>${h.deco.map(decoLabel).join(", ")}</span>
           </div>
         `;
         el.onclick = ()=>{
-          state.rarity = h.rarity;
-          state.setId = h.set;
           state.shape = h.shape;
           state.deco = [...h.deco];
           state.message = h.message;
           persist(); syncAll();
+          toastMsg("Vorlage geladen.");
         };
         hall.appendChild(el);
       });
     }
 
-    // -----------------------------
-    // Rules / Locks
-    // -----------------------------
     function toggleDeco(id){
-      const locks = RARITY_UI[state.rarity].locks;
-      // Legendary/Epic allow gold; lower rarities don't
-      if(id === "gold" && !locks.allowGold){
-        toastMsg("Gold ist erst ab EPIC verfügbar.");
-        return;
-      }
       const has = state.deco.includes(id);
       let next = has ? state.deco.filter(x=>x!==id) : [...state.deco, id];
-
-      // enforce max
-      if(next.length > locks.decoMax){
-        next = next.slice(next.length - locks.decoMax);
-      }
+      // keep it simple: max 2 extras
+      if(next.length > 2) next = next.slice(next.length-2);
       state.deco = next;
-      persist(); syncAll();
+      persist();
+      syncAll();
     }
 
-    // -----------------------------
-    // Persistence
-    // -----------------------------
+    // ---------------------------------------
+    // Persistence / Share
+    // ---------------------------------------
     function persist(){
       localStorage.setItem(LS_KEY, JSON.stringify(state));
       toastMsg("Gespeichert.");
@@ -574,9 +623,6 @@
       }catch(e){ return null; }
     }
 
-    // -----------------------------
-    // Share / Encode
-    // -----------------------------
     function encodeState(s){
       const json = JSON.stringify(s);
       return btoa(unescape(encodeURIComponent(json)));
@@ -585,11 +631,6 @@
       const json = decodeURIComponent(escape(atob(str)));
       return JSON.parse(json);
     }
-    function shareCodeFor(s){
-      // simple stable-ish short code
-      const base = encodeState(s).slice(0,18);
-      return base.replace(/[^a-zA-Z0-9]/g,"").slice(0,12).toUpperCase();
-    }
     function buildShareUrl(){
       const code = encodeState(state);
       const url = new URL(location.href);
@@ -597,48 +638,25 @@
       return url.toString();
     }
 
-    // -----------------------------
-    // Sync UI
-    // -----------------------------
+    // ---------------------------------------
+    // Sync
+    // ---------------------------------------
     function syncAll(){
-      // rarity pill + glow
-      const r = RARITY_UI[state.rarity];
-      rarityDot.style.background = r.color;
-      rarityLabel.textContent = r.label;
-      glow.style.boxShadow = r.glow;
-
       // chips active
       [...shapeChips.children].forEach(c=>c.classList.toggle("on", c.dataset.id===state.shape));
       [...decoChips.children].forEach(c=>c.classList.toggle("on", state.deco.includes(c.dataset.id)));
-
-      // set active
-      [...setScroller.children].forEach(el=>el.classList.toggle("active", el.dataset.id===state.setId));
 
       // message
       msg.value = state.message || "";
       count.textContent = (state.message || "").length;
 
-      // KV
-      kvSet.textContent = setName(state.setId);
+      // share url
+      shareUrl.value = buildShareUrl();
+
+      // checkout summary
       kvShape.textContent = shapeLabel(state.shape);
       kvDeco.textContent = state.deco.length ? state.deco.map(decoLabel).join(", ") : "–";
-      const sc = shareCodeFor(state);
-      kvShare.textContent = sc;
-
-      // share url + qr
-      const url = buildShareUrl();
-      shareUrl.value = url;
-      renderQR(url);
-
-      // apply locks visuals
-      const locks = RARITY_UI[state.rarity].locks;
-      // disable gold chip if locked
-      [...decoChips.children].forEach(c=>{
-        if(c.dataset.id==="gold"){
-          c.style.opacity = locks.allowGold ? "1" : ".45";
-          c.style.pointerEvents = locks.allowGold ? "auto" : "auto"; // still clickable to show toast
-        }
-      });
+      kvMsg.textContent  = (state.message && state.message.trim().length) ? state.message.trim() : "–";
 
       // update 3D
       updateCookieVisual();
@@ -651,10 +669,6 @@
       toast._t = setTimeout(()=>toast.classList.remove("on"), 850);
     }
 
-    function setName(id){
-      const s = SETS.find(x=>x.id===id);
-      return s ? s.name : "–";
-    }
     function shapeLabel(id){
       const s = SHAPES.find(x=>x.id===id);
       return s ? s.label : id;
@@ -663,84 +677,74 @@
       const d = DECOS.find(x=>x.id===id);
       return d ? d.label : id;
     }
-
-    function getCss(v){ return getComputedStyle(document.documentElement).getPropertyValue(v).trim(); }
     function escapeHtml(s){ return (s??"").replace(/[&<>"']/g, m=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;" }[m])); }
 
-    // -----------------------------
-    // QR
-    // -----------------------------
-    let qrInst = null;
-    function renderQR(url){
-      const box = document.getElementById("qr");
-      box.innerHTML = "";
-      qrInst = new QRCode(box, {
-        text: url,
-        width: 120,
-        height: 120,
-        correctLevel: QRCode.CorrectLevel.M
-      });
-    }
-
-    // -----------------------------
+    // ---------------------------------------
     // Events
-    // -----------------------------
+    // ---------------------------------------
     msg.addEventListener("input", ()=>{
-      state.message = (msg.value || "").slice(0,120);
+      state.message = (msg.value || "").slice(0,90);
       persist(); syncAll();
     });
 
-    btnSurprise.onclick = ()=>{
-      // Surprise engine: random set + random rarity bias upward sometimes
-      const pickSet = SETS[Math.floor(Math.random()*SETS.length)];
-      const r = Math.random();
-      const pickRarity = r < .52 ? "common" : r < .74 ? "uncommon" : r < .88 ? "rare" : r < .97 ? "epic" : "legendary";
-      state.setId = pickSet.id;
-      state.rarity = pickRarity;
-      state.shape = pickSet.shape;
-      state.deco = [...pickSet.deco];
-
-      // enforce locks after random
-      const locks = RARITY_UI[state.rarity].locks;
-      state.deco = state.deco.filter(d => d!=="gold" || locks.allowGold).slice(0, locks.decoMax);
-
-      persist(); syncAll();
-      toastMsg("Überraschung geladen.");
-    };
-
-    btnShare.onclick = ()=> {
-      shareUrl.select();
-      document.execCommand("copy");
-      toastMsg("Share-Link kopiert.");
-    };
-    btnCopy.onclick = ()=> {
+    btnCopy.onclick = ()=>{
       shareUrl.select();
       document.execCommand("copy");
       toastMsg("Link kopiert.");
     };
-    btnReset.onclick = ()=> {
-      localStorage.removeItem(LS_KEY);
-      state = { rarity:"common", setId:"street", shape:"circle", deco:["sprinkles"], message:"" };
+    btnShare.onclick = btnCopy.onclick;
+
+    btnSurprise.onclick = ()=>{
+      const pickShape = SHAPES[Math.floor(Math.random()*SHAPES.length)].id;
+      const pickDeco = [];
+      // 65% one deco, 25% two, 10% none
+      const r = Math.random();
+      if(r > .10) pickDeco.push(DECOS[Math.floor(Math.random()*DECOS.length)].id);
+      if(r > .75) {
+        const d2 = DECOS[Math.floor(Math.random()*DECOS.length)].id;
+        if(!pickDeco.includes(d2)) pickDeco.push(d2);
+      }
+      state.shape = pickShape;
+      state.deco = pickDeco;
       persist(); syncAll();
-    };
-    btnCheckout.onclick = ()=>{
-      toastMsg("Checkout kommt als nächster Schritt (Stripe-Link).");
+      toastMsg("Überraschung geladen.");
     };
 
-    // -----------------------------
+    btnReset.onclick = ()=>{
+      localStorage.removeItem(LS_KEY);
+      state = { shape:"circle", deco:["sprinkles"], message:"" };
+      persist(); syncAll();
+    };
+
+    // Modal
+    function openModal(){ modal.classList.add("on"); addr.focus(); }
+    function closeModal(){ modal.classList.remove("on"); }
+
+    btnCheckout.onclick = openModal;
+    btnCheckoutTop.onclick = openModal;
+    btnClose.onclick = closeModal;
+    btnBack.onclick = closeModal;
+    modal.addEventListener("click", (e)=>{ if(e.target === modal) closeModal(); });
+
+    btnPay.onclick = ()=>{
+      // Placeholder for Stripe Payment Link integration
+      if(!addr.value.trim()){
+        toastMsg("Adresse fehlt.");
+        return;
+      }
+      toastMsg("Zahlung: Stripe-Link als nächster Schritt.");
+      closeModal();
+    };
+
     // Share loader
-    // -----------------------------
     (function initShare(){
       const p = new URLSearchParams(location.search);
       const share = p.get("share");
       if(!share) return;
       try{
         const incoming = decodeState(share);
-        // minimal validation
-        if(incoming && incoming.rarity && incoming.shape){
+        if(incoming && incoming.shape){
           state = {
-            rarity: incoming.rarity,
-            setId: incoming.setId ?? "street",
             shape: incoming.shape,
             deco: Array.isArray(incoming.deco) ? incoming.deco : [],
             message: incoming.message ?? ""
@@ -753,41 +757,45 @@
       }
     })();
 
-    // -----------------------------
-    // THREE.JS – 3D Cookie (stable)
-    // -----------------------------
+    // ---------------------------------------
+    // THREE.JS – Soft 3D Cookie (vanilla look)
+    // ---------------------------------------
     const canvas = document.getElementById("c");
-    let renderer, scene, camera, cookieGroup, cookieMesh, icingMesh, sprinklePoints, textSprite;
+    let renderer, scene, camera, cookieGroup, cookieMesh, icingMesh, sprinkles, drizzle, sugarRim, textSprite;
     let okWebGL = true;
 
     function initThree(){
       try{
         renderer = new THREE.WebGLRenderer({canvas, antialias:true, alpha:true, powerPreference:"high-performance"});
         renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
-        renderer.setSize(canvas.clientWidth, 360, false);
+        renderer.setSize(canvas.clientWidth, 420, false);
 
         scene = new THREE.Scene();
 
-        camera = new THREE.PerspectiveCamera(35, canvas.clientWidth/360, 0.1, 100);
-        camera.position.set(0, 1.1, 4.2);
+        camera = new THREE.PerspectiveCamera(33, canvas.clientWidth/420, 0.1, 100);
+        camera.position.set(0, 1.05, 4.35);
 
-        const hemi = new THREE.HemisphereLight(0xffffff, 0x101018, 0.9);
+        // warm lighting
+        const hemi = new THREE.HemisphereLight(0xffffff, 0xf2e5d6, 1.05);
         scene.add(hemi);
 
-        const key = new THREE.DirectionalLight(0xffffff, 1.15);
-        key.position.set(2.2, 3.0, 2.0);
+        const key = new THREE.DirectionalLight(0xffffff, 1.10);
+        key.position.set(2.2, 3.2, 2.2);
         scene.add(key);
 
-        const rim = new THREE.DirectionalLight(0xffffff, 0.45);
+        const fill = new THREE.DirectionalLight(0xfff1df, 0.55);
+        fill.position.set(-2.8, 1.8, 1.2);
+        scene.add(fill);
+
+        const rim = new THREE.DirectionalLight(0xffffff, 0.28);
         rim.position.set(-2.0, 2.0, -2.4);
         scene.add(rim);
 
         cookieGroup = new THREE.Group();
         scene.add(cookieGroup);
 
-        buildCookieGeometry();
+        buildCookie();
         window.addEventListener("resize", onResize);
-
         animate();
       }catch(e){
         okWebGL = false;
@@ -798,77 +806,123 @@
     function onResize(){
       if(!renderer || !camera) return;
       const w = canvas.clientWidth;
-      camera.aspect = w/360;
+      camera.aspect = w/420;
       camera.updateProjectionMatrix();
-      renderer.setSize(w, 360, false);
+      renderer.setSize(w, 420, false);
     }
 
-    function buildCookieGeometry(){
-      // clean rebuild
+    function cssVar(name){
+      return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+    }
+
+    function buildCookie(){
       while(cookieGroup.children.length) cookieGroup.remove(cookieGroup.children[0]);
 
-      // base cookie
-      const baseGeo = new THREE.CylinderGeometry(1.35, 1.35, 0.34, 48, 1, false);
+      // Base cookie (a bit thicker, more "edible")
+      const baseGeo = new THREE.CylinderGeometry(1.38, 1.38, 0.42, 56, 1, false);
       const cookieMat = new THREE.MeshStandardMaterial({
-        color: new THREE.Color(getCss("--cookie")),
-        roughness: 0.85,
-        metalness: 0.02
+        color: new THREE.Color(cssVar("--cookie")),
+        roughness: 0.92,
+        metalness: 0.0
       });
       cookieMesh = new THREE.Mesh(baseGeo, cookieMat);
-      cookieMesh.rotation.x = Math.PI * 0.08;
+      cookieMesh.rotation.x = Math.PI * 0.085;
       cookieGroup.add(cookieMesh);
 
-      // icing plate (slight offset)
-      const icingGeo = new THREE.CylinderGeometry(1.22, 1.22, 0.06, 48, 1, false);
+      // Icing layer
+      const icingGeo = new THREE.CylinderGeometry(1.22, 1.22, 0.07, 56, 1, false);
       const icingMat = new THREE.MeshStandardMaterial({
-        color: 0xF5EFEA,
-        roughness: 0.55,
-        metalness: 0.02,
+        color: 0xF7F0E6,
+        roughness: 0.58,
+        metalness: 0.0,
         transparent:true,
-        opacity: 0.92
+        opacity: 0.96
       });
       icingMesh = new THREE.Mesh(icingGeo, icingMat);
-      icingMesh.position.y = 0.18;
+      icingMesh.position.y = 0.225;
       icingMesh.rotation.x = cookieMesh.rotation.x;
       cookieGroup.add(icingMesh);
 
-      // sprinkles as points
-      sprinklePoints = makeSprinkles();
-      cookieGroup.add(sprinklePoints);
+      // Extras
+      sprinkles = makeSprinkles();
+      cookieGroup.add(sprinkles);
 
-      // message sprite (canvas texture)
+      drizzle = makeDrizzle();
+      cookieGroup.add(drizzle);
+
+      sugarRim = makeSugarRim();
+      cookieGroup.add(sugarRim);
+
+      // Text sprite
       textSprite = makeTextSprite("");
-      textSprite.position.set(0, 0.28, 0.02);
-      textSprite.scale.set(2.2, 1.1, 1);
+      textSprite.position.set(0, 0.325, 0.02);
+      textSprite.scale.set(2.25, 1.12, 1);
       cookieGroup.add(textSprite);
 
-      // initial shape effect by scaling profile
-      applyShapeToMesh();
-
-      // initial deco visibility
-      applyDecoToMesh();
-
-      // initial rarity tint
-      applyRarityToMesh();
+      applyShape();
+      applyDecos();
+      drawTextOnSprite(textSprite, state.message);
     }
 
     function makeSprinkles(){
-      const count = 120;
+      const count = 130;
       const geom = new THREE.BufferGeometry();
       const pos = new Float32Array(count*3);
       for(let i=0;i<count;i++){
         const a = Math.random()*Math.PI*2;
-        const r = Math.sqrt(Math.random())*1.08;
+        const r = Math.sqrt(Math.random())*1.05;
         pos[i*3+0] = Math.cos(a)*r;
-        pos[i*3+1] = 0.22 + (Math.random()*0.02);
+        pos[i*3+1] = 0.255 + (Math.random()*0.02);
         pos[i*3+2] = Math.sin(a)*r;
       }
       geom.setAttribute("position", new THREE.BufferAttribute(pos, 3));
-      const mat = new THREE.PointsMaterial({ size:0.05, color: new THREE.Color(getCss("--pink")), transparent:true, opacity:0.95 });
-      return new THREE.Points(geom, mat);
+      const mat = new THREE.PointsMaterial({
+        size:0.05,
+        color: new THREE.Color(cssVar("--accent")),
+        transparent:true,
+        opacity:0.92
+      });
+      const pts = new THREE.Points(geom, mat);
+      pts.visible = false;
+      return pts;
     }
 
-    function makeTextSprite(text){
+    function makeDrizzle(){
+      // simple ring-ish drizzle using tube-like line segments (cheap but readable)
+      const group = new THREE.Group();
+      const mat = new THREE.MeshStandardMaterial({ color: 0x5b3a22, roughness: 0.75, metalness: 0.0 });
+      for(let i=0;i<3;i++){
+        const geo = new THREE.TorusGeometry(0.78 + i*0.12, 0.03, 10, 60);
+        const m = new THREE.Mesh(geo, mat);
+        m.rotation.x = Math.PI/2 - 0.20;
+        m.position.y = 0.265 + i*0.003;
+        m.rotation.z = i*0.45;
+        group.add(m);
+      }
+      group.visible = false;
+      return group;
+    }
+
+    function makeSugarRim(){
+      // rim dots
+      const count = 85;
+      const geom = new THREE.BufferGeometry();
+      const pos = new Float32Array(count*3);
+      for(let i=0;i<count;i++){
+        const a = (i/count)*Math.PI*2;
+        const r = 1.16 + (Math.random()*0.01);
+        pos[i*3+0] = Math.cos(a)*r;
+        pos[i*3+1] = 0.255 + (Math.random()*0.01);
+        pos[i*3+2] = Math.sin(a)*r;
+      }
+      geom.setAttribute("position", new THREE.BufferAttribute(pos, 3));
+      const mat = new THREE.PointsMaterial({ size:0.045, color: 0xFFFFFF, transparent:true, opacity:0.75 });
+      const pts = new THREE.Points(geom, mat);
+      pts.visible = false;
+      return pts;
+    }
+
+    function makeTextSprite(){
       const c = document.createElement("canvas");
       c.width = 1024; c.height = 512;
       const ctx = c.getContext("2d");
@@ -888,84 +942,49 @@
       const ctx = spr.userData._ctx;
       ctx.clearRect(0,0,c.width,c.height);
 
-      // soft background plate
-      ctx.fillStyle = "rgba(0,0,0,0)";
-      ctx.fillRect(0,0,c.width,c.height);
-
-      // message
       const t = (text || "").trim();
       const display = t.length ? t : " ";
+
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
 
-      // auto-size
-      let size = 74;
-      ctx.font = `800 ${size}px system-ui, -apple-system, Segoe UI, Roboto, Arial`;
-      while(ctx.measureText(display).width > 880 && size > 44){
+      let size = 76;
+      ctx.font = `900 ${size}px system-ui, -apple-system, Segoe UI, Roboto, Arial`;
+      while(ctx.measureText(display).width > 900 && size > 46){
         size -= 2;
-        ctx.font = `800 ${size}px system-ui, -apple-system, Segoe UI, Roboto, Arial`;
+        ctx.font = `900 ${size}px system-ui, -apple-system, Segoe UI, Roboto, Arial`;
       }
 
-      // stroke + fill for readability
-      ctx.lineWidth = 10;
-      ctx.strokeStyle = "rgba(0,0,0,.35)";
-      ctx.fillStyle = "rgba(35,35,45,.96)";
-      ctx.strokeText(display, c.width/2, c.height/2);
+      // soft readable fill (no tech stroke)
+      ctx.fillStyle = "rgba(30,26,22,.86)";
       ctx.fillText(display, c.width/2, c.height/2);
 
       spr.material.map.needsUpdate = true;
     }
 
-    function applyRarityToMesh(){
-      const r = RARITY_UI[state.rarity];
-      // subtle tint on icing
-      const col = new THREE.Color(r.color);
-      icingMesh.material.color = new THREE.Color(0xF5EFEA).lerp(col, (state.rarity==="common") ? 0.03 : 0.10);
-      // gold mode adds a warmer cookie sheen
-      if(state.rarity==="legendary"){
-        cookieMesh.material.roughness = 0.62;
-      }else{
-        cookieMesh.material.roughness = 0.85;
-      }
-    }
-
-    function applyDecoToMesh(){
-      const hasSprinkles = state.deco.includes("sprinkles");
-      const hasGold = state.deco.includes("gold");
-      sprinklePoints.visible = hasSprinkles;
-
-      // gold effect: adjust icing + add a gold rim via emissive-ish feel
-      if(hasGold){
-        icingMesh.material.color = new THREE.Color(0xF7E2B2);
-        icingMesh.material.roughness = 0.35;
-      }else{
-        icingMesh.material.color = new THREE.Color(0xF5EFEA);
-        icingMesh.material.roughness = 0.55;
-      }
-      applyRarityToMesh();
-    }
-
-    function applyShapeToMesh(){
-      // cheat: different silhouettes by scaling + slight warp. Stable and fast.
+    function applyShape(){
+      // simple silhouette cheat: gentle scaling + rotation
       const s = state.shape;
       cookieGroup.scale.set(1,1,1);
+      cookieGroup.rotation.y = 0;
 
       if(s==="circle"){ cookieGroup.scale.set(1,1,1); }
-      if(s==="heart"){ cookieGroup.scale.set(1.0,1.0,0.92); cookieGroup.rotation.y = 0.15; }
+      if(s==="heart"){ cookieGroup.scale.set(1.0,1.0,0.92); cookieGroup.rotation.y = 0.12; }
       if(s==="star"){ cookieGroup.scale.set(0.98,1.0,0.98); cookieGroup.rotation.y = 0.55; }
-      if(s==="smile"){ cookieGroup.scale.set(1.02,1.0,0.95); cookieGroup.rotation.y = -0.2; }
-      if(s==="tree"){ cookieGroup.scale.set(0.92,1.0,1.02); cookieGroup.rotation.y = 0.25; }
+      if(s==="smile"){ cookieGroup.scale.set(1.02,1.0,0.95); cookieGroup.rotation.y = -0.18; }
+      if(s==="tree"){ cookieGroup.scale.set(0.92,1.0,1.02); cookieGroup.rotation.y = 0.28; }
+    }
+
+    function applyDecos(){
+      sprinkles.visible = state.deco.includes("sprinkles");
+      drizzle.visible = state.deco.includes("choco");
+      sugarRim.visible = state.deco.includes("sugar");
     }
 
     function updateCookieVisual(){
       if(!okWebGL) return;
-      // apply locks after manual changes
-      const locks = RARITY_UI[state.rarity].locks;
-      state.deco = state.deco.filter(d => d!=="gold" || locks.allowGold).slice(0, locks.decoMax);
-
-      applyShapeToMesh();
-      applyDecoToMesh();
-      applyRarityToMesh();
+      applyShape();
+      applyDecos();
       drawTextOnSprite(textSprite, state.message);
     }
 
@@ -974,42 +993,32 @@
       requestAnimationFrame(animate);
 
       const t = performance.now()*0.001;
-      cookieGroup.rotation.y += 0.0042;
-      cookieGroup.position.y = Math.sin(t*1.15)*0.045;
+      // slow, premium motion
+      cookieGroup.rotation.y += 0.0022;
+      cookieGroup.position.y = Math.sin(t*1.05)*0.03;
 
       renderer.render(scene, camera);
     }
 
     function fallback2D(){
-      // If WebGL dies, we still show a nice 2D cookie so: NO BLACK SCREEN.
-      const wrap = document.getElementById("canvasWrap");
+      const wrap = document.getElementById("stageWrap");
       wrap.innerHTML = `
-        <div style="padding:14px">
-          <div style="border-radius:22px;border:1px solid rgba(255,255,255,.10);background:rgba(0,0,0,.18);padding:18px;min-height:320px;display:flex;align-items:center;justify-content:center">
-            <div style="width:240px;height:240px;border-radius:999px;background:radial-gradient(circle at 35% 35%, #ffd9b8, #b8895b 60%, #6d4a2a 120%);border:1px solid rgba(255,255,255,.12);box-shadow:0 28px 90px rgba(0,0,0,.65);display:flex;align-items:center;justify-content:center;text-align:center;padding:22px;font-weight:900;line-height:1.05">
-              ${escapeHtml(state.message || " ")}
-            </div>
+        <div style="padding:18px; min-height:420px; display:flex; align-items:center; justify-content:center">
+          <div style="width:260px;height:260px;border-radius:999px;background:radial-gradient(circle at 35% 35%, #ffe1c7, ${cssVar("--cookie")} 60%, #6d4a2a 120%);border:1px solid rgba(30,26,22,.10);box-shadow:0 24px 70px rgba(30,26,22,.16);display:flex;align-items:center;justify-content:center;text-align:center;padding:22px;font-weight:900;line-height:1.05;color:${cssVar("--ink")}">
+            ${escapeHtml(state.message || " ")}
           </div>
-          <div class="fineprint" style="margin-top:10px">WebGL nicht verfügbar – UI läuft weiter (fail-open).</div>
         </div>
       `;
-      toastMsg("WebGL Fallback aktiv.");
+      toastMsg("3D nicht verfügbar – 2D Vorschau aktiv.");
     }
 
-    // -----------------------------
+    // ---------------------------------------
     // Init
-    // -----------------------------
+    // ---------------------------------------
     buildChips();
-    buildSets();
     buildHall();
-
-    // initial fill
     syncAll();
-
-    // start 3D
     initThree();
-
-    function getCss(v){ return getComputedStyle(document.documentElement).getPropertyValue(v).trim(); }
   </script>
 </body>
 </html>

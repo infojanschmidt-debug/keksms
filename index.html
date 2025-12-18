@@ -3,34 +3,40 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>OnlyKeks – Keks gestalten</title>
+  <title>OnlyKeks – Post, die schmeckt.</title>
   <meta name="theme-color" content="#FBF3E6" />
   <style>
     :root{
-      /* Brand: warm, essbar, ruhig */
+      /* Warm, essbar, ruhig */
       --vanilla:#FBF3E6;
       --vanilla-2:#FFF8EE;
+      --cream:#FFFDF8;
+
       --cookie:#B8895B;
       --cookie-2:#A97749;
       --cocoa:#6A4428;
+
       --ink:#1E1A16;
       --muted:#6C625A;
-      --stroke: rgba(30,26,22,.12);
-      --shadow: 0 18px 50px rgba(30,26,22,.12);
-      --r:18px;
 
-      /* one accent max */
-      --accent:#E9A4B4; /* soft rosé */
-      --accent-2:#D68FA0;
-      --good:#2f7d4a;
-      --bg-grad: radial-gradient(1200px 680px at 50% 0%, #fffaf2 0%, var(--vanilla) 55%, #f6ead8 110%);
+      --stroke: rgba(30,26,22,.12);
+      --stroke2: rgba(30,26,22,.08);
+
+      --accent:#E9A4B4;   /* soft rosé */
+      --accent2:#D68FA0;
+
+      --r:18px;
+      --shadow: 0 18px 55px rgba(30,26,22,.10);
+      --shadow2: 0 12px 28px rgba(30,26,22,.08);
+
+      --bg: radial-gradient(1200px 680px at 50% 0%, #fffaf2 0%, var(--vanilla) 55%, #f6ead8 110%);
     }
 
     *{box-sizing:border-box}
     html,body{height:100%}
     body{
       margin:0;
-      background: var(--bg-grad);
+      background: var(--bg);
       color:var(--ink);
       font-family: ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
       -webkit-font-smoothing:antialiased;
@@ -38,8 +44,9 @@
     }
 
     a{color:inherit; text-decoration:none; border-bottom:1px dashed rgba(30,26,22,.25)}
-    .wrap{max-width:1160px; margin:0 auto; padding:18px 14px 70px}
+    .wrap{max-width:1160px; margin:0 auto; padding:18px 14px 90px}
 
+    /* Header */
     header{
       display:flex; align-items:center; justify-content:space-between;
       gap:12px; padding:10px 0 18px;
@@ -58,25 +65,27 @@
     .btn{
       appearance:none;
       border:1px solid var(--stroke);
-      background: rgba(255,255,255,.55);
+      background: rgba(255,255,255,.65);
       color:var(--ink);
       border-radius:14px;
       padding:10px 12px;
-      font-weight:750;
+      font-weight:850;
       cursor:pointer;
-      transition: transform .08s ease, background .15s ease, border-color .15s ease;
+      transition: transform .08s ease, background .15s ease, border-color .15s ease, box-shadow .15s ease;
       box-shadow: 0 10px 24px rgba(30,26,22,.06);
     }
     .btn:active{transform:translateY(1px)}
     .btn.primary{
-      background: linear-gradient(180deg, rgba(233,164,180,.55), rgba(255,255,255,.55));
-      border-color: rgba(214,143,160,.45);
+      background: linear-gradient(180deg, rgba(233,164,180,.62), rgba(255,255,255,.70));
+      border-color: rgba(214,143,160,.55);
+      box-shadow: 0 16px 36px rgba(214,143,160,.18);
     }
     .btn.ghost{
       background: transparent;
       box-shadow:none;
     }
 
+    /* Layout */
     .grid{
       display:grid;
       grid-template-columns: 1.15fr .85fr;
@@ -87,8 +96,9 @@
       .grid{grid-template-columns:1fr;}
     }
 
+    /* Cards */
     .card{
-      background: rgba(255,255,255,.62);
+      background: rgba(255,255,255,.68);
       border:1px solid var(--stroke);
       border-radius: var(--r);
       box-shadow: var(--shadow);
@@ -97,29 +107,45 @@
     }
     .hd{
       padding:14px 14px 10px;
-      border-bottom:1px solid rgba(30,26,22,.08);
+      border-bottom:1px solid var(--stroke2);
       display:flex; align-items:flex-start; justify-content:space-between; gap:10px;
     }
-    .title{font-weight:900; letter-spacing:.2px}
+    .title{font-weight:950; letter-spacing:.2px}
     .muted{color:var(--muted)}
     .bd{padding:14px}
+    .row{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
+    .hr{height:1px; background: var(--stroke2); margin:14px 0}
 
-    /* HERO / Stage */
+    /* Hero */
     .heroTop{
-      padding:14px 14px 10px;
+      padding:16px 16px 12px;
       display:flex; align-items:flex-start; justify-content:space-between; gap:12px;
     }
     .hBig{
-      font-size:34px; line-height:1.05; margin:0;
-      letter-spacing:-.6px;
+      font-size:40px; line-height:1.02; margin:0;
+      letter-spacing:-.8px;
     }
     .lead{
       margin:10px 0 0;
       color:var(--muted);
-      max-width:60ch;
-      font-size:14.5px;
+      max-width:62ch;
+      font-size:15px;
     }
+    .heroMeta{
+      margin-top:12px;
+      display:flex; gap:8px; flex-wrap:wrap;
+    }
+    .pill{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:8px 10px; border-radius:999px;
+      background: rgba(255,255,255,.72);
+      border:1px solid rgba(30,26,22,.10);
+      font-size:12px; color:var(--muted);
+      box-shadow: 0 10px 24px rgba(30,26,22,.05);
+    }
+    .dot{width:8px;height:8px;border-radius:50%; background: var(--accent)}
 
+    /* Stage */
     .stageWrap{
       position:relative;
       margin:10px 14px 14px;
@@ -127,37 +153,36 @@
       border: 1px solid rgba(30,26,22,.10);
       overflow:hidden;
       background:
-        radial-gradient(680px 340px at 50% 22%, rgba(255,255,255,.75), rgba(255,255,255,0) 62%),
-        radial-gradient(900px 420px at 50% 120%, rgba(184,137,91,.14), rgba(0,0,0,0) 62%),
-        linear-gradient(180deg, rgba(255,248,238,.75), rgba(255,255,255,.45));
-      min-height: 420px;
-      box-shadow: 0 24px 70px rgba(30,26,22,.10);
+        radial-gradient(760px 360px at 50% 18%, rgba(255,255,255,.85), rgba(255,255,255,0) 62%),
+        radial-gradient(980px 460px at 50% 125%, rgba(184,137,91,.18), rgba(0,0,0,0) 62%),
+        linear-gradient(180deg, rgba(255,248,238,.82), rgba(255,255,255,.50));
+      min-height: 460px;
+      box-shadow: 0 26px 70px rgba(30,26,22,.10);
     }
-    canvas{display:block; width:100%; height:420px}
+    .stageWrap::after{
+      /* Tisch-/Kontaktgefühl unten */
+      content:"";
+      position:absolute; left:0; right:0; bottom:0; height:46%;
+      background: radial-gradient(70% 60% at 50% 0%, rgba(30,26,22,.08), rgba(30,26,22,0) 60%);
+      opacity:.35;
+      pointer-events:none;
+    }
+    canvas{display:block; width:100%; height:460px}
 
     .stageHint{
       position:absolute; left:14px; bottom:12px;
       display:flex; gap:8px; flex-wrap:wrap;
       pointer-events:none;
     }
-    .pill{
-      display:inline-flex; align-items:center; gap:8px;
-      padding:8px 10px; border-radius:999px;
-      background: rgba(255,255,255,.62);
-      border:1px solid rgba(30,26,22,.10);
-      font-size:12px; color:var(--muted);
-      box-shadow: 0 10px 24px rgba(30,26,22,.06);
-    }
-    .dot{width:8px;height:8px;border-radius:50%; background: var(--accent)}
 
     /* Controls */
-    label{display:block; font-size:12.5px; font-weight:800; margin:0 0 8px}
-    textarea,input,select{
+    label{display:block; font-size:12.5px; font-weight:950; margin:0 0 8px}
+    textarea,input{
       width:100%;
       padding:12px 12px;
       border-radius:14px;
       border:1px solid rgba(30,26,22,.12);
-      background: rgba(255,255,255,.75);
+      background: rgba(255,255,255,.78);
       color:var(--ink);
       outline:none;
       font-size:14px;
@@ -165,45 +190,88 @@
     textarea{min-height:92px; resize:vertical}
     .hint{font-size:12px; color:var(--muted); margin-top:8px}
 
-    .row{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
-    .hr{height:1px; background: rgba(30,26,22,.08); margin:14px 0}
-
     .chipRow{display:flex; gap:8px; flex-wrap:wrap}
     .chip{
       padding:8px 10px; border-radius:999px;
       border:1px solid rgba(30,26,22,.12);
-      background: rgba(255,255,255,.60);
+      background: rgba(255,255,255,.66);
       color:var(--muted);
       cursor:pointer;
       user-select:none;
       font-size:12.5px;
-      transition: transform .08s ease, background .15s ease, border-color .15s ease;
+      transition: transform .08s ease, background .15s ease, border-color .15s ease, box-shadow .15s ease;
+      box-shadow: 0 10px 22px rgba(30,26,22,.04);
     }
     .chip:active{transform: translateY(1px)}
     .chip.on{
       color:var(--ink);
-      border-color: rgba(214,143,160,.45);
-      background: rgba(233,164,180,.25);
+      border-color: rgba(214,143,160,.55);
+      background: rgba(233,164,180,.22);
+      box-shadow: 0 12px 26px rgba(214,143,160,.12);
     }
+
+    /* Quick templates */
+    .templates{display:flex; gap:8px; flex-wrap:wrap}
+    .tpl{
+      padding:8px 10px; border-radius:999px;
+      border:1px dashed rgba(30,26,22,.18);
+      background: rgba(255,255,255,.60);
+      cursor:pointer;
+      font-size:12.5px;
+      color:var(--muted);
+    }
+    .tpl:hover{color:var(--ink)}
 
     /* Hall */
     .hall{
       display:flex; gap:10px; overflow:auto; padding:2px 0 8px;
+      scroll-snap-type:x mandatory;
     }
     .hallItem{
-      flex:0 0 260px;
+      flex:0 0 280px;
+      scroll-snap-align:start;
       border-radius:18px;
       border:1px solid rgba(30,26,22,.10);
-      background: rgba(255,255,255,.62);
+      background: rgba(255,255,255,.70);
       padding:12px;
       cursor:pointer;
-      transition: transform .1s ease, border-color .15s ease;
-      box-shadow: 0 12px 30px rgba(30,26,22,.06);
+      transition: transform .12s ease, box-shadow .15s ease, border-color .15s ease;
+      box-shadow: var(--shadow2);
+      position:relative;
     }
-    .hallItem:hover{transform:translateY(-1px)}
-    .hallItem .t{font-weight:900}
-    .hallItem .m{margin-top:6px; color:var(--muted); font-size:12.5px; min-height:40px}
-    .hallItem .f{display:flex; justify-content:space-between; margin-top:10px; font-size:12px; color:var(--muted)}
+    .hallItem:hover{
+      transform:translateY(-2px);
+      box-shadow: 0 18px 40px rgba(30,26,22,.12);
+      border-color: rgba(214,143,160,.28);
+    }
+    .hallTop{display:flex; gap:10px; align-items:center}
+    .miniCookie{
+      width:44px; height:44px; border-radius:999px;
+      background: radial-gradient(circle at 35% 35%, #ffe1c7, var(--cookie) 62%, #6d4a2a 125%);
+      border:1px solid rgba(30,26,22,.10);
+      box-shadow: 0 12px 26px rgba(30,26,22,.12);
+      flex:0 0 auto;
+      position:relative;
+      overflow:hidden;
+    }
+    .miniCookie::after{
+      content:"";
+      position:absolute; inset:9px;
+      border-radius:999px;
+      background: rgba(255,255,255,.72);
+      opacity:.55;
+    }
+    .hallItem .t{font-weight:950}
+    .hallItem .m{margin-top:8px; color:var(--muted); font-size:13px; min-height:38px}
+    .tags{display:flex; gap:6px; flex-wrap:wrap; margin-top:10px}
+    .tag{
+      font-size:11.5px;
+      padding:6px 8px;
+      border-radius:999px;
+      border:1px solid rgba(30,26,22,.10);
+      background: rgba(255,255,255,.62);
+      color:var(--muted);
+    }
 
     /* Trust */
     .trustBar{
@@ -216,23 +284,31 @@
     }
     .trust{
       border:1px solid rgba(30,26,22,.10);
-      background: rgba(255,255,255,.62);
+      background: rgba(255,255,255,.70);
       border-radius:16px;
       padding:12px;
-      box-shadow: 0 12px 30px rgba(30,26,22,.06);
+      box-shadow: var(--shadow2);
+      display:flex; gap:10px; align-items:flex-start;
     }
-    .trust b{display:block}
+    .ico{
+      width:28px; height:28px; border-radius:10px;
+      border:1px solid rgba(30,26,22,.10);
+      background: rgba(233,164,180,.22);
+      flex:0 0 auto;
+    }
+    .trust b{display:block; font-weight:950}
     .trust span{color:var(--muted); font-size:12.5px}
 
+    /* FAQ */
     details{
       border:1px solid rgba(30,26,22,.10);
-      background: rgba(255,255,255,.62);
+      background: rgba(255,255,255,.70);
       border-radius:16px;
       padding:12px;
-      box-shadow: 0 12px 30px rgba(30,26,22,.06);
+      box-shadow: var(--shadow2);
     }
     details + details{margin-top:10px}
-    summary{cursor:pointer; font-weight:900}
+    summary{cursor:pointer; font-weight:950}
     summary::-webkit-details-marker{display:none}
     details p{margin:10px 0 0; color:var(--muted); font-size:13.5px}
 
@@ -247,9 +323,9 @@
     }
     .modal.on{display:flex}
     .modalCard{
-      width:min(720px, 100%);
+      width:min(760px, 100%);
       border-radius:22px;
-      background: rgba(255,255,255,.92);
+      background: rgba(255,255,255,.94);
       border:1px solid rgba(30,26,22,.14);
       box-shadow: 0 30px 90px rgba(30,26,22,.25);
       overflow:hidden;
@@ -259,7 +335,7 @@
       display:flex; justify-content:space-between; align-items:center; gap:12px;
       border-bottom:1px solid rgba(30,26,22,.10);
     }
-    .x{border:1px solid rgba(30,26,22,.12); background:transparent; border-radius:12px; padding:8px 10px; cursor:pointer; font-weight:900}
+    .x{border:1px solid rgba(30,26,22,.12); background:transparent; border-radius:12px; padding:8px 10px; cursor:pointer; font-weight:950}
     .modalBd{padding:14px}
     .summaryGrid{
       display:grid; gap:10px;
@@ -272,17 +348,39 @@
       padding:10px;
       border-radius:14px;
       border:1px solid rgba(30,26,22,.10);
-      background: rgba(255,255,255,.72);
+      background: rgba(255,255,255,.78);
     }
     .kv .k{font-size:11px; color:var(--muted)}
-    .kv .v{margin-top:4px; font-weight:900}
+    .kv .v{margin-top:4px; font-weight:950}
 
     .fineprint{font-size:12px; color:var(--muted); margin-top:10px}
 
+    /* Mobile sticky CTA */
+    .stickyCta{
+      position:fixed; left:0; right:0; bottom:0;
+      padding:10px 12px;
+      background: rgba(255,255,255,.82);
+      border-top:1px solid rgba(30,26,22,.10);
+      box-shadow: 0 -16px 40px rgba(30,26,22,.12);
+      display:none;
+      z-index:40;
+      backdrop-filter: blur(8px);
+    }
+    .stickyInner{
+      max-width:1160px; margin:0 auto;
+      display:flex; gap:10px; align-items:center; justify-content:space-between;
+    }
+    .stickyText{font-size:12.5px; color:var(--muted)}
+    @media (max-width: 980px){
+      .stickyCta{display:block;}
+      .wrap{padding-bottom:130px;}
+    }
+
+    /* Toast */
     .toast{
       position:fixed; left:50%; bottom:18px;
       transform:translateX(-50%);
-      background: rgba(255,255,255,.88);
+      background: rgba(255,255,255,.92);
       border:1px solid rgba(30,26,22,.12);
       color:var(--ink);
       padding:10px 12px;
@@ -295,7 +393,6 @@
     }
     .toast.on{opacity:1}
 
-    /* Small footer area */
     footer{
       margin-top:16px;
       display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap;
@@ -319,7 +416,7 @@
 
       <div class="topActions">
         <button class="btn ghost" id="btnSurprise">Überrasch mich</button>
-        <button class="btn" id="btnShare">Link teilen</button>
+        <button class="btn" id="btnShare">Teilen</button>
         <button class="btn primary" id="btnCheckoutTop">Keks losschicken</button>
       </div>
     </header>
@@ -330,7 +427,12 @@
         <div class="heroTop">
           <div>
             <p class="hBig">Post, die schmeckt.</p>
-            <p class="lead">Gestalte einen Keks mit deiner Botschaft. Sieht gut aus. Schmeckt gut. Kommt als echtes Geschenk an.</p>
+            <p class="lead">Du schreibst eine Botschaft. Wir machen daraus einen echten Keks. Sieht gut aus. Schmeckt gut. Kommt als Geschenk an.</p>
+            <div class="heroMeta">
+              <span class="pill"><span class="dot"></span> 3D Vorschau (drehbar)</span>
+              <span class="pill">Vanille & Keksbraun · Premium ruhig</span>
+              <span class="pill">Kein Abo</span>
+            </div>
           </div>
           <div class="row">
             <button class="btn primary" id="btnCheckout">Keks losschicken</button>
@@ -340,8 +442,7 @@
         <div class="stageWrap" id="stageWrap">
           <canvas id="c"></canvas>
           <div class="stageHint">
-            <span class="pill"><span class="dot"></span> 3D Vorschau (drehbar)</span>
-            <span class="pill">Weiches Design · Vanille & Keksbraun</span>
+            <span class="pill">Tipp: Maus ziehen zum Drehen</span>
           </div>
         </div>
 
@@ -368,6 +469,10 @@
           <textarea id="msg" maxlength="90" placeholder="Kurz. Klar. Lecker. (z.B. „Vermiss dich.“)"></textarea>
           <div class="hint"><span id="count">0</span>/90 Zeichen</div>
 
+          <div class="row" style="margin-top:10px">
+            <div class="templates" id="templates"></div>
+          </div>
+
           <div class="hr"></div>
 
           <label>Form</label>
@@ -377,26 +482,22 @@
 
           <label>Extras</label>
           <div class="chipRow" id="decoChips"></div>
-          <div class="hint">Weniger ist mehr – Hauptsache appetitlich.</div>
-
-          <div class="hr"></div>
-
-          <div class="row" style="justify-content:space-between; align-items:flex-end">
-            <div style="flex:1; min-width:220px">
-              <label for="shareUrl">Share-Link</label>
-              <input id="shareUrl" readonly />
-              <div class="hint">Öffnet exakt deinen Keks (Form, Extras, Text).</div>
-            </div>
-            <div class="row">
-              <button class="btn" id="btnCopy">Kopieren</button>
-            </div>
-          </div>
+          <div class="hint">Max. 2 Extras – weniger ist mehr.</div>
 
           <div class="hr"></div>
 
           <label>Hall of Keks</label>
           <div class="hall" id="hall"></div>
 
+          <div class="hr"></div>
+
+          <label for="shareUrl">Teilen</label>
+          <input id="shareUrl" readonly />
+          <div class="row" style="margin-top:10px">
+            <button class="btn" id="btnCopy">Link kopieren</button>
+            <button class="btn ghost" id="btnScrollTop">Nach oben</button>
+          </div>
+          <div class="hint">Der Link öffnet deinen Keks exakt so (Form, Extras, Text).</div>
         </div>
       </aside>
     </div>
@@ -404,16 +505,25 @@
     <!-- Trust / FAQ -->
     <section class="trustBar" style="margin-top:14px">
       <div class="trust">
-        <b>Lebensmittel & Allergene</b>
-        <span>Transparent vor dem Kauf. Kein Rätselraten.</span>
+        <div class="ico" aria-hidden="true"></div>
+        <div>
+          <b>Lebensmittel & Allergene</b>
+          <span>Transparent vor dem Kauf. Klar kommuniziert.</span>
+        </div>
       </div>
       <div class="trust">
-        <b>Sicher bezahlen</b>
-        <span>Unkompliziert, ohne Abo, ohne Datenverkauf.</span>
+        <div class="ico" aria-hidden="true"></div>
+        <div>
+          <b>Sicher bezahlen</b>
+          <span>Kein Abo. Kein Datenverkauf. Einfacher Checkout.</span>
+        </div>
       </div>
       <div class="trust">
-        <b>Geschenk-Logik</b>
-        <span>Sieht gut aus. Schmeckt gut. Kommt gut an.</span>
+        <div class="ico" aria-hidden="true"></div>
+        <div>
+          <b>Geschenk-Logik</b>
+          <span>Sieht gut aus. Schmeckt gut. Kommt gut an.</span>
+        </div>
       </div>
     </section>
 
@@ -425,10 +535,10 @@
       <div class="bd">
         <details>
           <summary>Wie lange dauert der Versand?</summary>
-          <p>Typisch 2–4 Werktage. (Später hier live Daten / Cutoffs.)</p>
+          <p>Typisch 2–4 Werktage. Du siehst vor der Zahlung die genauen Infos.</p>
         </details>
         <details>
-          <summary>Ist das hier ein Abo?</summary>
+          <summary>Ist das ein Abo?</summary>
           <p>Nein. Einmal gestalten, einmal verschicken. Fertig.</p>
         </details>
         <details>
@@ -444,6 +554,14 @@
         <a href="#impressum">Impressum</a> · <a href="#datenschutz">Datenschutz</a> · <a href="#agb">AGB</a>
       </div>
     </footer>
+  </div>
+
+  <!-- Mobile Sticky CTA -->
+  <div class="stickyCta">
+    <div class="stickyInner">
+      <div class="stickyText">Dein Keks ist bereit. Jetzt losschicken.</div>
+      <button class="btn primary" id="btnCheckoutSticky">Keks losschicken</button>
+    </div>
   </div>
 
   <!-- Checkout Modal -->
@@ -469,10 +587,10 @@
         <input id="addr" placeholder="Straße & Hausnr., PLZ Ort" />
 
         <div class="row" style="margin-top:12px; justify-content:space-between">
-          <div class="fineprint">✓ Kein Abo ✓ Zahlung kommt als Stripe-Link</div>
+          <div class="fineprint">✓ Kein Abo ✓ Zur sicheren Zahlung (Stripe-Link)</div>
           <div class="row">
             <button class="btn ghost" id="btnBack">Zurück</button>
-            <button class="btn primary" id="btnPay">Weiter zur Zahlung</button>
+            <button class="btn primary" id="btnPay">Zur sicheren Zahlung</button>
           </div>
         </div>
       </div>
@@ -486,7 +604,7 @@
 
   <script>
     // ---------------------------------------
-    // State
+    // State (simple, appetizing, no rarity)
     // ---------------------------------------
     const SHAPES = [
       {id:"circle", label:"Kreis"},
@@ -502,14 +620,23 @@
       {id:"sugar", label:"Zuckerrand"},
     ];
 
+    const TEMPLATES = [
+      "Vermiss dich.",
+      "Für dich.",
+      "Meld dich.",
+      "Du fehlst.",
+      "Danke.",
+      "Bin stolz auf dich."
+    ];
+
     const HALL = [
       {id:"h1", label:"Beliebt", message:"Vermiss dich.", shape:"heart", deco:["sprinkles"]},
       {id:"h2", label:"Klassiker", message:"Für dich.", shape:"circle", deco:["sugar"]},
-      {id:"h3", label:"Frech", message:"Meld dich.", shape:"circle", deco:["choco"]},
+      {id:"h3", label:"Kurz & direkt", message:"Meld dich.", shape:"circle", deco:["choco"]},
       {id:"h4", label:"Warm", message:"Du fehlst.", shape:"heart", deco:["sprinkles","sugar"]},
     ];
 
-    const LS_KEY = "onlykeks_draft_soft_v1";
+    const LS_KEY = "onlykeks_index_soft_v2";
 
     let state = loadDraft() ?? {
       shape: "circle",
@@ -523,19 +650,23 @@
     const $ = (s)=>document.querySelector(s);
     const msg = $("#msg");
     const count = $("#count");
+    const templates = $("#templates");
     const shapeChips = $("#shapeChips");
     const decoChips = $("#decoChips");
     const hall = $("#hall");
     const shareUrl = $("#shareUrl");
+    const toast = $("#toast");
+
     const btnCopy = $("#btnCopy");
     const btnShare = $("#btnShare");
     const btnSurprise = $("#btnSurprise");
     const btnReset = $("#btnReset");
-    const toast = $("#toast");
+    const btnScrollTop = $("#btnScrollTop");
 
     const modal = $("#modal");
     const btnCheckout = $("#btnCheckout");
     const btnCheckoutTop = $("#btnCheckoutTop");
+    const btnCheckoutSticky = $("#btnCheckoutSticky");
     const btnClose = $("#btnClose");
     const btnBack = $("#btnBack");
     const btnPay = $("#btnPay");
@@ -548,6 +679,21 @@
     // ---------------------------------------
     // UI builders
     // ---------------------------------------
+    function buildTemplates(){
+      templates.innerHTML = "";
+      TEMPLATES.forEach(t=>{
+        const el = document.createElement("div");
+        el.className = "tpl";
+        el.textContent = t;
+        el.onclick = ()=>{
+          state.message = t;
+          persist(); syncAll();
+          toastMsg("Vorlage übernommen.");
+        };
+        templates.appendChild(el);
+      });
+    }
+
     function buildChips(){
       shapeChips.innerHTML = "";
       SHAPES.forEach(s=>{
@@ -557,8 +703,7 @@
         el.dataset.id = s.id;
         el.onclick = ()=>{
           state.shape = s.id;
-          persist();
-          syncAll();
+          persist(); syncAll();
         };
         shapeChips.appendChild(el);
       });
@@ -580,11 +725,16 @@
         const el = document.createElement("div");
         el.className = "hallItem";
         el.innerHTML = `
-          <div class="t">${escapeHtml(h.label)}</div>
-          <div class="m">${escapeHtml(h.message)}</div>
-          <div class="f">
-            <span>${shapeLabel(h.shape)}</span>
-            <span>${h.deco.map(decoLabel).join(", ")}</span>
+          <div class="hallTop">
+            <div class="miniCookie" aria-hidden="true"></div>
+            <div>
+              <div class="t">${escapeHtml(h.label)}</div>
+              <div class="m">„${escapeHtml(h.message)}“</div>
+            </div>
+          </div>
+          <div class="tags">
+            <span class="tag">${escapeHtml(shapeLabel(h.shape))}</span>
+            ${h.deco.map(d=>`<span class="tag">${escapeHtml(decoLabel(d))}</span>`).join("")}
           </div>
         `;
         el.onclick = ()=>{
@@ -592,7 +742,7 @@
           state.deco = [...h.deco];
           state.message = h.message;
           persist(); syncAll();
-          toastMsg("Vorlage geladen.");
+          toastMsg("Hall-Keks geladen.");
         };
         hall.appendChild(el);
       });
@@ -601,11 +751,9 @@
     function toggleDeco(id){
       const has = state.deco.includes(id);
       let next = has ? state.deco.filter(x=>x!==id) : [...state.deco, id];
-      // keep it simple: max 2 extras
-      if(next.length > 2) next = next.slice(next.length-2);
+      if(next.length > 2) next = next.slice(next.length-2); // max 2 extras
       state.deco = next;
-      persist();
-      syncAll();
+      persist(); syncAll();
     }
 
     // ---------------------------------------
@@ -687,17 +835,17 @@
       persist(); syncAll();
     });
 
-    btnCopy.onclick = ()=>{
+    function copyLink(){
       shareUrl.select();
       document.execCommand("copy");
       toastMsg("Link kopiert.");
-    };
-    btnShare.onclick = btnCopy.onclick;
+    }
+    btnCopy.onclick = copyLink;
+    btnShare.onclick = copyLink;
 
     btnSurprise.onclick = ()=>{
       const pickShape = SHAPES[Math.floor(Math.random()*SHAPES.length)].id;
       const pickDeco = [];
-      // 65% one deco, 25% two, 10% none
       const r = Math.random();
       if(r > .10) pickDeco.push(DECOS[Math.floor(Math.random()*DECOS.length)].id);
       if(r > .75) {
@@ -716,18 +864,21 @@
       persist(); syncAll();
     };
 
+    btnScrollTop.onclick = ()=> window.scrollTo({top:0, behavior:"smooth"});
+
     // Modal
     function openModal(){ modal.classList.add("on"); addr.focus(); }
     function closeModal(){ modal.classList.remove("on"); }
 
     btnCheckout.onclick = openModal;
     btnCheckoutTop.onclick = openModal;
+    btnCheckoutSticky.onclick = openModal;
+
     btnClose.onclick = closeModal;
     btnBack.onclick = closeModal;
     modal.addEventListener("click", (e)=>{ if(e.target === modal) closeModal(); });
 
     btnPay.onclick = ()=>{
-      // Placeholder for Stripe Payment Link integration
       if(!addr.value.trim()){
         toastMsg("Adresse fehlt.");
         return;
@@ -758,36 +909,37 @@
     })();
 
     // ---------------------------------------
-    // THREE.JS – Soft 3D Cookie (vanilla look)
+    // THREE.JS – Soft 3D Cookie (more "edible")
     // ---------------------------------------
     const canvas = document.getElementById("c");
     let renderer, scene, camera, cookieGroup, cookieMesh, icingMesh, sprinkles, drizzle, sugarRim, textSprite;
     let okWebGL = true;
+    let dragging=false, lastX=0, spin=0;
 
     function initThree(){
       try{
         renderer = new THREE.WebGLRenderer({canvas, antialias:true, alpha:true, powerPreference:"high-performance"});
         renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
-        renderer.setSize(canvas.clientWidth, 420, false);
+        renderer.setSize(canvas.clientWidth, 460, false);
 
         scene = new THREE.Scene();
 
-        camera = new THREE.PerspectiveCamera(33, canvas.clientWidth/420, 0.1, 100);
-        camera.position.set(0, 1.05, 4.35);
+        camera = new THREE.PerspectiveCamera(33, canvas.clientWidth/460, 0.1, 100);
+        camera.position.set(0, 1.05, 4.45);
 
-        // warm lighting
-        const hemi = new THREE.HemisphereLight(0xffffff, 0xf2e5d6, 1.05);
+        // warm, bakery lighting
+        const hemi = new THREE.HemisphereLight(0xffffff, 0xf2e5d6, 1.10);
         scene.add(hemi);
 
-        const key = new THREE.DirectionalLight(0xffffff, 1.10);
-        key.position.set(2.2, 3.2, 2.2);
+        const key = new THREE.DirectionalLight(0xffffff, 1.15);
+        key.position.set(2.4, 3.4, 2.4);
         scene.add(key);
 
-        const fill = new THREE.DirectionalLight(0xfff1df, 0.55);
-        fill.position.set(-2.8, 1.8, 1.2);
+        const fill = new THREE.DirectionalLight(0xfff1df, 0.60);
+        fill.position.set(-2.8, 1.8, 1.4);
         scene.add(fill);
 
-        const rim = new THREE.DirectionalLight(0xffffff, 0.28);
+        const rim = new THREE.DirectionalLight(0xffffff, 0.25);
         rim.position.set(-2.0, 2.0, -2.4);
         scene.add(rim);
 
@@ -795,6 +947,7 @@
         scene.add(cookieGroup);
 
         buildCookie();
+        bindDrag();
         window.addEventListener("resize", onResize);
         animate();
       }catch(e){
@@ -806,9 +959,9 @@
     function onResize(){
       if(!renderer || !camera) return;
       const w = canvas.clientWidth;
-      camera.aspect = w/420;
+      camera.aspect = w/460;
       camera.updateProjectionMatrix();
-      renderer.setSize(w, 420, false);
+      renderer.setSize(w, 460, false);
     }
 
     function cssVar(name){
@@ -818,28 +971,28 @@
     function buildCookie(){
       while(cookieGroup.children.length) cookieGroup.remove(cookieGroup.children[0]);
 
-      // Base cookie (a bit thicker, more "edible")
-      const baseGeo = new THREE.CylinderGeometry(1.38, 1.38, 0.42, 56, 1, false);
+      // Base cookie
+      const baseGeo = new THREE.CylinderGeometry(1.40, 1.40, 0.44, 64, 1, false);
       const cookieMat = new THREE.MeshStandardMaterial({
         color: new THREE.Color(cssVar("--cookie")),
-        roughness: 0.92,
+        roughness: 0.95,
         metalness: 0.0
       });
       cookieMesh = new THREE.Mesh(baseGeo, cookieMat);
       cookieMesh.rotation.x = Math.PI * 0.085;
       cookieGroup.add(cookieMesh);
 
-      // Icing layer
-      const icingGeo = new THREE.CylinderGeometry(1.22, 1.22, 0.07, 56, 1, false);
+      // Icing
+      const icingGeo = new THREE.CylinderGeometry(1.23, 1.23, 0.075, 64, 1, false);
       const icingMat = new THREE.MeshStandardMaterial({
         color: 0xF7F0E6,
-        roughness: 0.58,
+        roughness: 0.60,
         metalness: 0.0,
         transparent:true,
-        opacity: 0.96
+        opacity: 0.97
       });
       icingMesh = new THREE.Mesh(icingGeo, icingMat);
-      icingMesh.position.y = 0.225;
+      icingMesh.position.y = 0.235;
       icingMesh.rotation.x = cookieMesh.rotation.x;
       cookieGroup.add(icingMesh);
 
@@ -853,10 +1006,10 @@
       sugarRim = makeSugarRim();
       cookieGroup.add(sugarRim);
 
-      // Text sprite
-      textSprite = makeTextSprite("");
-      textSprite.position.set(0, 0.325, 0.02);
-      textSprite.scale.set(2.25, 1.12, 1);
+      // Text
+      textSprite = makeTextSprite();
+      textSprite.position.set(0, 0.335, 0.02);
+      textSprite.scale.set(2.30, 1.15, 1);
       cookieGroup.add(textSprite);
 
       applyShape();
@@ -865,14 +1018,14 @@
     }
 
     function makeSprinkles(){
-      const count = 130;
+      const count = 140;
       const geom = new THREE.BufferGeometry();
       const pos = new Float32Array(count*3);
       for(let i=0;i<count;i++){
         const a = Math.random()*Math.PI*2;
-        const r = Math.sqrt(Math.random())*1.05;
+        const r = Math.sqrt(Math.random())*1.06;
         pos[i*3+0] = Math.cos(a)*r;
-        pos[i*3+1] = 0.255 + (Math.random()*0.02);
+        pos[i*3+1] = 0.265 + (Math.random()*0.02);
         pos[i*3+2] = Math.sin(a)*r;
       }
       geom.setAttribute("position", new THREE.BufferAttribute(pos, 3));
@@ -888,14 +1041,13 @@
     }
 
     function makeDrizzle(){
-      // simple ring-ish drizzle using tube-like line segments (cheap but readable)
       const group = new THREE.Group();
-      const mat = new THREE.MeshStandardMaterial({ color: 0x5b3a22, roughness: 0.75, metalness: 0.0 });
+      const mat = new THREE.MeshStandardMaterial({ color: 0x5b3a22, roughness: 0.80, metalness: 0.0 });
       for(let i=0;i<3;i++){
-        const geo = new THREE.TorusGeometry(0.78 + i*0.12, 0.03, 10, 60);
+        const geo = new THREE.TorusGeometry(0.80 + i*0.12, 0.03, 10, 70);
         const m = new THREE.Mesh(geo, mat);
         m.rotation.x = Math.PI/2 - 0.20;
-        m.position.y = 0.265 + i*0.003;
+        m.position.y = 0.272 + i*0.003;
         m.rotation.z = i*0.45;
         group.add(m);
       }
@@ -904,19 +1056,18 @@
     }
 
     function makeSugarRim(){
-      // rim dots
-      const count = 85;
+      const count = 90;
       const geom = new THREE.BufferGeometry();
       const pos = new Float32Array(count*3);
       for(let i=0;i<count;i++){
         const a = (i/count)*Math.PI*2;
-        const r = 1.16 + (Math.random()*0.01);
+        const r = 1.17 + (Math.random()*0.01);
         pos[i*3+0] = Math.cos(a)*r;
-        pos[i*3+1] = 0.255 + (Math.random()*0.01);
+        pos[i*3+1] = 0.265 + (Math.random()*0.01);
         pos[i*3+2] = Math.sin(a)*r;
       }
       geom.setAttribute("position", new THREE.BufferAttribute(pos, 3));
-      const mat = new THREE.PointsMaterial({ size:0.045, color: 0xFFFFFF, transparent:true, opacity:0.75 });
+      const mat = new THREE.PointsMaterial({ size:0.045, color: 0xFFFFFF, transparent:true, opacity:0.78 });
       const pts = new THREE.Points(geom, mat);
       pts.visible = false;
       return pts;
@@ -948,14 +1099,13 @@
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
 
-      let size = 76;
-      ctx.font = `900 ${size}px system-ui, -apple-system, Segoe UI, Roboto, Arial`;
+      let size = 78;
+      ctx.font = `950 ${size}px system-ui, -apple-system, Segoe UI, Roboto, Arial`;
       while(ctx.measureText(display).width > 900 && size > 46){
         size -= 2;
-        ctx.font = `900 ${size}px system-ui, -apple-system, Segoe UI, Roboto, Arial`;
+        ctx.font = `950 ${size}px system-ui, -apple-system, Segoe UI, Roboto, Arial`;
       }
 
-      // soft readable fill (no tech stroke)
       ctx.fillStyle = "rgba(30,26,22,.86)";
       ctx.fillText(display, c.width/2, c.height/2);
 
@@ -963,16 +1113,15 @@
     }
 
     function applyShape(){
-      // simple silhouette cheat: gentle scaling + rotation
       const s = state.shape;
       cookieGroup.scale.set(1,1,1);
       cookieGroup.rotation.y = 0;
 
       if(s==="circle"){ cookieGroup.scale.set(1,1,1); }
-      if(s==="heart"){ cookieGroup.scale.set(1.0,1.0,0.92); cookieGroup.rotation.y = 0.12; }
-      if(s==="star"){ cookieGroup.scale.set(0.98,1.0,0.98); cookieGroup.rotation.y = 0.55; }
-      if(s==="smile"){ cookieGroup.scale.set(1.02,1.0,0.95); cookieGroup.rotation.y = -0.18; }
-      if(s==="tree"){ cookieGroup.scale.set(0.92,1.0,1.02); cookieGroup.rotation.y = 0.28; }
+      if(s==="heart"){ cookieGroup.scale.set(1.0,1.0,0.92); cookieGroup.rotation.y = 0.10; }
+      if(s==="star"){ cookieGroup.scale.set(0.98,1.0,0.98); cookieGroup.rotation.y = 0.50; }
+      if(s==="smile"){ cookieGroup.scale.set(1.02,1.0,0.95); cookieGroup.rotation.y = -0.16; }
+      if(s==="tree"){ cookieGroup.scale.set(0.92,1.0,1.02); cookieGroup.rotation.y = 0.26; }
     }
 
     function applyDecos(){
@@ -993,18 +1142,43 @@
       requestAnimationFrame(animate);
 
       const t = performance.now()*0.001;
-      // slow, premium motion
-      cookieGroup.rotation.y += 0.0022;
-      cookieGroup.position.y = Math.sin(t*1.05)*0.03;
+
+      // premium slow motion, plus user spin
+      const auto = 0.0016;
+      spin *= 0.92;
+      cookieGroup.rotation.y += auto + spin;
+
+      // subtle float
+      cookieGroup.position.y = Math.sin(t*1.0)*0.02;
 
       renderer.render(scene, camera);
+    }
+
+    function bindDrag(){
+      const el = canvas;
+      const down = (x)=>{ dragging=true; lastX=x; };
+      const move = (x)=>{
+        if(!dragging) return;
+        const dx = x - lastX;
+        lastX = x;
+        spin = dx * 0.00006; // gentle
+      };
+      const up = ()=>{ dragging=false; };
+
+      el.addEventListener("mousedown",(e)=>down(e.clientX));
+      window.addEventListener("mousemove",(e)=>move(e.clientX));
+      window.addEventListener("mouseup",up);
+
+      el.addEventListener("touchstart",(e)=>down(e.touches[0].clientX), {passive:true});
+      el.addEventListener("touchmove",(e)=>move(e.touches[0].clientX), {passive:true});
+      el.addEventListener("touchend",up);
     }
 
     function fallback2D(){
       const wrap = document.getElementById("stageWrap");
       wrap.innerHTML = `
-        <div style="padding:18px; min-height:420px; display:flex; align-items:center; justify-content:center">
-          <div style="width:260px;height:260px;border-radius:999px;background:radial-gradient(circle at 35% 35%, #ffe1c7, ${cssVar("--cookie")} 60%, #6d4a2a 120%);border:1px solid rgba(30,26,22,.10);box-shadow:0 24px 70px rgba(30,26,22,.16);display:flex;align-items:center;justify-content:center;text-align:center;padding:22px;font-weight:900;line-height:1.05;color:${cssVar("--ink")}">
+        <div style="padding:18px; min-height:460px; display:flex; align-items:center; justify-content:center">
+          <div style="width:280px;height:280px;border-radius:999px;background:radial-gradient(circle at 35% 35%, #ffe1c7, ${cssVar("--cookie")} 60%, #6d4a2a 120%);border:1px solid rgba(30,26,22,.10);box-shadow:0 24px 70px rgba(30,26,22,.16);display:flex;align-items:center;justify-content:center;text-align:center;padding:22px;font-weight:950;line-height:1.05;color:${cssVar("--ink")}">
             ${escapeHtml(state.message || " ")}
           </div>
         </div>
@@ -1015,6 +1189,7 @@
     // ---------------------------------------
     // Init
     // ---------------------------------------
+    buildTemplates();
     buildChips();
     buildHall();
     syncAll();

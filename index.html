@@ -5,27 +5,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>OnlyKeks – Post, die schmeckt.</title>
 
-  <meta name="theme-color" content="#ffe9f2"/>
+  <meta name="theme-color" content="#fff3ea"/>
   <meta name="description" content="Du schreibst eine Botschaft. Wir machen daraus einen echten Keks."/>
 
   <style>
     :root{
       --vanilla:#fff3ea;
       --cream:#fff9f4;
-
-      /* Candy Premium */
       --candy:#ff4fa3;
       --candy-soft:#ff7bbf;
-      --candy-ice:#ffe3ef;
-
       --choco:#c98e55;
       --ink:#3a2a1f;
       --muted:#9c8f86;
-
       --radius-xl:28px;
       --radius-pill:999px;
-
-      --shadow-soft:0 18px 60px rgba(255,79,163,.20);
+      --shadow-soft:0 18px 60px rgba(255,105,180,.18);
       --shadow-card:0 12px 36px rgba(0,0,0,.08);
     }
 
@@ -34,18 +28,15 @@
     body{
       font-family: system-ui, -apple-system, Segoe UI, Roboto, Inter, sans-serif;
       color:var(--ink);
-      background:
-        radial-gradient(120% 90% at 50% 0%, rgba(255,255,255,.95), rgba(255,227,239,.65)),
-        linear-gradient(180deg, var(--vanilla), var(--cream));
-      min-height:100vh;
+      background:linear-gradient(180deg, var(--vanilla), var(--cream));
     }
 
+    /* HEADER */
     header{
-      position:sticky; top:0; z-index:10;
-      background:linear-gradient(180deg, rgba(255,243,234,.92), rgba(255,243,234,.68));
-      backdrop-filter:saturate(1.05) blur(6px);
+      position:sticky; top:0; z-index:5;
+      background:linear-gradient(180deg, rgba(255,243,234,.9), rgba(255,243,234,.6));
+      backdrop-filter:saturate(1.05);
       padding:10px 16px;
-      border-bottom:1px solid rgba(0,0,0,.04);
     }
     .hdr{
       display:flex; align-items:center; justify-content:space-between;
@@ -53,51 +44,50 @@
     }
     .logo{
       font-weight:900; letter-spacing:.2px;
-      font-size:18px;
     }
     .sub{
       font-size:12px; color:var(--muted); margin-top:-2px;
     }
     .hdr a{
       font-size:13px; color:var(--ink); text-decoration:none;
-      opacity:.85;
+      opacity:.8;
     }
 
-    main{max-width:520px;margin:0 auto;padding:10px 16px 160px}
-    section{margin:14px 0}
+    /* LAYOUT */
+    main{max-width:520px;margin:0 auto;padding:12px 16px 140px}
+    section{margin:18px 0}
 
     /* HERO / 3D STAGE */
-    .stageWrap{ text-align:center; }
+    .stageWrap{
+      margin-top:8px;
+      text-align:center;
+    }
     .stage{
       width:100%;
-      height:410px;
+      height:360px;
       border-radius:var(--radius-xl);
-      background:
-        radial-gradient(120% 90% at 50% 20%, #ffffff, var(--candy-ice));
+      background:radial-gradient(120% 90% at 50% 20%, #ffffff, #ffe3ef);
       box-shadow:var(--shadow-soft);
       overflow:hidden;
       position:relative;
     }
-
     .hint{
-      font-size:13px;
-      color:rgba(60,40,30,.55);
-      margin-top:8px;
+      font-size:13px; color:var(--muted); margin-top:8px;
     }
 
+    /* STATUS LABEL */
     .status{
       margin-top:10px;
       font-size:14px;
       color:#6d5a4e;
       min-height:20px;
-      transition:opacity .22s ease;
+      transition:opacity .25s ease;
     }
 
-    /* SURPRISE (Gamechanger) */
+    /* SURPRISE */
     .surpriseBtn{
-      margin:14px auto 10px;
-      display:inline-flex; align-items:center; justify-content:center;
-      gap:10px;
+      margin:14px auto 8px;
+      display:inline-flex; align-items:center; gap:8px;
       padding:14px 22px;
       border-radius:var(--radius-pill);
       border:none;
@@ -106,60 +96,35 @@
       color:white;
       background:linear-gradient(180deg, var(--candy-soft), var(--candy));
       box-shadow:0 14px 40px rgba(255,79,163,.35);
-      transform:translateZ(0);
       cursor:pointer;
     }
-    .surpriseBtn:active{ transform:scale(.98); }
+    .surpriseBtn:active{transform:translateY(1px)}
 
-    /* Style Chips */
+    /* STYLE CHIPS */
     .chips{
       display:flex; gap:10px; overflow-x:auto;
-      padding:6px 2px 2px;
-      -webkit-overflow-scrolling:touch;
+      padding:6px 2px;
+      justify-content:center;
     }
     .chip{
       flex:0 0 auto;
       padding:10px 16px;
       border-radius:var(--radius-pill);
-      border:2px solid rgba(255,79,163,.30);
-      background:rgba(255,255,255,.78);
-      box-shadow:0 10px 26px rgba(255,79,163,.10);
-      font-weight:900;
+      border:2px solid rgba(255,79,163,.35);
+      background:rgba(255,255,255,.75);
+      font-weight:800;
       cursor:pointer;
     }
     .chip.active{
       background:linear-gradient(180deg, #ff7bbf, #ff4fa3);
       color:white;
-      border-color:rgba(255,255,255,.60);
+      border-color:rgba(255,255,255,.6);
     }
 
-    /* Copy / Input */
-    .headline{
-      font-size:42px;
-      letter-spacing:-.8px;
-      margin:14px 0 6px;
-      line-height:1.02;
-    }
-    .lead{
-      font-size:16px;
-      color:rgba(60,40,30,.70);
-      margin:0 0 14px;
-    }
-    .label{
-      text-align:left;
-      font-weight:900;
-      font-size:22px;
-      margin:18px 0 6px;
-    }
-    .mini{
-      text-align:left;
-      margin:0 0 10px;
-      color:rgba(60,40,30,.55);
-    }
-
+    /* TEXT */
     textarea{
       width:100%;
-      min-height:78px;
+      min-height:72px;
       padding:14px 16px;
       border-radius:18px;
       border:none;
@@ -167,17 +132,16 @@
       font-size:16px;
       resize:none;
       outline:none;
-      background:rgba(255,255,255,.88);
     }
 
     /* STICKY CTA */
     .sticky{
       position:fixed; bottom:0; left:0; right:0;
       background:rgba(255,249,244,.92);
-      backdrop-filter:blur(8px);
+      backdrop-filter:blur(6px);
       border-top:1px solid rgba(0,0,0,.05);
       padding:12px 16px;
-      z-index:20;
+      z-index:10;
     }
     .stickyInner{
       max-width:520px;margin:0 auto;
@@ -192,17 +156,17 @@
       font-weight:900;
       font-size:16px;
       background:linear-gradient(180deg, var(--choco), #b47a43);
-      box-shadow:0 14px 36px rgba(180,122,67,.20);
       color:white;
       cursor:pointer;
     }
+    .cta:active{transform:translateY(1px)}
 
-    /* CHECKOUT SHEET */
+    /* CHECKOUT */
     .sheet{
       position:fixed; inset:0;
       background:rgba(0,0,0,.35);
       display:none; align-items:flex-end;
-      z-index:30;
+      z-index:20;
     }
     .sheet.open{display:flex}
     .panel{
@@ -212,10 +176,8 @@
       border-radius:24px 24px 0 0;
       padding:16px;
       box-shadow:0 -10px 40px rgba(0,0,0,.2);
-      margin:0 auto;
     }
     .panel h3{margin:10px 0 6px}
-    .panel small{color:rgba(60,40,30,.55)}
     .panel input{
       width:100%;
       padding:12px 14px;
@@ -225,10 +187,9 @@
       margin:6px 0;
       font-size:15px;
       outline:none;
-      background:rgba(255,255,255,.90);
     }
     .pay{
-      margin-top:10px;
+      margin-top:12px;
       width:100%;
       padding:16px;
       border-radius:var(--radius-pill);
@@ -237,26 +198,11 @@
       font-size:16px;
       background:linear-gradient(180deg, var(--candy-soft), var(--candy));
       color:white;
-      box-shadow:0 14px 40px rgba(255,79,163,.30);
       cursor:pointer;
     }
     .trust{
       text-align:center;
       font-size:12px;color:var(--muted);margin-top:8px;
-    }
-
-    /* Tiny Premium shimmer for stage on surprise */
-    .stage.pulse::after{
-      content:"";
-      position:absolute; inset:-20%;
-      background:radial-gradient(circle at 50% 40%, rgba(255,255,255,.55), rgba(255,255,255,0) 55%);
-      animation:glow .55s ease-out;
-      pointer-events:none;
-    }
-    @keyframes glow{
-      from{ transform:scale(.85); opacity:0; }
-      35%{ opacity:.9; }
-      to{ transform:scale(1.05); opacity:0; }
     }
   </style>
 </head>
@@ -267,9 +213,9 @@
   <div class="hdr">
     <div>
       <div class="logo">OnlyKeks</div>
-      <div class="sub">3D-Keks. Ruhig. Lecker.</div>
+      <div class="sub">Candy-Premium. 3D-Keks. Lecker.</div>
     </div>
-    <a href="#how">So funktioniert’s</a>
+    <a href="#config">Konfigurator</a>
   </div>
 </header>
 
@@ -282,22 +228,18 @@
 
     <div class="status" id="status">Mach’s persönlich.</div>
 
-    <button class="surpriseBtn" id="surpriseBtn" type="button">Überrasch mich ✨</button>
+    <button class="surpriseBtn" id="surpriseBtn">Überrasch mich ✨</button>
 
     <div class="chips" aria-label="Cookie-Stil">
-      <button class="chip active" data-style="classic" type="button">Classic</button>
-      <button class="chip" data-style="chunky" type="button">Chunky</button>
-      <button class="chip" data-style="soft" type="button">Soft</button>
+      <button class="chip active" data-style="classic">Classic</button>
+      <button class="chip" data-style="chunky">Chunky</button>
+      <button class="chip" data-style="soft">Soft</button>
     </div>
   </section>
 
+  <!-- TEXT -->
   <section>
-    <div class="headline">Post, die schmeckt.</div>
-    <div class="lead">Du schreibst eine Botschaft. Wir machen daraus einen echten Keks.</div>
-
-    <div class="label">Deine Botschaft</div>
-    <div class="mini">Kurz. Ehrlich. Von Herzen.</div>
-    <textarea id="msg" placeholder="z. B. Vermiss dich."></textarea>
+    <textarea id="msg" placeholder="Kurz. Ehrlich. Von Herzen."></textarea>
   </section>
 
 </main>
@@ -306,132 +248,76 @@
 <div class="sticky">
   <div class="stickyInner">
     <span id="ctaStatus">Schreib deine Botschaft.</span>
-    <button class="cta" id="checkoutBtn" type="button">Keks losschicken</button>
+    <button class="cta" id="checkoutBtn">Keks losschicken</button>
   </div>
 </div>
 
-<!-- CHECKOUT -->
-<div class="sheet" id="sheet" aria-hidden="true">
+<!-- CHECKOUT SHEET -->
+<div class="sheet" id="sheet">
   <div class="panel">
     <small>Du kannst alles noch ändern.</small>
     <h3>Empfänger</h3>
-    <input placeholder="Name (optional)" />
-    <input placeholder="Straße &amp; Hausnummer, PLZ Ort" />
+    <input placeholder="Name (optional)"/>
+    <input placeholder="Straße, Nr., PLZ Ort"/>
 
     <h3>Absender</h3>
-    <input placeholder="Dein Name (optional)" />
+    <input placeholder="Dein Name (optional)"/>
 
-    <button class="pay" type="button">Jetzt losschicken</button>
-    <div class="trust">Kein Abo · Sicher bezahlen · Geschenkbereit</div>
+    <button class="pay">Jetzt losschicken</button>
+    <div class="trust">Kein Abo · Sicher bezahlen</div>
   </div>
 </div>
 
 <script>
-  /* ---------- STATUS / CTA ---------- */
-  const stageEl = document.getElementById("k3dStage");
-  const statusEl = document.getElementById("status");
-  const msgEl = document.getElementById("msg");
-  const ctaStatusEl = document.getElementById("ctaStatus");
+  /* STATUS / CTA LOGIK */
+  const status = document.getElementById("status");
+  const msg = document.getElementById("msg");
+  const ctaStatus = document.getElementById("ctaStatus");
 
   function updateStatus(text){
-    statusEl.style.opacity = 0;
+    status.style.opacity = 0;
     setTimeout(()=>{
-      statusEl.textContent = text;
-      statusEl.style.opacity = 1;
-    },110);
+      status.textContent = text;
+      status.style.opacity = 1;
+    },120);
   }
 
-  msgEl.addEventListener("input",()=>{
-    if(msgEl.value.trim().length){
+  msg.addEventListener("input",()=>{
+    const has = msg.value.trim().length > 0;
+    if(has){
       updateStatus("Sitzt.");
-      ctaStatusEl.textContent = "Bereit zum Verschenken.";
+      ctaStatus.textContent = "Bereit zum Verschenken.";
+      window.setCookieMessage?.(msg.value);
     }else{
       updateStatus("Mach’s persönlich.");
-      ctaStatusEl.textContent = "Schreib deine Botschaft.";
+      ctaStatus.textContent = "Schreib deine Botschaft.";
+      window.setCookieMessage?.("");
     }
-  });
+  }, { passive:true });
 
-  /* ---------- CHECKOUT SHEET ---------- */
+  /* CHECKOUT */
   const sheet = document.getElementById("sheet");
-  document.getElementById("checkoutBtn").onclick = ()=>{
-    sheet.classList.add("open");
-    sheet.setAttribute("aria-hidden","false");
-  };
-  sheet.onclick = (e)=>{
-    if(e.target === sheet){
-      sheet.classList.remove("open");
-      sheet.setAttribute("aria-hidden","true");
-    }
-  };
+  document.getElementById("checkoutBtn").onclick = ()=>sheet.classList.add("open");
+  sheet.onclick = e=>{ if(e.target===sheet) sheet.classList.remove("open"); };
 
-  /* ---------- MICROSOUND (WebAudio, user-gesture only) ---------- */
-  let audioCtx = null;
-  function ensureAudio(){
-    if(!audioCtx){
-      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    }
-    if(audioCtx.state === "suspended") audioCtx.resume();
-  }
-  function blip(type="surprise"){
-    if(!audioCtx) return;
-    const t0 = audioCtx.currentTime;
-    const o = audioCtx.createOscillator();
-    const g = audioCtx.createGain();
-    o.type = "triangle";
-    // 2 micro-variants: gentle / sparkle
-    const base = (type==="chip") ? 520 : 440;
-    o.frequency.setValueAtTime(base, t0);
-    o.frequency.exponentialRampToValueAtTime(base*1.35, t0+0.06);
-
-    g.gain.setValueAtTime(0.0001, t0);
-    g.gain.exponentialRampToValueAtTime(0.12, t0+0.02);
-    g.gain.exponentialRampToValueAtTime(0.0001, t0+0.14);
-
-    o.connect(g).connect(audioCtx.destination);
-    o.start(t0);
-    o.stop(t0+0.16);
-  }
-
-  /* ---------- STYLE CHIPS ---------- */
-  document.querySelectorAll(".chip").forEach(btn=>{
-    btn.addEventListener("click", ()=>{
-      ensureAudio(); blip("chip");
-
+  /* STYLE CHIPS */
+  document.querySelectorAll(".chip").forEach(c=>{
+    c.onclick=()=>{
       document.querySelectorAll(".chip").forEach(x=>x.classList.remove("active"));
-      btn.classList.add("active");
-
+      c.classList.add("active");
       updateStatus("Der fühlt sich richtig an.");
-      window.switchStyle?.(btn.dataset.style);
-
-      // tiny stage pulse for premium feel
-      stageEl.classList.remove("pulse");
-      void stageEl.offsetWidth;
-      stageEl.classList.add("pulse");
-    });
+      window.switchStyle?.(c.dataset.style);
+    }
   });
 
-  /* ---------- SURPRISE (Priority) ---------- */
-  document.getElementById("surpriseBtn").addEventListener("click", ()=>{
-    ensureAudio(); blip("surprise");
-
+  /* SURPRISE */
+  document.getElementById("surpriseBtn").onclick=()=>{
     updateStatus("Oh… der ist ja geil.");
-    stageEl.classList.remove("pulse");
-    void stageEl.offsetWidth;
-    stageEl.classList.add("pulse");
-
-    // random preset + seed inside module
     window.randomPreset?.();
-
-    // keep chips synced if module exposes current style
-    setTimeout(()=>{
-      const s = window.getActiveStyle?.();
-      if(!s) return;
-      document.querySelectorAll(".chip").forEach(x=>x.classList.toggle("active", x.dataset.style===s));
-    }, 60);
-  });
+  };
 </script>
 
-<!-- 3D MODULE (MUSS als eigene Datei existieren) -->
+<!-- 3D MODULE -->
 <script type="module" src="./cookie3d.js"></script>
 
 </body>

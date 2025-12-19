@@ -12,14 +12,13 @@ const PERF = (() => {
   if (mem <= 6 || cores <= 6) return "mid";
   return "high";
 })();
-
 const DPR_CAP = PERF === "low" ? 1.25 : 1.5;
 
 /* ---------- Renderer ---------- */
 const renderer = new THREE.WebGLRenderer({
   antialias: true,
   alpha: true,
-  powerPreference: "high-performance"
+  powerPreference: "high-performance",
 });
 renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, DPR_CAP));
 renderer.setSize(stageEl.clientWidth, stageEl.clientHeight);
@@ -30,64 +29,113 @@ stageEl.appendChild(renderer.domElement);
 /* ---------- Scene / Camera ---------- */
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(35, stageEl.clientWidth / stageEl.clientHeight, 0.1, 50);
-camera.position.set(0, 0.22, 3.05);
+camera.position.set(0, 0.22, 3.25);
 
-/* ---------- Lights (Candy Premium) ---------- */
-const key = new THREE.DirectionalLight(0xffffff, 1.05);
-key.position.set(2.6, 3.1, 2.3);
+/* ---------- Candy-Premium Lights (soft, cheap) ---------- */
+const key = new THREE.DirectionalLight(0xffffff, 1.15);
+key.position.set(2.6, 3.0, 2.4);
 scene.add(key);
 
 const fill = new THREE.DirectionalLight(0xfff0f7, 0.70);
-fill.position.set(-2.6, 1.4, 2.0);
+fill.position.set(-2.8, 1.6, 2.2);
 scene.add(fill);
 
-const rim = new THREE.DirectionalLight(0xffffff, 0.40);
-rim.position.set(0, 2.1, -3.0);
+const rim = new THREE.DirectionalLight(0xffffff, 0.45);
+rim.position.set(0, 2.0, -3.2);
 scene.add(rim);
 
-scene.add(new THREE.AmbientLight(0xffffff, 0.35));
+scene.add(new THREE.AmbientLight(0xffffff, 0.32));
 
-/* ---------- Ground + Shadow Blob ---------- */
+/* ---------- Fake Ground + Shadow Blob (no shadowmaps) ---------- */
 const ground = new THREE.Mesh(
-  new THREE.CircleGeometry(1.15, PERF === "low" ? 48 : 64),
+  new THREE.CircleGeometry(1.25, PERF === "low" ? 48 : 64),
   new THREE.MeshStandardMaterial({ color: 0xfff7fb, roughness: 0.95, metalness: 0 })
 );
 ground.rotation.x = -Math.PI / 2;
-ground.position.y = -0.62;
+ground.position.y = -0.66;
 scene.add(ground);
 
 const shadowTex = makeShadowTexture();
 const shadow = new THREE.Mesh(
-  new THREE.PlaneGeometry(2.2, 2.2),
-  new THREE.MeshBasicMaterial({ map: shadowTex, transparent: true, opacity: 0.35, depthWrite: false })
+  new THREE.PlaneGeometry(2.5, 2.5),
+  new THREE.MeshBasicMaterial({ map: shadowTex, transparent: true, opacity: 0.34, depthWrite: false })
 );
 shadow.rotation.x = -Math.PI / 2;
-shadow.position.y = -0.619;
+shadow.position.y = -0.659;
 scene.add(shadow);
 
-/* ---------- Cookie Mesh (A/B for crossfade) ---------- */
-const geo = makeCookieGeometry(PERF);
+/* ---------- Cookie geometry (more cookie-like than a flat cylinder) ---------- */
+const cookieGeo = makeCookieGeometry(PERF);
+
+/* two meshes for crossfade (A visible, B fades in) */
 const matA = new THREE.MeshStandardMaterial({ color: 0xD7A36A, roughness: 0.78, metalness: 0 });
 const matB = matA.clone();
 matB.transparent = true;
-matB.opacity = 0.0;
+matB.opacity = 0;
 
-const cookieA = new THREE.Mesh(geo, matA);
-const cookieB = new THREE.Mesh(geo, matB);
+const cookieA = new THREE.Mesh(cookieGeo, matA);
+const cookieB = new THREE.Mesh(cookieGeo, matB);
+cookieA.position.y = 0.0;
+cookieB.position.y = 0.0;
 scene.add(cookieA, cookieB);
 
-/* ---------- Deco (Instanced with per-instance color) ---------- */
+/* ---------- “Crumbs” (cheap points) to add cookie realism without heavy maps) ---------- */
+const crumbs = makeCrumbs(PERF);
+scene.add(crumbs);
+
+/* ---------- Deco (Instanced) ---------- */
 const deco = makeDeco(PERF);
 scene.add(deco.group);
 
-/* ---------- Drag Rotate (2D drag => 3D feel) ---------- */
+/* ---------- Presets (strict separation) ---------- */
+const PRESETS = {
+  classic: {
+    name: "Classic",
+    color: 0xD7A36A,
+    rough: 0.78,
+    scaleY: 1.00,
+    glaze: 0.00, // keep 0 for classic
+    decoMode: "sprinkles",
+    decoCount: PERF === "low" ? 70 : PERF === "mid" ? 110 : 150,
+    decoSize: 0.028,
+    crumb: 0.07,
+  },
+  chunky: {
+    name: "Chunky",
+    color: 0xC98E55,
+    rough: 0.86,
+    scaleY: 1.22,
+    glaze: 0.00, // no candy sheen here
+    decoMode: "chunks",
+    decoCount: PERF === "low" ? 12 : PERF === "mid" ? 16 : 22,
+    decoSize: 0.075,
+    crumb: 0.09,
+  },
+  soft: {
+    name: "Soft",
+    color: 0xE2B07A,
+    rough: 0.62,
+    scaleY: 0.95,
+    glaze: 0.10, // tiny sheen, candy premium vibe (still subtle)
+    decoMode: "sprinkles",
+    decoCount: PERF === "low" ? 95 : PERF === "mid" ? 140 : 190,
+    decoSize: 0.022,
+    crumb: 0.05,
+  },
+};
+
+let activeStyle = "classic";
+let activeSeed = 1337;
+
+/* ---------- Apply preset instantly on load ---------- */
+applyPresetInstant(PRESETS.classic, activeSeed);
+
+/* ---------- Drag control (2D + “gravity” feel: diagonal tilt) ---------- */
 let isDown = false;
-let lastX = 0;
-let lastY = 0;
+let lastX = 0, lastY = 0;
 let rotY = 0;
-let rotX = 0;
-let velY = 0;
-let velX = 0;
+let tiltX = 0;
+let velY = 0, velX = 0;
 
 renderer.domElement.style.touchAction = "none";
 
@@ -95,339 +143,106 @@ renderer.domElement.addEventListener("pointerdown", (e) => {
   isDown = true;
   lastX = e.clientX;
   lastY = e.clientY;
-  renderer.domElement.setPointerCapture?.(e.pointerId);
 });
-renderer.domElement.addEventListener("pointerup", () => (isDown = false));
-renderer.domElement.addEventListener("pointercancel", () => (isDown = false));
-renderer.domElement.addEventListener("pointermove", (e) => {
+window.addEventListener("pointerup", () => (isDown = false));
+window.addEventListener("pointermove", (e) => {
   if (!isDown) return;
   const dx = e.clientX - lastX;
   const dy = e.clientY - lastY;
   lastX = e.clientX;
   lastY = e.clientY;
 
-  velY = dx * 0.0045;
-  velX = dy * 0.0032;
-
+  velY = dx * 0.004;
+  velX = dy * 0.0026;
   rotY += velY;
-  rotX += velX;
-  rotX = clamp(rotX, -0.55, 0.35);
+  tiltX += velX;
+  tiltX = clamp(tiltX, -0.45, 0.35);
 });
 
-/* ---------- BASE STYLES (keine Premium-Locks, nur Feel) ---------- */
-const STYLES = {
-  classic: {
-    color: 0xD7A36A,
-    rough: 0.78,
-    scaleY: 1.00,
-    mode: "sprinkles",
-    count: PERF === "low" ? 80 : PERF === "mid" ? 120 : 160,
-    size: 0.028,
-  },
-  chunky: {
-    color: 0xC98E55,
-    rough: 0.86,
-    scaleY: 1.22,
-    mode: "chunks",
-    count: PERF === "low" ? 16 : PERF === "mid" ? 22 : 30,
-    size: 0.070,
-  },
-  soft: {
-    color: 0xE2B07A,
-    rough: 0.62,
-    scaleY: 0.95,
-    mode: "sprinkles",
-    count: PERF === "low" ? 110 : PERF === "mid" ? 150 : 200,
-    size: 0.022,
-  },
-};
-
-/* ---------- 3 SEED-VARIANTS pro Style (Candy Premium V3) ----------
-   Ziel: “Oh… der ist ja geil.” statt “ich hab was eingestellt”.
-   Jede Variant = Pattern + Palette + Layout-Rule.
-*/
-const VARIANTS = {
-  classic: [
-    {
-      id: "ring",
-      label: "Ring",
-      palette: ["#ffffff", "#ff4fa3", "#ffd2e6", "#ffe45c", "#8be9ff"],
-      layout: "ring", // ring-ish distribution
-    },
-    {
-      id: "sprinkleRain",
-      label: "Sprinkle Rain",
-      palette: ["#ffffff", "#ff7bbf", "#ff4fa3", "#b56bff", "#4aa3ff"],
-      layout: "uniform",
-    },
-    {
-      id: "heartPop",
-      label: "Heart Pop",
-      palette: ["#ffffff", "#ff4fa3", "#ff7bbf", "#ffe3ef"],
-      layout: "cluster", // one “cute” cluster
-    }
-  ],
-  chunky: [
-    {
-      id: "chocoBoulders",
-      label: "Choco Boulders",
-      palette: ["#3a241a", "#4a2f22", "#2b1a12", "#6b3f2e"],
-      layout: "uniform",
-    },
-    {
-      id: "doubleChunk",
-      label: "Double Chunk",
-      palette: ["#2b1a12", "#3a241a", "#4a2f22", "#b47a43"],
-      layout: "ring",
-    },
-    {
-      id: "centerCrown",
-      label: "Center Crown",
-      palette: ["#2b1a12", "#3a241a", "#4a2f22"],
-      layout: "cluster",
-    }
-  ],
-  soft: [
-    {
-      id: "confetti",
-      label: "Confetti",
-      palette: ["#ffffff", "#ff7bbf", "#ff4fa3", "#ffe45c", "#9cffc8"],
-      layout: "uniform",
-    },
-    {
-      id: "pastelRing",
-      label: "Pastel Ring",
-      palette: ["#ffffff", "#ffd2e6", "#ffe3ef", "#8be9ff", "#b56bff"],
-      layout: "ring",
-    },
-    {
-      id: "sweetSpot",
-      label: "Sweet Spot",
-      palette: ["#ffffff", "#ff7bbf", "#ffe3ef", "#ffd2e6"],
-      layout: "cluster",
-    }
-  ],
-};
-
-/* ---------- Hidden Mood Bias (Option B) ----------
-   Keine UI, kein Extra Screen.
-   Du kannst später Mood setzen via:
-   localStorage.setItem("ok_mood","ehrlich|kraeftig|suess")
-   oder URL: ?mood=ehrlich  (optional, falls du willst)
-*/
-function getMood() {
-  const u = new URL(location.href);
-  const q = u.searchParams.get("mood");
-  const v = (q || localStorage.getItem("ok_mood") || "").toLowerCase().trim();
-  if (v === "ehrlich" || v === "kraeftig" || v === "suess") return v;
-  return null;
-}
-
-/* weights: Mood beeinflusst Surprise (unsichtbar) */
-function pickStyleWeighted(rng) {
-  const mood = getMood();
-  const w = mood === "kraeftig"
-    ? { classic: 0.20, chunky: 0.55, soft: 0.25 }
-    : mood === "suess"
-      ? { classic: 0.25, chunky: 0.15, soft: 0.60 }
-      : mood === "ehrlich"
-        ? { classic: 0.60, chunky: 0.20, soft: 0.20 }
-        : { classic: 0.38, chunky: 0.27, soft: 0.35 };
-
-  const r = rng();
-  let acc = 0;
-  for (const k of Object.keys(w)) {
-    acc += w[k];
-    if (r <= acc) return k;
-  }
-  return "classic";
-}
-
-/* ---------- State ---------- */
-let activeStyle = "classic";
-let activeSeed = 12345;
-let activeVariantId = VARIANTS.classic[0].id;
-
-/* ---------- Crossfade Switch ---------- */
+/* ---------- Crossfade switch ---------- */
 let fadeT = 0;
 let fading = false;
 
-function switchStyle(nextStyle, nextSeed = activeSeed, nextVariantId = activeVariantId) {
-  if (!STYLES[nextStyle]) return;
+function switchStyle(nextStyle){
+  if (!PRESETS[nextStyle] || nextStyle === activeStyle) return;
 
-  // apply to B (invisible)
-  applyPresetTo(cookieB, matB, nextStyle, nextSeed, nextVariantId);
+  // keep same seed when user manually chooses style
+  const p = PRESETS[nextStyle];
+
+  // set B to target preset
+  applyPresetTo(cookieB, matB, p, activeSeed);
+  matB.opacity = 0;
+  matA.transparent = true;
+  matA.opacity = 1;
+
   cookieB.rotation.copy(cookieA.rotation);
   cookieB.scale.copy(cookieA.scale);
 
-  matB.opacity = 0.0;
-  matA.opacity = 1.0;
-  matA.transparent = true;
-
   fading = true;
   fadeT = 0;
-
   activeStyle = nextStyle;
-  activeSeed = nextSeed;
-  activeVariantId = nextVariantId;
 }
 
-function tickFade(dt) {
+function tickFade(dt){
   if (!fading) return;
   fadeT += dt;
-  const dur = 0.24;
+  const dur = 0.22;
   const t = Math.min(fadeT / dur, 1);
-  const ease = t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+  const ease = t < 0.5 ? 2*t*t : 1 - Math.pow(-2*t + 2, 2) / 2;
 
   matB.opacity = ease;
   matA.opacity = 1 - ease;
 
-  if (t >= 1) {
-    applyPresetTo(cookieA, matA, activeStyle, activeSeed, activeVariantId);
-    matA.opacity = 1.0;
+  if (t >= 1){
+    // commit final state to A (stable)
+    applyPresetTo(cookieA, matA, PRESETS[activeStyle], activeSeed);
+    matA.opacity = 1;
     matA.transparent = false;
-    matB.opacity = 0.0;
+    matB.opacity = 0;
     fading = false;
   }
 }
 
-/* ---------- Apply style + variant ---------- */
-function applyPresetTo(mesh, mat, styleKey, seed, variantId) {
-  const s = STYLES[styleKey];
-  mat.color.setHex(s.color);
-  mat.roughness = s.rough;
-  mat.metalness = 0;
+/* ---------- Surprise: random style + new seed + micro motion kick ---------- */
+function randomPreset(){
+  const styles = ["classic","chunky","soft"];
+  // weighted: chunky a bit more prominent (hero/hall logic)
+  const r = Math.random();
+  const nextStyle = (r < 0.42) ? "chunky" : (r < 0.74) ? "soft" : "classic";
 
-  mesh.scale.set(1, s.scaleY, 1);
+  activeSeed = (Math.random()*1e9) | 0;
 
-  const variant = (VARIANTS[styleKey] || []).find(v => v.id === variantId) || VARIANTS[styleKey][0];
-  layoutDeco(mesh, deco, s, variant, seed);
+  // add a “wow” kick: diagonal impulse
+  velY += (Math.random() * 0.9 + 0.35) * (Math.random() < 0.5 ? -1 : 1);
+  velX += (Math.random() * 0.45 + 0.18) * (Math.random() < 0.5 ? -1 : 1);
+
+  switchStyle(nextStyle);
 }
 
-/* ---------- Deco layout with palette + pattern ---------- */
-function layoutDeco(cookieMesh, decoObj, style, variant, seed) {
-  const { inst } = decoObj;
-  const count = style.count;
-  const size = style.size;
-  const mode = style.mode;
+/* expose hooks to index.html */
+window.switchStyle = switchStyle;
+window.randomPreset = randomPreset;
+window.getActiveStyle = () => activeStyle;
 
-  const rng = mulberry32(seed || 12345);
-
-  const dummy = new THREE.Object3D();
-  const rMax = 0.92;
-
-  // base top height depends on style thickness
-  const yTop = (0.17 * cookieMesh.scale.y) + 0.02;
-
-  // pattern helpers
-  const layout = variant.layout;
-  const palette = variant.palette || ["#ffffff"];
-
-  // cluster center for “sweetSpot/heartPop/centerCrown”
-  const clusterA = rng() * Math.PI * 2;
-  const clusterR = 0.35 + rng() * 0.15;
-  const clusterCx = Math.cos(clusterA) * clusterR;
-  const clusterCz = Math.sin(clusterA) * clusterR;
-
-  for (let i = 0; i < inst.count; i++) {
-    if (i >= count) {
-      dummy.scale.setScalar(0.0001);
-      dummy.position.set(0, -10, 0);
-      dummy.updateMatrix();
-      inst.setMatrixAt(i, dummy.matrix);
-      inst.setColorAt(i, new THREE.Color("#ffffff"));
-      continue;
-    }
-
-    let a = rng() * Math.PI * 2;
-    let rr = rMax * Math.sqrt(rng());
-
-    if (layout === "ring") {
-      // bias to outer ring
-      const t = rng();
-      rr = rMax * (0.72 + t * 0.28);
-    } else if (layout === "cluster") {
-      // bias to a cute cluster
-      const t = rng();
-      rr = (0.12 + t * 0.38);
-      a = clusterA + (rng() - 0.5) * 1.25;
-    }
-
-    let x = Math.cos(a) * rr;
-    let z = Math.sin(a) * rr;
-
-    if (layout === "cluster") {
-      // pull toward cluster center
-      x = clusterCx + x * 0.55;
-      z = clusterCz + z * 0.55;
-    }
-
-    dummy.position.set(x, yTop, z);
-
-    const s = mode === "chunks"
-      ? size * (0.85 + rng() * 0.65)
-      : size * (0.80 + rng() * 0.55);
-
-    dummy.scale.setScalar(s);
-
-    // “gravity-ish” tilt: chunky sits a bit heavier
-    const tilt = mode === "chunks" ? 0.38 : 0.22;
-    dummy.rotation.set((rng() - 0.5) * tilt, rng() * Math.PI, (rng() - 0.5) * tilt);
-
-    dummy.updateMatrix();
-    inst.setMatrixAt(i, dummy.matrix);
-
-    // palette color
-    const col = palette[Math.floor(rng() * palette.length)];
-    inst.setColorAt(i, new THREE.Color(col));
-  }
-
-  inst.instanceMatrix.needsUpdate = true;
-  if (inst.instanceColor) inst.instanceColor.needsUpdate = true;
-}
-
-/* ---------- Surprise: Style + Variant + Seed (Mood-weighted) ---------- */
-function randomPreset() {
-  const seed = (Math.random() * 1e9) | 0;
-  const rng = mulberry32(seed);
-
-  const style = pickStyleWeighted(rng);
-  const variants = VARIANTS[style] || VARIANTS.classic;
-  const variant = variants[Math.floor(rng() * variants.length)];
-
-  // “wow” impulse
-  velY += (Math.random() * 0.8 + 0.4);
-  velX += (Math.random() * 0.25 - 0.12);
-
-  switchStyle(style, seed, variant.id);
-  return { style, seed, variant: variant.id };
-}
-
-/* expose hooks */
-window.switchStyle = (style) => switchStyle(style, activeSeed, activeVariantId);
-window.randomPreset = () => randomPreset();
-
-/* ---------- Pause/Resume (offscreen + tab hidden) ---------- */
+/* ---------- Loop: pause offscreen / tab hidden ---------- */
 let running = true;
 let rafId = 0;
 
-const io = new IntersectionObserver((entries) => {
+const io = new IntersectionObserver((entries)=>{
   const v = entries[0]?.isIntersecting;
   running = !!v;
   if (running) loop();
   else cancelAnimationFrame(rafId);
-}, { threshold: 0.15 });
-
+},{ threshold: 0.15 });
 io.observe(stageEl);
 
-document.addEventListener("visibilitychange", () => {
+document.addEventListener("visibilitychange", ()=>{
   running = document.visibilityState === "visible";
   if (running) loop();
   else cancelAnimationFrame(rafId);
 });
 
-/* ---------- Resize ---------- */
-window.addEventListener("resize", () => {
+window.addEventListener("resize", ()=>{
   const w = stageEl.clientWidth;
   const h = stageEl.clientHeight;
   renderer.setSize(w, h);
@@ -436,119 +251,195 @@ window.addEventListener("resize", () => {
   camera.updateProjectionMatrix();
 });
 
-/* ---------- Main Loop ---------- */
+/* ---------- Main loop ---------- */
 let last = performance.now();
-
-// Default preset: Classic + Variant 1
-applyPresetTo(cookieA, matA, "classic", activeSeed, VARIANTS.classic[0].id);
-
-function loop(now = performance.now()) {
-  if (!running) return;
+function loop(now = performance.now()){
+  if(!running) return;
   rafId = requestAnimationFrame(loop);
 
   const dt = Math.min((now - last) / 1000, 0.033);
   last = now;
 
-  // Inertia damping
+  // auto-rotate (slow)
+  const auto = prefersReducedMotion ? 0 : 0.20;
+
+  // inertia decay
   velY *= 0.92;
   velX *= 0.90;
 
-  // slow auto rotation
-  const auto = prefersReducedMotion ? 0 : 0.18;
-
   rotY += (auto + velY) * dt;
-  rotX += (velX) * dt;
-  rotX = clamp(rotX, -0.55, 0.35);
+  tiltX += (velX) * dt;
+  tiltX = clamp(tiltX, -0.45, 0.35);
 
+  // apply to both meshes so fade stays aligned
   cookieA.rotation.y = rotY;
   cookieB.rotation.y = rotY;
 
-  cookieA.rotation.x = rotX + Math.sin(now * 0.0006) * 0.03;
+  // “gravity” tilt + tiny breathing
+  const breathe = Math.sin(now * 0.00055) * 0.045;
+  cookieA.rotation.x = breathe + tiltX;
   cookieB.rotation.x = cookieA.rotation.x;
 
   tickFade(dt);
+
   renderer.render(scene, camera);
 }
+
+/* start */
 loop();
 
 /* ---------- Helpers ---------- */
-function makeDeco(perf) {
-  const group = new THREE.Group();
-
-  const geom = new THREE.SphereGeometry(0.02, perf === "low" ? 6 : 8, perf === "low" ? 6 : 8);
-  const mat = new THREE.MeshStandardMaterial({
-    color: 0xffffff,
-    roughness: 0.45,
-    metalness: 0,
-    vertexColors: true
-  });
-
-  const max = perf === "low" ? 240 : 280;
-  const inst = new THREE.InstancedMesh(geom, mat, max);
-  inst.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
-  group.add(inst);
-
-  // init colors
-  for (let i = 0; i < max; i++) inst.setColorAt(i, new THREE.Color("#ffffff"));
-  inst.instanceColor.needsUpdate = true;
-
-  return { group, inst };
-}
-
-function makeCookieGeometry(perf) {
+function makeCookieGeometry(perf){
   const seg = perf === "low" ? 56 : perf === "mid" ? 72 : 96;
-  const rTop = 1.0;
-  const rBot = 0.98;
-  const h = 0.34;
 
-  const g = new THREE.CylinderGeometry(rTop, rBot, h, seg, 2, false);
+  // cookie profile: slightly domed top + softer edge
+  // Use LatheGeometry: quick, looks more cookie-like than cylinder
+  const pts = [];
+  const r = 1.02;
+  pts.push(new THREE.Vector2(0.0, -0.18));
+  pts.push(new THREE.Vector2(r*0.90, -0.18));
+  pts.push(new THREE.Vector2(r*0.98, -0.12));
+  pts.push(new THREE.Vector2(r*1.00,  0.00));
+  pts.push(new THREE.Vector2(r*0.92,  0.12));
+  pts.push(new THREE.Vector2(r*0.65,  0.18));
+  pts.push(new THREE.Vector2(0.0,  0.20));
 
-  const pos = g.attributes.position;
-  for (let i = 0; i < pos.count; i++) {
-    const x = pos.getX(i);
-    const y = pos.getY(i);
-    const z = pos.getZ(i);
-    const rr = Math.sqrt(x*x + z*z);
-
-    const edge = smoothstep(0.85, 1.02, rr);
-    const wob = (Math.sin(x*6.0) + Math.cos(z*6.0)) * 0.006 * edge;
-
-    pos.setX(i, x + (x/Math.max(rr,1e-5))*wob);
-    pos.setZ(i, z + (z/Math.max(rr,1e-5))*wob);
-
-    const top = y > 0.10 ? 1 : 0;
-    if (top) pos.setY(i, y + (Math.sin((x+z)*8.0) * 0.003));
-  }
-  pos.needsUpdate = true;
-  g.computeVertexNormals();
+  const g = new THREE.LatheGeometry(pts, seg);
+  g.rotateY(Math.PI / seg);
   return g;
 }
 
-function makeShadowTexture() {
+function makeShadowTexture(){
   const c = document.createElement("canvas");
   c.width = 256; c.height = 256;
   const ctx = c.getContext("2d");
-  const grd = ctx.createRadialGradient(128, 128, 26, 128, 128, 120);
+  const grd = ctx.createRadialGradient(128,128,22, 128,128,120);
   grd.addColorStop(0, "rgba(0,0,0,0.55)");
   grd.addColorStop(1, "rgba(0,0,0,0)");
   ctx.fillStyle = grd;
-  ctx.fillRect(0, 0, c.width, c.height);
+  ctx.fillRect(0,0,c.width,c.height);
   const tex = new THREE.CanvasTexture(c);
   tex.colorSpace = THREE.SRGBColorSpace;
   return tex;
 }
 
-function clamp(v, a, b){ return Math.max(a, Math.min(b, v)); }
-function smoothstep(a,b,x){
-  const t = clamp((x-a)/(b-a),0,1);
-  return t*t*(3-2*t);
+function makeDeco(perf){
+  const group = new THREE.Group();
+
+  const max = perf === "low" ? 220 : perf === "mid" ? 260 : 320;
+
+  const geom = new THREE.SphereGeometry(0.02, perf === "low" ? 8 : 10, perf === "low" ? 8 : 10);
+  const mat = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.42, metalness: 0 });
+
+  const inst = new THREE.InstancedMesh(geom, mat, max);
+  inst.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
+  group.add(inst);
+
+  return { group, inst, mode:"sprinkles", count:110, size:0.02 };
 }
-function mulberry32(seed) {
-  let t = seed >>> 0;
-  return function() {
-    t += 0x6D2B79F5;
-    let r = Math.imul(t ^ (t >>> 15), 1 | t);
-    r ^= r + Math.imul(r ^ (r >>> 7), 61 | r);
-    return ((r ^ (r >>> 14)) >>> 0) / 4294967296;
-  };
+
+function layoutDeco(mesh, decoObj, seed){
+  const { inst, count, size, mode } = decoObj;
+  const rng = mulberry32(seed);
+
+  const dummy = new THREE.Object3D();
+  const r = 0.92;
+
+  for(let i=0;i<inst.count;i++){
+    if(i >= count){
+      dummy.position.set(0,-10,0);
+      dummy.scale.setScalar(0.0001);
+      dummy.updateMatrix();
+      inst.setMatrixAt(i, dummy.matrix);
+      continue;
     }
+
+    const a = rng() * Math.PI * 2;
+    const rr = r * Math.sqrt(rng());
+    const x = Math.cos(a) * rr;
+    const z = Math.sin(a) * rr;
+
+    const yTop = 0.18 * mesh.scale.y + 0.02;
+
+    dummy.position.set(x, yTop, z);
+
+    const s = (mode === "chunks")
+      ? size * (0.85 + rng()*0.65)
+      : size * (0.80 + rng()*0.55);
+    dummy.scale.setScalar(s);
+
+    // subtle randomness
+    dummy.rotation.set(rng()*0.25, rng()*Math.PI, rng()*0.25);
+    dummy.updateMatrix();
+    inst.setMatrixAt(i, dummy.matrix);
+  }
+  inst.instanceMatrix.needsUpdate = true;
+}
+
+function makeCrumbs(perf){
+  const count = perf === "low" ? 220 : perf === "mid" ? 320 : 420;
+  const g = new THREE.BufferGeometry();
+  const pos = new Float32Array(count * 3);
+  const a = new Float32Array(count);
+
+  for(let i=0;i<count;i++){
+    pos[i*3+0] = (Math.random()*2-1) * 0.95;
+    pos[i*3+1] = 0.18 + Math.random()*0.06;
+    pos[i*3+2] = (Math.random()*2-1) * 0.95;
+    a[i] = Math.random();
+  }
+  g.setAttribute("position", new THREE.BufferAttribute(pos, 3));
+  g.setAttribute("a", new THREE.BufferAttribute(a, 1));
+
+  const m = new THREE.PointsMaterial({
+    color: 0xB07A45,
+    size: perf === "low" ? 0.010 : 0.009,
+    transparent: true,
+    opacity: 0.18,
+    depthWrite: false,
+  });
+
+  const pts = new THREE.Points(g, m);
+  return pts;
+}
+
+function applyPresetInstant(preset, seed){
+  applyPresetTo(cookieA, matA, preset, seed);
+  matA.opacity = 1;
+  matA.transparent = false;
+  matB.opacity = 0;
+}
+
+function applyPresetTo(mesh, mat, preset, seed){
+  mat.color.setHex(preset.color);
+  mat.roughness = preset.rough;
+  mat.metalness = 0;
+
+  // candy premium “soft” has tiny sheen: use clearcoat cheaply
+  if (preset.glaze > 0){
+    mat.clearcoat = preset.glaze;
+    mat.clearcoatRoughness = 0.35;
+  } else {
+    mat.clearcoat = 0;
+    mat.clearcoatRoughness = 0;
+  }
+
+  mesh.scale.set(1, preset.scaleY, 1);
+
+  // deco params + deterministic layout
+  deco.mode = preset.decoMode;
+  deco.count = preset.decoCount;
+  deco.size = preset.decoSize;
+  layoutDeco(mesh, deco, seed ^ 0x9e3779b9);
+}
+
+function mulberry32(a){
+  return function(){
+    let t = (a += 0x6D2B79F5);
+    t = Math.imul(t ^ (t >>> 15), t | 1);
+    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+function clamp(v, a, b){ return Math.max(a, Math.min(b, v)); }

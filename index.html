@@ -1,311 +1,693 @@
-<!doctype html>
-<html lang="de">
-<head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>OnlyKeks – Post, die schmeckt.</title>
+import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js";
 
-  <meta name="theme-color" content="#fff3ea"/>
-  <meta name="description" content="Du schreibst eine Botschaft. Wir machen daraus einen echten Keks."/>
+/**
+ * OnlyKeks – Cookie3D v3 (Hybrid Candy Premium)
+ * - butterweich mobile: DPR cap, no shadowmaps, instancing, pause offscreen
+ * - 3 Styles: Classic / Chunky / Soft (strict params)
+ * - Surprise: random style + random seed + micro zoom + glow + microsound
+ * - Drag rotate: diagonal (x/y), inertia
+ */
 
-  <style>
-    :root{
-      --vanilla:#fff3ea;
-      --cream:#fff9f4;
-      --candy:#ff4fa3;
-      --candy-soft:#ff7bbf;
-      --choco:#c98e55;
-      --ink:#3a2a1f;
-      --muted:#9c8f86;
-      --radius-xl:28px;
-      --radius-pill:999px;
-      --shadow-soft:0 18px 60px rgba(255,105,180,.18);
-      --shadow-card:0 12px 36px rgba(0,0,0,.08);
+const stageEl = document.getElementById("k3dStage");
+if (!stageEl) throw new Error("k3dStage fehlt");
+
+const prefersReducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches ?? false;
+
+const PERF = (() => {
+  const cores = navigator.hardwareConcurrency || 4;
+  const mem = navigator.deviceMemory || 4;
+  if (mem <= 3 || cores <= 4) return "low";
+  if (mem <= 6 || cores <= 6) return "mid";
+  return "high";
+})();
+
+const DPR_CAP = PERF === "low" ? 1.25 : 1.5;
+
+// ---------- Renderer / Scene / Camera
+const renderer = new THREE.WebGLRenderer({
+  antialias: true,
+  alpha: true,
+  powerPreference: "high-performance",
+});
+renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, DPR_CAP));
+renderer.setSize(stageEl.clientWidth, stageEl.clientHeight);
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+renderer.shadowMap.enabled = false;
+stageEl.appendChild(renderer.domElement);
+
+const scene = new THREE.Scene();
+
+// Candy-Premium: weiche, helle Bühne
+const camera = new THREE.PerspectiveCamera(35, stageEl.clientWidth / stageEl.clientHeight, 0.1, 50);
+camera.position.set(0, 0.28, 3.25);
+
+// Lights (günstig aber “foto”)
+const key = new THREE.DirectionalLight(0xffffff, 1.1);
+key.position.set(2.6, 3.3, 2.2);
+scene.add(key);
+
+const fill = new THREE.DirectionalLight(0xffeff8, 0.70);
+fill.position.set(-2.8, 1.6, 2.0);
+scene.add(fill);
+
+const rim = new THREE.DirectionalLight(0xffffff, 0.45);
+rim.position.set(0.2, 2.2, -3.2);
+scene.add(rim);
+
+scene.add(new THREE.AmbientLight(0xffffff, 0.33));
+
+// ---------- Ground + Fake Shadow Blob (ultra performance)
+const ground = new THREE.Mesh(
+  new THREE.CircleGeometry(1.2, 64),
+  new THREE.MeshStandardMaterial({ color: 0xfff7fb, roughness: 0.95, metalness: 0 })
+);
+ground.rotation.x = -Math.PI / 2;
+ground.position.y = -0.66;
+scene.add(ground);
+
+const shadowTex = makeShadowTexture();
+const shadow = new THREE.Mesh(
+  new THREE.PlaneGeometry(2.35, 2.35),
+  new THREE.MeshBasicMaterial({ map: shadowTex, transparent: true, opacity: 0.34, depthWrite: false })
+);
+shadow.rotation.x = -Math.PI / 2;
+shadow.position.y = -0.659;
+scene.add(shadow);
+
+// Subtle candy-glow plane (cheap)
+const glow = new THREE.Mesh(
+  new THREE.CircleGeometry(1.35, 64),
+  new THREE.MeshBasicMaterial({ color: 0xffcfe3, transparent: true, opacity: 0.09, depthWrite: false })
+);
+glow.rotation.x = -Math.PI / 2;
+glow.position.y = -0.6585;
+scene.add(glow);
+
+// ---------- Cookie Mesh (more cookie-like than cylinder)
+const cookieGeo = makeCookieGeometry(PERF);
+
+// Two materials for crossfade switching
+const matA = new THREE.MeshStandardMaterial({
+  color: 0xD7A36A,
+  roughness: 0.78,
+  metalness: 0,
+});
+const matB = matA.clone();
+matB.transparent = true;
+matB.opacity = 0.0;
+
+const cookieA = new THREE.Mesh(cookieGeo, matA);
+const cookieB = new THREE.Mesh(cookieGeo, matB);
+cookieA.position.y = 0;
+cookieB.position.y = 0;
+scene.add(cookieA, cookieB);
+
+// ----------- Surface details: crumbs + cracks (shaderless, cheap)
+const detail = makeDetailLayer(PERF);
+scene.add(detail.group);
+
+// ----------- Deco: Instanced sprinkles/chunks
+const deco = makeDeco(PERF);
+scene.add(deco.group);
+
+// ---------- Styles (strict separation)
+const PRESETS = {
+  classic: {
+    name: "Classic",
+    color: 0xD7A36A,
+    rough: 0.78,
+    height: 1.0,
+    edgeRound: 0.20,
+    crack: 0.10,
+    crumb: 0.10,
+    decoMode: "sprinkles",
+    decoCount: PERF === "low" ? 75 : PERF === "mid" ? 120 : 160,
+    decoSize: 0.028,
+    chunkCount: 0,
+    glaze: 0.0,
+  },
+  chunky: {
+    name: "Chunky",
+    color: 0xC98E55,
+    rough: 0.86,
+    height: 1.22,
+    edgeRound: 0.26,
+    crack: 0.20,
+    crumb: 0.16,
+    decoMode: "chunks",
+    decoCount: PERF === "low" ? 12 : PERF === "mid" ? 18 : 26,
+    decoSize: 0.075,
+    chunkCount: PERF === "low" ? 10 : PERF === "mid" ? 14 : 20,
+    glaze: 0.0,
+  },
+  soft: {
+    name: "Soft",
+    color: 0xE2B07A,
+    rough: 0.62,
+    height: 0.95,
+    edgeRound: 0.16,
+    crack: 0.05,
+    crumb: 0.07,
+    decoMode: "sprinkles",
+    decoCount: PERF === "low" ? 95 : PERF === "mid" ? 150 : 200,
+    decoSize: 0.022,
+    chunkCount: 0,
+    glaze: 0.10, // tiny “sheen”
+  },
+};
+
+let activeStyle = "classic";
+let seed = (Math.random() * 1e9) | 0;
+
+// Apply initial preset
+applyPresetInstant(PRESETS.classic, seed);
+
+// ---------- Drag rotate (diagonal) + inertia
+let isDown = false;
+let lastX = 0;
+let lastY = 0;
+let rotY = 0;
+let rotX = 0;
+let velY = 0;
+let velX = 0;
+
+renderer.domElement.style.touchAction = "none";
+
+renderer.domElement.addEventListener("pointerdown", (e) => {
+  isDown = true;
+  lastX = e.clientX;
+  lastY = e.clientY;
+});
+window.addEventListener("pointerup", () => (isDown = false));
+window.addEventListener("pointermove", (e) => {
+  if (!isDown) return;
+  const dx = e.clientX - lastX;
+  const dy = e.clientY - lastY;
+  lastX = e.clientX;
+  lastY = e.clientY;
+
+  velY = dx * 0.004;
+  velX = dy * 0.003;
+
+  rotY += velY;
+  rotX += velX;
+  rotX = clamp(rotX, -0.55, 0.35);
+});
+
+// ---------- Crossfade switching (no pop)
+let fadeT = 0;
+let fading = false;
+let targetPreset = PRESETS.classic;
+let targetSeed = seed;
+
+function switchStyle(next) {
+  if (!PRESETS[next] || next === activeStyle) return;
+  activeStyle = next;
+  targetPreset = PRESETS[next];
+  targetSeed = seed; // keep same seed when user explicitly switches (stable)
+  startFade(targetPreset, targetSeed);
+}
+
+function startFade(preset, s) {
+  // set B to target (invisible)
+  applyPresetTo(cookieB, matB, preset, s, true);
+  matB.opacity = 0.0;
+
+  // ensure A is visible
+  matA.transparent = true;
+  matA.opacity = 1.0;
+
+  // copy pose
+  cookieB.rotation.copy(cookieA.rotation);
+  cookieB.scale.copy(cookieA.scale);
+
+  fading = true;
+  fadeT = 0;
+}
+
+function tickFade(dt) {
+  if (!fading) return;
+  fadeT += dt;
+  const dur = 0.24;
+  const t = Math.min(fadeT / dur, 1);
+  const ease = t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+
+  matB.opacity = ease;
+  matA.opacity = 1 - ease;
+
+  if (t >= 1) {
+    applyPresetTo(cookieA, matA, targetPreset, targetSeed, false);
+    matA.opacity = 1.0;
+    matA.transparent = false;
+    matB.opacity = 0.0;
+    fading = false;
+  }
+}
+
+// ---------- Surprise (random style + random seed + micro zoom/glow + sound)
+function randomPreset() {
+  const styles = ["classic", "chunky", "soft"];
+  const next = styles[(Math.random() * styles.length) | 0];
+
+  // New seed every surprise (new deco layout)
+  seed = (Math.random() * 1e9) | 0;
+  activeStyle = next;
+  targetPreset = PRESETS[next];
+  targetSeed = seed;
+
+  // micro “wow”
+  pulse();
+  playMicrosound();
+
+  startFade(targetPreset, targetSeed);
+}
+
+function pulse() {
+  if (prefersReducedMotion) return;
+
+  // quick zoom + glow bump
+  pulseT = 0;
+  pulsing = true;
+}
+
+let pulsing = false;
+let pulseT = 0;
+
+function tickPulse(dt) {
+  if (!pulsing) return;
+  pulseT += dt;
+  const dur = 0.22;
+  const t = Math.min(pulseT / dur, 1);
+
+  // ease out
+  const ease = 1 - Math.pow(1 - t, 3);
+  const z = 1 + 0.035 * Math.sin(ease * Math.PI); // in/out
+
+  cookieA.scale.multiplyScalar(1); // keep stable; scale applied in preset
+  cookieB.scale.multiplyScalar(1);
+
+  // glow bump
+  glow.material.opacity = 0.09 + 0.10 * Math.sin(ease * Math.PI);
+
+  // camera subtle push
+  camera.position.z = 3.25 - 0.10 * Math.sin(ease * Math.PI);
+
+  if (t >= 1) {
+    glow.material.opacity = 0.09;
+    camera.position.z = 3.25;
+    pulsing = false;
+  }
+}
+
+// ---------- Offscreen pause/resume + tab hidden
+let running = true;
+let rafId = 0;
+
+const io = new IntersectionObserver(
+  (entries) => {
+    const v = entries[0]?.isIntersecting;
+    running = !!v;
+    if (running) loop();
+    else cancelAnimationFrame(rafId);
+  },
+  { threshold: 0.15 }
+);
+io.observe(stageEl);
+
+document.addEventListener("visibilitychange", () => {
+  running = document.visibilityState === "visible";
+  if (running) loop();
+  else cancelAnimationFrame(rafId);
+});
+
+// ---------- Resize
+window.addEventListener("resize", () => {
+  const w = stageEl.clientWidth;
+  const h = stageEl.clientHeight;
+  renderer.setSize(w, h);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, DPR_CAP));
+  camera.aspect = w / h;
+  camera.updateProjectionMatrix();
+});
+
+// ---------- Main loop
+let last = performance.now();
+function loop(now = performance.now()) {
+  if (!running) return;
+  rafId = requestAnimationFrame(loop);
+
+  const dt = Math.min((now - last) / 1000, 0.033);
+  last = now;
+
+  const auto = prefersReducedMotion ? 0 : 0.18; // slow rotation
+  velY *= 0.92;
+  velX *= 0.90;
+
+  rotY += (auto + velY) * dt;
+  rotX += velX * dt;
+  rotX = clamp(rotX, -0.55, 0.35);
+
+  cookieA.rotation.y = rotY;
+  cookieB.rotation.y = rotY;
+
+  cookieA.rotation.x = rotX + Math.sin(now * 0.00055) * 0.04;
+  cookieB.rotation.x = cookieA.rotation.x;
+
+  // tiny “alive” tilt
+  cookieA.rotation.z = Math.sin(now * 0.00035) * 0.02;
+  cookieB.rotation.z = cookieA.rotation.z;
+
+  tickFade(dt);
+  tickPulse(dt);
+
+  renderer.render(scene, camera);
+}
+
+// ---------- Public hooks for index.html
+window.switchStyle = switchStyle;
+window.randomPreset = randomPreset;
+
+// ---------- Helpers
+function applyPresetInstant(preset, s) {
+  applyPresetTo(cookieA, matA, preset, s, false);
+  matA.opacity = 1.0;
+  matA.transparent = false;
+  matB.opacity = 0.0;
+}
+
+function applyPresetTo(mesh, mat, preset, s, isGhost) {
+  // material
+  mat.color.setHex(preset.color);
+  mat.roughness = preset.rough;
+  mat.metalness = 0;
+
+  // tiny “soft sheen” via emissive (cheap fake)
+  mat.emissive = new THREE.Color(0xffcfe3);
+  mat.emissiveIntensity = preset.glaze;
+
+  // mesh scale height
+  mesh.scale.set(1, preset.height, 1);
+
+  // detail layers (crumb/crack intensity)
+  detail.setIntensity(preset.crumb, preset.crack, preset.edgeRound);
+
+  // deco layout
+  deco.setMode(preset.decoMode);
+  deco.setCount(preset.decoCount);
+  deco.setSize(preset.decoSize);
+  deco.setSeed(s);
+  deco.setChunkCount(preset.chunkCount);
+  deco.layout(mesh);
+}
+
+// Cookie geometry: rounded edge + slight irregularity
+function makeCookieGeometry(perf) {
+  const seg = perf === "low" ? 48 : perf === "mid" ? 64 : 86;
+  const r = 1.0;
+  const h = 0.34;
+
+  // start from cylinder
+  const g = new THREE.CylinderGeometry(r, r, h, seg, 6, false);
+  g.rotateY(Math.PI / seg);
+
+  // soften edges + handmade wobble (cheap vertex transform)
+  const pos = g.attributes.position;
+  const v = new THREE.Vector3();
+
+  for (let i = 0; i < pos.count; i++) {
+    v.fromBufferAttribute(pos, i);
+
+    const y = v.y;
+    const radial = Math.sqrt(v.x * v.x + v.z * v.z);
+
+    // rounded edge
+    const edge = smoothstep(0.88, 1.0, radial);
+    const round = edge * 0.06;
+    v.y -= Math.sign(y) * round;
+
+    // handmade wobble (small)
+    const wob = (hash(i * 17.3) - 0.5) * 0.018;
+    v.x += (v.x / (radial + 1e-6)) * wob;
+    v.z += (v.z / (radial + 1e-6)) * wob;
+
+    pos.setXYZ(i, v.x, v.y, v.z);
+  }
+  pos.needsUpdate = true;
+  g.computeVertexNormals();
+  return g;
+}
+
+// Detail layer: crumbs + cracks as instanced tiny dots (super cheap)
+function makeDetailLayer(perf) {
+  const group = new THREE.Group();
+
+  const max = perf === "low" ? 260 : perf === "mid" ? 420 : 620;
+
+  const crumbGeom = new THREE.SphereGeometry(0.010, 6, 6);
+  const crumbMat = new THREE.MeshStandardMaterial({
+    color: 0xB07B4A,
+    roughness: 0.9,
+    metalness: 0,
+  });
+
+  const crumbs = new THREE.InstancedMesh(crumbGeom, crumbMat, max);
+  crumbs.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
+  group.add(crumbs);
+
+  const crackGeom = new THREE.SphereGeometry(0.007, 6, 6);
+  const crackMat = new THREE.MeshStandardMaterial({
+    color: 0x8A5A34,
+    roughness: 0.95,
+    metalness: 0,
+  });
+  const cracks = new THREE.InstancedMesh(crackGeom, crackMat, max);
+  cracks.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
+  group.add(cracks);
+
+  let crumbInt = 0.10;
+  let crackInt = 0.10;
+  let edgeRound = 0.20;
+
+  const dummy = new THREE.Object3D();
+
+  function layout() {
+    // crumbs (random scatter)
+    for (let i = 0; i < max; i++) {
+      const enabled = i < Math.floor(max * crumbInt);
+      if (!enabled) {
+        dummy.position.set(0, -10, 0);
+        dummy.scale.setScalar(0.0001);
+        dummy.updateMatrix();
+        crumbs.setMatrixAt(i, dummy.matrix);
+        continue;
+      }
+      const a = Math.random() * Math.PI * 2;
+      const rr = 0.92 * Math.sqrt(Math.random());
+      const x = Math.cos(a) * rr;
+      const z = Math.sin(a) * rr;
+
+      dummy.position.set(x, 0.17 + 0.02, z);
+      const s = 0.6 + Math.random() * 0.9;
+      dummy.scale.setScalar(0.010 * s);
+      dummy.rotation.set(Math.random() * 0.1, Math.random() * Math.PI, Math.random() * 0.1);
+      dummy.updateMatrix();
+      crumbs.setMatrixAt(i, dummy.matrix);
     }
+    crumbs.instanceMatrix.needsUpdate = true;
 
-    *{box-sizing:border-box}
-    html,body{margin:0;padding:0}
-    body{
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Inter, sans-serif;
-      color:var(--ink);
-      background:linear-gradient(180deg, var(--vanilla), var(--cream));
+    // cracks (biased to center + edge)
+    for (let i = 0; i < max; i++) {
+      const enabled = i < Math.floor(max * crackInt);
+      if (!enabled) {
+        dummy.position.set(0, -10, 0);
+        dummy.scale.setScalar(0.0001);
+        dummy.updateMatrix();
+        cracks.setMatrixAt(i, dummy.matrix);
+        continue;
+      }
+
+      const a = Math.random() * Math.PI * 2;
+      const mix = Math.random();
+      const rr = mix < 0.55 ? 0.55 * Math.sqrt(Math.random()) : 0.92 * Math.sqrt(Math.random());
+      const x = Math.cos(a) * rr;
+      const z = Math.sin(a) * rr;
+
+      dummy.position.set(x, 0.17 + 0.018, z);
+      const s = 0.55 + Math.random() * 0.9;
+      dummy.scale.setScalar(0.007 * s);
+      dummy.rotation.set(Math.random() * 0.2, Math.random() * Math.PI, Math.random() * 0.2);
+      dummy.updateMatrix();
+      cracks.setMatrixAt(i, dummy.matrix);
     }
-
-    /* HEADER */
-    header{
-      position:sticky; top:0; z-index:5;
-      background:linear-gradient(180deg, rgba(255,243,234,.9), rgba(255,243,234,.6));
-      backdrop-filter:saturate(1.05);
-      padding:10px 16px;
-    }
-    .hdr{
-      display:flex; align-items:center; justify-content:space-between;
-      max-width:520px; margin:0 auto;
-    }
-    .logo{
-      font-weight:900; letter-spacing:.2px;
-    }
-    .sub{
-      font-size:12px; color:var(--muted); margin-top:-2px;
-    }
-    .hdr a{
-      font-size:13px; color:var(--ink); text-decoration:none;
-      opacity:.8;
-    }
-
-    /* LAYOUT */
-    main{max-width:520px;margin:0 auto;padding:12px 16px 140px}
-    section{margin:18px 0}
-
-    /* HERO / 3D STAGE */
-    .stageWrap{
-      margin-top:8px;
-      text-align:center;
-    }
-    .stage{
-      width:100%;
-      height:360px;
-      border-radius:var(--radius-xl);
-      background:radial-gradient(120% 90% at 50% 20%, #ffffff, #ffe3ef);
-      box-shadow:var(--shadow-soft);
-      overflow:hidden;
-      position:relative;
-    }
-    .hint{
-      font-size:13px; color:var(--muted); margin-top:8px;
-    }
-
-    /* STATUS LABEL (NICK) */
-    .status{
-      margin-top:10px;
-      font-size:14px;
-      color:#6d5a4e;
-      min-height:20px;
-      transition:opacity .25s ease;
-    }
-
-    /* SURPRISE */
-    .surpriseBtn{
-      margin:14px auto 8px;
-      display:inline-flex; align-items:center; gap:8px;
-      padding:14px 22px;
-      border-radius:var(--radius-pill);
-      border:none;
-      font-weight:900;
-      font-size:16px;
-      color:white;
-      background:linear-gradient(180deg, var(--candy-soft), var(--candy));
-      box-shadow:0 14px 40px rgba(255,79,163,.35);
-    }
-
-    /* STYLE CHIPS */
-    .chips{
-      display:flex; gap:10px; overflow-x:auto;
-      padding:6px 2px;
-    }
-    .chip{
-      flex:0 0 auto;
-      padding:10px 16px;
-      border-radius:var(--radius-pill);
-      border:2px solid rgba(255,79,163,.35);
-      background:rgba(255,255,255,.75);
-      font-weight:800;
-    }
-    .chip.active{
-      background:linear-gradient(180deg, #ff7bbf, #ff4fa3);
-      color:white;
-      border-color:rgba(255,255,255,.6);
-    }
-
-    /* TEXT */
-    textarea{
-      width:100%;
-      min-height:72px;
-      padding:14px 16px;
-      border-radius:18px;
-      border:none;
-      box-shadow:var(--shadow-card);
-      font-size:16px;
-      resize:none;
-    }
-    .chipsRow{margin-top:10px}
-
-    /* STICKY CTA */
-    .sticky{
-      position:fixed; bottom:0; left:0; right:0;
-      background:rgba(255,249,244,.92);
-      backdrop-filter:blur(6px);
-      border-top:1px solid rgba(0,0,0,.05);
-      padding:12px 16px;
-    }
-    .stickyInner{
-      max-width:520px;margin:0 auto;
-      display:flex; align-items:center; justify-content:space-between;
-      gap:10px;
-    }
-    .sticky span{font-size:14px;color:var(--muted)}
-    .cta{
-      padding:14px 22px;
-      border-radius:var(--radius-pill);
-      border:none;
-      font-weight:900;
-      font-size:16px;
-      background:linear-gradient(180deg, var(--choco), #b47a43);
-      color:white;
-    }
-
-    /* CHECKOUT */
-    .sheet{
-      position:fixed; inset:0;
-      background:rgba(0,0,0,.35);
-      display:none; align-items:flex-end;
-    }
-    .sheet.open{display:flex}
-    .panel{
-      width:100%;
-      max-width:520px;
-      background:var(--cream);
-      border-radius:24px 24px 0 0;
-      padding:16px;
-      box-shadow:0 -10px 40px rgba(0,0,0,.2);
-    }
-    .panel h3{margin:4px 0 6px}
-    .panel input{
-      width:100%;
-      padding:12px 14px;
-      border-radius:14px;
-      border:none;
-      box-shadow:var(--shadow-card);
-      margin:6px 0;
-      font-size:15px;
-    }
-    .pay{
-      margin-top:10px;
-      width:100%;
-      padding:16px;
-      border-radius:var(--radius-pill);
-      border:none;
-      font-weight:900;
-      font-size:16px;
-      background:linear-gradient(180deg, var(--candy-soft), var(--candy));
-      color:white;
-    }
-    .trust{
-      text-align:center;
-      font-size:12px;color:var(--muted);margin-top:6px;
-    }
-  </style>
-</head>
-
-<body>
-
-<header>
-  <div class="hdr">
-    <div>
-      <div class="logo">OnlyKeks</div>
-      <div class="sub">3D-Keks. Ruhig. Lecker.</div>
-    </div>
-    <a href="#how">So funktioniert’s</a>
-  </div>
-</header>
-
-<main>
-
-  <!-- HERO / STAGE -->
-  <section class="stageWrap">
-    <div class="stage" id="k3dStage" aria-label="3D Keks Bühne"></div>
-    <div class="hint">Tipp: Ziehen zum Drehen</div>
-
-    <div class="status" id="status">Mach’s persönlich.</div>
-
-    <button class="surpriseBtn" id="surpriseBtn">Überrasch mich ✨</button>
-
-    <div class="chips" aria-label="Cookie-Stil">
-      <button class="chip active" data-style="classic">Classic</button>
-      <button class="chip" data-style="chunky">Chunky</button>
-      <button class="chip" data-style="soft">Soft</button>
-    </div>
-  </section>
-
-  <!-- TEXT -->
-  <section>
-    <textarea id="msg" placeholder="Kurz. Ehrlich. Von Herzen."></textarea>
-  </section>
-
-</main>
-
-<!-- STICKY CTA -->
-<div class="sticky">
-  <div class="stickyInner">
-    <span id="ctaStatus">Schreib deine Botschaft.</span>
-    <button class="cta" id="checkoutBtn">Keks losschicken</button>
-  </div>
-</div>
-
-<!-- CHECKOUT -->
-<div class="sheet" id="sheet">
-  <div class="panel">
-    <small>Du kannst alles noch ändern.</small>
-    <h3>Empfänger</h3>
-    <input placeholder="Name (optional)"/>
-    <input placeholder="Straße, Nr., PLZ Ort"/>
-
-    <h3>Absender</h3>
-    <input placeholder="Dein Name (optional)"/>
-
-    <button class="pay">Jetzt losschicken</button>
-    <div class="trust">Kein Abo · Sicher bezahlen</div>
-  </div>
-</div>
-
-<script>
-  /* STATUS / CTA LOGIK */
-  const status = document.getElementById("status");
-  const msg = document.getElementById("msg");
-  const ctaStatus = document.getElementById("ctaStatus");
-
-  function updateStatus(text){
-    status.style.opacity = 0;
-    setTimeout(()=>{
-      status.textContent = text;
-      status.style.opacity = 1;
-    },120);
+    cracks.instanceMatrix.needsUpdate = true;
   }
 
-  msg.addEventListener("input",()=>{
-    if(msg.value.trim().length){
-      updateStatus("Sitzt.");
-      ctaStatus.textContent = "Bereit zum Verschenken.";
-    }else{
-      updateStatus("Mach’s persönlich.");
-      ctaStatus.textContent = "Schreib deine Botschaft.";
+  function setIntensity(crumb, crack, edge) {
+    crumbInt = clamp(crumb, 0.02, 0.22);
+    crackInt = clamp(crack, 0.02, 0.30);
+    edgeRound = clamp(edge, 0.12, 0.30);
+    layout();
+  }
+
+  // initial layout
+  layout();
+
+  return { group, setIntensity };
+}
+
+// Deco (sprinkles/chunks) instanced
+function makeDeco(perf) {
+  const group = new THREE.Group();
+
+  const max = perf === "low" ? 220 : perf === "mid" ? 320 : 420;
+
+  const sprGeom = new THREE.SphereGeometry(0.02, 8, 8);
+  const sprMat = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.4, metalness: 0 });
+  const inst = new THREE.InstancedMesh(sprGeom, sprMat, max);
+  inst.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
+  group.add(inst);
+
+  const dummy = new THREE.Object3D();
+  let mode = "sprinkles";
+  let count = 120;
+  let size = 0.026;
+  let s = 12345;
+  let chunkCount = 0;
+
+  function setSeed(seed) {
+    s = seed | 0;
+  }
+  function setMode(m) {
+    mode = m;
+  }
+  function setCount(c) {
+    count = c;
+  }
+  function setSize(sz) {
+    size = sz;
+  }
+  function setChunkCount(n) {
+    chunkCount = n;
+  }
+
+  function rand() {
+    // deterministic-ish
+    s = (s * 1664525 + 1013904223) | 0;
+    return ((s >>> 0) / 4294967296);
+  }
+
+  function layout(cookieMesh) {
+    const r = 0.92;
+    const yTop = (0.17 * cookieMesh.scale.y) + 0.025;
+
+    for (let i = 0; i < max; i++) {
+      if (i >= count) {
+        dummy.position.set(0, -10, 0);
+        dummy.scale.setScalar(0.0001);
+        dummy.updateMatrix();
+        inst.setMatrixAt(i, dummy.matrix);
+        continue;
+      }
+
+      const a = rand() * Math.PI * 2;
+      const rr = r * Math.sqrt(rand());
+      const x = Math.cos(a) * rr;
+      const z = Math.sin(a) * rr;
+
+      dummy.position.set(x, yTop, z);
+
+      // color palette: candy sprinkle vibes (cheap per-instance color = swap material color occasionally)
+      // (we keep one material for perf; slight variation via scale/placement is enough)
+
+      const base = size;
+      let ssz = base * (0.8 + rand() * 0.6);
+      if (mode === "chunks") {
+        // fewer, larger, “choco chunks”
+        ssz = base * (0.9 + rand() * 0.8);
+      }
+      dummy.scale.setScalar(ssz);
+
+      dummy.rotation.set((rand() * 0.25), rand() * Math.PI, (rand() * 0.25));
+      dummy.updateMatrix();
+      inst.setMatrixAt(i, dummy.matrix);
     }
-  });
 
-  /* CHECKOUT */
-  const sheet = document.getElementById("sheet");
-  document.getElementById("checkoutBtn").onclick = ()=>sheet.classList.add("open");
-  sheet.onclick = e=>{ if(e.target===sheet) sheet.classList.remove("open"); };
-
-  /* STYLE CHIPS */
-  document.querySelectorAll(".chip").forEach(c=>{
-    c.onclick=()=>{
-      document.querySelectorAll(".chip").forEach(x=>x.classList.remove("active"));
-      c.classList.add("active");
-      updateStatus("Der fühlt sich richtig an.");
-      window.switchStyle?.(c.dataset.style);
+    // if chunky: add extra “big chunks” by scaling a subset
+    if (mode === "chunks" && chunkCount > 0) {
+      const n = Math.min(chunkCount, count);
+      for (let j = 0; j < n; j++) {
+        const i = j;
+        inst.getMatrixAt(i, dummy.matrix);
+        dummy.matrix.decompose(dummy.position, dummy.quaternion, dummy.scale);
+        dummy.scale.multiplyScalar(1.45);
+        dummy.updateMatrix();
+        inst.setMatrixAt(i, dummy.matrix);
+      }
     }
-  });
 
-  /* SURPRISE */
-  document.getElementById("surpriseBtn").onclick=()=>{
-    updateStatus("Passt. Wenn du willst, noch feiner.");
-    window.randomPreset?.();
-  };
-</script>
+    inst.instanceMatrix.needsUpdate = true;
+  }
 
-<!-- 3D MODULE -->
-<script type="module" src="./cookie3d.js"></script>
+  return { group, inst, setMode, setCount, setSize, setSeed, setChunkCount, layout };
+}
 
-</body>
-</html>
+// Shadow texture
+function makeShadowTexture() {
+  const c = document.createElement("canvas");
+  c.width = 256;
+  c.height = 256;
+  const ctx = c.getContext("2d");
+  const grd = ctx.createRadialGradient(128, 128, 20, 128, 128, 120);
+  grd.addColorStop(0, "rgba(0,0,0,0.55)");
+  grd.addColorStop(1, "rgba(0,0,0,0)");
+  ctx.fillStyle = grd;
+  ctx.fillRect(0, 0, c.width, c.height);
+  const tex = new THREE.CanvasTexture(c);
+  tex.colorSpace = THREE.SRGBColorSpace;
+  return tex;
+}
+
+// Microsound (tiny candy “tink”)
+let audioCtx = null;
+function playMicrosound() {
+  try {
+    if (prefersReducedMotion) return;
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    const t0 = audioCtx.currentTime;
+
+    const o = audioCtx.createOscillator();
+    const g = audioCtx.createGain();
+    const f = audioCtx.createBiquadFilter();
+    f.type = "highpass";
+    f.frequency.value = 600;
+
+    o.type = "sine";
+    o.frequency.setValueAtTime(880, t0);
+    o.frequency.exponentialRampToValueAtTime(1320, t0 + 0.06);
+    o.frequency.exponentialRampToValueAtTime(990, t0 + 0.12);
+
+    g.gain.setValueAtTime(0.0001, t0);
+    g.gain.exponentialRampToValueAtTime(0.16, t0 + 0.02);
+    g.gain.exponentialRampToValueAtTime(0.0001, t0 + 0.16);
+
+    o.connect(f);
+    f.connect(g);
+    g.connect(audioCtx.destination);
+
+    o.start(t0);
+    o.stop(t0 + 0.18);
+  } catch {
+    // ignore
+  }
+}
+
+// Utils
+function clamp(x, a, b) { return Math.max(a, Math.min(b, x)); }
+function smoothstep(a, b, x) {
+  const t = clamp((x - a) / (b - a), 0, 1);
+  return t * t * (3 - 2 * t);
+}
+function hash(x) {
+  const s = Math.sin(x) * 10000;
+  return s - Math.floor(s);
+}

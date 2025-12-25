@@ -2,77 +2,257 @@
 <html lang="de">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>ONLYKEKS — Konfigurator</title>
-  <meta name="theme-color" content="#0b0f14" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>OnlyCakes — Konfigurator</title>
+  <meta name="description" content="Keks in 3D bauen: Base, Toppings, Extras. Share-Link, Surprise-Button, Live-Preview." />
+
   <style>
-    :root{--bg:#0b0f14;--fg:#f3f5ff;--muted:#c9d0ff;--card:rgba(18,25,38,.60);--stroke:rgba(255,255,255,.10);--accent:#ffd17a}
+    :root{--bg:#0b0f18;--card:#11192a;--text:#eaf0ff;--muted:#a8b3cf;--line:rgba(255,255,255,.12);--accent:#7c5cff;--ok:#20e3b2;}
     *{box-sizing:border-box}
-    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;background:var(--bg);color:var(--fg)}
+    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:radial-gradient(1000px 600px at 20% 0%,rgba(124,92,255,.25),transparent 60%),radial-gradient(900px 600px at 80% 0%,rgba(32,227,178,.16),transparent 60%),var(--bg);color:var(--text);}
     .wrap{max-width:1100px;margin:0 auto;padding:18px}
-    .top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
-    .brand{font-weight:950}
-    .btns{display:flex;gap:10px;flex-wrap:wrap}
-    a.btn{display:inline-flex;align-items:center;justify-content:center;height:44px;padding:0 14px;border-radius:12px;text-decoration:none;font-weight:900}
-    a.primary{background:var(--accent);color:#0b0f14}
-    a.secondary{border:1px solid rgba(255,255,255,.18);color:var(--fg);background:transparent}
-    .grid{display:grid;grid-template-columns:1.2fr .8fr;gap:12px;margin-top:12px}
+    .top{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between;padding:12px 14px;border:1px solid var(--line);border-radius:16px;background:rgba(17,25,42,.65);backdrop-filter:blur(10px)}
+    .brand{display:flex;gap:10px;align-items:center;font-weight:900}
+    .chip{font-size:12px;padding:6px 10px;border:1px solid var(--line);border-radius:999px;color:var(--muted);background:rgba(255,255,255,.06)}
+    .btn{border:1px solid var(--line);background:rgba(255,255,255,.06);color:var(--text);padding:10px 14px;border-radius:14px;cursor:pointer;font-weight:800}
+    .btn.good{background:linear-gradient(180deg,rgba(32,227,178,.32),rgba(32,227,178,.10));}
+    .grid{display:grid;grid-template-columns:1.05fr .95fr;gap:12px;margin-top:12px}
     @media(max-width:900px){.grid{grid-template-columns:1fr}}
-    .card{border:1px solid var(--stroke);border-radius:18px;background:var(--card);padding:14px}
-    #stage{height:560px;border-radius:16px;border:1px solid var(--stroke);background:rgba(255,255,255,.04)}
-    label{display:block;margin:10px 0 6px;color:rgba(201,208,255,.9);font-weight:850}
-    select,input{width:100%;height:44px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:rgba(0,0,0,.22);color:var(--fg);padding:0 12px;font-weight:800}
-    .hint{color:rgba(201,208,255,.75);font-size:13px;line-height:1.4}
-    button{width:100%;height:46px;border-radius:12px;border:0;font-weight:950;cursor:pointer}
-    .save{background:var(--accent);color:#0b0f14}
+    .card{border:1px solid var(--line);border-radius:16px;background:rgba(17,25,42,.55);padding:14px}
+    .canvasCard{border:1px solid var(--line);border-radius:16px;background:rgba(0,0,0,.18);overflow:hidden}
+    canvas{width:100%;height:420px;display:block}
+    .title{font-size:20px;font-weight:900;margin:0 0 6px 0}
+    .muted{color:var(--muted);font-size:13px}
+    .optGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+    @media(max-width:600px){.optGrid{grid-template-columns:repeat(2,1fr)}}
+    .opt{border:1px solid var(--line);border-radius:14px;padding:10px;background:rgba(255,255,255,.05);cursor:pointer;user-select:none}
+    .opt b{display:block}
+    .opt small{color:var(--muted)}
+    .opt.active{border-color:rgba(124,92,255,.65);background:linear-gradient(180deg,rgba(124,92,255,.28),rgba(124,92,255,.10))}
+    .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between}
+    .price{font-weight:900;font-size:18px}
+    .toast{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);background:rgba(17,25,42,.92);border:1px solid var(--line);border-radius:999px;padding:10px 14px;opacity:0;transition:.2s;pointer-events:none}
+    .toast.show{opacity:1;transform:translateX(-50%) translateY(-2px)}
   </style>
+
+  <!-- Three.js (public CDN) -->
+  <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/examples/js/controls/OrbitControls.js"></script>
+
+  <!-- Our 3D cookie engine -->
+  <script src="./cookie3d.js"></script>
 </head>
+
 <body>
   <div class="wrap">
     <div class="top">
-      <div class="brand">ONLYKEKS — Konfigurator</div>
-      <div class="btns">
-        <a class="btn secondary" href="./index.html">Start</a>
-        <a class="btn secondary" href="./preview.html">Preview</a>
-        <a class="btn secondary" href="./keks.html">Hall/Share</a>
+      <div class="brand"><span style="font-size:18px">🍪</span> OnlyCakes <span class="chip">Keks-Universum • Win-Win-Win</span></div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn" id="btnShare">Link teilen</button>
+        <button class="btn" id="btnReset">Reset</button>
+        <button class="btn good" id="btnRandom">Überrasch-Mich</button>
       </div>
     </div>
 
     <div class="grid">
-      <div class="card">
-        <div id="stage"></div>
-        <div class="hint" style="margin-top:10px">Zieh zum Drehen. Ziel: fotorealistisch (Material/Licht/Details).</div>
+      <div class="canvasCard">
+        <canvas id="cookieCanvas"></canvas>
       </div>
 
       <div class="card">
-        <label>Box-Größe</label>
-        <select id="size">
-          <option value="S">S</option>
-          <option value="M" selected>M</option>
-          <option value="L">L</option>
-        </select>
+        <div class="row">
+          <div>
+            <div class="title">Konfigurator</div>
+            <div class="muted">Base → bis 3 Toppings → Extras. Link teilt direkt deine Kombi.</div>
+          </div>
+          <div class="price" id="price">€0,00</div>
+        </div>
 
-        <label>Sorte</label>
-        <select id="mix">
-          <option value="classic">Classic</option>
-          <option value="choco">Choco Chunk</option>
-          <option value="nuss">Nuss & Crunch</option>
-          <option value="mix">Mix</option>
-        </select>
+        <hr style="border:0;border-top:1px solid rgba(255,255,255,.12);margin:12px 0" />
 
-        <label>Grußkarte</label>
-        <input id="cardtext" maxlength="60" placeholder="Dein Text…" />
+        <div class="title" style="font-size:16px">1) Base (1 wählen)</div>
+        <div class="optGrid" id="baseGrid"></div>
 
         <div style="height:10px"></div>
-        <button class="save" id="save" type="button">Keks speichern</button>
+        <div class="row">
+          <div class="title" style="font-size:16px;margin:0">2) Toppings (bis 3)</div>
+          <div class="chip" id="topCount">0 / 3</div>
+        </div>
+        <div class="optGrid" id="topGrid"></div>
 
-        <p class="hint" style="margin-top:10px">
-          MVP speichert lokal. Später: Versand/Shop + echtes Sharing.
-        </p>
+        <div style="height:10px"></div>
+        <div class="title" style="font-size:16px">3) Extras (optional)</div>
+        <div class="optGrid" id="extraGrid"></div>
+
+        <hr style="border:0;border-top:1px solid rgba(255,255,255,.12);margin:12px 0" />
+
+        <div class="muted" id="summary">—</div>
       </div>
     </div>
   </div>
 
-  <script src="./cookie3d.js"></script>
+  <div class="toast" id="toast"></div>
+
+  <script>
+    const MAX_TOP = 3;
+
+    const CATALOG = {
+      bases: [
+        { id:"classic", name:"Klassisch", desc:"Vanille-Teig", price:2.50 },
+        { id:"choco",   name:"Schoko",    desc:"Kakao-Teig",   price:2.90 },
+        { id:"dark",    name:"Dark",      desc:"Double-Cocoa", price:3.20 }
+      ],
+      toppings: [
+        { id:"chocochips", name:"Choco Chips", desc:"Crunch", price:0.60 },
+        { id:"sprinkles",  name:"Sprinkles",   desc:"Viral",  price:0.50 },
+        { id:"nuts",       name:"Nüsse",       desc:"Röstaroma", price:0.70 },
+        { id:"caramel",    name:"Karamell",    desc:"Drizzle", price:0.65 },
+        { id:"oreo",       name:"Oreo Crumb",  desc:"Dark",   price:0.75 },
+        { id:"berry",      name:"Berry Dust",  desc:"Fruity", price:0.70 }
+      ],
+      extras: [
+        { id:"bitcoin",  name:"Bitcoin-Glanz", desc:"Gold Touch", price:0.99 },
+        { id:"double",   name:"Doppel-Keks",   desc:"Mehr Masse", price:1.80 },
+        { id:"giftwrap", name:"Geschenk-Wrap", desc:"Für Gifts",  price:1.20 }
+      ]
+    };
+
+    const $ = (id)=>document.getElementById(id);
+    const toastEl = $("toast");
+
+    let state = { base:null, toppings:[], extras:[] };
+
+    function toast(msg){
+      toastEl.textContent = msg;
+      toastEl.classList.add("show");
+      clearTimeout(toastEl._t);
+      toastEl._t = setTimeout(()=>toastEl.classList.remove("show"), 1400);
+    }
+
+    function toQuery(){
+      const p = new URLSearchParams();
+      if(state.base) p.set("base", state.base);
+      if(state.toppings.length) p.set("t", state.toppings.join("."));
+      if(state.extras.length) p.set("x", state.extras.join("."));
+      return p.toString();
+    }
+
+    function fromQuery(){
+      const p = new URLSearchParams(location.search);
+      const base = p.get("base");
+      const t = p.get("t");
+      const x = p.get("x");
+
+      const validBase = CATALOG.bases.some(b=>b.id===base) ? base : null;
+      const tops = t ? t.split(".").filter(id => CATALOG.toppings.some(z=>z.id===id)).slice(0,MAX_TOP) : [];
+      const ex = x ? x.split(".").filter(id => CATALOG.extras.some(z=>z.id===id)) : [];
+      state = { base: validBase, toppings: tops, extras: ex };
+    }
+
+    function calcPrice(){
+      let sum = 0;
+      if(state.base) sum += (CATALOG.bases.find(b=>b.id===state.base)?.price || 0);
+      for(const t of state.toppings) sum += (CATALOG.toppings.find(z=>z.id===t)?.price || 0);
+      for(const x of state.extras) sum += (CATALOG.extras.find(z=>z.id===x)?.price || 0);
+      return sum;
+    }
+
+    function renderGrid(list, el, type){
+      el.innerHTML = list.map(item => {
+        const active = (type==="base" ? state.base===item.id :
+                       type==="topping" ? state.toppings.includes(item.id) :
+                       state.extras.includes(item.id));
+        return `
+          <div class="opt ${active ? "active":""}" data-id="${item.id}" data-type="${type}">
+            <b>${item.name}</b>
+            <small>${item.desc} · +€${item.price.toFixed(2).replace(".",",")}</small>
+          </div>
+        `;
+      }).join("");
+
+      el.querySelectorAll(".opt").forEach(opt=>{
+        opt.addEventListener("click", ()=>{
+          const id = opt.dataset.id;
+          if(type==="base"){ state.base = id; toast("Base gesetzt ✔"); }
+          if(type==="topping"){
+            const idx = state.toppings.indexOf(id);
+            if(idx>=0){ state.toppings.splice(idx,1); toast("Topping raus"); }
+            else {
+              if(state.toppings.length>=MAX_TOP){ toast("Max 3 Toppings, Boss 😄"); return; }
+              state.toppings.push(id); toast("Topping rein ✔");
+            }
+          }
+          if(type==="extra"){
+            const idx = state.extras.indexOf(id);
+            if(idx>=0){ state.extras.splice(idx,1); toast("Extra raus"); }
+            else { state.extras.push(id); toast("Extra rein ✔"); }
+          }
+
+          // sync URL + 3D
+          history.replaceState({}, "", "?" + toQuery());
+          refresh();
+        });
+      });
+    }
+
+    function refresh(){
+      $("topCount").textContent = `${state.toppings.length} / ${MAX_TOP}`;
+      const price = calcPrice();
+      $("price").textContent = "€" + price.toFixed(2).replace(".",",");
+      $("summary").textContent = `Base: ${state.base || "—"} • Toppings: ${state.toppings.join(", ") || "—"} • Extras: ${state.extras.join(", ") || "—"}`;
+
+      // update 3D
+      Cookie3D.update(state);
+
+      // re-render to update active states
+      renderAll();
+    }
+
+    function renderAll(){
+      renderGrid(CATALOG.bases, $("baseGrid"), "base");
+      renderGrid(CATALOG.toppings, $("topGrid"), "topping");
+      renderGrid(CATALOG.extras, $("extraGrid"), "extra");
+    }
+
+    function randomize(){
+      const b = CATALOG.bases[Math.floor(Math.random()*CATALOG.bases.length)].id;
+      const shuffled = [...CATALOG.toppings].sort(()=>Math.random()-0.5);
+      const tops = shuffled.slice(0, 1 + Math.floor(Math.random()*MAX_TOP)).map(x=>x.id);
+      const ex = Math.random()<0.6 ? ["bitcoin"] : [];
+      state = { base:b, toppings: tops, extras: ex };
+      history.replaceState({}, "", "?" + toQuery());
+      refresh();
+      toast("Überraschung geladen ✨");
+    }
+
+    function resetAll(){
+      state = { base:null, toppings:[], extras:[] };
+      history.replaceState({}, "", location.pathname);
+      refresh();
+      toast("Reset. Sauber.");
+    }
+
+    async function share(){
+      const url = location.origin + location.pathname + "?" + toQuery();
+      try{ await navigator.clipboard.writeText(url); toast("Link kopiert 🔗"); }
+      catch(e){ toast("Clipboard blockt 😅"); }
+    }
+
+    // INIT
+    fromQuery();
+
+    Cookie3D.mount({
+      canvas: $("cookieCanvas"),
+      getState: ()=>state,
+      onReady: ()=>{ renderAll(); refresh(); }
+    });
+
+    $("btnRandom").addEventListener("click", randomize);
+    $("btnReset").addEventListener("click", resetAll);
+    $("btnShare").addEventListener("click", share);
+
+    // Keyboard shortcut
+    window.addEventListener("keydown", (e)=>{ if(e.key.toLowerCase()==="r") randomize(); });
+  </script>
 </body>
 </html>

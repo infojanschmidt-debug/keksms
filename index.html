@@ -2,137 +2,862 @@
 <html lang="de">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>ONLYKEKS — Post, die schmeckt.</title>
-  <meta name="description" content="Post, die schmeckt. Frisch gebackene Kekse. Ehrlich. Ohne Schnickschnack." />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>OnlyCakes — 3D Keks-Konfigurator</title>
+  <meta name="description" content="Handgemacht. Keine Chargen. Direkt zu dir. Bau dir deinen Keks in 3D und bestell in Sekunden." />
   <style>
-    :root{--bg:#0b0f14;--card:#121926;--fg:#f3f5ff;--muted:#c9d0ff;--accent:#ffd17a;--max:980px}
+    :root{
+      --bg:#0b0f18;
+      --card:#11192a;
+      --card2:#0f1626;
+      --text:#eaf0ff;
+      --muted:#a8b3cf;
+      --line:rgba(255,255,255,.12);
+      --ok:#20e3b2;
+      --warn:#ffd166;
+      --bad:#ff5c7a;
+      --accent:#7c5cff;
+      --accent2:#2de2e6;
+      --shadow: 0 18px 60px rgba(0,0,0,.55);
+      --radius: 18px;
+    }
     *{box-sizing:border-box}
-    body{margin:0;font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,Arial;background:
-      radial-gradient(900px 500px at 20% 10%, rgba(255,209,122,.10), transparent 60%),
-      radial-gradient(900px 500px at 80% 90%, rgba(201,208,255,.08), transparent 60%),
-      var(--bg);color:var(--fg)}
-    main{max-width:var(--max);margin:0 auto;padding:48px 18px}
-    header{padding:42px 22px;border-radius:18px;background:linear-gradient(180deg, rgba(18,25,38,.90), rgba(18,25,38,.55));
-      border:1px solid rgba(255,255,255,.08)}
-    h1{margin:0 0 10px;font-size:44px;letter-spacing:.2px}
-    p{margin:10px 0;color:var(--muted)}
-    .btns{display:flex;gap:12px;flex-wrap:wrap;margin-top:18px}
-    a.btn{display:inline-block;padding:12px 16px;border-radius:12px;text-decoration:none;color:#0b0f14;background:var(--accent);font-weight:800}
-    a.btn.secondary{background:transparent;color:var(--fg);border:1px solid rgba(255,255,255,.18)}
-    .kpi{margin-top:12px;color:rgba(255,255,255,.65);font-size:14px}
-    section{margin-top:20px;padding:22px;border-radius:18px;background:rgba(18,25,38,.55);border:1px solid rgba(255,255,255,.08)}
-    h2{margin:0 0 10px;font-size:22px}
-    .grid{display:grid;gap:12px}
-    @media(min-width:860px){.grid{grid-template-columns:repeat(3,1fr)}}
-    .card{padding:16px;border-radius:14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08)}
-    .card h3{margin:0 0 8px;font-size:18px}
-    ul{margin:10px 0 0;padding-left:18px;color:var(--muted)}
-    .steps{display:grid;gap:10px}
-    .step{padding:14px;border-radius:14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08)}
-    .note{color:rgba(255,255,255,.72);font-size:14px}
-    footer{margin-top:18px;color:rgba(255,255,255,.65);font-size:14px;display:flex;gap:14px;flex-wrap:wrap}
-    footer a{color:rgba(255,255,255,.75);text-decoration:none}
-    .tag{display:inline-block;padding:6px 10px;border-radius:999px;background:rgba(255,209,122,.12);border:1px solid rgba(255,209,122,.22);color:rgba(255,255,255,.85);font-size:13px}
-    .heroRow{display:flex;flex-direction:column;gap:14px}
-    .heroImg{width:100%;border-radius:16px;border:1px dashed rgba(255,255,255,.18);padding:14px;color:rgba(255,255,255,.65)}
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background: radial-gradient(1200px 600px at 20% 10%, rgba(124,92,255,.25), transparent 60%),
+                  radial-gradient(900px 600px at 80% 0%, rgba(45,226,230,.18), transparent 55%),
+                  radial-gradient(1000px 800px at 50% 100%, rgba(255,209,102,.12), transparent 65%),
+                  var(--bg);
+      color:var(--text);
+      line-height:1.35;
+    }
+    a{color:inherit}
+    .wrap{max-width:1180px;margin:0 auto;padding:22px}
+    .topbar{
+      display:flex;align-items:center;justify-content:space-between;gap:12px;
+      padding:14px 16px;border:1px solid var(--line);border-radius:16px;background:rgba(17,25,42,.65);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 10px 35px rgba(0,0,0,.35);
+      position: sticky; top: 12px; z-index: 50;
+    }
+    .brand{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:.2px}
+    .chip{
+      font-size:12px;padding:6px 10px;border:1px solid var(--line);border-radius:999px;color:var(--muted);
+      background:rgba(255,255,255,.06)
+    }
+    .btn{
+      border:1px solid var(--line);
+      background: linear-gradient(180deg, rgba(124,92,255,.35), rgba(124,92,255,.12));
+      color:var(--text);
+      padding:10px 14px;border-radius:14px;
+      cursor:pointer;font-weight:700;
+      transition:.15s transform, .15s opacity;
+      user-select:none;
+    }
+    .btn:hover{transform:translateY(-1px)}
+    .btn:active{transform:translateY(0)}
+    .btn.secondary{
+      background:rgba(255,255,255,.06);
+      font-weight:700;
+    }
+    .btn.good{
+      background: linear-gradient(180deg, rgba(32,227,178,.35), rgba(32,227,178,.12));
+    }
+    .hero{
+      margin-top:18px;
+      border:1px solid var(--line);
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .heroGrid{
+      display:grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap:0;
+    }
+    @media (max-width: 980px){
+      .heroGrid{grid-template-columns: 1fr}
+    }
+    .heroLeft{padding:22px 22px 18px 22px}
+    .hTitle{
+      font-size: clamp(26px, 3.4vw, 44px);
+      line-height:1.05;
+      margin: 6px 0 10px 0;
+      letter-spacing:-.5px;
+      font-weight:900;
+    }
+    .hSub{color:var(--muted);font-size:15px;max-width:60ch}
+    .bullets{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+    .bullet{
+      display:flex;align-items:center;gap:8px;
+      padding:8px 10px;border:1px solid var(--line);border-radius:999px;background:rgba(17,25,42,.55);
+      color:var(--muted);font-size:12px;
+    }
+    .bullet b{color:var(--text)}
+    .heroActions{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+    .heroRight{
+      border-left:1px solid var(--line);
+      background: radial-gradient(800px 400px at 60% 40%, rgba(45,226,230,.20), transparent 60%),
+                  radial-gradient(700px 500px at 30% 30%, rgba(124,92,255,.20), transparent 60%),
+                  rgba(15,22,38,.65);
+      padding:18px;
+      display:flex;flex-direction:column;gap:12px;
+    }
+    @media (max-width: 980px){ .heroRight{border-left:0;border-top:1px solid var(--line)} }
+    .canvasCard{
+      border:1px solid var(--line);
+      border-radius: 16px;
+      background: rgba(0,0,0,.15);
+      overflow:hidden;
+      position:relative;
+      min-height: 360px;
+    }
+    canvas{display:block;width:100%;height:360px}
+    .canvasOverlay{
+      position:absolute;left:12px;top:12px;right:12px;
+      display:flex;align-items:center;justify-content:space-between;gap:10px;
+      pointer-events:none;
+    }
+    .ovTag{
+      pointer-events:none;
+      padding:7px 10px;border-radius:999px;border:1px solid var(--line);
+      background:rgba(0,0,0,.28);color:var(--muted);font-size:12px;
+      backdrop-filter: blur(8px);
+    }
+    .panel{
+      border:1px solid var(--line);
+      border-radius: 16px;
+      background: rgba(17,25,42,.55);
+      padding:14px;
+    }
+    .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between}
+    .price{
+      font-size:18px;font-weight:900;
+      display:flex;align-items:baseline;gap:8px
+    }
+    .price small{color:var(--muted);font-weight:700}
+    .divider{height:1px;background:var(--line);margin:12px 0}
+    .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    @media(max-width:720px){.grid2{grid-template-columns:1fr}}
+    .groupTitle{font-weight:900;margin:0 0 8px 0}
+    .optGrid{
+      display:grid;grid-template-columns:repeat(3, 1fr);
+      gap:10px;
+    }
+    @media(max-width:720px){.optGrid{grid-template-columns:repeat(2, 1fr)}}
+    .opt{
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:10px;
+      background: rgba(255,255,255,.05);
+      cursor:pointer;
+      transition:.15s transform, .15s background;
+      min-height:66px;
+      display:flex;flex-direction:column;gap:6px;justify-content:center;
+    }
+    .opt:hover{transform:translateY(-1px)}
+    .opt .name{font-weight:900}
+    .opt .desc{font-size:12px;color:var(--muted)}
+    .opt .meta{font-size:12px;color:var(--muted);display:flex;justify-content:space-between;gap:8px}
+    .opt.active{
+      background: linear-gradient(180deg, rgba(124,92,255,.32), rgba(124,92,255,.10));
+      border-color: rgba(124,92,255,.65);
+    }
+    .opt.active .desc,.opt.active .meta{color:rgba(234,240,255,.85)}
+    .note{color:var(--muted);font-size:12px}
+    .footer{
+      margin-top:18px;
+      color:var(--muted);
+      font-size:12px;
+      padding:18px 0 40px 0;
+      border-top:1px solid var(--line);
+    }
+    .toast{
+      position: fixed; left: 50%; bottom: 18px; transform: translateX(-50%);
+      background: rgba(17,25,42,.92);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 10px 14px;
+      color: var(--text);
+      font-size: 13px;
+      box-shadow: 0 18px 60px rgba(0,0,0,.55);
+      opacity: 0;
+      pointer-events: none;
+      transition: .2s opacity, .2s transform;
+    }
+    .toast.show{opacity:1;transform:translateX(-50%) translateY(-2px)}
+    .kbd{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      border:1px solid var(--line);border-bottom-width:2px;
+      padding:2px 6px;border-radius:8px;background:rgba(255,255,255,.06);
+      font-size:12px;color:var(--muted)
+    }
   </style>
 </head>
+
 <body>
-  <main>
-    <header id="top">
-      <div class="heroRow">
-        <div>
-          <span class="tag">ONLYKEKS</span>
-          <h1>Post, die schmeckt.</h1>
-          <p>Frisch gebackene Kekse. Ehrlich. Ohne Schnickschnack.</p>
-          <div class="btns">
-            <a class="btn" href="#produkte">Was ist drin?</a>
-            <a class="btn secondary" href="#sofunkt">So funktioniert’s</a>
+  <div class="wrap">
+    <div class="topbar">
+      <div class="brand">
+        <span style="font-size:18px">🍪</span>
+        <span>OnlyCakes</span>
+        <span class="chip">Keks-Universum • Win-Win-Win</span>
+      </div>
+      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+        <span class="chip">Shortcut: <span class="kbd">R</span> = Überrasch-Mich</span>
+        <button class="btn secondary" id="btnShare">Link teilen</button>
+        <button class="btn good" id="btnCart">In den Warenkorb</button>
+      </div>
+    </div>
+
+    <!-- HERO / 3D -->
+    <section class="hero" id="konfigurator">
+      <div class="heroGrid">
+        <div class="heroLeft">
+          <div class="chip" style="display:inline-flex;gap:8px;align-items:center">
+            <span>✨ 3D Hero</span><span style="opacity:.65">•</span><span>Platzhalter bis Photoreal-Mockup</span>
           </div>
-          <div class="kpi">Kleine Chargen • Handgemacht • Direkt zu dir</div>
+
+          <h1 class="hTitle">Bau dir deinen Keks. <span style="color:var(--accent2)">Live.</span> In 3D.</h1>
+          <p class="hSub">
+            Keine Chargen, handgemacht, direkt zu dir. Du wählst Base & Toppings – wir machen den Rest.
+            <b>Einfach, idiotensicher, und trotzdem „Wow“.</b>
+          </p>
+
+          <div class="bullets">
+            <div class="bullet">✅ <b>3-Step Flow</b> (Base → Toppings → Extras)</div>
+            <div class="bullet">⚡ <b>Live-Preis</b> + Live-Preview</div>
+            <div class="bullet">🎁 <b>Überrasch-Mich</b> Button</div>
+            <div class="bullet">🔗 <b>Share-Link</b> für deine Kreation</div>
+          </div>
+
+          <div class="heroActions">
+            <button class="btn good" id="btnScroll">Jetzt konfigurieren</button>
+            <button class="btn secondary" id="btnRandom">Überrasch-Mich</button>
+            <button class="btn secondary" id="btnReset">Zurücksetzen</button>
+          </div>
+
+          <div class="divider"></div>
+          <div class="note">
+            Hinweis: Das ist eine ultra-stabile, library-freie Preview (Canvas).
+            Wenn du später echtes WebGL/Three.js willst, docken wir das an – ohne deinen Flow zu zerstören.
+          </div>
         </div>
 
-        <div class="heroImg">
-          <b>3D-Hero kommt hier rein:</b><br/>
-          Platzhalter bis zum fotorealistischen Mockup (Box + Kekse).
+        <div class="heroRight">
+          <div class="canvasCard">
+            <div class="canvasOverlay">
+              <div class="ovTag" id="ovLabel">Preview • Base: — • Toppings: —</div>
+              <div class="ovTag" id="ovPrice">€0,00</div>
+            </div>
+            <canvas id="cookieCanvas" width="900" height="600" aria-label="3D Keks Vorschau"></canvas>
+          </div>
+
+          <div class="panel">
+            <div class="row">
+              <div class="price"><span id="priceValue">€0,00</span> <small id="priceHint">inkl. MwSt (Mock)</small></div>
+              <button class="btn secondary" id="btnCopyRecipe">Rezept kopieren</button>
+            </div>
+            <div class="divider"></div>
+            <div class="note" id="summaryText">Wähle eine Base, dann bis zu 3 Toppings. Extras optional.</div>
+          </div>
         </div>
       </div>
-    </header>
 
-    <section id="produkte">
-      <h2>Unsere Kekse</h2>
-      <p>Drei Sorten. Klar im Geschmack. Für Familie, Freunde und als Geschenk.</p>
+      <!-- CONFIG -->
+      <div style="padding:18px 22px 22px 22px;border-top:1px solid var(--line);background:rgba(15,22,38,.35)">
+        <div class="grid2">
+          <div class="panel">
+            <h3 class="groupTitle">1) Base (wähle 1)</h3>
+            <div class="optGrid" id="baseGrid"></div>
+            <div class="divider"></div>
+            <div class="note">Pro-Tipp: „Klassisch“ ist der sichere Default. „Dark“ = mehr Drama, mehr BÄM.</div>
+          </div>
 
-      <div class="grid">
-        <div class="card">
-          <h3>Classic</h3>
-          <ul>
-            <li><b>Geschmack:</b> buttrig, goldbraun, leicht karamellig</li>
-            <li><b>Zutaten:</b> Mehl, Butter, Zucker, Ei, Vanille, Salz</li>
-            <li><b>Für wen:</b> alle, die es einfach richtig mögen</li>
-          </ul>
+          <div class="panel">
+            <h3 class="groupTitle">2) Toppings (bis zu 3)</h3>
+            <div class="optGrid" id="topGrid"></div>
+            <div class="divider"></div>
+            <div class="row">
+              <div class="note">Max 3 Toppings. Klickt sich schneller als ’ne Jobcenter-Nummer. 😄</div>
+              <span class="chip" id="topCount">0 / 3</span>
+            </div>
+          </div>
         </div>
 
-        <div class="card">
-          <h3>Choco Chunk</h3>
-          <ul>
-            <li><b>Geschmack:</b> kräftig schokoladig, mit echten Stücken</li>
-            <li><b>Zutaten:</b> Classic + Schokolade</li>
-            <li><b>Für wen:</b> Schoko-Fans, Kids, Geschenke</li>
-          </ul>
+        <div style="height:12px"></div>
+
+        <div class="panel">
+          <div class="row">
+            <h3 class="groupTitle" style="margin:0">3) Extras (optional)</h3>
+            <span class="chip">Skalierbar: hier kannst du später „Füllung“, „Glasur“, „Crunch“ etc. ergänzen</span>
+          </div>
+          <div class="divider"></div>
+          <div class="optGrid" id="extraGrid"></div>
+          <div class="divider"></div>
+          <div class="row">
+            <div class="note">Checkout/Shop-Anbindung kann später an Stripe/Shopify/Whatever – Win-Win-Win & compliance-sauber.</div>
+            <div style="display:flex;gap:10px;flex-wrap:wrap">
+              <button class="btn secondary" id="btnShare2">Link teilen</button>
+              <button class="btn good" id="btnCart2">In den Warenkorb</button>
+            </div>
+          </div>
         </div>
+      </div>
+    </section>
 
-        <div class="card">
-          <h3>Nuss & Crunch</h3>
-          <ul>
-            <li><b>Geschmack:</b> nussig, knusprig, rund</li>
-            <li><b>Zutaten:</b> Classic + Nüsse (Allergene beachten)</li>
-            <li><b>Für wen:</b> Kaffee-Momente, Erwachsene, Besuch</li>
-          </ul>
+    <div class="footer">
+      <div><b>Created by: First Connect by Jan Christian Schmidt</b></div>
+      <div style="margin-top:6px">© OnlyCakes • Keks-Universum • Win-Win-Win</div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    // =========================
+    // DATA (einfach editierbar)
+    // =========================
+    const CATALOG = {
+      bases: [
+        { id:"classic", name:"Klassisch", desc:"Vanille-Teig, easy & clean", price:2.50, color:"#d7b98e" },
+        { id:"choco",   name:"Schoko",    desc:"Kakao-Teig, smooth & rich",  price:2.90, color:"#7a4b2c" },
+        { id:"dark",    name:"Dark",      desc:"Double-Cocoa, extra Kick",   price:3.20, color:"#3c2a23" }
+      ],
+      toppings: [
+        { id:"chocochips", name:"Choco Chips", desc:"Crunchy Klassiker", price:0.60, color:"#3b2b24" },
+        { id:"sprinkles",  name:"Sprinkles",   desc:"Bunt & viral",      price:0.50, color:"#ff7ad9" },
+        { id:"nuts",       name:"Nüsse",       desc:"Röstaroma",         price:0.70, color:"#b0855b" },
+        { id:"caramel",    name:"Karamell",    desc:"Sweet drizzle",     price:0.65, color:"#d08b2b" },
+        { id:"oreo",       name:"Oreo Crumb",  desc:"Dark crumble",      price:0.75, color:"#1f1f1f" },
+        { id:"berry",      name:"Berry Dust",  desc:"Fruity pop",        price:0.70, color:"#ff4d6d" }
+      ],
+      extras: [
+        { id:"giftwrap", name:"Geschenk-Wrap", desc:"Perfekt für Geschenk", price:1.20, color:"#20e3b2" },
+        { id:"double",   name:"Doppel-Keks",   desc:"Mehr Masse, mehr Liebe", price:1.80, color:"#7c5cff" },
+        { id:"bitcoin",  name:"Bitcoin-Glanz", desc:"Gold-Touch (Style)", price:0.99, color:"#f5b700" }
+      ]
+    };
+
+    // =========================
+    // STATE
+    // =========================
+    const MAX_TOPPINGS = 3;
+    let state = {
+      base: null,
+      toppings: [],
+      extras: []
+    };
+
+    const $ = (id)=>document.getElementById(id);
+    const toastEl = $("toast");
+
+    function toast(msg){
+      toastEl.textContent = msg;
+      toastEl.classList.add("show");
+      clearTimeout(toastEl._t);
+      toastEl._t = setTimeout(()=>toastEl.classList.remove("show"), 1400);
+    }
+
+    // =========================
+    // RENDER OPTIONS
+    // =========================
+    function renderOptions(){
+      const baseGrid = $("baseGrid");
+      const topGrid = $("topGrid");
+      const extraGrid = $("extraGrid");
+
+      baseGrid.innerHTML = CATALOG.bases.map(b => optCard(b, "base")).join("");
+      topGrid.innerHTML  = CATALOG.toppings.map(t => optCard(t, "topping")).join("");
+      extraGrid.innerHTML= CATALOG.extras.map(e => optCard(e, "extra")).join("");
+
+      baseGrid.querySelectorAll(".opt").forEach(el => el.addEventListener("click", ()=>pickBase(el.dataset.id)));
+      topGrid.querySelectorAll(".opt").forEach(el => el.addEventListener("click", ()=>toggleTopping(el.dataset.id)));
+      extraGrid.querySelectorAll(".opt").forEach(el => el.addEventListener("click", ()=>toggleExtra(el.dataset.id)));
+
+      refreshUI();
+    }
+
+    function optCard(item, type){
+      const active = isActive(type, item.id) ? "active" : "";
+      return `
+        <div class="opt ${active}" data-id="${item.id}" data-type="${type}" role="button" tabindex="0" aria-label="${item.name}">
+          <div class="name">${item.name}</div>
+          <div class="desc">${item.desc}</div>
+          <div class="meta">
+            <span>+ €${item.price.toFixed(2).replace(".",",")}</span>
+            <span style="opacity:.85">●</span>
+          </div>
         </div>
-      </div>
+      `;
+    }
 
-      <p style="margin-top:14px"><b>Keine Industrie-Ware.</b> Wir backen frisch.</p>
-    </section>
+    function isActive(type, id){
+      if(type==="base") return state.base===id;
+      if(type==="topping") return state.toppings.includes(id);
+      if(type==="extra") return state.extras.includes(id);
+      return false;
+    }
 
-    <section id="sofunkt">
-      <h2>So funktioniert ONLYKEKS</h2>
-      <div class="steps">
-        <div class="step">1) Du bestellst.</div>
-        <div class="step">2) Wir backen frisch.</div>
-        <div class="step">3) Wir schicken dir Post, die schmeckt.</div>
-      </div>
-      <p>Fertig. Kein Drumherum.</p>
-    </section>
+    // =========================
+    // ACTIONS
+    // =========================
+    function pickBase(id){
+      state.base = id;
+      saveState();
+      refreshUI();
+      toast("Base gesetzt ✔");
+    }
 
-    <section id="vertrauen">
-      <h2>Warum ONLYKEKS?</h2>
-      <ul>
-        <li><b>Gebacken mit Herz</b></li>
-        <li><b>Kein Industrie-Kram</b></li>
-        <li><b>Kleine Chargen</b></li>
-        <li><b>Ehrlich von Hand</b></li>
-      </ul>
-      <p class="note">Optional: echte Fotos aus der Küche. Nicht perfekt. Aber echt.</p>
-    </section>
+    function toggleTopping(id){
+      const idx = state.toppings.indexOf(id);
+      if(idx >= 0){
+        state.toppings.splice(idx,1);
+        saveState();
+        refreshUI();
+        toast("Topping entfernt");
+        return;
+      }
+      if(state.toppings.length >= MAX_TOPPINGS){
+        toast("Max 3 Toppings, Boss. 😄");
+        return;
+      }
+      state.toppings.push(id);
+      saveState();
+      refreshUI();
+      toast("Topping hinzugefügt ✔");
+    }
 
-    <section id="optional">
-      <h2>Mehr ONLYKEKS? (optional)</h2>
-      <p>Nach dem Genuss kommt manchmal Neugier. Wenn du willst: Updates, neue Sorten, später dein eigener Keks-Mix.</p>
-      <div class="btns">
-        <a class="btn secondary" href="#top">Updates & neue Sorten</a>
-      </div>
-      <p class="note"><b>Regel:</b> ONLYKEKS erklärt nichts. ONLYKEKS schmeckt.</p>
-    </section>
+    function toggleExtra(id){
+      const idx = state.extras.indexOf(id);
+      if(idx >= 0) state.extras.splice(idx,1);
+      else state.extras.push(id);
+      saveState();
+      refreshUI();
+      toast(idx>=0 ? "Extra entfernt" : "Extra hinzugefügt ✔");
+    }
 
-    <footer>
-      <a href="impressum.html">Impressum</a>
-      <a href="kontakt.html">Kontakt</a>
-      <a href="datenschutz.html">Datenschutz</a>
-      <span>© ONLYKEKS — Post, die schmeckt.</span>
-    </footer>
-  </main>
+    function resetAll(){
+      state = { base:null, toppings:[], extras:[] };
+      saveState(true);
+      refreshUI();
+      toast("Reset. Neustart. Sauber.");
+    }
+
+    function randomize(){
+      const b = pickRandom(CATALOG.bases).id;
+      const tops = shuffle([...CATALOG.toppings]).slice(0, randInt(1, MAX_TOPPINGS)).map(x=>x.id);
+      const ex = Math.random() < 0.55 ? [pickRandom(CATALOG.extras).id] : [];
+      state = { base:b, toppings:tops, extras:ex };
+      saveState();
+      refreshUI();
+      toast("Überraschung geladen ✨");
+    }
+
+    function pickRandom(arr){ return arr[Math.floor(Math.random()*arr.length)] }
+    function randInt(min,max){ return Math.floor(Math.random()*(max-min+1))+min }
+    function shuffle(a){
+      for(let i=a.length-1;i>0;i--){
+        const j=Math.floor(Math.random()*(i+1));
+        [a[i],a[j]]=[a[j],a[i]];
+      }
+      return a;
+    }
+
+    // =========================
+    // PRICE + SUMMARY
+    // =========================
+    function calcPrice(){
+      let total = 0;
+      if(state.base){
+        total += CATALOG.bases.find(x=>x.id===state.base)?.price ?? 0;
+      }
+      for(const t of state.toppings){
+        total += CATALOG.toppings.find(x=>x.id===t)?.price ?? 0;
+      }
+      for(const e of state.extras){
+        total += CATALOG.extras.find(x=>x.id===e)?.price ?? 0;
+      }
+      return Math.max(0, total);
+    }
+
+    function buildSummary(){
+      const baseName = state.base ? CATALOG.bases.find(x=>x.id===state.base)?.name : "—";
+      const topNames = state.toppings.map(id => CATALOG.toppings.find(x=>x.id===id)?.name).filter(Boolean);
+      const exNames  = state.extras.map(id => CATALOG.extras.find(x=>x.id===id)?.name).filter(Boolean);
+
+      const tops = topNames.length ? topNames.join(", ") : "—";
+      const extras = exNames.length ? exNames.join(", ") : "—";
+      return { baseName, tops, extras };
+    }
+
+    // =========================
+    // SHARE / RECIPE
+    // =========================
+    function toQuery(){
+      const p = new URLSearchParams();
+      if(state.base) p.set("base", state.base);
+      if(state.toppings.length) p.set("t", state.toppings.join("."));
+      if(state.extras.length) p.set("x", state.extras.join("."));
+      return p.toString();
+    }
+
+    async function shareLink(){
+      const url = location.origin + location.pathname + "?" + toQuery();
+      try{
+        await navigator.clipboard.writeText(url);
+        toast("Link kopiert 🔗");
+      }catch(e){
+        toast("Kopieren ging nicht. (Browser zickt.)");
+      }
+    }
+
+    async function copyRecipe(){
+      const s = buildSummary();
+      const txt =
+`OnlyCakes — Keks-Rezept
+Base: ${s.baseName}
+Toppings: ${s.tops}
+Extras: ${s.extras}
+Preis (Mock): €${calcPrice().toFixed(2).replace(".",",")}
+Link: ${location.origin + location.pathname + "?" + toQuery()}
+`;
+      try{
+        await navigator.clipboard.writeText(txt);
+        toast("Rezept kopiert 📋");
+      }catch(e){
+        toast("Clipboard blockt. 😅");
+      }
+    }
+
+    // =========================
+    // PERSISTENCE
+    // =========================
+    const LS_KEY = "onlycakes_cookie_config_v1";
+
+    function saveState(reset=false){
+      if(reset){
+        localStorage.removeItem(LS_KEY);
+        history.replaceState({}, "", location.pathname);
+        return;
+      }
+      localStorage.setItem(LS_KEY, JSON.stringify(state));
+      history.replaceState({}, "", "?" + toQuery());
+    }
+
+    function loadState(){
+      // 1) URL params first
+      const p = new URLSearchParams(location.search);
+      const base = p.get("base");
+      const t = p.get("t");
+      const x = p.get("x");
+
+      let fromUrl = null;
+      if(base || t || x){
+        fromUrl = {
+          base: base && CATALOG.bases.some(b=>b.id===base) ? base : null,
+          toppings: t ? t.split(".").filter(id => CATALOG.toppings.some(z=>z.id===id)).slice(0,MAX_TOPPINGS) : [],
+          extras: x ? x.split(".").filter(id => CATALOG.extras.some(z=>z.id===id)) : []
+        };
+      }
+
+      // 2) else localStorage
+      if(!fromUrl){
+        try{
+          const raw = localStorage.getItem(LS_KEY);
+          if(raw){
+            const parsed = JSON.parse(raw);
+            if(parsed && typeof parsed === "object"){
+              state.base = CATALOG.bases.some(b=>b.id===parsed.base) ? parsed.base : null;
+              state.toppings = Array.isArray(parsed.toppings) ? parsed.toppings.filter(id => CATALOG.toppings.some(z=>z.id===id)).slice(0,MAX_TOPPINGS) : [];
+              state.extras = Array.isArray(parsed.extras) ? parsed.extras.filter(id => CATALOG.extras.some(z=>z.id===id)) : [];
+              return;
+            }
+          }
+        }catch(e){}
+        return;
+      }
+
+      state = fromUrl;
+    }
+
+    // =========================
+    // UI REFRESH
+    // =========================
+    function refreshUI(){
+      // re-render cards active state
+      renderActiveStates();
+
+      // counters / price
+      $("topCount").textContent = `${state.toppings.length} / ${MAX_TOPPINGS}`;
+
+      const price = calcPrice();
+      const priceStr = "€" + price.toFixed(2).replace(".",",");
+      $("priceValue").textContent = priceStr;
+      $("ovPrice").textContent = priceStr;
+
+      // summary
+      const s = buildSummary();
+      $("summaryText").textContent = `Base: ${s.baseName} • Toppings: ${s.tops} • Extras: ${s.extras}`;
+      $("ovLabel").textContent = `Preview • Base: ${s.baseName} • Toppings: ${state.toppings.length || "—"}`;
+
+      // draw preview
+      drawCookiePreview();
+    }
+
+    function renderActiveStates(){
+      document.querySelectorAll(".opt").forEach(el=>{
+        const id = el.dataset.id;
+        const type = el.dataset.type;
+        const active = isActive(type, id);
+        el.classList.toggle("active", active);
+      });
+    }
+
+    // =========================
+    // CANVAS "3D" PREVIEW (library-free)
+    // =========================
+    const canvas = $("cookieCanvas");
+    const ctx = canvas.getContext("2d");
+
+    function resizeCanvasToDisplaySize(){
+      const rect = canvas.getBoundingClientRect();
+      const ratio = Math.max(1, Math.floor(window.devicePixelRatio || 1));
+      const w = Math.floor(rect.width * ratio);
+      const h = Math.floor(rect.height * ratio);
+      if(canvas.width !== w || canvas.height !== h){
+        canvas.width = w; canvas.height = h;
+      }
+    }
+
+    function drawCookiePreview(){
+      resizeCanvasToDisplaySize();
+      const w = canvas.width, h = canvas.height;
+
+      // background
+      ctx.clearRect(0,0,w,h);
+      const bg = ctx.createRadialGradient(w*0.55, h*0.45, 10, w*0.55, h*0.45, Math.max(w,h));
+      bg.addColorStop(0, "rgba(124,92,255,.16)");
+      bg.addColorStop(0.55, "rgba(45,226,230,.10)");
+      bg.addColorStop(1, "rgba(0,0,0,.0)");
+      ctx.fillStyle = "rgba(0,0,0,.28)";
+      ctx.fillRect(0,0,w,h);
+      ctx.fillStyle = bg;
+      ctx.fillRect(0,0,w,h);
+
+      // base color
+      const base = state.base ? CATALOG.bases.find(x=>x.id===state.base) : null;
+      const baseColor = base?.color || "#6b7280";
+
+      // cookie shadow (fake depth)
+      const cx = w*0.52, cy = h*0.56;
+      const r  = Math.min(w,h)*0.23;
+
+      ctx.save();
+      ctx.translate(0,0);
+
+      // drop shadow
+      ctx.beginPath();
+      ctx.ellipse(cx+ r*0.08, cy + r*0.55, r*1.05, r*0.42, 0, 0, Math.PI*2);
+      ctx.fillStyle = "rgba(0,0,0,.45)";
+      ctx.fill();
+
+      // cookie body (top + rim)
+      // rim
+      const rim = ctx.createRadialGradient(cx - r*0.2, cy - r*0.2, r*0.2, cx, cy, r*1.15);
+      rim.addColorStop(0, shade(baseColor, 18));
+      rim.addColorStop(0.55, baseColor);
+      rim.addColorStop(1, shade(baseColor, -28));
+
+      ctx.beginPath();
+      ctx.arc(cx, cy, r, 0, Math.PI*2);
+      ctx.fillStyle = rim;
+      ctx.fill();
+
+      // highlight
+      const hi = ctx.createRadialGradient(cx - r*0.35, cy - r*0.35, r*0.05, cx - r*0.25, cy - r*0.25, r*0.8);
+      hi.addColorStop(0, "rgba(255,255,255,.28)");
+      hi.addColorStop(1, "rgba(255,255,255,0)");
+      ctx.beginPath();
+      ctx.arc(cx, cy, r, 0, Math.PI*2);
+      ctx.fillStyle = hi;
+      ctx.fill();
+
+      // texture speckles
+      ctx.globalAlpha = 0.22;
+      for(let i=0;i<120;i++){
+        const a = Math.random()*Math.PI*2;
+        const rr = Math.random()*r*0.85;
+        const x = cx + Math.cos(a)*rr;
+        const y = cy + Math.sin(a)*rr;
+        ctx.fillStyle = "rgba(0,0,0,.25)";
+        ctx.fillRect(x, y, 2, 2);
+      }
+      ctx.globalAlpha = 1;
+
+      // toppings
+      const toppingItems = state.toppings.map(id=>CATALOG.toppings.find(x=>x.id===id)).filter(Boolean);
+      const seed = hashString((state.base||"") + "|" + state.toppings.join(",") + "|" + state.extras.join(","));
+      const rng = mulberry32(seed);
+
+      // sprinkle random dots / chips depending on topping type
+      toppingItems.forEach((t, idx)=>{
+        const count = 26 + idx*10;
+        for(let i=0;i<count;i++){
+          const a = rng()*Math.PI*2;
+          const rr = rng()*r*0.82;
+          const x = cx + Math.cos(a)*rr;
+          const y = cy + Math.sin(a)*rr;
+          const size = (t.id==="sprinkles") ? (2 + rng()*5) : (3 + rng()*6);
+
+          ctx.save();
+          ctx.translate(x,y);
+          ctx.rotate(rng()*Math.PI);
+          ctx.fillStyle = t.color;
+          ctx.globalAlpha = 0.9;
+          if(t.id==="sprinkles"){
+            ctx.fillRect(-size*0.6, -size*0.15, size*1.2, size*0.3);
+          }else if(t.id==="caramel"){
+            // drizzle lines
+            ctx.globalAlpha = 0.55;
+            ctx.strokeStyle = t.color;
+            ctx.lineWidth = Math.max(1.5, size*0.18);
+            ctx.beginPath();
+            ctx.moveTo(-size, 0);
+            ctx.bezierCurveTo(-size*0.2, -size*0.5, size*0.2, size*0.5, size, 0);
+            ctx.stroke();
+          }else if(t.id==="oreo"){
+            ctx.globalAlpha = 0.75;
+            ctx.beginPath();
+            ctx.arc(0,0, size*0.33, 0, Math.PI*2);
+            ctx.fill();
+          }else{
+            ctx.beginPath();
+            ctx.arc(0,0, size*0.35, 0, Math.PI*2);
+            ctx.fill();
+          }
+          ctx.restore();
+        }
+      });
+
+      // extras overlay
+      if(state.extras.includes("bitcoin")){
+        // gold glint
+        const g = ctx.createRadialGradient(cx - r*0.35, cy - r*0.35, 10, cx, cy, r*1.1);
+        g.addColorStop(0, "rgba(245,183,0,.22)");
+        g.addColorStop(0.7, "rgba(245,183,0,.04)");
+        g.addColorStop(1, "rgba(245,183,0,0)");
+        ctx.beginPath();
+        ctx.arc(cx, cy, r, 0, Math.PI*2);
+        ctx.fillStyle = g;
+        ctx.fill();
+
+        // subtle ₿ stamp
+        ctx.font = `${Math.floor(r*0.62)}px system-ui, sans-serif`;
+        ctx.fillStyle = "rgba(245,183,0,.20)";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText("₿", cx + r*0.30, cy - r*0.18);
+      }
+
+      ctx.restore();
+
+      // label line
+      ctx.fillStyle = "rgba(255,255,255,.08)";
+      ctx.fillRect(w*0.08, h*0.12, w*0.84, 1);
+
+      ctx.fillStyle = "rgba(234,240,255,.85)";
+      ctx.font = `${Math.floor(Math.min(w,h)*0.032)}px system-ui, sans-serif`;
+      ctx.textAlign="left";
+      ctx.fillText("3D Preview (Mock)", w*0.08, h*0.10);
+
+      ctx.fillStyle = "rgba(168,179,207,.85)";
+      ctx.font = `${Math.floor(Math.min(w,h)*0.024)}px system-ui, sans-serif`;
+      ctx.fillText("Echter Photoreal-Render kann später rein – ohne deinen Flow zu killen.", w*0.08, h*0.17);
+    }
+
+    // helpers for deterministic "random"
+    function hashString(str){
+      let h = 2166136261;
+      for(let i=0;i<str.length;i++){
+        h ^= str.charCodeAt(i);
+        h = Math.imul(h, 16777619);
+      }
+      return h >>> 0;
+    }
+    function mulberry32(a){
+      return function(){
+        let t = a += 0x6D2B79F5;
+        t = Math.imul(t ^ t >>> 15, t | 1);
+        t ^= t + Math.imul(t ^ t >>> 7, t | 61);
+        return ((t ^ t >>> 14) >>> 0) / 4294967296;
+      }
+    }
+    function shade(hex, percent){
+      // hex like #rrggbb
+      const n = hex.replace("#","");
+      const r = parseInt(n.substring(0,2),16);
+      const g = parseInt(n.substring(2,4),16);
+      const b = parseInt(n.substring(4,6),16);
+      const t = percent<0 ? 0 : 255;
+      const p = Math.abs(percent)/100;
+      const rr = Math.round((t-r)*p)+r;
+      const gg = Math.round((t-g)*p)+g;
+      const bb = Math.round((t-b)*p)+b;
+      return "#" + [rr,gg,bb].map(x=>x.toString(16).padStart(2,"0")).join("");
+    }
+
+    // =========================
+    // CTA Mock
+    // =========================
+    function addToCart(){
+      if(!state.base){
+        toast("Erst Base wählen, dann ballern. 😄");
+        return;
+      }
+      toast("In den Warenkorb (Mock) ✅");
+      // Hier später echte Shop-Integration: fetch("/api/cart"), Shopify, Stripe Checkout, etc.
+    }
+
+    // =========================
+    // EVENTS
+    // =========================
+    function bindEvents(){
+      $("btnRandom").addEventListener("click", randomize);
+      $("btnReset").addEventListener("click", resetAll);
+
+      $("btnShare").addEventListener("click", shareLink);
+      $("btnShare2").addEventListener("click", shareLink);
+
+      $("btnCart").addEventListener("click", addToCart);
+      $("btnCart2").addEventListener("click", addToCart);
+
+      $("btnCopyRecipe").addEventListener("click", copyRecipe);
+
+      $("btnScroll").addEventListener("click", ()=>{
+        document.querySelector("#konfigurator").scrollIntoView({behavior:"smooth", block:"start"});
+        toast("Scroll ✓");
+      });
+
+      // Keyboard shortcut
+      window.addEventListener("keydown", (e)=>{
+        if(e.key.toLowerCase()==="r"){
+          randomize();
+        }
+      });
+
+      window.addEventListener("resize", ()=>drawCookiePreview());
+    }
+
+    // =========================
+    // INIT
+    // =========================
+    loadState();
+    renderOptions();
+    bindEvents();
+    refreshUI();
+  </script>
 </body>
 </html>
-<a href="konfigurator.html">Jetzt Keks gestalten </a>

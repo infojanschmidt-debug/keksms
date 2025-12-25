@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>OnlyCakes — 3D Keks-Konfigurator</title>
   <meta name="description" content="Handgemacht. Keine Chargen. Direkt zu dir. Bau dir deinen Keks in 3D und bestell in Sekunden." />
+
   <style>
     :root{
       --bg:#0b0f18;
@@ -51,7 +52,7 @@
       background: linear-gradient(180deg, rgba(124,92,255,.35), rgba(124,92,255,.12));
       color:var(--text);
       padding:10px 14px;border-radius:14px;
-      cursor:pointer;font-weight:700;
+      cursor:pointer;font-weight:800;
       transition:.15s transform, .15s opacity;
       user-select:none;
     }
@@ -59,11 +60,12 @@
     .btn:active{transform:translateY(0)}
     .btn.secondary{
       background:rgba(255,255,255,.06);
-      font-weight:700;
+      font-weight:800;
     }
     .btn.good{
       background: linear-gradient(180deg, rgba(32,227,178,.35), rgba(32,227,178,.12));
     }
+
     .hero{
       margin-top:18px;
       border:1px solid var(--line);
@@ -74,7 +76,7 @@
     }
     .heroGrid{
       display:grid;
-      grid-template-columns: 1.15fr .85fr;
+      grid-template-columns: 1.1fr .9fr;
       gap:0;
     }
     @media (max-width: 980px){
@@ -97,6 +99,7 @@
     }
     .bullet b{color:var(--text)}
     .heroActions{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+
     .heroRight{
       border-left:1px solid var(--line);
       background: radial-gradient(800px 400px at 60% 40%, rgba(45,226,230,.20), transparent 60%),
@@ -106,15 +109,17 @@
       display:flex;flex-direction:column;gap:12px;
     }
     @media (max-width: 980px){ .heroRight{border-left:0;border-top:1px solid var(--line)} }
+
     .canvasCard{
       border:1px solid var(--line);
       border-radius: 16px;
       background: rgba(0,0,0,.15);
       overflow:hidden;
       position:relative;
-      min-height: 360px;
+      min-height: 420px;
     }
-    canvas{display:block;width:100%;height:360px}
+    canvas{display:block;width:100%;height:420px}
+
     .canvasOverlay{
       position:absolute;left:12px;top:12px;right:12px;
       display:flex;align-items:center;justify-content:space-between;gap:10px;
@@ -126,6 +131,7 @@
       background:rgba(0,0,0,.28);color:var(--muted);font-size:12px;
       backdrop-filter: blur(8px);
     }
+
     .panel{
       border:1px solid var(--line);
       border-radius: 16px;
@@ -195,6 +201,12 @@
       font-size:12px;color:var(--muted)
     }
   </style>
+
+  <!-- Three.js (WebGL) -->
+  <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/examples/js/controls/OrbitControls.js"></script>
+  <!-- 3D Cookie Engine (liegt bei dir im Repo) -->
+  <script src="./cookie3d.js"></script>
 </head>
 
 <body>
@@ -207,6 +219,7 @@
       </div>
       <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
         <span class="chip">Shortcut: <span class="kbd">R</span> = Überrasch-Mich</span>
+        <button class="btn good" id="btnTopSurprise">Überrasch-Mich</button>
         <button class="btn secondary" id="btnShare">Link teilen</button>
         <button class="btn good" id="btnCart">In den Warenkorb</button>
       </div>
@@ -217,10 +230,10 @@
       <div class="heroGrid">
         <div class="heroLeft">
           <div class="chip" style="display:inline-flex;gap:8px;align-items:center">
-            <span>✨ 3D Hero</span><span style="opacity:.65">•</span><span>Platzhalter bis Photoreal-Mockup</span>
+            <span>✨ 3D Hero</span><span style="opacity:.65">•</span><span>WebGL / Three.js</span>
           </div>
 
-          <h1 class="hTitle">Bau dir deinen Keks. <span style="color:var(--accent2)">Live.</span> In 3D.</h1>
+          <h1 class="hTitle">Bau dir deinen Keks. <span style="color:var(--accent2)">Echt.</span> In 3D.</h1>
           <p class="hSub">
             Keine Chargen, handgemacht, direkt zu dir. Du wählst Base & Toppings – wir machen den Rest.
             <b>Einfach, idiotensicher, und trotzdem „Wow“.</b>
@@ -241,18 +254,17 @@
 
           <div class="divider"></div>
           <div class="note">
-            Hinweis: Das ist eine ultra-stabile, library-freie Preview (Canvas).
-            Wenn du später echtes WebGL/Three.js willst, docken wir das an – ohne deinen Flow zu zerstören.
+            Tipp: Du kannst den Keks im 3D-Fenster drehen/zoomen. (Orbit Controls aktiv)
           </div>
         </div>
 
         <div class="heroRight">
           <div class="canvasCard">
             <div class="canvasOverlay">
-              <div class="ovTag" id="ovLabel">Preview • Base: — • Toppings: —</div>
+              <div class="ovTag" id="ovLabel">3D • Base: — • Toppings: —</div>
               <div class="ovTag" id="ovPrice">€0,00</div>
             </div>
-            <canvas id="cookieCanvas" width="900" height="600" aria-label="3D Keks Vorschau"></canvas>
+            <canvas id="cookieCanvas" aria-label="3D Keks Vorschau"></canvas>
           </div>
 
           <div class="panel">
@@ -281,7 +293,7 @@
             <div class="optGrid" id="topGrid"></div>
             <div class="divider"></div>
             <div class="row">
-              <div class="note">Max 3 Toppings. Klickt sich schneller als ’ne Jobcenter-Nummer. 😄</div>
+              <div class="note">Max 3 Toppings. Klickt schneller als ’ne Jobcenter-Nummer. 😄</div>
               <span class="chip" id="topCount">0 / 3</span>
             </div>
           </div>
@@ -292,13 +304,13 @@
         <div class="panel">
           <div class="row">
             <h3 class="groupTitle" style="margin:0">3) Extras (optional)</h3>
-            <span class="chip">Skalierbar: hier kannst du später „Füllung“, „Glasur“, „Crunch“ etc. ergänzen</span>
+            <span class="chip">Skalierbar: später „Füllung“, „Glasur“, „Crunch“ etc.</span>
           </div>
           <div class="divider"></div>
           <div class="optGrid" id="extraGrid"></div>
           <div class="divider"></div>
           <div class="row">
-            <div class="note">Checkout/Shop-Anbindung kann später an Stripe/Shopify/Whatever – Win-Win-Win & compliance-sauber.</div>
+            <div class="note">Checkout/Shop-Anbindung später sauber (Stripe/Shopify/…) – Win-Win-Win & compliance-friendly.</div>
             <div style="display:flex;gap:10px;flex-wrap:wrap">
               <button class="btn secondary" id="btnShare2">Link teilen</button>
               <button class="btn good" id="btnCart2">In den Warenkorb</button>
@@ -322,22 +334,22 @@
     // =========================
     const CATALOG = {
       bases: [
-        { id:"classic", name:"Klassisch", desc:"Vanille-Teig, easy & clean", price:2.50, color:"#d7b98e" },
-        { id:"choco",   name:"Schoko",    desc:"Kakao-Teig, smooth & rich",  price:2.90, color:"#7a4b2c" },
-        { id:"dark",    name:"Dark",      desc:"Double-Cocoa, extra Kick",   price:3.20, color:"#3c2a23" }
+        { id:"classic", name:"Klassisch", desc:"Vanille-Teig, easy & clean", price:2.50 },
+        { id:"choco",   name:"Schoko",    desc:"Kakao-Teig, smooth & rich",  price:2.90 },
+        { id:"dark",    name:"Dark",      desc:"Double-Cocoa, extra Kick",   price:3.20 }
       ],
       toppings: [
-        { id:"chocochips", name:"Choco Chips", desc:"Crunchy Klassiker", price:0.60, color:"#3b2b24" },
-        { id:"sprinkles",  name:"Sprinkles",   desc:"Bunt & viral",      price:0.50, color:"#ff7ad9" },
-        { id:"nuts",       name:"Nüsse",       desc:"Röstaroma",         price:0.70, color:"#b0855b" },
-        { id:"caramel",    name:"Karamell",    desc:"Sweet drizzle",     price:0.65, color:"#d08b2b" },
-        { id:"oreo",       name:"Oreo Crumb",  desc:"Dark crumble",      price:0.75, color:"#1f1f1f" },
-        { id:"berry",      name:"Berry Dust",  desc:"Fruity pop",        price:0.70, color:"#ff4d6d" }
+        { id:"chocochips", name:"Choco Chips", desc:"Crunchy Klassiker", price:0.60 },
+        { id:"sprinkles",  name:"Sprinkles",   desc:"Bunt & viral",      price:0.50 },
+        { id:"nuts",       name:"Nüsse",       desc:"Röstaroma",         price:0.70 },
+        { id:"caramel",    name:"Karamell",    desc:"Sweet drizzle",     price:0.65 },
+        { id:"oreo",       name:"Oreo Crumb",  desc:"Dark crumble",      price:0.75 },
+        { id:"berry",      name:"Berry Dust",  desc:"Fruity pop",        price:0.70 }
       ],
       extras: [
-        { id:"giftwrap", name:"Geschenk-Wrap", desc:"Perfekt für Geschenk", price:1.20, color:"#20e3b2" },
-        { id:"double",   name:"Doppel-Keks",   desc:"Mehr Masse, mehr Liebe", price:1.80, color:"#7c5cff" },
-        { id:"bitcoin",  name:"Bitcoin-Glanz", desc:"Gold-Touch (Style)", price:0.99, color:"#f5b700" }
+        { id:"giftwrap", name:"Geschenk-Wrap", desc:"Perfekt für Geschenk", price:1.20 },
+        { id:"double",   name:"Doppel-Keks",   desc:"Mehr Masse, mehr Liebe", price:1.80 },
+        { id:"bitcoin",  name:"Bitcoin-Glanz", desc:"Gold-Touch (Style)", price:0.99 }
       ]
     };
 
@@ -345,11 +357,7 @@
     // STATE
     // =========================
     const MAX_TOPPINGS = 3;
-    let state = {
-      base: null,
-      toppings: [],
-      extras: []
-    };
+    let state = { base: null, toppings: [], extras: [] };
 
     const $ = (id)=>document.getElementById(id);
     const toastEl = $("toast");
@@ -369,9 +377,9 @@
       const topGrid = $("topGrid");
       const extraGrid = $("extraGrid");
 
-      baseGrid.innerHTML = CATALOG.bases.map(b => optCard(b, "base")).join("");
-      topGrid.innerHTML  = CATALOG.toppings.map(t => optCard(t, "topping")).join("");
-      extraGrid.innerHTML= CATALOG.extras.map(e => optCard(e, "extra")).join("");
+      baseGrid.innerHTML  = CATALOG.bases.map(b => optCard(b, "base")).join("");
+      topGrid.innerHTML   = CATALOG.toppings.map(t => optCard(t, "topping")).join("");
+      extraGrid.innerHTML = CATALOG.extras.map(e => optCard(e, "extra")).join("");
 
       baseGrid.querySelectorAll(".opt").forEach(el => el.addEventListener("click", ()=>pickBase(el.dataset.id)));
       topGrid.querySelectorAll(".opt").forEach(el => el.addEventListener("click", ()=>toggleTopping(el.dataset.id)));
@@ -449,7 +457,7 @@
     function randomize(){
       const b = pickRandom(CATALOG.bases).id;
       const tops = shuffle([...CATALOG.toppings]).slice(0, randInt(1, MAX_TOPPINGS)).map(x=>x.id);
-      const ex = Math.random() < 0.55 ? [pickRandom(CATALOG.extras).id] : [];
+      const ex = Math.random() < 0.75 ? ["bitcoin"] : (Math.random()<0.4 ? ["double"] : []);
       state = { base:b, toppings:tops, extras:ex };
       saveState();
       refreshUI();
@@ -471,15 +479,9 @@
     // =========================
     function calcPrice(){
       let total = 0;
-      if(state.base){
-        total += CATALOG.bases.find(x=>x.id===state.base)?.price ?? 0;
-      }
-      for(const t of state.toppings){
-        total += CATALOG.toppings.find(x=>x.id===t)?.price ?? 0;
-      }
-      for(const e of state.extras){
-        total += CATALOG.extras.find(x=>x.id===e)?.price ?? 0;
-      }
+      if(state.base) total += CATALOG.bases.find(x=>x.id===state.base)?.price ?? 0;
+      for(const t of state.toppings) total += CATALOG.toppings.find(x=>x.id===t)?.price ?? 0;
+      for(const e of state.extras) total += CATALOG.extras.find(x=>x.id===e)?.price ?? 0;
       return Math.max(0, total);
     }
 
@@ -487,10 +489,11 @@
       const baseName = state.base ? CATALOG.bases.find(x=>x.id===state.base)?.name : "—";
       const topNames = state.toppings.map(id => CATALOG.toppings.find(x=>x.id===id)?.name).filter(Boolean);
       const exNames  = state.extras.map(id => CATALOG.extras.find(x=>x.id===id)?.name).filter(Boolean);
-
-      const tops = topNames.length ? topNames.join(", ") : "—";
-      const extras = exNames.length ? exNames.join(", ") : "—";
-      return { baseName, tops, extras };
+      return {
+        baseName,
+        tops: topNames.length ? topNames.join(", ") : "—",
+        extras: exNames.length ? exNames.join(", ") : "—"
+      };
     }
 
     // =========================
@@ -535,7 +538,7 @@ Link: ${location.origin + location.pathname + "?" + toQuery()}
     // =========================
     // PERSISTENCE
     // =========================
-    const LS_KEY = "onlycakes_cookie_config_v1";
+    const LS_KEY = "onlycakes_cookie_config_v2";
 
     function saveState(reset=false){
       if(reset){
@@ -563,34 +566,52 @@ Link: ${location.origin + location.pathname + "?" + toQuery()}
         };
       }
 
-      // 2) else localStorage
-      if(!fromUrl){
-        try{
-          const raw = localStorage.getItem(LS_KEY);
-          if(raw){
-            const parsed = JSON.parse(raw);
-            if(parsed && typeof parsed === "object"){
-              state.base = CATALOG.bases.some(b=>b.id===parsed.base) ? parsed.base : null;
-              state.toppings = Array.isArray(parsed.toppings) ? parsed.toppings.filter(id => CATALOG.toppings.some(z=>z.id===id)).slice(0,MAX_TOPPINGS) : [];
-              state.extras = Array.isArray(parsed.extras) ? parsed.extras.filter(id => CATALOG.extras.some(z=>z.id===id)) : [];
-              return;
-            }
-          }
-        }catch(e){}
+      if(fromUrl){
+        state = fromUrl;
         return;
       }
 
-      state = fromUrl;
+      // 2) localStorage
+      try{
+        const raw = localStorage.getItem(LS_KEY);
+        if(!raw) return;
+        const parsed = JSON.parse(raw);
+        if(!parsed || typeof parsed !== "object") return;
+
+        state.base = CATALOG.bases.some(b=>b.id===parsed.base) ? parsed.base : null;
+        state.toppings = Array.isArray(parsed.toppings) ? parsed.toppings.filter(id => CATALOG.toppings.some(z=>z.id===id)).slice(0,MAX_TOPPINGS) : [];
+        state.extras = Array.isArray(parsed.extras) ? parsed.extras.filter(id => CATALOG.extras.some(z=>z.id===id)) : [];
+      }catch(e){}
+    }
+
+    // =========================
+    // 3D ENGINE (Cookie3D)
+    // =========================
+    let _mounted3D = false;
+    function ensure3D(){
+      if(_mounted3D) return;
+      if(!window.Cookie3D){
+        console.error("Cookie3D fehlt. Liegt cookie3d.js im gleichen Ordner?");
+        return;
+      }
+      Cookie3D.mount({
+        canvas: $("cookieCanvas"),
+        getState: ()=>state
+      });
+      _mounted3D = true;
     }
 
     // =========================
     // UI REFRESH
     // =========================
     function refreshUI(){
-      // re-render cards active state
-      renderActiveStates();
+      // Active state toggles
+      document.querySelectorAll(".opt").forEach(el=>{
+        const id = el.dataset.id;
+        const type = el.dataset.type;
+        el.classList.toggle("active", isActive(type, id));
+      });
 
-      // counters / price
       $("topCount").textContent = `${state.toppings.length} / ${MAX_TOPPINGS}`;
 
       const price = calcPrice();
@@ -598,215 +619,13 @@ Link: ${location.origin + location.pathname + "?" + toQuery()}
       $("priceValue").textContent = priceStr;
       $("ovPrice").textContent = priceStr;
 
-      // summary
       const s = buildSummary();
       $("summaryText").textContent = `Base: ${s.baseName} • Toppings: ${s.tops} • Extras: ${s.extras}`;
-      $("ovLabel").textContent = `Preview • Base: ${s.baseName} • Toppings: ${state.toppings.length || "—"}`;
+      $("ovLabel").textContent = `3D • Base: ${s.baseName} • Toppings: ${state.toppings.length || "—"}`;
 
-      // draw preview
-      drawCookiePreview();
-    }
-
-    function renderActiveStates(){
-      document.querySelectorAll(".opt").forEach(el=>{
-        const id = el.dataset.id;
-        const type = el.dataset.type;
-        const active = isActive(type, id);
-        el.classList.toggle("active", active);
-      });
-    }
-
-    // =========================
-    // CANVAS "3D" PREVIEW (library-free)
-    // =========================
-    const canvas = $("cookieCanvas");
-    const ctx = canvas.getContext("2d");
-
-    function resizeCanvasToDisplaySize(){
-      const rect = canvas.getBoundingClientRect();
-      const ratio = Math.max(1, Math.floor(window.devicePixelRatio || 1));
-      const w = Math.floor(rect.width * ratio);
-      const h = Math.floor(rect.height * ratio);
-      if(canvas.width !== w || canvas.height !== h){
-        canvas.width = w; canvas.height = h;
-      }
-    }
-
-    function drawCookiePreview(){
-      resizeCanvasToDisplaySize();
-      const w = canvas.width, h = canvas.height;
-
-      // background
-      ctx.clearRect(0,0,w,h);
-      const bg = ctx.createRadialGradient(w*0.55, h*0.45, 10, w*0.55, h*0.45, Math.max(w,h));
-      bg.addColorStop(0, "rgba(124,92,255,.16)");
-      bg.addColorStop(0.55, "rgba(45,226,230,.10)");
-      bg.addColorStop(1, "rgba(0,0,0,.0)");
-      ctx.fillStyle = "rgba(0,0,0,.28)";
-      ctx.fillRect(0,0,w,h);
-      ctx.fillStyle = bg;
-      ctx.fillRect(0,0,w,h);
-
-      // base color
-      const base = state.base ? CATALOG.bases.find(x=>x.id===state.base) : null;
-      const baseColor = base?.color || "#6b7280";
-
-      // cookie shadow (fake depth)
-      const cx = w*0.52, cy = h*0.56;
-      const r  = Math.min(w,h)*0.23;
-
-      ctx.save();
-      ctx.translate(0,0);
-
-      // drop shadow
-      ctx.beginPath();
-      ctx.ellipse(cx+ r*0.08, cy + r*0.55, r*1.05, r*0.42, 0, 0, Math.PI*2);
-      ctx.fillStyle = "rgba(0,0,0,.45)";
-      ctx.fill();
-
-      // cookie body (top + rim)
-      // rim
-      const rim = ctx.createRadialGradient(cx - r*0.2, cy - r*0.2, r*0.2, cx, cy, r*1.15);
-      rim.addColorStop(0, shade(baseColor, 18));
-      rim.addColorStop(0.55, baseColor);
-      rim.addColorStop(1, shade(baseColor, -28));
-
-      ctx.beginPath();
-      ctx.arc(cx, cy, r, 0, Math.PI*2);
-      ctx.fillStyle = rim;
-      ctx.fill();
-
-      // highlight
-      const hi = ctx.createRadialGradient(cx - r*0.35, cy - r*0.35, r*0.05, cx - r*0.25, cy - r*0.25, r*0.8);
-      hi.addColorStop(0, "rgba(255,255,255,.28)");
-      hi.addColorStop(1, "rgba(255,255,255,0)");
-      ctx.beginPath();
-      ctx.arc(cx, cy, r, 0, Math.PI*2);
-      ctx.fillStyle = hi;
-      ctx.fill();
-
-      // texture speckles
-      ctx.globalAlpha = 0.22;
-      for(let i=0;i<120;i++){
-        const a = Math.random()*Math.PI*2;
-        const rr = Math.random()*r*0.85;
-        const x = cx + Math.cos(a)*rr;
-        const y = cy + Math.sin(a)*rr;
-        ctx.fillStyle = "rgba(0,0,0,.25)";
-        ctx.fillRect(x, y, 2, 2);
-      }
-      ctx.globalAlpha = 1;
-
-      // toppings
-      const toppingItems = state.toppings.map(id=>CATALOG.toppings.find(x=>x.id===id)).filter(Boolean);
-      const seed = hashString((state.base||"") + "|" + state.toppings.join(",") + "|" + state.extras.join(","));
-      const rng = mulberry32(seed);
-
-      // sprinkle random dots / chips depending on topping type
-      toppingItems.forEach((t, idx)=>{
-        const count = 26 + idx*10;
-        for(let i=0;i<count;i++){
-          const a = rng()*Math.PI*2;
-          const rr = rng()*r*0.82;
-          const x = cx + Math.cos(a)*rr;
-          const y = cy + Math.sin(a)*rr;
-          const size = (t.id==="sprinkles") ? (2 + rng()*5) : (3 + rng()*6);
-
-          ctx.save();
-          ctx.translate(x,y);
-          ctx.rotate(rng()*Math.PI);
-          ctx.fillStyle = t.color;
-          ctx.globalAlpha = 0.9;
-          if(t.id==="sprinkles"){
-            ctx.fillRect(-size*0.6, -size*0.15, size*1.2, size*0.3);
-          }else if(t.id==="caramel"){
-            // drizzle lines
-            ctx.globalAlpha = 0.55;
-            ctx.strokeStyle = t.color;
-            ctx.lineWidth = Math.max(1.5, size*0.18);
-            ctx.beginPath();
-            ctx.moveTo(-size, 0);
-            ctx.bezierCurveTo(-size*0.2, -size*0.5, size*0.2, size*0.5, size, 0);
-            ctx.stroke();
-          }else if(t.id==="oreo"){
-            ctx.globalAlpha = 0.75;
-            ctx.beginPath();
-            ctx.arc(0,0, size*0.33, 0, Math.PI*2);
-            ctx.fill();
-          }else{
-            ctx.beginPath();
-            ctx.arc(0,0, size*0.35, 0, Math.PI*2);
-            ctx.fill();
-          }
-          ctx.restore();
-        }
-      });
-
-      // extras overlay
-      if(state.extras.includes("bitcoin")){
-        // gold glint
-        const g = ctx.createRadialGradient(cx - r*0.35, cy - r*0.35, 10, cx, cy, r*1.1);
-        g.addColorStop(0, "rgba(245,183,0,.22)");
-        g.addColorStop(0.7, "rgba(245,183,0,.04)");
-        g.addColorStop(1, "rgba(245,183,0,0)");
-        ctx.beginPath();
-        ctx.arc(cx, cy, r, 0, Math.PI*2);
-        ctx.fillStyle = g;
-        ctx.fill();
-
-        // subtle ₿ stamp
-        ctx.font = `${Math.floor(r*0.62)}px system-ui, sans-serif`;
-        ctx.fillStyle = "rgba(245,183,0,.20)";
-        ctx.textAlign = "center";
-        ctx.textBaseline = "middle";
-        ctx.fillText("₿", cx + r*0.30, cy - r*0.18);
-      }
-
-      ctx.restore();
-
-      // label line
-      ctx.fillStyle = "rgba(255,255,255,.08)";
-      ctx.fillRect(w*0.08, h*0.12, w*0.84, 1);
-
-      ctx.fillStyle = "rgba(234,240,255,.85)";
-      ctx.font = `${Math.floor(Math.min(w,h)*0.032)}px system-ui, sans-serif`;
-      ctx.textAlign="left";
-      ctx.fillText("3D Preview (Mock)", w*0.08, h*0.10);
-
-      ctx.fillStyle = "rgba(168,179,207,.85)";
-      ctx.font = `${Math.floor(Math.min(w,h)*0.024)}px system-ui, sans-serif`;
-      ctx.fillText("Echter Photoreal-Render kann später rein – ohne deinen Flow zu killen.", w*0.08, h*0.17);
-    }
-
-    // helpers for deterministic "random"
-    function hashString(str){
-      let h = 2166136261;
-      for(let i=0;i<str.length;i++){
-        h ^= str.charCodeAt(i);
-        h = Math.imul(h, 16777619);
-      }
-      return h >>> 0;
-    }
-    function mulberry32(a){
-      return function(){
-        let t = a += 0x6D2B79F5;
-        t = Math.imul(t ^ t >>> 15, t | 1);
-        t ^= t + Math.imul(t ^ t >>> 7, t | 61);
-        return ((t ^ t >>> 14) >>> 0) / 4294967296;
-      }
-    }
-    function shade(hex, percent){
-      // hex like #rrggbb
-      const n = hex.replace("#","");
-      const r = parseInt(n.substring(0,2),16);
-      const g = parseInt(n.substring(2,4),16);
-      const b = parseInt(n.substring(4,6),16);
-      const t = percent<0 ? 0 : 255;
-      const p = Math.abs(percent)/100;
-      const rr = Math.round((t-r)*p)+r;
-      const gg = Math.round((t-g)*p)+g;
-      const bb = Math.round((t-b)*p)+b;
-      return "#" + [rr,gg,bb].map(x=>x.toString(16).padStart(2,"0")).join("");
+      // Update 3D
+      ensure3D();
+      Cookie3D.update(state);
     }
 
     // =========================
@@ -818,7 +637,7 @@ Link: ${location.origin + location.pathname + "?" + toQuery()}
         return;
       }
       toast("In den Warenkorb (Mock) ✅");
-      // Hier später echte Shop-Integration: fetch("/api/cart"), Shopify, Stripe Checkout, etc.
+      // Hier später echte Shop-Integration: Shopify/Stripe/etc.
     }
 
     // =========================
@@ -841,14 +660,16 @@ Link: ${location.origin + location.pathname + "?" + toQuery()}
         toast("Scroll ✓");
       });
 
-      // Keyboard shortcut
-      window.addEventListener("keydown", (e)=>{
-        if(e.key.toLowerCase()==="r"){
-          randomize();
-        }
+      // TOP CTA
+      $("btnTopSurprise").addEventListener("click", ()=>{
+        randomize();
+        document.querySelector("#konfigurator").scrollIntoView({behavior:"smooth", block:"start"});
       });
 
-      window.addEventListener("resize", ()=>drawCookiePreview());
+      // Keyboard shortcut
+      window.addEventListener("keydown", (e)=>{
+        if(e.key.toLowerCase()==="r") randomize();
+      });
     }
 
     // =========================

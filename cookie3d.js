@@ -1,13 +1,8 @@
-// cookie3d.js — OnlyKeks Hybrid Candy Premium v3
-// Features:
-// - Photoreal baked geometry (not a cylinder)
-// - HDR environment (PMREM) + ACES tone mapping
-// - Surprise: random style + random seed + micro zoom/glow + microsound
-// - Drag rotate (X/Y) + inertia + auto-rotate slow
-// - Crossfade style switching (no pop)
-// - Text on cookie (curved overlay) + Emboss via generated Roughness/Normal maps
-// - Per-style texture slots: albedo + roughness + normal (cached, tiered)
-// - Mobile performance: DPR cap, no shadowmaps, pause when offscreen/tab hidden
+// cookie3d.js — OnlyKeks Hybrid Candy Premium v3 (PATCHED)
+// Fixes:
+// - Removed duplicate "surpriseBtn" click handler (prevents double-trigger)
+// - Added RAF guard (prevents multiple RAF loops due to IO + visibility events)
+// - Added Pointer Capture (stable drag rotation on touch/mouse)
 
 import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js";
 import { RGBELoader } from "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/loaders/RGBELoader.js";
@@ -243,14 +238,14 @@ function configureColorTexture(t){
   t.colorSpace = THREE.SRGBColorSpace;
   t.wrapS = t.wrapT = THREE.RepeatWrapping;
   t.anisotropy = Math.min(renderer.capabilities.getMaxAnisotropy?.() || 4, PERF==="low" ? 2 : 8);
-  t.flipY = false;
+  t.flipY = false; // NOTE: keep as-is for your current asset pipeline
   return t;
 }
 function configureDataTexture(t){
   t.colorSpace = THREE.NoColorSpace;
   t.wrapS = t.wrapT = THREE.RepeatWrapping;
   t.anisotropy = Math.min(renderer.capabilities.getMaxAnisotropy?.() || 4, PERF==="low" ? 2 : 8);
-  t.flipY = false;
+  t.flipY = false; // NOTE: keep as-is for your current asset pipeline
   return t;
 }
 function loadOne(url, isColor){
@@ -314,7 +309,7 @@ async function applyStyleTexturesToMaterial(style, mat){
 // ---------- Apply initial preset + textures
 applyPresetInstant(PRESETS.classic, activeSeed);
 
-// ---------- Controls: drag rotate X/Y + inertia
+// ---------- Controls: drag rotate X/Y + inertia (PATCH: pointer capture)
 renderer.domElement.style.touchAction = "none";
 let isDown = false;
 let lastX = 0;
@@ -332,9 +327,16 @@ renderer.domElement.addEventListener("pointerdown", (e) => {
   isDown = true;
   lastX = e.clientX;
   lastY = e.clientY;
+  renderer.domElement.setPointerCapture?.(e.pointerId);
 });
-window.addEventListener("pointerup", () => (isDown = false));
-window.addEventListener("pointermove", (e) => {
+renderer.domElement.addEventListener("pointerup", (e) => {
+  isDown = false;
+  renderer.domElement.releasePointerCapture?.(e.pointerId);
+});
+renderer.domElement.addEventListener("pointercancel", () => {
+  isDown = false;
+});
+renderer.domElement.addEventListener("pointermove", (e) => {
   if (!isDown) return;
   const dx = e.clientX - lastX;
   const dy = e.clientY - lastY;
@@ -410,16 +412,30 @@ function randomPreset() {
 window.switchStyle = (s) => switchStyle(s, activeSeed);
 window.randomPreset = randomPreset;
 
-// ---------- Pause/resume
+// ---------- Pause/resume (PATCH: RAF guard)
 let running = true;
 let rafId = 0;
+let last = performance.now();
 
+function startLoop(){
+  if (rafId) return; // guard: already running
+  last = performance.now();
+  rafId = requestAnimationFrame(loop);
+}
+
+function stopLoop(){
+  if (!rafId) return;
+  cancelAnimationFrame(rafId);
+  rafId = 0;
+}
+
+// Intersection Observer
 const io = new IntersectionObserver(
   (entries) => {
     const v = entries[0]?.isIntersecting;
     running = !!v;
-    if (running) loop();
-    else cancelAnimationFrame(rafId);
+    if (running) startLoop();
+    else stopLoop();
   },
   { threshold: 0.15 }
 );
@@ -427,8 +443,8 @@ io.observe(stageEl);
 
 document.addEventListener("visibilitychange", () => {
   running = document.visibilityState === "visible";
-  if (running) loop();
-  else cancelAnimationFrame(rafId);
+  if (running) startLoop();
+  else stopLoop();
 });
 
 // ---------- Resize
@@ -441,11 +457,9 @@ window.addEventListener("resize", () => {
   camera.updateProjectionMatrix();
 });
 
-// ---------- Main loop
-let last = performance.now();
-
+// ---------- Main loop (PATCH: stop if not running)
 function loop(now = performance.now()) {
-  if (!running) return;
+  if (!running) { stopLoop(); return; }
 
   rafId = requestAnimationFrame(loop);
   const dt = Math.min((now - last) / 1000, 0.033);
@@ -482,7 +496,8 @@ function loop(now = performance.now()) {
   renderer.render(scene, camera);
 }
 
-loop();
+// kick off initial loop safely
+startLoop();
 
 // ------------------ Cookie label overlay + emboss
 
@@ -1036,6 +1051,5 @@ function mulberry32(seed) {
   };
 }
 
-// ---------- Hook Surprise button (optional)
-const surpriseBtn = document.getElementById("surpriseBtn");
-if (surpriseBtn) surpriseBtn.addEventListener("click", () => randomPreset());
+// NOTE: Removed duplicate surprise button click handler on purpose.
+// Your HTML already handles the button and calls window.randomPreset?.()

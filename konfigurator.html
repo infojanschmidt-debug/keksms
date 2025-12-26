@@ -1,90 +1,279 @@
 <!doctype html>
 <html lang="de">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>ONLYKEKS – Konfigurator</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0b0f18" />
+  <title>ONLYKEKS — 3D Keks-Konfigurator</title>
+  <meta name="description" content="Handgemacht. Keine Chargen. Direkt zu dir. Bau dir deinen Keks in 3D und bestell in Sekunden." />
 
   <style>
+    :root{
+      --bg:#0b0f18;
+      --card:#11192a;
+      --card2:#0f1626;
+      --text:#eaf0ff;
+      --muted:#a8b3cf;
+      --line:rgba(255,255,255,.12);
+      --good:#39d98a;
+      --warn:#ffd166;
+      --bad:#ff5c7a;
+      --shadow: 0 18px 40px rgba(0,0,0,.35);
+      --r: 18px;
+      --max: 1100px;
+    }
+
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
     body{
       margin:0;
-      background:#060814;
-      color:#fff;
-      font-family:system-ui;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      background:
+        radial-gradient(1200px 900px at 20% 0%, rgba(84,115,255,.22), transparent 55%),
+        radial-gradient(900px 700px at 90% 10%, rgba(255,92,122,.14), transparent 60%),
+        radial-gradient(800px 700px at 60% 100%, rgba(57,217,138,.12), transparent 60%),
+        var(--bg);
+      color:var(--text);
+      -webkit-font-smoothing:antialiased;
+      text-rendering:optimizeLegibility;
+    }
+
+    a{ color:inherit; text-decoration:none; }
+    .wrap{ max-width:var(--max); margin:0 auto; padding:18px; }
+
+    /* Topbar */
+    .topbar{
+      position:sticky; top:0; z-index:50;
+      backdrop-filter: blur(10px);
+      background: rgba(11,15,24,.65);
+      border-bottom:1px solid var(--line);
+    }
+    .topbar .row{
+      display:flex; align-items:center; justify-content:space-between;
+      gap:12px;
+      padding:12px 18px;
+      max-width:var(--max); margin:0 auto;
+    }
+    .brand{
+      display:flex; align-items:center; gap:10px;
+      font-weight:800; letter-spacing:.2px;
+    }
+    .logo{
+      width:34px; height:34px; border-radius:12px;
+      background: linear-gradient(135deg, rgba(84,115,255,.9), rgba(255,92,122,.85));
+      box-shadow: 0 10px 24px rgba(0,0,0,.35);
+      position:relative;
+    }
+    .logo:after{
+      content:"";
+      position:absolute; inset:7px;
+      border-radius:10px;
+      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.9), rgba(255,255,255,.2) 55%, transparent 60%);
+      opacity:.45;
+    }
+
+    .nav{
+      display:flex; gap:8px; align-items:center;
+    }
+    .pill{
+      display:inline-flex; align-items:center; justify-content:center;
+      padding:10px 12px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.04);
+      border-radius:999px;
+      font-weight:650;
+      color:var(--muted);
+      transition: transform .12s ease, background .12s ease;
+    }
+    .pill:hover{ transform: translateY(-1px); background: rgba(255,255,255,.06); }
+    .pill.primary{
+      color:var(--text);
+      border-color: rgba(84,115,255,.55);
+      background: linear-gradient(135deg, rgba(84,115,255,.25), rgba(255,92,122,.16));
+    }
+
+    /* Hero */
+    .hero{
       display:grid;
-      grid-template-columns:260px 1fr;
-      height:100vh;
+      grid-template-columns: 1.15fr .85fr;
+      gap:16px;
+      margin-top:16px;
     }
-    aside{
-      padding:20px;
-      border-right:1px solid rgba(255,255,255,.1);
-      background:#0b1020;
+    @media (max-width: 920px){
+      .hero{ grid-template-columns: 1fr; }
     }
-    h2{margin-top:0}
-    button{
-      width:100%;
-      margin-bottom:10px;
-      padding:12px;
-      border-radius:12px;
-      border:1px solid rgba(255,255,255,.2);
-      background:rgba(255,255,255,.08);
-      color:#fff;
-      font-weight:700;
+
+    .card{
+      background: linear-gradient(180deg, rgba(17,25,42,.86), rgba(15,22,38,.86));
+      border:1px solid var(--line);
+      border-radius: var(--r);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .card.pad{ padding:16px; }
+
+    .kicker{
+      display:inline-flex; align-items:center; gap:8px;
+      font-size:13px; color:var(--muted);
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.04);
+      padding:8px 10px;
+      border-radius:999px;
+      width:max-content;
+    }
+    .dot{ width:10px; height:10px; border-radius:99px; background: var(--good); box-shadow: 0 0 0 4px rgba(57,217,138,.12); }
+    h1{
+      margin:12px 0 8px;
+      font-size: clamp(28px, 3.4vw, 42px);
+      line-height:1.05;
+      letter-spacing:-.6px;
+    }
+    .sub{
+      margin:0 0 14px;
+      color: var(--muted);
+      font-size: 15.5px;
+      line-height:1.45;
+      max-width: 62ch;
+    }
+
+    .ctaRow{
+      display:flex; flex-wrap:wrap; gap:10px; margin-top:14px;
+    }
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center;
+      gap:10px;
+      padding:12px 14px;
+      border-radius: 14px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.05);
+      color: var(--text);
+      font-weight:750;
       cursor:pointer;
+      user-select:none;
+      min-height:44px;
+      transition: transform .12s ease, background .12s ease;
     }
-    canvas{width:100%;height:100%}
-  </style>
-</head>
+    .btn:hover{ transform: translateY(-1px); background: rgba(255,255,255,.07); }
+    .btn.primary{
+      border-color: rgba(84,115,255,.55);
+      background: linear-gradient(135deg, rgba(84,115,255,.28), rgba(255,92,122,.18));
+    }
+    .btn.ghost{
+      color: var(--muted);
+    }
 
-<body>
-<aside>
-  <h2>Teig</h2>
-  <button onclick="setColor(0xd9b38c)">Classic</button>
-  <button onclick="setColor(0x8b5a3c)">Double</button>
-  <button onclick="setColor(0xf2e6c9)">Vanilla</button>
+    /* Feature grid */
+    .grid3{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:12px;
+      margin-top:14px;
+    }
+    @media (max-width: 920px){
+      .grid3{ grid-template-columns: 1fr; }
+    }
+    .mini{
+      background: rgba(255,255,255,.03);
+      border:1px solid var(--line);
+      border-radius: 16px;
+      padding:12px;
+    }
+    .mini b{ display:block; margin-bottom:6px; }
+    .mini span{ color:var(--muted); font-size: 13.5px; line-height:1.35; display:block; }
 
-  <h2>Finish</h2>
-  <button onclick="setRough(0.9)">Matt</button>
-  <button onclick="setRough(0.3)">Glossy</button>
+    /* 3D Widget */
+    .stage{
+      display:flex;
+      flex-direction:column;
+      min-height: 420px;
+    }
+    @media (max-width: 520px){
+      .stage{ min-height: 380px; }
+    }
+    .stageHead{
+      padding:14px 14px 10px;
+      display:flex; align-items:flex-start; justify-content:space-between; gap:10px;
+      border-bottom:1px solid var(--line);
+      background: rgba(255,255,255,.02);
+    }
+    .stageHead h2{
+      margin:0;
+      font-size: 16px;
+      letter-spacing:-.2px;
+    }
+    .stageHead p{
+      margin:6px 0 0;
+      color:var(--muted);
+      font-size: 13.5px;
+      line-height:1.3;
+    }
 
-  <a href="index.html" style="color:#aaa;font-size:12px">← zurück</a>
-</aside>
+    .stageBody{
+      padding:12px;
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:10px;
+      flex:1;
+    }
 
-<canvas id="c"></canvas>
+    .canvasBox{
+      border:1px solid var(--line);
+      border-radius: 16px;
+      background:
+        radial-gradient(900px 400px at 50% 30%, rgba(84,115,255,.18), transparent 62%),
+        rgba(0,0,0,.12);
+      overflow:hidden;
+      min-height: 260px;
+      position:relative;
+      touch-action: none; /* wichtig für mobile gestures */
+    }
 
-<script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
-<script>
-  const canvas=document.getElementById("c");
-  const r=new THREE.WebGLRenderer({canvas,antialias:true});
-  const s=new THREE.Scene();
-  const cam=new THREE.PerspectiveCamera(45,1,0.1,100);
-  cam.position.z=3;
+    .hud{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:10px;
+    }
+    @media (max-width: 520px){
+      .hud{ grid-template-columns: 1fr; }
+    }
 
-  const geo=new THREE.SphereGeometry(1,64,64);
-  const mat=new THREE.MeshStandardMaterial({color:0xd9b38c,roughness:.6});
-  const cookie=new THREE.Mesh(geo,mat);
-  s.add(cookie);
+    .sel{
+      display:flex; flex-direction:column; gap:6px;
+      background: rgba(255,255,255,.03);
+      border:1px solid var(--line);
+      border-radius: 16px;
+      padding:10px;
+    }
+    .sel label{
+      color: var(--muted);
+      font-size: 12.5px;
+      font-weight:650;
+    }
+    select{
+      width:100%;
+      padding:12px 12px;
+      border-radius: 14px;
+      border:1px solid var(--line);
+      background: rgba(0,0,0,.18);
+      color: var(--text);
+      font-weight:700;
+      min-height:44px;
+      outline:none;
+    }
 
-  s.add(new THREE.DirectionalLight(0xffffff,1).position.set(3,3,4));
-  s.add(new THREE.AmbientLight(0xffffff,.6));
+    .stageFoot{
+      padding:12px 14px;
+      border-top:1px solid var(--line);
+      display:flex; gap:10px; flex-wrap:wrap; justify-content:space-between; align-items:center;
+      background: rgba(255,255,255,.02);
+    }
+    .price{
+      display:flex; flex-direction:column;
+    }
+    .price b{ font-size: 15px; }
+    .price span{ color:var(--muted); font-size: 13px; }
 
-  function resize(){
-    r.setSize(canvas.clientWidth,canvas.clientHeight,false);
-    cam.aspect=canvas.clientWidth/canvas.clientHeight;
-    cam.updateProjectionMatrix();
-  }
-  window.addEventListener("resize",resize);
-  resize();
-
-  function loop(){
-    cookie.rotation.y+=0.004;
-    r.render(s,cam);
-    requestAnimationFrame(loop);
-  }
-  loop();
-
-  window.setColor=(c)=>mat.color.setHex(c);
-  window.setRough=(v)=>mat.roughness=v;
-</script>
-</body>
-</html>
+    /* Footer */
+    footer{
+      margin:18px 0 28px;
+      color: va

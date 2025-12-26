@@ -3,289 +3,310 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="theme-color" content="#0b0f18" />
-  <title>Only Cakes — 3D Konfigurator</title>
-  <meta name="description" content="Handgemacht. Keine Chargen. Direkt zu dir. Konfiguriere deinen Cookie in 3D — mobil & desktop." />
+  <meta name="theme-color" content="#070A12" />
+  <title>OnlyCakes — 3D Cookie Konfigurator</title>
+  <meta name="description" content="Handgemacht. Keine Chargen. Direkt zu dir. Konfiguriere deinen Cookie in 3D — Desktop & Mobil." />
 
   <style>
     :root{
-      --bg:#0b0f18;
-      --card:#11192a;
-      --card2:#0f1626;
-      --text:#eaf0ff;
-      --muted:#a8b3cf;
-      --line:rgba(255,255,255,.12);
-      --shadow: 0 18px 40px rgba(0,0,0,.35);
-      --r: 18px;
-      --max: 1120px;
-      --good:#39d98a;
+      --bg:#070A12;
+      --panel: rgba(255,255,255,.06);
+      --panel2: rgba(255,255,255,.04);
+      --stroke: rgba(255,255,255,.10);
+      --stroke2: rgba(255,255,255,.14);
+      --text:#ECF2FF;
+      --muted:#A9B3CC;
+      --shadow: 0 18px 60px rgba(0,0,0,.55);
+      --r: 22px;
+      --max: 1160px;
+
+      --a: rgba(84,115,255,.55);
+      --b: rgba(255,92,122,.45);
+      --c: rgba(57,217,138,.35);
     }
+
     *{ box-sizing:border-box; }
     html,body{ height:100%; }
     body{
       margin:0;
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      color: var(--text);
       background:
-        radial-gradient(1200px 900px at 20% 0%, rgba(84,115,255,.22), transparent 55%),
-        radial-gradient(900px 700px at 90% 10%, rgba(255,92,122,.14), transparent 60%),
-        radial-gradient(800px 700px at 60% 100%, rgba(57,217,138,.12), transparent 60%),
+        radial-gradient(1200px 900px at 18% 0%, var(--a), transparent 55%),
+        radial-gradient(1000px 700px at 88% 10%, var(--b), transparent 60%),
+        radial-gradient(900px 700px at 55% 100%, var(--c), transparent 60%),
         var(--bg);
-      color:var(--text);
-      -webkit-font-smoothing:antialiased;
-      text-rendering:optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+      overflow-x:hidden;
     }
     a{ color:inherit; text-decoration:none; }
-    .wrap{ max-width:var(--max); margin:0 auto; padding:18px; }
+    .wrap{ max-width: var(--max); margin:0 auto; padding: 18px; }
 
-    /* Sticky topbar */
+    /* Topbar */
     .topbar{
-      position:sticky; top:0; z-index:60;
-      backdrop-filter: blur(10px);
-      background: rgba(11,15,24,.65);
-      border-bottom:1px solid var(--line);
+      position: sticky; top:0; z-index:50;
+      backdrop-filter: blur(14px);
+      background: rgba(7,10,18,.55);
+      border-bottom: 1px solid var(--stroke);
     }
-    .topbar .row{
-      display:flex; align-items:center; justify-content:space-between;
-      gap:12px;
-      padding:12px 18px;
-      max-width:var(--max); margin:0 auto;
+    .toprow{
+      max-width: var(--max);
+      margin:0 auto;
+      padding: 12px 18px;
+      display:flex; align-items:center; justify-content:space-between; gap:12px;
     }
     .brand{
-      display:flex; align-items:center; gap:10px;
-      font-weight:900;
-      letter-spacing:.2px;
+      display:flex; align-items:center; gap:12px;
+      font-weight: 900;
+      letter-spacing: .2px;
+      user-select:none;
     }
     .logo{
-      width:36px; height:36px; border-radius:12px;
-      background: linear-gradient(135deg, rgba(84,115,255,.9), rgba(255,92,122,.85));
-      box-shadow: 0 10px 24px rgba(0,0,0,.35);
+      width:38px; height:38px; border-radius: 14px;
+      background: linear-gradient(135deg, rgba(84,115,255,.95), rgba(255,92,122,.85));
+      box-shadow: 0 10px 26px rgba(0,0,0,.5);
       position:relative;
     }
     .logo:after{
       content:"";
-      position:absolute; inset:7px;
-      border-radius:10px;
-      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.9), rgba(255,255,255,.2) 55%, transparent 60%);
-      opacity:.45;
+      position:absolute; inset:8px;
+      border-radius: 12px;
+      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.95), rgba(255,255,255,.15) 55%, transparent 60%);
+      opacity:.5;
     }
-    .nav{ display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
-    .pill{
-      display:inline-flex; align-items:center; justify-content:center;
-      padding:10px 12px;
-      border:1px solid var(--line);
-      background: rgba(255,255,255,.04);
-      border-radius:999px;
-      font-weight:750;
-      color:var(--muted);
-      transition: transform .12s ease, background .12s ease;
-      min-height:40px;
-    }
-    .pill:hover{ transform: translateY(-1px); background: rgba(255,255,255,.06); }
-    .pill.primary{
-      color:var(--text);
-      border-color: rgba(84,115,255,.55);
-      background: linear-gradient(135deg, rgba(84,115,255,.25), rgba(255,92,122,.16));
+    .brand small{
+      display:block;
+      color: var(--muted);
+      font-weight: 800;
+      margin-top: 1px;
+      letter-spacing:.2px;
     }
 
-    /* Layout */
+    .nav{ display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+    .pill{
+      display:inline-flex; align-items:center; justify-content:center;
+      padding: 10px 12px;
+      min-height: 40px;
+      border-radius: 999px;
+      border: 1px solid var(--stroke);
+      background: rgba(255,255,255,.04);
+      color: var(--muted);
+      font-weight: 850;
+      transition: transform .12s ease, background .12s ease, border-color .12s ease;
+    }
+    .pill:hover{ transform: translateY(-1px); background: rgba(255,255,255,.06); border-color: var(--stroke2); }
+    .pill.primary{
+      color: var(--text);
+      border-color: rgba(84,115,255,.45);
+      background: linear-gradient(135deg, rgba(84,115,255,.22), rgba(255,92,122,.14));
+    }
+
+    /* Hero layout */
     .hero{
+      margin-top: 18px;
       display:grid;
-      grid-template-columns: 1.15fr .85fr;
-      gap:16px;
-      margin-top:16px;
+      grid-template-columns: 1.05fr .95fr;
+      gap: 16px;
       align-items:stretch;
     }
-    @media (max-width: 920px){
+    @media (max-width: 980px){
       .hero{ grid-template-columns: 1fr; }
-      .topbar .row{ padding:10px 14px; }
+      .toprow{ padding: 10px 14px; }
     }
 
     .card{
-      background: linear-gradient(180deg, rgba(17,25,42,.86), rgba(15,22,38,.86));
-      border:1px solid var(--line);
       border-radius: var(--r);
+      border: 1px solid var(--stroke);
+      background: linear-gradient(180deg, var(--panel), var(--panel2));
       box-shadow: var(--shadow);
       overflow:hidden;
     }
-    .card.pad{ padding:16px; }
+    .pad{ padding: 18px; }
 
     .kicker{
-      display:inline-flex; align-items:center; gap:8px;
-      font-size:13px; color:var(--muted);
-      border:1px solid var(--line);
+      display:inline-flex; align-items:center; gap:10px;
+      border: 1px solid var(--stroke);
       background: rgba(255,255,255,.04);
-      padding:8px 10px;
-      border-radius:999px;
+      color: var(--muted);
+      padding: 8px 10px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 850;
       width:max-content;
     }
-    .dot{ width:10px; height:10px; border-radius:99px; background: var(--good); box-shadow: 0 0 0 4px rgba(57,217,138,.12); }
+    .dot{
+      width: 10px; height: 10px; border-radius: 999px;
+      background: rgba(57,217,138,.95);
+      box-shadow: 0 0 0 4px rgba(57,217,138,.12);
+    }
 
     h1{
-      margin:12px 0 8px;
-      font-size: clamp(28px, 3.4vw, 44px);
-      line-height:1.05;
-      letter-spacing:-.6px;
+      margin: 14px 0 10px;
+      font-size: clamp(30px, 3.4vw, 46px);
+      line-height: 1.02;
+      letter-spacing: -0.9px;
     }
     .sub{
-      margin:0 0 14px;
+      margin:0;
       color: var(--muted);
-      font-size: 15.5px;
-      line-height:1.45;
-      max-width: 62ch;
+      font-size: 15.75px;
+      line-height: 1.5;
+      max-width: 64ch;
     }
 
     .ctaRow{
-      display:flex; flex-wrap:wrap; gap:10px; margin-top:14px;
+      margin-top: 16px;
+      display:flex;
+      flex-wrap:wrap;
+      gap: 10px;
     }
     .btn{
       display:inline-flex; align-items:center; justify-content:center;
       gap:10px;
-      padding:12px 14px;
-      border-radius: 14px;
-      border:1px solid var(--line);
+      padding: 12px 14px;
+      min-height: 46px;
+      border-radius: 16px;
+      border: 1px solid var(--stroke);
       background: rgba(255,255,255,.05);
       color: var(--text);
-      font-weight:850;
+      font-weight: 950;
       cursor:pointer;
       user-select:none;
-      min-height:46px;
-      transition: transform .12s ease, background .12s ease;
+      transition: transform .12s ease, background .12s ease, border-color .12s ease;
     }
-    .btn:hover{ transform: translateY(-1px); background: rgba(255,255,255,.07); }
+    .btn:hover{ transform: translateY(-1px); background: rgba(255,255,255,.07); border-color: var(--stroke2); }
     .btn.primary{
-      border-color: rgba(84,115,255,.55);
-      background: linear-gradient(135deg, rgba(84,115,255,.28), rgba(255,92,122,.18));
+      border-color: rgba(84,115,255,.45);
+      background: linear-gradient(135deg, rgba(84,115,255,.26), rgba(255,92,122,.16));
     }
-    .btn.ghost{
-      color: var(--muted);
-    }
+    .btn.ghost{ color: var(--muted); }
 
     .grid3{
+      margin-top: 18px;
       display:grid;
       grid-template-columns: repeat(3, 1fr);
-      gap:12px;
-      margin-top:16px;
+      gap: 12px;
     }
-    @media (max-width: 920px){
+    @media (max-width: 980px){
       .grid3{ grid-template-columns: 1fr; }
     }
     .mini{
-      background: rgba(255,255,255,.03);
-      border:1px solid var(--line);
-      border-radius: 16px;
-      padding:12px;
+      border: 1px solid var(--stroke);
+      background: rgba(0,0,0,.10);
+      border-radius: 18px;
+      padding: 14px;
     }
-    .mini b{ display:block; margin-bottom:6px; }
-    .mini span{ color:var(--muted); font-size: 13.5px; line-height:1.35; display:block; }
+    .mini b{ display:block; margin-bottom: 6px; font-size: 14px; }
+    .mini span{ display:block; color: var(--muted); font-size: 13.5px; line-height: 1.35; }
 
-    /* 3D widget */
+    /* 3D card */
     .stage{
       display:flex;
       flex-direction:column;
-      min-height: 440px;
+      min-height: 520px;
     }
     @media (max-width: 520px){
-      .stage{ min-height: 390px; }
+      .stage{ min-height: 460px; }
     }
+
     .stageHead{
-      padding:14px 14px 10px;
+      padding: 16px 16px 12px;
+      border-bottom: 1px solid var(--stroke);
+      background: rgba(255,255,255,.03);
       display:flex; align-items:flex-start; justify-content:space-between; gap:10px;
-      border-bottom:1px solid var(--line);
-      background: rgba(255,255,255,.02);
     }
     .stageHead h2{
       margin:0;
       font-size: 16px;
-      letter-spacing:-.2px;
+      letter-spacing: -0.2px;
+      font-weight: 950;
     }
     .stageHead p{
-      margin:6px 0 0;
-      color:var(--muted);
+      margin: 6px 0 0;
+      color: var(--muted);
       font-size: 13.5px;
-      line-height:1.3;
+      line-height: 1.25;
     }
 
-    .stageBody{
-      padding:12px;
-      display:grid;
-      grid-template-columns: 1fr;
-      gap:10px;
-      flex:1;
-    }
-
+    .stageBody{ padding: 14px; display:grid; gap:12px; }
     .canvasBox{
-      border:1px solid var(--line);
-      border-radius: 16px;
+      border: 1px solid var(--stroke);
+      border-radius: 20px;
       background:
-        radial-gradient(900px 400px at 50% 30%, rgba(84,115,255,.18), transparent 62%),
-        rgba(0,0,0,.12);
+        radial-gradient(1000px 500px at 50% 30%, rgba(84,115,255,.18), transparent 62%),
+        rgba(0,0,0,.14);
       overflow:hidden;
-      min-height: 260px;
-      position:relative;
-      touch-action: none; /* Touch & Pinch */
+      min-height: 300px;
+      position: relative;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.03);
+      touch-action: none;
     }
 
-    .hud{
+    /* Controls: nice on desktop, collapsible on mobile */
+    .controls{
+      border: 1px solid var(--stroke);
+      background: rgba(0,0,0,.10);
+      border-radius: 20px;
+      padding: 10px;
+    }
+    .controls .row{
       display:grid;
       grid-template-columns: repeat(3, 1fr);
-      gap:10px;
+      gap: 10px;
     }
-    @media (max-width: 520px){
-      .hud{ grid-template-columns: 1fr; }
+    @media (max-width: 620px){
+      .controls .row{ grid-template-columns: 1fr; }
     }
-
     .sel{
-      display:flex; flex-direction:column; gap:6px;
+      border: 1px solid var(--stroke);
       background: rgba(255,255,255,.03);
-      border:1px solid var(--line);
       border-radius: 16px;
-      padding:10px;
+      padding: 10px;
+      display:flex; flex-direction:column; gap:6px;
     }
     .sel label{
       color: var(--muted);
+      font-weight: 950;
       font-size: 12.5px;
-      font-weight:800;
+      letter-spacing:.2px;
     }
     select{
       width:100%;
-      padding:12px 12px;
+      min-height: 46px;
+      padding: 12px 12px;
       border-radius: 14px;
-      border:1px solid var(--line);
+      border: 1px solid var(--stroke);
       background: rgba(0,0,0,.18);
       color: var(--text);
-      font-weight:850;
-      min-height:46px;
+      font-weight: 950;
       outline:none;
     }
 
     .stageFoot{
-      padding:12px 14px;
-      border-top:1px solid var(--line);
-      display:flex; gap:10px; flex-wrap:wrap; justify-content:space-between; align-items:center;
-      background: rgba(255,255,255,.02);
+      padding: 14px 16px;
+      border-top: 1px solid var(--stroke);
+      background: rgba(255,255,255,.03);
+      display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap;
     }
-    .price{ display:flex; flex-direction:column; }
-    .price b{ font-size: 15px; }
-    .price span{ color:var(--muted); font-size: 13px; }
+    .price b{ display:block; font-size: 15px; font-weight: 950; }
+    .price span{ display:block; color: var(--muted); font-size: 13px; }
 
     footer{
-      margin:18px 0 28px;
+      margin: 18px 0 28px;
       color: var(--muted);
       font-size: 13px;
     }
     .footRow{
-      display:flex; flex-wrap:wrap; gap:10px; justify-content:space-between; align-items:center;
-      border-top:1px solid var(--line);
-      padding-top:14px;
+      border-top: 1px solid var(--stroke);
+      padding-top: 14px;
+      display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap;
     }
 
-    /* Reduce motion */
-    @media (prefers-reduced-motion: reduce){
-      *{ scroll-behavior:auto !important; transition:none !important; }
-    }
+    /* Tiny backdoor egg (nur du siehst es, wenn du's suchst) */
+    .egg{ position:absolute; left:-9999px; top:auto; width:1px; height:1px; overflow:hidden; }
   </style>
 
-  <!-- Three.js via CDN (no build step) -->
   <script type="importmap">
     {
       "imports": {
@@ -298,17 +319,17 @@
 
 <body>
   <div class="topbar">
-    <div class="row">
-      <div class="brand" aria-label="Only Cakes">
+    <div class="toprow">
+      <div class="brand">
         <div class="logo" aria-hidden="true"></div>
         <div>
-          <div style="font-size:14px; opacity:.95;">Only Cakes</div>
-          <div style="font-size:12px; color:var(--muted); font-weight:800;">3D • Mobile-ready • clean</div>
+          <div>OnlyCakes</div>
+          <small>3D Konfigurator • Desktop & Mobil</small>
         </div>
       </div>
 
-      <nav class="nav" aria-label="Navigation">
-        <a class="pill" href="#konfigurator">Konfigurator</a>
+      <nav class="nav">
+        <a class="pill" href="#build">Konfigurieren</a>
         <a class="pill" href="konfigurator.html">Vollbild</a>
         <a class="pill primary" href="#order">Bestellen</a>
       </nav>
@@ -318,77 +339,82 @@
   <main class="wrap">
     <section class="hero">
       <div class="card pad">
-        <div class="kicker"><span class="dot"></span> Live • Touch & Drag • Desktop & Mobil</div>
-        <h1>Handgemacht. Keine Chargen.<br/>Direkt zu dir.</h1>
+        <div class="kicker"><span class="dot"></span> Live • Touch & Drag • Ruhig & Premium</div>
+        <h1>Dein Cookie. <br/>In 3 Klicks. In 3D.</h1>
         <p class="sub">
-          Du baust deinen Cookie in 3D — drei Entscheidungen, fertig.
-          Kein UI-Chaos, kein Gedöns. So muss Produkt-OS aussehen.
+          Handgemacht, keine Chargen, direkt zu dir. Minimal UI, maximal Klarheit.
+          Und ja: auf Mobil sieht’s jetzt aus wie Produkt — nicht wie Behördenformular.
         </p>
 
         <div class="ctaRow">
-          <a class="btn primary" href="#konfigurator">Jetzt konfigurieren</a>
-          <a class="btn ghost" href="konfigurator.html">Vollbild-Konfigurator</a>
+          <a class="btn primary" href="#build">Jetzt bauen</a>
+          <a class="btn ghost" href="konfigurator.html">Vollbild öffnen</a>
+          <button class="btn" id="surpriseBtn" type="button">Überrasch mich</button>
         </div>
 
         <div class="grid3">
           <div class="mini">
-            <b>3 Schritte</b>
-            <span>Basis • Topping • Drizzle. Ende. Fokus bleibt Fokus.</span>
+            <b>1) Basis</b>
+            <span>Classic • Choco • Oat — fertig.</span>
           </div>
           <div class="mini">
-            <b>Mobile-first UI</b>
-            <span>Große Buttons, saubere Ränder, kein Gefrickel.</span>
+            <b>2) Topping</b>
+            <span>Chips • Sprinkles • Nuts — fertig.</span>
           </div>
           <div class="mini">
-            <b>Performance</b>
-            <span>DPR-Cap auf Mobile, Instancing für Sprinkles. Läuft.</span>
+            <b>3) Drizzle</b>
+            <span>None • White • Dark — fertig.</span>
           </div>
         </div>
 
-        <div id="order" style="margin-top:16px;" class="mini">
+        <div id="order" class="mini" style="margin-top:12px;">
           <b>Bestellung (Demo)</b>
-          <span>Checkout ist vorbereitet als Hook. Später: Stripe/Shop/WhatsApp rein — ohne Umbau am 3D.</span>
+          <span>Checkout ist vorbereitet als Hook. Später: Stripe/Shop/WhatsApp anbinden – ohne 3D neu bauen.</span>
         </div>
+
+        <div class="egg" aria-hidden="true">BD:OC-V2::VIP::SCHMIDTI_ONLY</div>
       </div>
 
-      <aside class="card stage" id="konfigurator">
+      <aside class="card stage" id="build">
         <div class="stageHead">
           <div>
-            <h2>3D Konfigurator (Preview)</h2>
-            <p>Drag dreht • Pinch zoomt • Tap = Auswahl</p>
+            <h2>3D Preview</h2>
+            <p>Drag dreht • Pinch zoomt • (Vollbild: Double-Tap Reset)</p>
           </div>
-          <a class="pill" href="konfigurator.html" style="height:40px;">Vollbild</a>
+          <a class="pill primary" href="konfigurator.html" style="height:40px;">Vollbild</a>
         </div>
 
         <div class="stageBody">
-          <div class="canvasBox" id="cookieStage" aria-label="3D Cookie Preview"></div>
+          <div class="canvasBox" id="cookieStage"></div>
 
-          <div class="hud" aria-label="Konfiguration">
-            <div class="sel">
-              <label for="baseSel">Basis</label>
-              <select id="baseSel">
-                <option value="classic">Classic Butter</option>
-                <option value="choco">Double Choco</option>
-                <option value="oat">Oat & Honey</option>
-              </select>
-            </div>
+          <div class="controls" aria-label="Konfiguration">
+            <div class="row">
+              <div class="sel">
+                <label for="baseSel">Basis</label>
+                <select id="baseSel">
+                  <option value="classic">Classic Butter</option>
+                  <option value="choco">Double Choco</option>
+                  <option value="oat">Oat & Honey</option>
+                </select>
+              </div>
 
-            <div class="sel">
-              <label for="topSel">Topping</label>
-              <select id="topSel">
-                <option value="chips">Choco Chips</option>
-                <option value="sprinkles">Rainbow Sprinkles</option>
-                <option value="nuts">Nuts</option>
-              </select>
-            </div>
+              <div class="sel">
+                <label for="topSel">Topping</label>
+                <select id="topSel">
+                  <option value="chips">Choco Chips</option>
+                  <option value="sprinkles">Rainbow Sprinkles</option>
+                  <option value="nuts">Nuts</option>
+                </select>
+              </div>
 
-            <div class="sel">
-              <label for="drizzleSel">Drizzle</label>
-              <select id="drizzleSel">
-                <option value="none">None</option>
-                <option value="white">White</option>
-                <option value="dark">Dark</option>
-              </select>
+              <div class="sel">
+                <label for="drizzleSel">Drizzle</label>
+                <select id="drizzleSel">
+                  <option value="none">None</option>
+                  <option value="white">White</option>
+                  <option value="dark">Dark</option>
+                </select>
+              </div>
             </div>
           </div>
         </div>
@@ -405,7 +431,7 @@
 
     <footer>
       <div class="footRow">
-        <div>© <span id="y"></span> Only Cakes • Created by: First Connect by Jan Christian Schmidt</div>
+        <div>© <span id="y"></span> OnlyCakes • Created by: First Connect by Jan Christian Schmidt</div>
         <div style="display:flex; gap:10px; flex-wrap:wrap;">
           <a class="pill" href="impressum.html">Impressum</a>
           <a class="pill" href="datenschutz.html">Datenschutz</a>
@@ -422,11 +448,11 @@
     const baseSel = document.getElementById("baseSel");
     const topSel = document.getElementById("topSel");
     const drizzleSel = document.getElementById("drizzleSel");
+
     const priceLine = document.getElementById("priceLine");
     const summaryLine = document.getElementById("summaryLine");
-    const stage = document.getElementById("cookieStage");
 
-    const api = initCookie3D(stage, {
+    const api = initCookie3D(document.getElementById("cookieStage"), {
       preset: { base:"classic", topping:"chips", drizzle:"none" }
     });
 
@@ -434,10 +460,8 @@
       let price = 2.90;
       if (baseSel.value === "choco") price += 0.30;
       if (baseSel.value === "oat") price += 0.20;
-
       if (topSel.value === "nuts") price += 0.45;
       if (topSel.value === "sprinkles") price += 0.25;
-
       if (drizzleSel.value === "white" || drizzleSel.value === "dark") price += 0.35;
 
       const label = (v, map) => map[v] ?? v;
@@ -450,11 +474,7 @@
     }
 
     function sync3D(){
-      api.setConfig({
-        base: baseSel.value,
-        topping: topSel.value,
-        drizzle: drizzleSel.value
-      });
+      api.setConfig({ base: baseSel.value, topping: topSel.value, drizzle: drizzleSel.value });
       calcPrice();
     }
 
@@ -463,7 +483,18 @@
     drizzleSel.addEventListener("change", sync3D);
 
     document.getElementById("orderBtn").addEventListener("click", () => {
-      alert(`Demo-Bestellung\\n${summaryLine.textContent}\\n${priceLine.textContent}\\n\\nNext Step: Checkout anbinden (Stripe/Shop/WhatsApp).`);
+      alert(`Demo-Bestellung\\n${summaryLine.textContent}\\n${priceLine.textContent}\\n\\nNext Step: Checkout anbinden.`);
+    });
+
+    document.getElementById("surpriseBtn").addEventListener("click", () => {
+      const bases = ["classic","choco","oat"];
+      const tops = ["chips","sprinkles","nuts"];
+      const dris = ["none","white","dark"];
+      baseSel.value = bases[Math.floor(Math.random()*bases.length)];
+      topSel.value = tops[Math.floor(Math.random()*tops.length)];
+      drizzleSel.value = dris[Math.floor(Math.random()*dris.length)];
+      sync3D();
+      document.getElementById("build").scrollIntoView({ behavior: "smooth", block:"start" });
     });
 
     calcPrice();

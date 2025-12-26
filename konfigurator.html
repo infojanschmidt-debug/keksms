@@ -3,62 +3,68 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="theme-color" content="#0b0f18" />
-  <title>Only Cakes — Konfigurator</title>
-  <meta name="description" content="Konfiguriere deinen Cookie in 3D. Mobile-ready. Touch & Drag." />
+  <meta name="theme-color" content="#070A12" />
+  <title>OnlyCakes — Konfigurator</title>
+  <meta name="description" content="OnlyCakes 3D Konfigurator — mobil & desktop." />
 
   <style>
     :root{
-      --bg:#0b0f18;
-      --card:#11192a;
-      --card2:#0f1626;
-      --text:#eaf0ff;
-      --muted:#a8b3cf;
-      --line:rgba(255,255,255,.12);
-      --shadow: 0 18px 40px rgba(0,0,0,.35);
-      --r: 18px;
-      --max: 1120px;
+      --bg:#070A12;
+      --panel: rgba(255,255,255,.06);
+      --panel2: rgba(255,255,255,.04);
+      --stroke: rgba(255,255,255,.10);
+      --stroke2: rgba(255,255,255,.14);
+      --text:#ECF2FF;
+      --muted:#A9B3CC;
+      --shadow: 0 18px 60px rgba(0,0,0,.55);
+      --r: 22px;
+      --max: 1160px;
+      --a: rgba(84,115,255,.55);
+      --b: rgba(255,92,122,.45);
+      --c: rgba(57,217,138,.35);
     }
     *{ box-sizing:border-box; }
     html,body{ height:100%; }
     body{
       margin:0;
       font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      color: var(--text);
       background:
-        radial-gradient(1200px 900px at 15% 0%, rgba(84,115,255,.22), transparent 55%),
-        radial-gradient(900px 700px at 90% 10%, rgba(255,92,122,.14), transparent 60%),
-        radial-gradient(800px 700px at 60% 100%, rgba(57,217,138,.12), transparent 60%),
+        radial-gradient(1200px 900px at 18% 0%, var(--a), transparent 55%),
+        radial-gradient(1000px 700px at 88% 10%, var(--b), transparent 60%),
+        radial-gradient(900px 700px at 55% 100%, var(--c), transparent 60%),
         var(--bg);
-      color:var(--text);
     }
     a{ color:inherit; text-decoration:none; }
 
-    .wrap{ max-width:var(--max); margin:0 auto; padding:18px; }
+    .wrap{ max-width: var(--max); margin:0 auto; padding:18px; }
     .top{
       display:flex; align-items:center; justify-content:space-between; gap:12px;
-      padding:12px 0;
+      padding: 10px 0 14px;
     }
-    .brand{ display:flex; align-items:center; gap:10px; font-weight:950; }
+    .brand{ display:flex; align-items:center; gap:12px; font-weight:950; user-select:none; }
     .logo{
-      width:36px; height:36px; border-radius:12px;
-      background: linear-gradient(135deg, rgba(84,115,255,.9), rgba(255,92,122,.85));
-      box-shadow: 0 10px 24px rgba(0,0,0,.35);
+      width:38px; height:38px; border-radius:14px;
+      background: linear-gradient(135deg, rgba(84,115,255,.95), rgba(255,92,122,.85));
+      box-shadow: 0 10px 26px rgba(0,0,0,.5);
     }
     .pill{
       display:inline-flex; align-items:center; justify-content:center;
       padding:10px 12px;
-      border:1px solid var(--line);
-      background: rgba(255,255,255,.04);
-      border-radius:999px;
-      font-weight:850;
-      color:var(--muted);
       min-height:40px;
+      border-radius:999px;
+      border:1px solid var(--stroke);
+      background: rgba(255,255,255,.04);
+      color: var(--muted);
+      font-weight: 900;
+      transition: transform .12s ease, background .12s ease, border-color .12s ease;
     }
+    .pill:hover{ transform: translateY(-1px); background: rgba(255,255,255,.06); border-color: var(--stroke2); }
 
     .grid{
       display:grid;
       grid-template-columns: 1.25fr .75fr;
-      gap:14px;
+      gap: 14px;
       align-items:stretch;
     }
     @media (max-width: 980px){
@@ -66,93 +72,77 @@
     }
 
     .card{
-      background: linear-gradient(180deg, rgba(17,25,42,.86), rgba(15,22,38,.86));
-      border:1px solid var(--line);
       border-radius: var(--r);
+      border: 1px solid var(--stroke);
+      background: linear-gradient(180deg, var(--panel), var(--panel2));
       box-shadow: var(--shadow);
       overflow:hidden;
     }
 
-    .stageHead{
-      padding:14px;
-      border-bottom:1px solid var(--line);
-      background: rgba(255,255,255,.02);
-    }
-    .stageHead h1{ margin:0; font-size:18px; letter-spacing:-.2px; }
-    .stageHead p{ margin:6px 0 0; color:var(--muted); font-size:13.5px; }
-
-    .canvasBox{
-      height: clamp(340px, 62vh, 660px);
-      position:relative;
-      background:
-        radial-gradient(900px 500px at 50% 30%, rgba(84,115,255,.18), transparent 62%),
-        rgba(0,0,0,.12);
-      touch-action: none;
-    }
-
-    .side{
-      display:flex; flex-direction:column; gap:12px;
-      padding:14px;
-    }
-
-    .sel{
-      display:flex; flex-direction:column; gap:6px;
+    .head{
+      padding: 16px;
+      border-bottom: 1px solid var(--stroke);
       background: rgba(255,255,255,.03);
-      border:1px solid var(--line);
-      border-radius: 16px;
-      padding:10px;
     }
-    label{ color:var(--muted); font-size:12.5px; font-weight:900; }
+    .head h1{ margin:0; font-size:18px; letter-spacing:-.2px; font-weight: 950; }
+    .head p{ margin:6px 0 0; color: var(--muted); font-size:13.5px; line-height:1.25; }
+
+    .canvas{
+      height: clamp(360px, 64vh, 720px);
+      background:
+        radial-gradient(1000px 520px at 50% 30%, rgba(84,115,255,.18), transparent 62%),
+        rgba(0,0,0,.14);
+      touch-action:none;
+    }
+
+    .side{ padding:14px; display:flex; flex-direction:column; gap:12px; }
+    .sel{
+      border:1px solid var(--stroke);
+      background: rgba(0,0,0,.10);
+      border-radius: 18px;
+      padding:10px;
+      display:flex; flex-direction:column; gap:6px;
+    }
+    label{ color: var(--muted); font-weight: 950; font-size: 12.5px; }
     select{
-      width:100%;
-      padding:12px 12px;
+      min-height: 46px;
+      padding: 12px 12px;
       border-radius: 14px;
-      border:1px solid var(--line);
+      border: 1px solid var(--stroke);
       background: rgba(0,0,0,.18);
       color: var(--text);
-      font-weight:900;
-      min-height:46px;
+      font-weight: 950;
       outline:none;
     }
 
     .summary{
-      background: rgba(255,255,255,.03);
-      border:1px solid var(--line);
-      border-radius: 16px;
+      border:1px solid var(--stroke);
+      background: rgba(0,0,0,.10);
+      border-radius: 18px;
       padding:12px;
     }
-    .summary b{ display:block; font-size:15px; margin-bottom:6px; }
-    .summary span{ color:var(--muted); font-size:13.5px; line-height:1.35; display:block; }
+    .summary b{ display:block; font-size: 15px; font-weight: 950; margin-bottom:6px; }
+    .summary span{ display:block; color: var(--muted); font-size: 13.5px; line-height: 1.35; }
 
     .btn{
       display:inline-flex; align-items:center; justify-content:center;
-      gap:10px;
-      padding:12px 14px;
-      border-radius: 14px;
-      border:1px solid rgba(84,115,255,.55);
-      background: linear-gradient(135deg, rgba(84,115,255,.28), rgba(255,92,122,.18));
+      min-height: 48px;
+      padding: 12px 14px;
+      border-radius: 16px;
+      border: 1px solid rgba(84,115,255,.45);
+      background: linear-gradient(135deg, rgba(84,115,255,.26), rgba(255,92,122,.16));
       color: var(--text);
-      font-weight:950;
+      font-weight: 950;
       cursor:pointer;
       user-select:none;
-      min-height:48px;
-      width:100%;
-    }
-
-    .tiny{
-      color:var(--muted);
-      font-size:12.5px;
-      line-height:1.35;
-      border-top:1px solid var(--line);
-      padding-top:12px;
     }
 
     footer{
       margin:16px 0 26px;
       color: var(--muted);
       font-size: 13px;
-      border-top:1px solid var(--line);
-      padding-top:14px;
+      border-top: 1px solid var(--stroke);
+      padding-top: 14px;
       display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap;
     }
   </style>
@@ -173,20 +163,20 @@
       <div class="brand">
         <div class="logo" aria-hidden="true"></div>
         <div>
-          <div>Only Cakes — 3D Konfigurator</div>
+          <div>OnlyCakes — Vollbild</div>
           <div style="color:var(--muted); font-size:12px; font-weight:900;">Drag • Pinch • Double-Tap Reset</div>
         </div>
       </div>
-      <a class="pill" href="index.html">← Zur Homepage</a>
+      <a class="pill" href="index.html">← Homepage</a>
     </div>
 
     <section class="grid">
       <div class="card">
-        <div class="stageHead">
-          <h1>Dein Cookie in 3D</h1>
-          <p>Drag zum Drehen • Pinch zum Zoomen • Doppel-Tap = Reset</p>
+        <div class="head">
+          <h1>3D Cookie</h1>
+          <p>Mobil: Doppel-Tap = Reset. Desktop: Wheel = Zoom.</p>
         </div>
-        <div class="canvasBox" id="cookieStage" aria-label="3D Cookie Stage"></div>
+        <div class="canvas" id="cookieStage"></div>
       </div>
 
       <aside class="card">
@@ -221,23 +211,20 @@
           <div class="summary">
             <b id="priceLine">Preis: 2,90 €</b>
             <span id="summaryLine">Classic • Chips • None</span>
-            <span style="margin-top:8px;">Checkout-Hook: hier später Stripe/Shop/WhatsApp anflanschen.</span>
           </div>
 
           <button class="btn" id="orderBtn" type="button">Bestellen (Demo)</button>
 
-          <div class="tiny">
-            Created by: First Connect by Jan Christian Schmidt<br/>
-            <a class="pill" href="impressum.html" style="margin-top:10px; width:100%; justify-content:center;">Impressum</a>
-            <a class="pill" href="datenschutz.html" style="margin-top:8px; width:100%; justify-content:center;">Datenschutz</a>
+          <div style="color:var(--muted); font-size:12.5px; line-height:1.35;">
+            Created by: First Connect by Jan Christian Schmidt
           </div>
         </div>
       </aside>
     </section>
 
     <footer>
-      <div>© <span id="y"></span> Only Cakes</div>
-      <div>3D • Mobile-ready • clean</div>
+      <div>© <span id="y"></span> OnlyCakes</div>
+      <div><a href="impressum.html">Impressum</a> • <a href="datenschutz.html">Datenschutz</a></div>
     </footer>
   </main>
 
@@ -251,9 +238,8 @@
     const drizzleSel = document.getElementById("drizzleSel");
     const priceLine = document.getElementById("priceLine");
     const summaryLine = document.getElementById("summaryLine");
-    const stage = document.getElementById("cookieStage");
 
-    const api = initCookie3D(stage, {
+    const api = initCookie3D(document.getElementById("cookieStage"), {
       preset: { base:"classic", topping:"chips", drizzle:"none" },
       allowDoubleTapReset: true
     });
@@ -285,7 +271,7 @@
     drizzleSel.addEventListener("change", sync3D);
 
     document.getElementById("orderBtn").addEventListener("click", () => {
-      alert(`Demo: Bestellung\\n${summaryLine.textContent}\\n${priceLine.textContent}\\n\\nNext Step: Checkout anbinden.`);
+      alert(`Demo: Bestellung\\n${summaryLine.textContent}\\n${priceLine.textContent}`);
     });
 
     calcPrice();

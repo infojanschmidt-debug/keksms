@@ -1,258 +1,90 @@
 <!doctype html>
 <html lang="de">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>OnlyCakes — Konfigurator</title>
-  <meta name="description" content="Keks in 3D bauen: Base, Toppings, Extras. Share-Link, Surprise-Button, Live-Preview." />
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>ONLYKEKS – Konfigurator</title>
 
   <style>
-    :root{--bg:#0b0f18;--card:#11192a;--text:#eaf0ff;--muted:#a8b3cf;--line:rgba(255,255,255,.12);--accent:#7c5cff;--ok:#20e3b2;}
-    *{box-sizing:border-box}
-    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:radial-gradient(1000px 600px at 20% 0%,rgba(124,92,255,.25),transparent 60%),radial-gradient(900px 600px at 80% 0%,rgba(32,227,178,.16),transparent 60%),var(--bg);color:var(--text);}
-    .wrap{max-width:1100px;margin:0 auto;padding:18px}
-    .top{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between;padding:12px 14px;border:1px solid var(--line);border-radius:16px;background:rgba(17,25,42,.65);backdrop-filter:blur(10px)}
-    .brand{display:flex;gap:10px;align-items:center;font-weight:900}
-    .chip{font-size:12px;padding:6px 10px;border:1px solid var(--line);border-radius:999px;color:var(--muted);background:rgba(255,255,255,.06)}
-    .btn{border:1px solid var(--line);background:rgba(255,255,255,.06);color:var(--text);padding:10px 14px;border-radius:14px;cursor:pointer;font-weight:800}
-    .btn.good{background:linear-gradient(180deg,rgba(32,227,178,.32),rgba(32,227,178,.10));}
-    .grid{display:grid;grid-template-columns:1.05fr .95fr;gap:12px;margin-top:12px}
-    @media(max-width:900px){.grid{grid-template-columns:1fr}}
-    .card{border:1px solid var(--line);border-radius:16px;background:rgba(17,25,42,.55);padding:14px}
-    .canvasCard{border:1px solid var(--line);border-radius:16px;background:rgba(0,0,0,.18);overflow:hidden}
-    canvas{width:100%;height:420px;display:block}
-    .title{font-size:20px;font-weight:900;margin:0 0 6px 0}
-    .muted{color:var(--muted);font-size:13px}
-    .optGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-    @media(max-width:600px){.optGrid{grid-template-columns:repeat(2,1fr)}}
-    .opt{border:1px solid var(--line);border-radius:14px;padding:10px;background:rgba(255,255,255,.05);cursor:pointer;user-select:none}
-    .opt b{display:block}
-    .opt small{color:var(--muted)}
-    .opt.active{border-color:rgba(124,92,255,.65);background:linear-gradient(180deg,rgba(124,92,255,.28),rgba(124,92,255,.10))}
-    .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between}
-    .price{font-weight:900;font-size:18px}
-    .toast{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);background:rgba(17,25,42,.92);border:1px solid var(--line);border-radius:999px;padding:10px 14px;opacity:0;transition:.2s;pointer-events:none}
-    .toast.show{opacity:1;transform:translateX(-50%) translateY(-2px)}
+    body{
+      margin:0;
+      background:#060814;
+      color:#fff;
+      font-family:system-ui;
+      display:grid;
+      grid-template-columns:260px 1fr;
+      height:100vh;
+    }
+    aside{
+      padding:20px;
+      border-right:1px solid rgba(255,255,255,.1);
+      background:#0b1020;
+    }
+    h2{margin-top:0}
+    button{
+      width:100%;
+      margin-bottom:10px;
+      padding:12px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,.2);
+      background:rgba(255,255,255,.08);
+      color:#fff;
+      font-weight:700;
+      cursor:pointer;
+    }
+    canvas{width:100%;height:100%}
   </style>
-
-  <!-- Three.js (public CDN) -->
-  <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/examples/js/controls/OrbitControls.js"></script>
-
-  <!-- Our 3D cookie engine -->
-  <script src="./cookie3d.js"></script>
 </head>
 
 <body>
-  <div class="wrap">
-    <div class="top">
-      <div class="brand"><span style="font-size:18px">🍪</span> OnlyCakes <span class="chip">Keks-Universum • Win-Win-Win</span></div>
-      <div style="display:flex;gap:10px;flex-wrap:wrap">
-        <button class="btn" id="btnShare">Link teilen</button>
-        <button class="btn" id="btnReset">Reset</button>
-        <button class="btn good" id="btnRandom">Überrasch-Mich</button>
-      </div>
-    </div>
+<aside>
+  <h2>Teig</h2>
+  <button onclick="setColor(0xd9b38c)">Classic</button>
+  <button onclick="setColor(0x8b5a3c)">Double</button>
+  <button onclick="setColor(0xf2e6c9)">Vanilla</button>
 
-    <div class="grid">
-      <div class="canvasCard">
-        <canvas id="cookieCanvas"></canvas>
-      </div>
+  <h2>Finish</h2>
+  <button onclick="setRough(0.9)">Matt</button>
+  <button onclick="setRough(0.3)">Glossy</button>
 
-      <div class="card">
-        <div class="row">
-          <div>
-            <div class="title">Konfigurator</div>
-            <div class="muted">Base → bis 3 Toppings → Extras. Link teilt direkt deine Kombi.</div>
-          </div>
-          <div class="price" id="price">€0,00</div>
-        </div>
+  <a href="index.html" style="color:#aaa;font-size:12px">← zurück</a>
+</aside>
 
-        <hr style="border:0;border-top:1px solid rgba(255,255,255,.12);margin:12px 0" />
+<canvas id="c"></canvas>
 
-        <div class="title" style="font-size:16px">1) Base (1 wählen)</div>
-        <div class="optGrid" id="baseGrid"></div>
+<script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+<script>
+  const canvas=document.getElementById("c");
+  const r=new THREE.WebGLRenderer({canvas,antialias:true});
+  const s=new THREE.Scene();
+  const cam=new THREE.PerspectiveCamera(45,1,0.1,100);
+  cam.position.z=3;
 
-        <div style="height:10px"></div>
-        <div class="row">
-          <div class="title" style="font-size:16px;margin:0">2) Toppings (bis 3)</div>
-          <div class="chip" id="topCount">0 / 3</div>
-        </div>
-        <div class="optGrid" id="topGrid"></div>
+  const geo=new THREE.SphereGeometry(1,64,64);
+  const mat=new THREE.MeshStandardMaterial({color:0xd9b38c,roughness:.6});
+  const cookie=new THREE.Mesh(geo,mat);
+  s.add(cookie);
 
-        <div style="height:10px"></div>
-        <div class="title" style="font-size:16px">3) Extras (optional)</div>
-        <div class="optGrid" id="extraGrid"></div>
+  s.add(new THREE.DirectionalLight(0xffffff,1).position.set(3,3,4));
+  s.add(new THREE.AmbientLight(0xffffff,.6));
 
-        <hr style="border:0;border-top:1px solid rgba(255,255,255,.12);margin:12px 0" />
+  function resize(){
+    r.setSize(canvas.clientWidth,canvas.clientHeight,false);
+    cam.aspect=canvas.clientWidth/canvas.clientHeight;
+    cam.updateProjectionMatrix();
+  }
+  window.addEventListener("resize",resize);
+  resize();
 
-        <div class="muted" id="summary">—</div>
-      </div>
-    </div>
-  </div>
+  function loop(){
+    cookie.rotation.y+=0.004;
+    r.render(s,cam);
+    requestAnimationFrame(loop);
+  }
+  loop();
 
-  <div class="toast" id="toast"></div>
-
-  <script>
-    const MAX_TOP = 3;
-
-    const CATALOG = {
-      bases: [
-        { id:"classic", name:"Klassisch", desc:"Vanille-Teig", price:2.50 },
-        { id:"choco",   name:"Schoko",    desc:"Kakao-Teig",   price:2.90 },
-        { id:"dark",    name:"Dark",      desc:"Double-Cocoa", price:3.20 }
-      ],
-      toppings: [
-        { id:"chocochips", name:"Choco Chips", desc:"Crunch", price:0.60 },
-        { id:"sprinkles",  name:"Sprinkles",   desc:"Viral",  price:0.50 },
-        { id:"nuts",       name:"Nüsse",       desc:"Röstaroma", price:0.70 },
-        { id:"caramel",    name:"Karamell",    desc:"Drizzle", price:0.65 },
-        { id:"oreo",       name:"Oreo Crumb",  desc:"Dark",   price:0.75 },
-        { id:"berry",      name:"Berry Dust",  desc:"Fruity", price:0.70 }
-      ],
-      extras: [
-        { id:"bitcoin",  name:"Bitcoin-Glanz", desc:"Gold Touch", price:0.99 },
-        { id:"double",   name:"Doppel-Keks",   desc:"Mehr Masse", price:1.80 },
-        { id:"giftwrap", name:"Geschenk-Wrap", desc:"Für Gifts",  price:1.20 }
-      ]
-    };
-
-    const $ = (id)=>document.getElementById(id);
-    const toastEl = $("toast");
-
-    let state = { base:null, toppings:[], extras:[] };
-
-    function toast(msg){
-      toastEl.textContent = msg;
-      toastEl.classList.add("show");
-      clearTimeout(toastEl._t);
-      toastEl._t = setTimeout(()=>toastEl.classList.remove("show"), 1400);
-    }
-
-    function toQuery(){
-      const p = new URLSearchParams();
-      if(state.base) p.set("base", state.base);
-      if(state.toppings.length) p.set("t", state.toppings.join("."));
-      if(state.extras.length) p.set("x", state.extras.join("."));
-      return p.toString();
-    }
-
-    function fromQuery(){
-      const p = new URLSearchParams(location.search);
-      const base = p.get("base");
-      const t = p.get("t");
-      const x = p.get("x");
-
-      const validBase = CATALOG.bases.some(b=>b.id===base) ? base : null;
-      const tops = t ? t.split(".").filter(id => CATALOG.toppings.some(z=>z.id===id)).slice(0,MAX_TOP) : [];
-      const ex = x ? x.split(".").filter(id => CATALOG.extras.some(z=>z.id===id)) : [];
-      state = { base: validBase, toppings: tops, extras: ex };
-    }
-
-    function calcPrice(){
-      let sum = 0;
-      if(state.base) sum += (CATALOG.bases.find(b=>b.id===state.base)?.price || 0);
-      for(const t of state.toppings) sum += (CATALOG.toppings.find(z=>z.id===t)?.price || 0);
-      for(const x of state.extras) sum += (CATALOG.extras.find(z=>z.id===x)?.price || 0);
-      return sum;
-    }
-
-    function renderGrid(list, el, type){
-      el.innerHTML = list.map(item => {
-        const active = (type==="base" ? state.base===item.id :
-                       type==="topping" ? state.toppings.includes(item.id) :
-                       state.extras.includes(item.id));
-        return `
-          <div class="opt ${active ? "active":""}" data-id="${item.id}" data-type="${type}">
-            <b>${item.name}</b>
-            <small>${item.desc} · +€${item.price.toFixed(2).replace(".",",")}</small>
-          </div>
-        `;
-      }).join("");
-
-      el.querySelectorAll(".opt").forEach(opt=>{
-        opt.addEventListener("click", ()=>{
-          const id = opt.dataset.id;
-          if(type==="base"){ state.base = id; toast("Base gesetzt ✔"); }
-          if(type==="topping"){
-            const idx = state.toppings.indexOf(id);
-            if(idx>=0){ state.toppings.splice(idx,1); toast("Topping raus"); }
-            else {
-              if(state.toppings.length>=MAX_TOP){ toast("Max 3 Toppings, Boss 😄"); return; }
-              state.toppings.push(id); toast("Topping rein ✔");
-            }
-          }
-          if(type==="extra"){
-            const idx = state.extras.indexOf(id);
-            if(idx>=0){ state.extras.splice(idx,1); toast("Extra raus"); }
-            else { state.extras.push(id); toast("Extra rein ✔"); }
-          }
-
-          // sync URL + 3D
-          history.replaceState({}, "", "?" + toQuery());
-          refresh();
-        });
-      });
-    }
-
-    function refresh(){
-      $("topCount").textContent = `${state.toppings.length} / ${MAX_TOP}`;
-      const price = calcPrice();
-      $("price").textContent = "€" + price.toFixed(2).replace(".",",");
-      $("summary").textContent = `Base: ${state.base || "—"} • Toppings: ${state.toppings.join(", ") || "—"} • Extras: ${state.extras.join(", ") || "—"}`;
-
-      // update 3D
-      Cookie3D.update(state);
-
-      // re-render to update active states
-      renderAll();
-    }
-
-    function renderAll(){
-      renderGrid(CATALOG.bases, $("baseGrid"), "base");
-      renderGrid(CATALOG.toppings, $("topGrid"), "topping");
-      renderGrid(CATALOG.extras, $("extraGrid"), "extra");
-    }
-
-    function randomize(){
-      const b = CATALOG.bases[Math.floor(Math.random()*CATALOG.bases.length)].id;
-      const shuffled = [...CATALOG.toppings].sort(()=>Math.random()-0.5);
-      const tops = shuffled.slice(0, 1 + Math.floor(Math.random()*MAX_TOP)).map(x=>x.id);
-      const ex = Math.random()<0.6 ? ["bitcoin"] : [];
-      state = { base:b, toppings: tops, extras: ex };
-      history.replaceState({}, "", "?" + toQuery());
-      refresh();
-      toast("Überraschung geladen ✨");
-    }
-
-    function resetAll(){
-      state = { base:null, toppings:[], extras:[] };
-      history.replaceState({}, "", location.pathname);
-      refresh();
-      toast("Reset. Sauber.");
-    }
-
-    async function share(){
-      const url = location.origin + location.pathname + "?" + toQuery();
-      try{ await navigator.clipboard.writeText(url); toast("Link kopiert 🔗"); }
-      catch(e){ toast("Clipboard blockt 😅"); }
-    }
-
-    // INIT
-    fromQuery();
-
-    Cookie3D.mount({
-      canvas: $("cookieCanvas"),
-      getState: ()=>state,
-      onReady: ()=>{ renderAll(); refresh(); }
-    });
-
-    $("btnRandom").addEventListener("click", randomize);
-    $("btnReset").addEventListener("click", resetAll);
-    $("btnShare").addEventListener("click", share);
-
-    // Keyboard shortcut
-    window.addEventListener("keydown", (e)=>{ if(e.key.toLowerCase()==="r") randomize(); });
-  </script>
+  window.setColor=(c)=>mat.color.setHex(c);
+  window.setRough=(v)=>mat.roughness=v;
+</script>
 </body>
 </html>

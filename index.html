@@ -1,3 +1,4 @@
+<!-- index.html (komplett) -->
 <!doctype html>
 <html lang="de">
 <head>
@@ -58,10 +59,12 @@
       cursor:pointer;
       transition: transform .12s ease, background .12s ease;
       white-space:nowrap;
+      user-select:none;
     }
     .btn:hover{transform: translateY(-1px); background: rgba(255,255,255,.08)}
     .btn.primary{background: rgba(255,255,255,.92); color:#0A0D16; border-color: rgba(255,255,255,.6)}
     main{padding:18px 0 40px}
+
     .hero{
       border:1px solid var(--line);
       background: rgba(13,18,32,.72);
@@ -75,6 +78,7 @@
     }
     h1{margin:0; font-size:28px; letter-spacing:.3px}
     .tag{color:var(--muted); font-size:12px; margin-top:6px}
+
     .heroCanvasWrap{
       border-top:1px solid var(--line);
       background:
@@ -82,7 +86,6 @@
         linear-gradient(135deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
       padding:10px;
     }
-    /* Das ist der wichtige Teil: sichtbar groß, nicht "unsichtbar klein" */
     canvas#cookieHero{
       width:100%;
       height:420px;
@@ -91,6 +94,7 @@
       border:1px solid rgba(255,255,255,.14);
       background: rgba(0,0,0,.18);
     }
+
     .below{
       display:grid;
       grid-template-columns: 1fr 1fr;
@@ -104,14 +108,17 @@
       padding:14px;
       min-height: 92px;
       display:flex; align-items:center; justify-content:space-between; gap:12px;
+      transition: transform .12s ease, background .12s ease;
     }
+    .card:hover{transform: translateY(-1px); background: rgba(255,255,255,.055)}
     .card b{font-size:13px; letter-spacing:.5px}
     .card span{display:block; color:var(--muted); font-size:12px; margin-top:6px}
+
     footer{
       margin-top:18px;
       color:var(--muted);
       font-size:12px;
-      display:flex; gap:10px; flex-wrap:wrap;
+      display:flex; gap:10px; flex-wrap:wrap; align-items:center;
     }
     footer a{
       padding:8px 10px;
@@ -119,6 +126,7 @@
       border-radius:999px;
       background: rgba(255,255,255,.03);
     }
+
     @media (max-width: 760px){
       canvas#cookieHero{height:360px}
       .below{grid-template-columns: 1fr}
@@ -184,40 +192,34 @@
     </footer>
   </main>
 
-  <!-- 3D Loader -->
-  <script src="cookie3d.js"></script>
+  <!-- Cookie Hero Engine -->
+  <script src="cookie3d.js?v=1"></script>
   <script>
     (function(){
       const canvas = document.getElementById("cookieHero");
-      // Sichtbarkeits-Fix: Canvas muss echte Pixelgröße bekommen
-      const rect = canvas.getBoundingClientRect();
-      const dpr = Math.max(1, window.devicePixelRatio || 1);
-      canvas.width  = Math.floor(rect.width * dpr);
-      canvas.height = Math.floor(rect.height * dpr);
 
-      // Erwartung: cookie3d.js stellt window.Cookie3D.init(canvas) bereit
+      // Wenn cookie3d.js korrekt geladen ist:
       if (window.Cookie3D && typeof window.Cookie3D.init === "function") {
-        try {
-          window.Cookie3D.init(canvas);
-          return;
-        } catch (e) {
-          console.warn("Cookie3D init error:", e);
-        }
+        window.Cookie3D.init(canvas, {
+          recipe: { base:"classic", chips:"mix", crunch:"nuts", drizzle:"none", finish:"matte" }
+          // Klick auf Cookie = Surprise Preset (in cookie3d.js)
+        });
+        return;
       }
 
-      // Fallback: wenigstens NICHT leer. (Damit du sofort siehst: Bereich ist da.)
+      // Fallback (sichtbar): wenn cookie3d.js fehlt/404
       const ctx = canvas.getContext("2d");
-      if(ctx){
-        ctx.scale(dpr, dpr);
-        ctx.fillStyle = "rgba(255,255,255,.08)";
-        ctx.fillRect(0,0,rect.width,rect.height);
-        ctx.fillStyle = "rgba(255,255,255,.8)";
-        ctx.font = "700 14px system-ui";
-        ctx.fillText("3D HERO: cookie3d.js ist noch nicht verbunden.", 18, 28);
-        ctx.fillStyle = "rgba(255,255,255,.55)";
-        ctx.font = "12px system-ui";
-        ctx.fillText("Fix: window.Cookie3D.init(canvas) in cookie3d.js exportieren.", 18, 50);
-      }
+      const r = canvas.getBoundingClientRect();
+      canvas.width = Math.floor(r.width);
+      canvas.height = Math.floor(r.height);
+      ctx.fillStyle = "rgba(255,255,255,.08)";
+      ctx.fillRect(0,0,r.width,r.height);
+      ctx.fillStyle = "rgba(255,255,255,.85)";
+      ctx.font = "700 14px system-ui";
+      ctx.fillText("3D HERO: cookie3d.js nicht geladen.", 18, 28);
+      ctx.fillStyle = "rgba(255,255,255,.55)";
+      ctx.font = "12px system-ui";
+      ctx.fillText("Check: Datei im selben Ordner + kein 404.", 18, 50);
     })();
   </script>
 </body>

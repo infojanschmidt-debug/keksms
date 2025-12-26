@@ -3,682 +3,874 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>OnlyCakes — 3D Keks-Konfigurator</title>
-  <meta name="description" content="Handgemacht. Keine Chargen. Direkt zu dir. Bau dir deinen Keks in 3D und bestell in Sekunden." />
+  <title>Keksversum — ONLYKEKS</title>
+  <meta name="description" content="Keksversum: ONLYKEKS (3D Keks-Konfigurator) als Kern. Premium, ruhig, tech/manufakturartig. Klarer Einstieg, klare Planeten." />
 
   <style>
     :root{
-      --bg:#0b0f18;
-      --card:#11192a;
-      --card2:#0f1626;
-      --text:#eaf0ff;
-      --muted:#a8b3cf;
-      --line:rgba(255,255,255,.12);
-      --ok:#20e3b2;
-      --warn:#ffd166;
-      --bad:#ff5c7a;
-      --accent:#7c5cff;
-      --accent2:#2de2e6;
-      --shadow: 0 18px 60px rgba(0,0,0,.55);
-      --radius: 18px;
+      --bg:#070A12;
+      --panel:#0D1220;
+      --panel2:#0B1020;
+      --text:#EAF0FF;
+      --muted:#A9B3D4;
+      --line:rgba(255,255,255,.10);
+      --line2:rgba(255,255,255,.14);
+      --shadow: 0 20px 60px rgba(0,0,0,.55);
+      --r:18px;
+      --r2:24px;
+      --max:1160px;
+      --pad:22px;
+      --accent: #FFFFFF;
+      --good:#4DFFB5;
+      --warn:#FFD45A;
+      --hot:#FF5A7A;
     }
     *{box-sizing:border-box}
+    html,body{height:100%}
     body{
       margin:0;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      background: radial-gradient(1200px 600px at 20% 10%, rgba(124,92,255,.25), transparent 60%),
-                  radial-gradient(900px 600px at 80% 0%, rgba(45,226,230,.18), transparent 55%),
-                  radial-gradient(1000px 800px at 50% 100%, rgba(255,209,102,.12), transparent 65%),
-                  var(--bg);
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      background:
+        radial-gradient(1000px 600px at 70% 15%, rgba(255,255,255,.07), transparent 55%),
+        radial-gradient(900px 500px at 15% 35%, rgba(255,255,255,.05), transparent 55%),
+        linear-gradient(180deg, #060814, #060814 40%, #050610);
       color:var(--text);
-      line-height:1.35;
+      letter-spacing:.2px;
     }
-    a{color:inherit}
-    .wrap{max-width:1180px;margin:0 auto;padding:22px}
+    a{color:inherit; text-decoration:none}
+    .wrap{max-width:var(--max); margin:0 auto; padding:0 var(--pad)}
     .topbar{
-      display:flex;align-items:center;justify-content:space-between;gap:12px;
-      padding:14px 16px;border:1px solid var(--line);border-radius:16px;background:rgba(17,25,42,.65);
+      position:sticky; top:0; z-index:50;
       backdrop-filter: blur(10px);
-      box-shadow: 0 10px 35px rgba(0,0,0,.35);
-      position: sticky; top: 12px; z-index: 50;
+      background: linear-gradient(180deg, rgba(7,10,18,.85), rgba(7,10,18,.55));
+      border-bottom:1px solid var(--line);
     }
-    .brand{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:.2px}
-    .chip{
-      font-size:12px;padding:6px 10px;border:1px solid var(--line);border-radius:999px;color:var(--muted);
-      background:rgba(255,255,255,.06)
+    .topbar .row{
+      display:flex; align-items:center; justify-content:space-between;
+      padding:14px 0;
+      gap:14px;
     }
+    .brand{
+      display:flex; align-items:center; gap:10px; min-width: 200px;
+    }
+    .logo{
+      width:34px; height:34px; border-radius:12px;
+      background:
+        radial-gradient(12px 12px at 30% 30%, rgba(255,255,255,.85), rgba(255,255,255,.15)),
+        linear-gradient(135deg, rgba(255,255,255,.22), rgba(255,255,255,.06));
+      border:1px solid var(--line2);
+      box-shadow: 0 12px 30px rgba(0,0,0,.35);
+    }
+    .brand b{font-size:14px; letter-spacing:.8px}
+    .brand span{display:block; font-size:12px; color:var(--muted); margin-top:2px}
+    nav{
+      display:flex; gap:14px; flex-wrap:wrap; justify-content:center;
+      padding:6px 10px;
+      border:1px solid var(--line);
+      background: rgba(13,18,32,.55);
+      border-radius: 999px;
+    }
+    nav a{
+      font-size:12px; color:var(--muted);
+      padding:8px 12px; border-radius: 999px;
+    }
+    nav a:hover{background: rgba(255,255,255,.06); color:var(--text)}
+    .actions{display:flex; gap:10px; align-items:center; justify-content:flex-end; min-width: 200px;}
     .btn{
-      border:1px solid var(--line);
-      background: linear-gradient(180deg, rgba(124,92,255,.35), rgba(124,92,255,.12));
+      display:inline-flex; align-items:center; justify-content:center;
+      gap:10px; padding:11px 14px;
+      border-radius: 999px;
+      border:1px solid var(--line2);
+      background: rgba(255,255,255,.06);
       color:var(--text);
-      padding:10px 14px;border-radius:14px;
-      cursor:pointer;font-weight:800;
-      transition:.15s transform, .15s opacity;
+      font-weight:600; font-size:13px;
+      box-shadow: 0 10px 25px rgba(0,0,0,.25);
+      cursor:pointer;
+      transition: transform .12s ease, background .12s ease, border-color .12s ease;
       user-select:none;
+      white-space:nowrap;
     }
-    .btn:hover{transform:translateY(-1px)}
-    .btn:active{transform:translateY(0)}
-    .btn.secondary{
-      background:rgba(255,255,255,.06);
-      font-weight:800;
+    .btn:hover{transform: translateY(-1px); background: rgba(255,255,255,.08)}
+    .btn.primary{
+      background: rgba(255,255,255,.92);
+      color:#0A0D16;
+      border-color: rgba(255,255,255,.65);
     }
-    .btn.good{
-      background: linear-gradient(180deg, rgba(32,227,178,.35), rgba(32,227,178,.12));
-    }
-
-    .hero{
-      margin-top:18px;
+    .btn.primary:hover{background: rgba(255,255,255,.98)}
+    .pill{
+      display:inline-flex; align-items:center; gap:8px;
+      font-size:12px; color:var(--muted);
+      padding:8px 10px;
       border:1px solid var(--line);
-      border-radius: var(--radius);
-      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      border-radius: 999px;
+      background: rgba(13,18,32,.55);
+    }
+    .dot{width:8px; height:8px; border-radius:50%; background: rgba(255,255,255,.45)}
+    .dot.good{background: var(--good)}
+    .dot.warn{background: var(--warn)}
+    .dot.hot{background: var(--hot)}
+
+    /* Hero */
+    .hero{padding:56px 0 22px}
+    .heroGrid{
+      display:grid; gap:18px;
+      grid-template-columns: 1.1fr .9fr;
+      align-items:stretch;
+    }
+    .card{
+      border:1px solid var(--line);
+      background: linear-gradient(180deg, rgba(13,18,32,.85), rgba(11,16,32,.65));
+      border-radius: var(--r2);
       box-shadow: var(--shadow);
       overflow:hidden;
     }
-    .heroGrid{
-      display:grid;
-      grid-template-columns: 1.1fr .9fr;
-      gap:0;
+    .heroLeft{padding:28px}
+    .kicker{
+      display:flex; align-items:center; justify-content:space-between; gap:14px;
+      margin-bottom: 14px;
     }
-    @media (max-width: 980px){
-      .heroGrid{grid-template-columns: 1fr}
+    h1{margin:0; font-size:38px; line-height:1.05; letter-spacing:.3px}
+    .sub{
+      margin:14px 0 18px;
+      color: var(--muted);
+      font-size:15px; line-height:1.6;
+      max-width: 56ch;
     }
-    .heroLeft{padding:22px 22px 18px 22px}
-    .hTitle{
-      font-size: clamp(26px, 3.4vw, 44px);
-      line-height:1.05;
-      margin: 6px 0 10px 0;
-      letter-spacing:-.5px;
-      font-weight:900;
-    }
-    .hSub{color:var(--muted);font-size:15px;max-width:60ch}
-    .bullets{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
-    .bullet{
-      display:flex;align-items:center;gap:8px;
-      padding:8px 10px;border:1px solid var(--line);border-radius:999px;background:rgba(17,25,42,.55);
-      color:var(--muted);font-size:12px;
-    }
-    .bullet b{color:var(--text)}
-    .heroActions{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
-
-    .heroRight{
-      border-left:1px solid var(--line);
-      background: radial-gradient(800px 400px at 60% 40%, rgba(45,226,230,.20), transparent 60%),
-                  radial-gradient(700px 500px at 30% 30%, rgba(124,92,255,.20), transparent 60%),
-                  rgba(15,22,38,.65);
-      padding:18px;
-      display:flex;flex-direction:column;gap:12px;
-    }
-    @media (max-width: 980px){ .heroRight{border-left:0;border-top:1px solid var(--line)} }
-
-    .canvasCard{
+    .ctaRow{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
+    .miniRow{display:flex; gap:10px; flex-wrap:wrap; margin-top:18px}
+    .mini{
+      flex: 1 1 180px;
       border:1px solid var(--line);
-      border-radius: 16px;
-      background: rgba(0,0,0,.15);
-      overflow:hidden;
+      background: rgba(255,255,255,.04);
+      border-radius: var(--r);
+      padding:12px 12px;
+    }
+    .mini b{display:block; font-size:13px}
+    .mini span{display:block; color:var(--muted); font-size:12px; margin-top:6px; line-height:1.45}
+    .heroRight{display:flex; flex-direction:column}
+    .mock{
+      flex:1;
       position:relative;
-      min-height: 420px;
+      min-height: 340px;
+      background:
+        radial-gradient(180px 180px at 62% 38%, rgba(255,255,255,.12), transparent 55%),
+        radial-gradient(260px 220px at 35% 60%, rgba(255,255,255,.08), transparent 55%),
+        linear-gradient(135deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
     }
-    canvas{display:block;width:100%;height:420px}
+    .mockInner{
+      position:absolute; inset:16px;
+      border-radius: calc(var(--r2) - 4px);
+      border:1px dashed rgba(255,255,255,.18);
+      background: rgba(0,0,0,.15);
+      display:flex; align-items:center; justify-content:center;
+      padding:18px;
+      text-align:center;
+    }
+    .mockInner .title{font-weight:800; letter-spacing:.8px; font-size:14px}
+    .mockInner .hint{color:var(--muted); font-size:12px; margin-top:10px; line-height:1.55}
+    .mockBadge{
+      position:absolute; left:16px; bottom:16px;
+      display:flex; gap:8px; flex-wrap:wrap;
+    }
 
-    .canvasOverlay{
-      position:absolute;left:12px;top:12px;right:12px;
-      display:flex;align-items:center;justify-content:space-between;gap:10px;
-      pointer-events:none;
+    /* Sections */
+    section{padding:22px 0}
+    .sectionHead{
+      display:flex; align-items:flex-end; justify-content:space-between; gap:14px;
+      margin: 6px 0 12px;
     }
-    .ovTag{
-      pointer-events:none;
-      padding:7px 10px;border-radius:999px;border:1px solid var(--line);
-      background:rgba(0,0,0,.28);color:var(--muted);font-size:12px;
-      backdrop-filter: blur(8px);
+    .sectionHead h2{margin:0; font-size:18px; letter-spacing:.4px}
+    .sectionHead p{margin:0; color:var(--muted); font-size:13px; line-height:1.5; max-width: 70ch}
+    .grid{
+      display:grid; gap:12px;
+      grid-template-columns: repeat(12, 1fr);
     }
-
-    .panel{
+    .planet{
+      grid-column: span 6;
+      padding:14px;
+      border-radius: var(--r2);
       border:1px solid var(--line);
-      border-radius: 16px;
-      background: rgba(17,25,42,.55);
+      background: rgba(255,255,255,.04);
+      transition: transform .12s ease, border-color .12s ease, background .12s ease;
+      cursor:pointer;
+      position:relative;
+      overflow:hidden;
+    }
+    .planet:hover{transform: translateY(-2px); border-color: rgba(255,255,255,.18); background: rgba(255,255,255,.055)}
+    .planetTop{display:flex; align-items:flex-start; justify-content:space-between; gap:10px}
+    .planetTitle{display:flex; gap:10px; align-items:flex-start}
+    .icon{
+      width:34px; height:34px; border-radius: 12px;
+      border:1px solid rgba(255,255,255,.14);
+      background: linear-gradient(135deg, rgba(255,255,255,.14), rgba(255,255,255,.04));
+      display:grid; place-items:center;
+      flex:0 0 auto;
+      font-size:14px;
+    }
+    .planetTitle b{display:block; font-size:14px; letter-spacing:.6px}
+    .planetTitle span{display:block; color:var(--muted); font-size:12px; margin-top:6px; line-height:1.45}
+    .chips{display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end}
+    .chip{
+      font-size:11px; color:var(--muted);
+      border:1px solid var(--line);
+      background: rgba(0,0,0,.18);
+      padding:6px 9px;
+      border-radius: 999px;
+      white-space:nowrap;
+    }
+    .chip.live{color:#0A0D16; background: rgba(77,255,181,.85); border-color: rgba(77,255,181,.55)}
+    .chip.build{color:#0A0D16; background: rgba(255,212,90,.9); border-color: rgba(255,212,90,.55)}
+    .chip.idea{color:var(--text); background: rgba(255,90,122,.18); border-color: rgba(255,90,122,.28)}
+    .planetFooter{
+      display:flex; justify-content:space-between; gap:10px; align-items:center;
+      margin-top:12px;
+    }
+    .linkish{color:rgba(255,255,255,.78); font-size:12px}
+    .linkish:hover{color:rgba(255,255,255,.95)}
+    .bar{
+      height:8px; width:120px; border-radius:999px;
+      border:1px solid var(--line);
+      background: rgba(0,0,0,.22);
+      overflow:hidden;
+    }
+    .bar > i{
+      display:block; height:100%;
+      width: 40%;
+      background: rgba(255,255,255,.65);
+    }
+
+    /* Footer */
+    footer{padding:26px 0 40px; color:var(--muted); font-size:12px}
+    .footerGrid{
+      display:grid; gap:12px;
+      grid-template-columns: 1.3fr .7fr;
+      align-items:start;
+    }
+    .legal{
+      display:flex; gap:10px; flex-wrap:wrap; margin-top:10px;
+    }
+    .legal a{
+      padding:8px 10px;
+      border:1px solid var(--line);
+      border-radius:999px;
+      background: rgba(255,255,255,.03);
+      color:var(--muted);
+    }
+    .legal a:hover{color:var(--text); background: rgba(255,255,255,.05)}
+    .smallCard{
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.03);
+      border-radius: var(--r2);
       padding:14px;
     }
-    .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between}
-    .price{
-      font-size:18px;font-weight:900;
-      display:flex;align-items:baseline;gap:8px
+
+    /* Modal */
+    .modalBack{
+      position:fixed; inset:0; z-index:999;
+      background: rgba(0,0,0,.62);
+      display:none;
+      align-items:center; justify-content:center;
+      padding:18px;
     }
-    .price small{color:var(--muted);font-weight:700}
-    .divider{height:1px;background:var(--line);margin:12px 0}
-    .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-    @media(max-width:720px){.grid2{grid-template-columns:1fr}}
-    .groupTitle{font-weight:900;margin:0 0 8px 0}
-    .optGrid{
-      display:grid;grid-template-columns:repeat(3, 1fr);
-      gap:10px;
+    .modal{
+      width:min(920px, 100%);
+      border:1px solid rgba(255,255,255,.16);
+      background: linear-gradient(180deg, rgba(13,18,32,.96), rgba(10,12,22,.92));
+      border-radius: 22px;
+      box-shadow: 0 30px 100px rgba(0,0,0,.75);
+      overflow:hidden;
     }
-    @media(max-width:720px){.optGrid{grid-template-columns:repeat(2, 1fr)}}
-    .opt{
+    .modalHead{
+      display:flex; align-items:flex-start; justify-content:space-between; gap:12px;
+      padding:16px 16px 12px;
+      border-bottom:1px solid var(--line);
+    }
+    .modalHead b{font-size:14px; letter-spacing:.6px}
+    .modalHead span{display:block; color:var(--muted); font-size:12px; margin-top:6px; line-height:1.5}
+    .modalBody{padding:14px 16px 16px}
+    .twoCol{
+      display:grid; gap:12px;
+      grid-template-columns: 1fr 1fr;
+    }
+    .list{
       border:1px solid var(--line);
-      border-radius:14px;
-      padding:10px;
-      background: rgba(255,255,255,.05);
-      cursor:pointer;
-      transition:.15s transform, .15s background;
-      min-height:66px;
-      display:flex;flex-direction:column;gap:6px;justify-content:center;
+      background: rgba(255,255,255,.03);
+      border-radius: var(--r2);
+      padding:12px;
     }
-    .opt:hover{transform:translateY(-1px)}
-    .opt .name{font-weight:900}
-    .opt .desc{font-size:12px;color:var(--muted)}
-    .opt .meta{font-size:12px;color:var(--muted);display:flex;justify-content:space-between;gap:8px}
-    .opt.active{
-      background: linear-gradient(180deg, rgba(124,92,255,.32), rgba(124,92,255,.10));
-      border-color: rgba(124,92,255,.65);
-    }
-    .opt.active .desc,.opt.active .meta{color:rgba(234,240,255,.85)}
-    .note{color:var(--muted);font-size:12px}
-    .footer{
-      margin-top:18px;
-      color:var(--muted);
-      font-size:12px;
-      padding:18px 0 40px 0;
-      border-top:1px solid var(--line);
-    }
-    .toast{
-      position: fixed; left: 50%; bottom: 18px; transform: translateX(-50%);
-      background: rgba(17,25,42,.92);
-      border: 1px solid var(--line);
+    .list h3{margin:0 0 8px; font-size:12px; color:rgba(255,255,255,.88); letter-spacing:.5px}
+    .list ul{margin:0; padding-left: 16px; color:var(--muted); font-size:12px; line-height:1.65}
+    .x{
+      border:1px solid var(--line2);
+      background: rgba(255,255,255,.06);
       border-radius: 999px;
-      padding: 10px 14px;
-      color: var(--text);
-      font-size: 13px;
-      box-shadow: 0 18px 60px rgba(0,0,0,.55);
-      opacity: 0;
-      pointer-events: none;
-      transition: .2s opacity, .2s transform;
+      padding:10px 12px;
+      cursor:pointer;
+      font-weight:700;
     }
-    .toast.show{opacity:1;transform:translateX(-50%) translateY(-2px)}
+    .x:hover{background: rgba(255,255,255,.08)}
     .kbd{
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-      border:1px solid var(--line);border-bottom-width:2px;
-      padding:2px 6px;border-radius:8px;background:rgba(255,255,255,.06);
-      font-size:12px;color:var(--muted)
+      font-size:11px; color:var(--muted);
+      border:1px solid var(--line);
+      background: rgba(0,0,0,.25);
+      padding:4px 8px; border-radius: 10px;
+      margin-left:10px;
+    }
+
+    /* Responsive */
+    @media (max-width: 980px){
+      .heroGrid{grid-template-columns: 1fr}
+      nav{display:none}
+      .actions{min-width:auto}
+    }
+    @media (max-width: 740px){
+      h1{font-size:32px}
+      .planet{grid-column: span 12}
+      .footerGrid{grid-template-columns: 1fr}
+      .twoCol{grid-template-columns: 1fr}
     }
   </style>
-
-  <!-- Three.js (WebGL) -->
-  <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/examples/js/controls/OrbitControls.js"></script>
-  <!-- 3D Cookie Engine (liegt bei dir im Repo) -->
-  <script src="./cookie3d.js"></script>
 </head>
 
 <body>
-  <div class="wrap">
-    <div class="topbar">
-      <div class="brand">
-        <span style="font-size:18px">🍪</span>
-        <span>OnlyCakes</span>
-        <span class="chip">Keks-Universum • Win-Win-Win</span>
+  <!-- TOPBAR -->
+  <header class="topbar">
+    <div class="wrap">
+      <div class="row">
+        <a class="brand" href="#top" aria-label="Keksversum Start">
+          <div class="logo" aria-hidden="true"></div>
+          <div>
+            <b>KEKSVERSUM</b>
+            <span>ruhig • premium • klar</span>
+          </div>
+        </a>
+
+        <nav aria-label="Navigation">
+          <a href="#planeten">Planeten</a>
+          <a href="#kern">Kern</a>
+          <a href="#roadmap">Roadmap</a>
+          <a href="#kontakt">Kontakt</a>
+        </nav>
+
+        <div class="actions">
+          <div class="pill" title="Status">
+            <i class="dot warn"></i>
+            <span>Build-Phase</span>
+          </div>
+          <button class="btn" id="btnRandom">Überrasch mich</button>
+          <button class="btn primary" id="btnBuild">Keks bauen</button>
+        </div>
       </div>
-      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
-        <span class="chip">Shortcut: <span class="kbd">R</span> = Überrasch-Mich</span>
-        <button class="btn good" id="btnTopSurprise">Überrasch-Mich</button>
-        <button class="btn secondary" id="btnShare">Link teilen</button>
-        <button class="btn good" id="btnCart">In den Warenkorb</button>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <main id="top" class="wrap">
+    <div class="hero">
+      <div class="heroGrid">
+        <div class="card heroLeft">
+          <div class="kicker">
+            <div class="pill">
+              <i class="dot good"></i>
+              <span>ONLYKEKS = Kernplanet</span>
+            </div>
+            <div class="pill">
+              <span>Shortcut: <span class="kbd">ESC</span> schließt Details</span>
+            </div>
+          </div>
+
+          <h1>Keksversum.</h1>
+          <div class="sub">
+            Ein Universum aus klaren Modulen (Planeten). Einstieg über <b>ONLYKEKS</b>:
+            3D-Keks-Konfigurator, Bestellung, Überraschungsmodus — ohne Kitsch, ohne Chaos.
+            Premium-Look, Apple-ruhig, Manufaktur-Tech.
+          </div>
+
+          <div class="ctaRow">
+            <button class="btn primary" id="btnHeroBuild">Keks bauen</button>
+            <button class="btn" id="btnHeroPlanets">Planeten ansehen</button>
+            <a class="btn" href="#roadmap">Roadmap</a>
+          </div>
+
+          <div class="miniRow">
+            <div class="mini">
+              <b>Handgemacht.</b>
+              <span>Keine Chargen. Kein Massenkram. Klarer Fokus auf Qualität.</span>
+            </div>
+            <div class="mini">
+              <b>Einfach.</b>
+              <span>3 Basis-Cookies + 3 Toppings + Finish. Fertig. Kein Overload.</span>
+            </div>
+            <div class="mini">
+              <b>Story & System.</b>
+              <span>Planeten geben Struktur: Produkt, Content, Community, Tools, Regeln.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card heroRight">
+          <div class="mock" aria-label="3D Mockup Platzhalter">
+            <div class="mockInner">
+              <div>
+                <div class="title">3D HERO PLACEHOLDER</div>
+                <div class="hint">
+                  Hier kommt dein fotorealistisches Keks-Mockup rein (dunkler Background, Premium).<br/>
+                  Bis dahin: Platzhalter ist absichtlich clean — keine Ablenkung.
+                </div>
+              </div>
+            </div>
+            <div class="mockBadge">
+              <div class="pill"><i class="dot warn"></i><span>Konfigurator: Placeholder</span></div>
+              <div class="pill"><i class="dot"></i><span>Design: locked-in</span></div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
-    <!-- HERO / 3D -->
-    <section class="hero" id="konfigurator">
-      <div class="heroGrid">
-        <div class="heroLeft">
-          <div class="chip" style="display:inline-flex;gap:8px;align-items:center">
-            <span>✨ 3D Hero</span><span style="opacity:.65">•</span><span>WebGL / Three.js</span>
-          </div>
-
-          <h1 class="hTitle">Bau dir deinen Keks. <span style="color:var(--accent2)">Echt.</span> In 3D.</h1>
-          <p class="hSub">
-            Keine Chargen, handgemacht, direkt zu dir. Du wählst Base & Toppings – wir machen den Rest.
-            <b>Einfach, idiotensicher, und trotzdem „Wow“.</b>
-          </p>
-
-          <div class="bullets">
-            <div class="bullet">✅ <b>3-Step Flow</b> (Base → Toppings → Extras)</div>
-            <div class="bullet">⚡ <b>Live-Preis</b> + Live-Preview</div>
-            <div class="bullet">🎁 <b>Überrasch-Mich</b> Button</div>
-            <div class="bullet">🔗 <b>Share-Link</b> für deine Kreation</div>
-          </div>
-
-          <div class="heroActions">
-            <button class="btn good" id="btnScroll">Jetzt konfigurieren</button>
-            <button class="btn secondary" id="btnRandom">Überrasch-Mich</button>
-            <button class="btn secondary" id="btnReset">Zurücksetzen</button>
-          </div>
-
-          <div class="divider"></div>
-          <div class="note">
-            Tipp: Du kannst den Keks im 3D-Fenster drehen/zoomen. (Orbit Controls aktiv)
-          </div>
+    <!-- PLANETS -->
+    <section id="planeten">
+      <div class="sectionHead">
+        <div>
+          <h2>Unterplaneten</h2>
+          <p>Der Kern ist ONLYKEKS. Alles andere dockt sauber an: keine Überforderung, keine „alles überall“-Mischung.</p>
         </div>
-
-        <div class="heroRight">
-          <div class="canvasCard">
-            <div class="canvasOverlay">
-              <div class="ovTag" id="ovLabel">3D • Base: — • Toppings: —</div>
-              <div class="ovTag" id="ovPrice">€0,00</div>
-            </div>
-            <canvas id="cookieCanvas" aria-label="3D Keks Vorschau"></canvas>
-          </div>
-
-          <div class="panel">
-            <div class="row">
-              <div class="price"><span id="priceValue">€0,00</span> <small id="priceHint">inkl. MwSt (Mock)</small></div>
-              <button class="btn secondary" id="btnCopyRecipe">Rezept kopieren</button>
-            </div>
-            <div class="divider"></div>
-            <div class="note" id="summaryText">Wähle eine Base, dann bis zu 3 Toppings. Extras optional.</div>
-          </div>
-        </div>
+        <div class="pill"><i class="dot"></i><span>Klick auf einen Planeten = Details</span></div>
       </div>
 
-      <!-- CONFIG -->
-      <div style="padding:18px 22px 22px 22px;border-top:1px solid var(--line);background:rgba(15,22,38,.35)">
-        <div class="grid2">
-          <div class="panel">
-            <h3 class="groupTitle">1) Base (wähle 1)</h3>
-            <div class="optGrid" id="baseGrid"></div>
-            <div class="divider"></div>
-            <div class="note">Pro-Tipp: „Klassisch“ ist der sichere Default. „Dark“ = mehr Drama, mehr BÄM.</div>
-          </div>
+      <div class="grid" id="planetGrid"></div>
+    </section>
 
-          <div class="panel">
-            <h3 class="groupTitle">2) Toppings (bis zu 3)</h3>
-            <div class="optGrid" id="topGrid"></div>
-            <div class="divider"></div>
-            <div class="row">
-              <div class="note">Max 3 Toppings. Klickt schneller als ’ne Jobcenter-Nummer. 😄</div>
-              <span class="chip" id="topCount">0 / 3</span>
+    <!-- CORE -->
+    <section id="kern">
+      <div class="sectionHead">
+        <div>
+          <h2>Kernplanet: ONLYKEKS</h2>
+          <p>Minimalistischer Einstieg. Zwei Wege: <b>Keks bauen</b> oder <b>Überrasch mich</b>. Der Rest ist optional.</p>
+        </div>
+        <div class="pill"><i class="dot good"></i><span>Standard: ruhig & premium</span></div>
+      </div>
+
+      <div class="grid">
+        <div class="planet" style="grid-column:span 7; cursor:default;">
+          <div class="planetTop">
+            <div class="planetTitle">
+              <div class="icon">🍪</div>
+              <div>
+                <b>Konfigurator-Flow (simpel)</b>
+                <span>
+                  1) Basis wählen · 2) 1–3 Toppings · 3) Finish/Extras · 4) Zusammenfassung · 5) Bestellen.
+                </span>
+              </div>
             </div>
+            <div class="chips">
+              <span class="chip build">MVP</span>
+              <span class="chip">Mobile-First</span>
+              <span class="chip">No-Clutter</span>
+            </div>
+          </div>
+          <div class="planetFooter">
+            <span class="linkish">UI: groß · Buttons klar · wenig Text · viel Luft</span>
+            <div class="bar" aria-hidden="true"><i style="width:55%"></i></div>
           </div>
         </div>
 
-        <div style="height:12px"></div>
-
-        <div class="panel">
-          <div class="row">
-            <h3 class="groupTitle" style="margin:0">3) Extras (optional)</h3>
-            <span class="chip">Skalierbar: später „Füllung“, „Glasur“, „Crunch“ etc.</span>
-          </div>
-          <div class="divider"></div>
-          <div class="optGrid" id="extraGrid"></div>
-          <div class="divider"></div>
-          <div class="row">
-            <div class="note">Checkout/Shop-Anbindung später sauber (Stripe/Shopify/…) – Win-Win-Win & compliance-friendly.</div>
-            <div style="display:flex;gap:10px;flex-wrap:wrap">
-              <button class="btn secondary" id="btnShare2">Link teilen</button>
-              <button class="btn good" id="btnCart2">In den Warenkorb</button>
+        <div class="planet" style="grid-column:span 5; cursor:default;">
+          <div class="planetTop">
+            <div class="planetTitle">
+              <div class="icon">🎲</div>
+              <div>
+                <b>Überrasch mich</b>
+                <span>
+                  Zufalls-Preset aus Top-Kombos. Schnell, spaßig, keine Entscheidungslast.
+                </span>
+              </div>
             </div>
+            <div class="chips">
+              <span class="chip build">Build</span>
+              <span class="chip">Preset-Library</span>
+            </div>
+          </div>
+          <div class="planetFooter">
+            <span class="linkish">„Posti schmeckt.“ = optionaler Micro-Easter-Egg-Text</span>
+            <div class="bar" aria-hidden="true"><i style="width:35%"></i></div>
           </div>
         </div>
       </div>
     </section>
 
-    <div class="footer">
-      <div><b>Created by: First Connect by Jan Christian Schmidt</b></div>
-      <div style="margin-top:6px">© OnlyCakes • Keks-Universum • Win-Win-Win</div>
+    <!-- ROADMAP -->
+    <section id="roadmap">
+      <div class="sectionHead">
+        <div>
+          <h2>Struktur & Roadmap</h2>
+          <p>Wir starten mit ONLYKEKS + ONLYCOOKIES als direktes Duo. Danach definieren wir die restlichen Planeten glasklar.</p>
+        </div>
+        <div class="pill"><i class="dot warn"></i><span>Jetzt: Definition & Build</span></div>
+      </div>
+
+      <div class="grid">
+        <div class="planet" style="grid-column:span 4; cursor:default;">
+          <div class="planetTop">
+            <div class="planetTitle">
+              <div class="icon">1</div>
+              <div>
+                <b>Heute: Planeten-Definition</b>
+                <span>Names + Purpose + CTA + Status. Dann steht das komplette Gerüst.</span>
+              </div>
+            </div>
+          </div>
+          <div class="planetFooter">
+            <span class="linkish">Output: SSOT-Liste (einfach editierbar)</span>
+            <div class="bar"><i style="width:65%"></i></div>
+          </div>
+        </div>
+
+        <div class="planet" style="grid-column:span 4; cursor:default;">
+          <div class="planetTop">
+            <div class="planetTitle">
+              <div class="icon">2</div>
+              <div>
+                <b>Danach: ONLYKEKS MVP</b>
+                <span>Konfigurator-Seite + Presets + Bestellung-CTA (Platzhalter ok).</span>
+              </div>
+            </div>
+          </div>
+          <div class="planetFooter">
+            <span class="linkish">Ziel: „funktioniert & wirkt premium“</span>
+            <div class="bar"><i style="width:40%"></i></div>
+          </div>
+        </div>
+
+        <div class="planet" style="grid-column:span 4; cursor:default;">
+          <div class="planetTop">
+            <div class="planetTitle">
+              <div class="icon">3</div>
+              <div>
+                <b>Dann: Restliche Planeten</b>
+                <span>Nur was wirklich Nutzen bringt. Kein Deko-Ballast.</span>
+              </div>
+            </div>
+          </div>
+          <div class="planetFooter">
+            <span class="linkish">Prinzip: Klarheit vor Features</span>
+            <div class="bar"><i style="width:20%"></i></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="kontakt">
+      <div class="sectionHead">
+        <div>
+          <h2>Kontakt / Links</h2>
+          <p>Hier kommen später die echten Links rein (Shop, Konfigurator, Socials). Erst Struktur sauber, dann verkabeln.</p>
+        </div>
+      </div>
+
+      <div class="grid">
+        <div class="planet" style="grid-column:span 8; cursor:default;">
+          <div class="planetTop">
+            <div class="planetTitle">
+              <div class="icon">🔗</div>
+              <div>
+                <b>Link-Slots (Platzhalter)</b>
+                <span>Konfigurator · Shop · X · YouTube · TikTok · Impressum · Datenschutz</span>
+              </div>
+            </div>
+            <div class="chips">
+              <span class="chip">SSOT-fähig</span>
+              <span class="chip">Inkognito-Test</span>
+            </div>
+          </div>
+          <div class="planetFooter">
+            <span class="linkish">Regel: Keine Redirects/Shortener im ersten Rollout</span>
+            <div class="bar"><i style="width:30%"></i></div>
+          </div>
+        </div>
+
+        <div class="planet" style="grid-column:span 4; cursor:default;">
+          <div class="planetTop">
+            <div class="planetTitle">
+              <div class="icon">🛡️</div>
+              <div>
+                <b>Compliance-Bremse</b>
+                <span>Legal/Proof/Outside-Audit/W-W-W. Ohne das kein „live“.</span>
+              </div>
+            </div>
+          </div>
+          <div class="planetFooter">
+            <span class="linkish">So bleibt’s stressfrei.</span>
+            <div class="bar"><i style="width:50%"></i></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="footerGrid">
+        <div>
+          <div><b style="color:rgba(255,255,255,.85)">KEKSVERSUM</b> — Struktur zuerst. Dann Scale.</div>
+          <div class="legal">
+            <a href="impressum.html">Impressum</a>
+            <a href="datenschutz.html">Datenschutz</a>
+            <a href="#top">Nach oben</a>
+          </div>
+        </div>
+        <div class="smallCard">
+          <b style="color:rgba(255,255,255,.85)">Admin-Note</b>
+          <div style="margin-top:8px; line-height:1.6">
+            Diese Seite ist ein <b>Gerüst</b>. Planeten-Daten unten im Script ändern, fertig.
+            Kein Rumgefummel im HTML nötig. Ja, dit is Berlin-safe. 😄
+          </div>
+        </div>
+      </div>
+    </footer>
+  </main>
+
+  <!-- MODAL -->
+  <div class="modalBack" id="modalBack" role="dialog" aria-modal="true" aria-label="Planet Details">
+    <div class="modal">
+      <div class="modalHead">
+        <div>
+          <b id="mTitle">Planet</b>
+          <span id="mSubtitle">Beschreibung</span>
+        </div>
+        <div style="display:flex; align-items:center; gap:10px;">
+          <span class="kbd">ESC</span>
+          <button class="x" id="mClose" aria-label="Schließen">✕</button>
+        </div>
+      </div>
+      <div class="modalBody">
+        <div class="twoCol">
+          <div class="list">
+            <h3>Was ist das?</h3>
+            <ul id="mBullets"></ul>
+          </div>
+          <div class="list">
+            <h3>Nächster Schritt</h3>
+            <ul id="mNext"></ul>
+          </div>
+        </div>
+        <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:12px;">
+          <a class="btn primary" id="mPrimary" href="#">Action</a>
+          <a class="btn" id="mSecondary" href="#">Details</a>
+        </div>
+      </div>
     </div>
   </div>
 
-  <div class="toast" id="toast"></div>
-
   <script>
     // =========================
-    // DATA (einfach editierbar)
+    // PLANETEN-SSOT (nur hier editieren)
     // =========================
-    const CATALOG = {
-      bases: [
-        { id:"classic", name:"Klassisch", desc:"Vanille-Teig, easy & clean", price:2.50 },
-        { id:"choco",   name:"Schoko",    desc:"Kakao-Teig, smooth & rich",  price:2.90 },
-        { id:"dark",    name:"Dark",      desc:"Double-Cocoa, extra Kick",   price:3.20 }
-      ],
-      toppings: [
-        { id:"chocochips", name:"Choco Chips", desc:"Crunchy Klassiker", price:0.60 },
-        { id:"sprinkles",  name:"Sprinkles",   desc:"Bunt & viral",      price:0.50 },
-        { id:"nuts",       name:"Nüsse",       desc:"Röstaroma",         price:0.70 },
-        { id:"caramel",    name:"Karamell",    desc:"Sweet drizzle",     price:0.65 },
-        { id:"oreo",       name:"Oreo Crumb",  desc:"Dark crumble",      price:0.75 },
-        { id:"berry",      name:"Berry Dust",  desc:"Fruity pop",        price:0.70 }
-      ],
-      extras: [
-        { id:"giftwrap", name:"Geschenk-Wrap", desc:"Perfekt für Geschenk", price:1.20 },
-        { id:"double",   name:"Doppel-Keks",   desc:"Mehr Masse, mehr Liebe", price:1.80 },
-        { id:"bitcoin",  name:"Bitcoin-Glanz", desc:"Gold-Touch (Style)", price:0.99 }
-      ]
-    };
+    const PLANETS = [
+      {
+        id: "onlykeks",
+        icon: "🍪",
+        title: "ONLYKEKS",
+        subtitle: "3D Keks-Konfigurator (Kern). Kaufen, überraschen, repeat.",
+        status: "build", // live | build | idea
+        tags: ["Kern", "3D", "Checkout"],
+        progress: 55,
+        primary: { label: "Keks bauen", href: "konfigurator.html" },
+        secondary:{ label: "Überblick", href: "#kern" },
+        bullets: [
+          "Minimaler Flow: Basis → Toppings → Finish → Zusammenfassung → Bestellen",
+          "Premium Look: dunkel, ruhig, viel Luft, klare Buttons",
+          "3D Hero als fotorealistisches Mockup (Platzhalter ok, aber hochwertig)"
+        ],
+        next: [
+          "Konfigurator-Seite als MVP verbinden (Buttons/Presets sichtbar)",
+          "„Überrasch mich“ Preset-Library anlegen (10 Top-Combos)",
+          "Link-Slots SSOT-sauber machen (ohne Login/Redirect)"
+        ]
+      },
+      {
+        id: "onlycookies",
+        icon: "🪐",
+        title: "ONLYCOOKIES",
+        subtitle: "Story/Content-Planet: Shorts, Updates, Making-of, Trust.",
+        status: "build",
+        tags: ["Content", "Brand", "Trust"],
+        progress: 30,
+        primary: { label: "Plan öffnen", href: "#roadmap" },
+        secondary:{ label: "Kontakt", href: "#kontakt" },
+        bullets: [
+          "Content-Maschine rund um ONLYKEKS (kein Random-Spam)",
+          "Kurzformate: „Keks bauen in 10s“, „Überrasch mich“, „Handgemacht Proof“",
+          "Premium Ton: ruhig, klar, nicht schrill"
+        ],
+        next: [
+          "1-Satz Value-Prop finalisieren (für Banner/Bio/Pin)",
+          "Erstes 20–30s Invite-Short definieren (ruhiger CTA)",
+          "7-Tage Takt: 6 Shorts/Tag = Template-System bauen"
+        ]
+      },
+
+      // Platzhalter für die restlichen Planeten – die definieren wir als nächstes sauber.
+      {
+        id: "planet-03",
+        icon: "🛰️",
+        title: "PLANET 03 (Placeholder)",
+        subtitle: "Wird definiert: Zweck, CTA, Grenzen.",
+        status: "idea",
+        tags: ["TBD"],
+        progress: 10,
+        primary: { label: "Definieren", href: "#planeten" },
+        secondary:{ label: "Roadmap", href: "#roadmap" },
+        bullets: ["Name fehlt", "Mission fehlt", "CTA fehlt"],
+        next: ["Wir legen Name + Zweck + 1 CTA fest", "Dann Status & Progress setzen"]
+      },
+      {
+        id: "planet-04",
+        icon: "🌒",
+        title: "PLANET 04 (Placeholder)",
+        subtitle: "Wird definiert: Zweck, CTA, Grenzen.",
+        status: "idea",
+        tags: ["TBD"],
+        progress: 10,
+        primary: { label: "Definieren", href: "#planeten" },
+        secondary:{ label: "Roadmap", href: "#roadmap" },
+        bullets: ["Name fehlt", "Mission fehlt", "CTA fehlt"],
+        next: ["Wir legen Name + Zweck + 1 CTA fest", "Dann Status & Progress setzen"]
+      }
+    ];
 
     // =========================
-    // STATE
+    // RENDER
     // =========================
-    const MAX_TOPPINGS = 3;
-    let state = { base: null, toppings: [], extras: [] };
+    const grid = document.getElementById("planetGrid");
+    const modalBack = document.getElementById("modalBack");
+    const mTitle = document.getElementById("mTitle");
+    const mSubtitle = document.getElementById("mSubtitle");
+    const mBullets = document.getElementById("mBullets");
+    const mNext = document.getElementById("mNext");
+    const mPrimary = document.getElementById("mPrimary");
+    const mSecondary = document.getElementById("mSecondary");
 
-    const $ = (id)=>document.getElementById(id);
-    const toastEl = $("toast");
-
-    function toast(msg){
-      toastEl.textContent = msg;
-      toastEl.classList.add("show");
-      clearTimeout(toastEl._t);
-      toastEl._t = setTimeout(()=>toastEl.classList.remove("show"), 1400);
+    function chipClass(status){
+      if(status==="live") return "chip live";
+      if(status==="build") return "chip build";
+      return "chip idea";
+    }
+    function statusLabel(status){
+      if(status==="live") return "LIVE";
+      if(status==="build") return "BUILD";
+      return "IDEA";
+    }
+    function dotClass(status){
+      if(status==="live") return "dot good";
+      if(status==="build") return "dot warn";
+      return "dot hot";
     }
 
-    // =========================
-    // RENDER OPTIONS
-    // =========================
-    function renderOptions(){
-      const baseGrid = $("baseGrid");
-      const topGrid = $("topGrid");
-      const extraGrid = $("extraGrid");
+    function planetCard(p){
+      const el = document.createElement("div");
+      el.className = "planet";
+      el.dataset.pid = p.id;
 
-      baseGrid.innerHTML  = CATALOG.bases.map(b => optCard(b, "base")).join("");
-      topGrid.innerHTML   = CATALOG.toppings.map(t => optCard(t, "topping")).join("");
-      extraGrid.innerHTML = CATALOG.extras.map(e => optCard(e, "extra")).join("");
+      const tags = (p.tags||[]).slice(0,3).map(t=>`<span class="chip">${escapeHtml(t)}</span>`).join("");
+      const status = `<span class="${chipClass(p.status)}">${statusLabel(p.status)}</span>`;
+      const prog = Math.max(0, Math.min(100, p.progress||0));
 
-      baseGrid.querySelectorAll(".opt").forEach(el => el.addEventListener("click", ()=>pickBase(el.dataset.id)));
-      topGrid.querySelectorAll(".opt").forEach(el => el.addEventListener("click", ()=>toggleTopping(el.dataset.id)));
-      extraGrid.querySelectorAll(".opt").forEach(el => el.addEventListener("click", ()=>toggleExtra(el.dataset.id)));
-
-      refreshUI();
-    }
-
-    function optCard(item, type){
-      const active = isActive(type, item.id) ? "active" : "";
-      return `
-        <div class="opt ${active}" data-id="${item.id}" data-type="${type}" role="button" tabindex="0" aria-label="${item.name}">
-          <div class="name">${item.name}</div>
-          <div class="desc">${item.desc}</div>
-          <div class="meta">
-            <span>+ €${item.price.toFixed(2).replace(".",",")}</span>
-            <span style="opacity:.85">●</span>
+      el.innerHTML = `
+        <div class="planetTop">
+          <div class="planetTitle">
+            <div class="icon">${escapeHtml(p.icon||"🪐")}</div>
+            <div>
+              <b>${escapeHtml(p.title)}</b>
+              <span>${escapeHtml(p.subtitle||"")}</span>
+            </div>
+          </div>
+          <div class="chips">
+            ${status}
+            ${tags}
           </div>
         </div>
+        <div class="planetFooter">
+          <a class="linkish" href="${escapeAttr(p.primary?.href||"#")}" onclick="event.stopPropagation()">
+            ${escapeHtml(p.primary?.label||"Öffnen")} →
+          </a>
+          <div class="bar" aria-hidden="true"><i style="width:${prog}%"></i></div>
+        </div>
       `;
+      el.addEventListener("click", ()=>openPlanet(p.id));
+      return el;
     }
 
-    function isActive(type, id){
-      if(type==="base") return state.base===id;
-      if(type==="topping") return state.toppings.includes(id);
-      if(type==="extra") return state.extras.includes(id);
-      return false;
+    function render(){
+      grid.innerHTML = "";
+      PLANETS.forEach(p=>grid.appendChild(planetCard(p)));
     }
 
-    // =========================
-    // ACTIONS
-    // =========================
-    function pickBase(id){
-      state.base = id;
-      saveState();
-      refreshUI();
-      toast("Base gesetzt ✔");
-    }
+    function openPlanet(id){
+      const p = PLANETS.find(x=>x.id===id);
+      if(!p) return;
+      mTitle.textContent = p.title;
+      mSubtitle.textContent = p.subtitle || "";
 
-    function toggleTopping(id){
-      const idx = state.toppings.indexOf(id);
-      if(idx >= 0){
-        state.toppings.splice(idx,1);
-        saveState();
-        refreshUI();
-        toast("Topping entfernt");
-        return;
-      }
-      if(state.toppings.length >= MAX_TOPPINGS){
-        toast("Max 3 Toppings, Boss. 😄");
-        return;
-      }
-      state.toppings.push(id);
-      saveState();
-      refreshUI();
-      toast("Topping hinzugefügt ✔");
-    }
-
-    function toggleExtra(id){
-      const idx = state.extras.indexOf(id);
-      if(idx >= 0) state.extras.splice(idx,1);
-      else state.extras.push(id);
-      saveState();
-      refreshUI();
-      toast(idx>=0 ? "Extra entfernt" : "Extra hinzugefügt ✔");
-    }
-
-    function resetAll(){
-      state = { base:null, toppings:[], extras:[] };
-      saveState(true);
-      refreshUI();
-      toast("Reset. Neustart. Sauber.");
-    }
-
-    function randomize(){
-      const b = pickRandom(CATALOG.bases).id;
-      const tops = shuffle([...CATALOG.toppings]).slice(0, randInt(1, MAX_TOPPINGS)).map(x=>x.id);
-      const ex = Math.random() < 0.75 ? ["bitcoin"] : (Math.random()<0.4 ? ["double"] : []);
-      state = { base:b, toppings:tops, extras:ex };
-      saveState();
-      refreshUI();
-      toast("Überraschung geladen ✨");
-    }
-
-    function pickRandom(arr){ return arr[Math.floor(Math.random()*arr.length)] }
-    function randInt(min,max){ return Math.floor(Math.random()*(max-min+1))+min }
-    function shuffle(a){
-      for(let i=a.length-1;i>0;i--){
-        const j=Math.floor(Math.random()*(i+1));
-        [a[i],a[j]]=[a[j],a[i]];
-      }
-      return a;
-    }
-
-    // =========================
-    // PRICE + SUMMARY
-    // =========================
-    function calcPrice(){
-      let total = 0;
-      if(state.base) total += CATALOG.bases.find(x=>x.id===state.base)?.price ?? 0;
-      for(const t of state.toppings) total += CATALOG.toppings.find(x=>x.id===t)?.price ?? 0;
-      for(const e of state.extras) total += CATALOG.extras.find(x=>x.id===e)?.price ?? 0;
-      return Math.max(0, total);
-    }
-
-    function buildSummary(){
-      const baseName = state.base ? CATALOG.bases.find(x=>x.id===state.base)?.name : "—";
-      const topNames = state.toppings.map(id => CATALOG.toppings.find(x=>x.id===id)?.name).filter(Boolean);
-      const exNames  = state.extras.map(id => CATALOG.extras.find(x=>x.id===id)?.name).filter(Boolean);
-      return {
-        baseName,
-        tops: topNames.length ? topNames.join(", ") : "—",
-        extras: exNames.length ? exNames.join(", ") : "—"
-      };
-    }
-
-    // =========================
-    // SHARE / RECIPE
-    // =========================
-    function toQuery(){
-      const p = new URLSearchParams();
-      if(state.base) p.set("base", state.base);
-      if(state.toppings.length) p.set("t", state.toppings.join("."));
-      if(state.extras.length) p.set("x", state.extras.join("."));
-      return p.toString();
-    }
-
-    async function shareLink(){
-      const url = location.origin + location.pathname + "?" + toQuery();
-      try{
-        await navigator.clipboard.writeText(url);
-        toast("Link kopiert 🔗");
-      }catch(e){
-        toast("Kopieren ging nicht. (Browser zickt.)");
-      }
-    }
-
-    async function copyRecipe(){
-      const s = buildSummary();
-      const txt =
-`OnlyCakes — Keks-Rezept
-Base: ${s.baseName}
-Toppings: ${s.tops}
-Extras: ${s.extras}
-Preis (Mock): €${calcPrice().toFixed(2).replace(".",",")}
-Link: ${location.origin + location.pathname + "?" + toQuery()}
-`;
-      try{
-        await navigator.clipboard.writeText(txt);
-        toast("Rezept kopiert 📋");
-      }catch(e){
-        toast("Clipboard blockt. 😅");
-      }
-    }
-
-    // =========================
-    // PERSISTENCE
-    // =========================
-    const LS_KEY = "onlycakes_cookie_config_v2";
-
-    function saveState(reset=false){
-      if(reset){
-        localStorage.removeItem(LS_KEY);
-        history.replaceState({}, "", location.pathname);
-        return;
-      }
-      localStorage.setItem(LS_KEY, JSON.stringify(state));
-      history.replaceState({}, "", "?" + toQuery());
-    }
-
-    function loadState(){
-      // 1) URL params first
-      const p = new URLSearchParams(location.search);
-      const base = p.get("base");
-      const t = p.get("t");
-      const x = p.get("x");
-
-      let fromUrl = null;
-      if(base || t || x){
-        fromUrl = {
-          base: base && CATALOG.bases.some(b=>b.id===base) ? base : null,
-          toppings: t ? t.split(".").filter(id => CATALOG.toppings.some(z=>z.id===id)).slice(0,MAX_TOPPINGS) : [],
-          extras: x ? x.split(".").filter(id => CATALOG.extras.some(z=>z.id===id)) : []
-        };
-      }
-
-      if(fromUrl){
-        state = fromUrl;
-        return;
-      }
-
-      // 2) localStorage
-      try{
-        const raw = localStorage.getItem(LS_KEY);
-        if(!raw) return;
-        const parsed = JSON.parse(raw);
-        if(!parsed || typeof parsed !== "object") return;
-
-        state.base = CATALOG.bases.some(b=>b.id===parsed.base) ? parsed.base : null;
-        state.toppings = Array.isArray(parsed.toppings) ? parsed.toppings.filter(id => CATALOG.toppings.some(z=>z.id===id)).slice(0,MAX_TOPPINGS) : [];
-        state.extras = Array.isArray(parsed.extras) ? parsed.extras.filter(id => CATALOG.extras.some(z=>z.id===id)) : [];
-      }catch(e){}
-    }
-
-    // =========================
-    // 3D ENGINE (Cookie3D)
-    // =========================
-    let _mounted3D = false;
-    function ensure3D(){
-      if(_mounted3D) return;
-      if(!window.Cookie3D){
-        console.error("Cookie3D fehlt. Liegt cookie3d.js im gleichen Ordner?");
-        return;
-      }
-      Cookie3D.mount({
-        canvas: $("cookieCanvas"),
-        getState: ()=>state
-      });
-      _mounted3D = true;
-    }
-
-    // =========================
-    // UI REFRESH
-    // =========================
-    function refreshUI(){
-      // Active state toggles
-      document.querySelectorAll(".opt").forEach(el=>{
-        const id = el.dataset.id;
-        const type = el.dataset.type;
-        el.classList.toggle("active", isActive(type, id));
+      mBullets.innerHTML = "";
+      (p.bullets||[]).forEach(t=>{
+        const li=document.createElement("li");
+        li.textContent=t;
+        mBullets.appendChild(li);
       });
 
-      $("topCount").textContent = `${state.toppings.length} / ${MAX_TOPPINGS}`;
-
-      const price = calcPrice();
-      const priceStr = "€" + price.toFixed(2).replace(".",",");
-      $("priceValue").textContent = priceStr;
-      $("ovPrice").textContent = priceStr;
-
-      const s = buildSummary();
-      $("summaryText").textContent = `Base: ${s.baseName} • Toppings: ${s.tops} • Extras: ${s.extras}`;
-      $("ovLabel").textContent = `3D • Base: ${s.baseName} • Toppings: ${state.toppings.length || "—"}`;
-
-      // Update 3D
-      ensure3D();
-      Cookie3D.update(state);
-    }
-
-    // =========================
-    // CTA Mock
-    // =========================
-    function addToCart(){
-      if(!state.base){
-        toast("Erst Base wählen, dann ballern. 😄");
-        return;
-      }
-      toast("In den Warenkorb (Mock) ✅");
-      // Hier später echte Shop-Integration: Shopify/Stripe/etc.
-    }
-
-    // =========================
-    // EVENTS
-    // =========================
-    function bindEvents(){
-      $("btnRandom").addEventListener("click", randomize);
-      $("btnReset").addEventListener("click", resetAll);
-
-      $("btnShare").addEventListener("click", shareLink);
-      $("btnShare2").addEventListener("click", shareLink);
-
-      $("btnCart").addEventListener("click", addToCart);
-      $("btnCart2").addEventListener("click", addToCart);
-
-      $("btnCopyRecipe").addEventListener("click", copyRecipe);
-
-      $("btnScroll").addEventListener("click", ()=>{
-        document.querySelector("#konfigurator").scrollIntoView({behavior:"smooth", block:"start"});
-        toast("Scroll ✓");
+      mNext.innerHTML = "";
+      (p.next||[]).forEach(t=>{
+        const li=document.createElement("li");
+        li.textContent=t;
+        mNext.appendChild(li);
       });
 
-      // TOP CTA
-      $("btnTopSurprise").addEventListener("click", ()=>{
-        randomize();
-        document.querySelector("#konfigurator").scrollIntoView({behavior:"smooth", block:"start"});
-      });
+      mPrimary.textContent = p.primary?.label || "Action";
+      mPrimary.href = p.primary?.href || "#";
+      mSecondary.textContent = p.secondary?.label || "Details";
+      mSecondary.href = p.secondary?.href || "#";
 
-      // Keyboard shortcut
-      window.addEventListener("keydown", (e)=>{
-        if(e.key.toLowerCase()==="r") randomize();
-      });
+      modalBack.style.display = "flex";
     }
 
-    // =========================
-    // INIT
-    // =========================
-    loadState();
-    renderOptions();
-    bindEvents();
-    refreshUI();
+    function closeModal(){
+      modalBack.style.display = "none";
+    }
+
+    document.getElementById("mClose").addEventListener("click", closeModal);
+    modalBack.addEventListener("click", (e)=>{ if(e.target===modalBack) closeModal(); });
+    window.addEventListener("keydown", (e)=>{ if(e.key==="Escape") closeModal(); });
+
+    // HERO BUTTONS
+    function goBuild(){
+      // Wenn du schon eine konfigurator.html hast: perfekt. Sonst bleibt's als Link-Stub.
+      window.location.href = "konfigurator.html";
+    }
+    document.getElementById("btnBuild").addEventListener("click", goBuild);
+    document.getElementById("btnHeroBuild").addEventListener("click", goBuild);
+
+    document.getElementById("btnHeroPlanets").addEventListener("click", ()=>{
+      document.getElementById("planeten").scrollIntoView({behavior:"smooth"});
+    });
+
+    // Überrasch mich = random Planet + wenn ONLYKEKS dabei, dort hin
+    document.getElementById("btnRandom").addEventListener("click", ()=>{
+      const pick = PLANETS[Math.floor(Math.random()*PLANETS.length)];
+      openPlanet(pick.id);
+    });
+
+    // Helpers
+    function escapeHtml(str){
+      return String(str)
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
+    }
+    function escapeAttr(str){ return escapeHtml(str).replaceAll("`",""); }
+
+    render();
   </script>
 </body>
 </html>

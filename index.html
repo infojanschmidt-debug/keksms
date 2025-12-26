@@ -3,874 +3,222 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Keksversum — ONLYKEKS</title>
-  <meta name="description" content="Keksversum: ONLYKEKS (3D Keks-Konfigurator) als Kern. Premium, ruhig, tech/manufakturartig. Klarer Einstieg, klare Planeten." />
+  <title>ONLYKEKS — Keksversum</title>
+  <meta name="description" content="ONLYKEKS. Premium. Ruhig. 3D Keks-Konfigurator." />
 
   <style>
     :root{
       --bg:#070A12;
       --panel:#0D1220;
-      --panel2:#0B1020;
       --text:#EAF0FF;
       --muted:#A9B3D4;
-      --line:rgba(255,255,255,.10);
-      --line2:rgba(255,255,255,.14);
-      --shadow: 0 20px 60px rgba(0,0,0,.55);
-      --r:18px;
-      --r2:24px;
-      --max:1160px;
-      --pad:22px;
-      --accent: #FFFFFF;
-      --good:#4DFFB5;
-      --warn:#FFD45A;
-      --hot:#FF5A7A;
+      --line:rgba(255,255,255,.12);
+      --shadow: 0 18px 60px rgba(0,0,0,.55);
+      --r:22px;
+      --max:1120px;
+      --pad:18px;
     }
     *{box-sizing:border-box}
-    html,body{height:100%}
     body{
       margin:0;
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
       background:
-        radial-gradient(1000px 600px at 70% 15%, rgba(255,255,255,.07), transparent 55%),
-        radial-gradient(900px 500px at 15% 35%, rgba(255,255,255,.05), transparent 55%),
-        linear-gradient(180deg, #060814, #060814 40%, #050610);
+        radial-gradient(900px 500px at 70% 15%, rgba(255,255,255,.07), transparent 55%),
+        linear-gradient(180deg, #060814, #050610);
       color:var(--text);
-      letter-spacing:.2px;
     }
     a{color:inherit; text-decoration:none}
     .wrap{max-width:var(--max); margin:0 auto; padding:0 var(--pad)}
-    .topbar{
-      position:sticky; top:0; z-index:50;
+    header{
+      position:sticky; top:0; z-index:20;
       backdrop-filter: blur(10px);
-      background: linear-gradient(180deg, rgba(7,10,18,.85), rgba(7,10,18,.55));
+      background: rgba(7,10,18,.65);
       border-bottom:1px solid var(--line);
     }
-    .topbar .row{
-      display:flex; align-items:center; justify-content:space-between;
-      padding:14px 0;
-      gap:14px;
+    .bar{
+      display:flex; align-items:center; justify-content:space-between; gap:12px;
+      padding:12px 0;
     }
-    .brand{
-      display:flex; align-items:center; gap:10px; min-width: 200px;
-    }
+    .brand{display:flex; align-items:center; gap:10px; font-weight:800; letter-spacing:.8px}
     .logo{
-      width:34px; height:34px; border-radius:12px;
-      background:
-        radial-gradient(12px 12px at 30% 30%, rgba(255,255,255,.85), rgba(255,255,255,.15)),
-        linear-gradient(135deg, rgba(255,255,255,.22), rgba(255,255,255,.06));
-      border:1px solid var(--line2);
-      box-shadow: 0 12px 30px rgba(0,0,0,.35);
-    }
-    .brand b{font-size:14px; letter-spacing:.8px}
-    .brand span{display:block; font-size:12px; color:var(--muted); margin-top:2px}
-    nav{
-      display:flex; gap:14px; flex-wrap:wrap; justify-content:center;
-      padding:6px 10px;
+      width:30px; height:30px; border-radius:12px;
+      background: linear-gradient(135deg, rgba(255,255,255,.16), rgba(255,255,255,.05));
       border:1px solid var(--line);
-      background: rgba(13,18,32,.55);
-      border-radius: 999px;
     }
-    nav a{
-      font-size:12px; color:var(--muted);
-      padding:8px 12px; border-radius: 999px;
-    }
-    nav a:hover{background: rgba(255,255,255,.06); color:var(--text)}
-    .actions{display:flex; gap:10px; align-items:center; justify-content:flex-end; min-width: 200px;}
+    .actions{display:flex; gap:10px}
     .btn{
       display:inline-flex; align-items:center; justify-content:center;
-      gap:10px; padding:11px 14px;
-      border-radius: 999px;
-      border:1px solid var(--line2);
+      padding:11px 14px;
+      border-radius:999px;
+      border:1px solid var(--line);
       background: rgba(255,255,255,.06);
       color:var(--text);
-      font-weight:600; font-size:13px;
-      box-shadow: 0 10px 25px rgba(0,0,0,.25);
+      font-weight:700;
+      font-size:13px;
       cursor:pointer;
-      transition: transform .12s ease, background .12s ease, border-color .12s ease;
-      user-select:none;
+      transition: transform .12s ease, background .12s ease;
       white-space:nowrap;
     }
     .btn:hover{transform: translateY(-1px); background: rgba(255,255,255,.08)}
-    .btn.primary{
-      background: rgba(255,255,255,.92);
-      color:#0A0D16;
-      border-color: rgba(255,255,255,.65);
-    }
-    .btn.primary:hover{background: rgba(255,255,255,.98)}
-    .pill{
-      display:inline-flex; align-items:center; gap:8px;
-      font-size:12px; color:var(--muted);
-      padding:8px 10px;
+    .btn.primary{background: rgba(255,255,255,.92); color:#0A0D16; border-color: rgba(255,255,255,.6)}
+    main{padding:18px 0 40px}
+    .hero{
       border:1px solid var(--line);
-      border-radius: 999px;
-      background: rgba(13,18,32,.55);
-    }
-    .dot{width:8px; height:8px; border-radius:50%; background: rgba(255,255,255,.45)}
-    .dot.good{background: var(--good)}
-    .dot.warn{background: var(--warn)}
-    .dot.hot{background: var(--hot)}
-
-    /* Hero */
-    .hero{padding:56px 0 22px}
-    .heroGrid{
-      display:grid; gap:18px;
-      grid-template-columns: 1.1fr .9fr;
-      align-items:stretch;
-    }
-    .card{
-      border:1px solid var(--line);
-      background: linear-gradient(180deg, rgba(13,18,32,.85), rgba(11,16,32,.65));
-      border-radius: var(--r2);
+      background: rgba(13,18,32,.72);
+      border-radius: var(--r);
       box-shadow: var(--shadow);
       overflow:hidden;
     }
-    .heroLeft{padding:28px}
-    .kicker{
-      display:flex; align-items:center; justify-content:space-between; gap:14px;
-      margin-bottom: 14px;
+    .heroTop{
+      display:flex; align-items:flex-start; justify-content:space-between; gap:14px;
+      padding:16px 16px 10px;
     }
-    h1{margin:0; font-size:38px; line-height:1.05; letter-spacing:.3px}
-    .sub{
-      margin:14px 0 18px;
-      color: var(--muted);
-      font-size:15px; line-height:1.6;
-      max-width: 56ch;
+    h1{margin:0; font-size:28px; letter-spacing:.3px}
+    .tag{color:var(--muted); font-size:12px; margin-top:6px}
+    .heroCanvasWrap{
+      border-top:1px solid var(--line);
+      background:
+        radial-gradient(220px 180px at 60% 35%, rgba(255,255,255,.08), transparent 60%),
+        linear-gradient(135deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
+      padding:10px;
     }
-    .ctaRow{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
-    .miniRow{display:flex; gap:10px; flex-wrap:wrap; margin-top:18px}
-    .mini{
-      flex: 1 1 180px;
+    /* Das ist der wichtige Teil: sichtbar groß, nicht "unsichtbar klein" */
+    canvas#cookieHero{
+      width:100%;
+      height:420px;
+      display:block;
+      border-radius: calc(var(--r) - 10px);
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.18);
+    }
+    .below{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:12px;
+      margin-top:12px;
+    }
+    .card{
       border:1px solid var(--line);
       background: rgba(255,255,255,.04);
       border-radius: var(--r);
-      padding:12px 12px;
-    }
-    .mini b{display:block; font-size:13px}
-    .mini span{display:block; color:var(--muted); font-size:12px; margin-top:6px; line-height:1.45}
-    .heroRight{display:flex; flex-direction:column}
-    .mock{
-      flex:1;
-      position:relative;
-      min-height: 340px;
-      background:
-        radial-gradient(180px 180px at 62% 38%, rgba(255,255,255,.12), transparent 55%),
-        radial-gradient(260px 220px at 35% 60%, rgba(255,255,255,.08), transparent 55%),
-        linear-gradient(135deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
-    }
-    .mockInner{
-      position:absolute; inset:16px;
-      border-radius: calc(var(--r2) - 4px);
-      border:1px dashed rgba(255,255,255,.18);
-      background: rgba(0,0,0,.15);
-      display:flex; align-items:center; justify-content:center;
-      padding:18px;
-      text-align:center;
-    }
-    .mockInner .title{font-weight:800; letter-spacing:.8px; font-size:14px}
-    .mockInner .hint{color:var(--muted); font-size:12px; margin-top:10px; line-height:1.55}
-    .mockBadge{
-      position:absolute; left:16px; bottom:16px;
-      display:flex; gap:8px; flex-wrap:wrap;
-    }
-
-    /* Sections */
-    section{padding:22px 0}
-    .sectionHead{
-      display:flex; align-items:flex-end; justify-content:space-between; gap:14px;
-      margin: 6px 0 12px;
-    }
-    .sectionHead h2{margin:0; font-size:18px; letter-spacing:.4px}
-    .sectionHead p{margin:0; color:var(--muted); font-size:13px; line-height:1.5; max-width: 70ch}
-    .grid{
-      display:grid; gap:12px;
-      grid-template-columns: repeat(12, 1fr);
-    }
-    .planet{
-      grid-column: span 6;
       padding:14px;
-      border-radius: var(--r2);
-      border:1px solid var(--line);
-      background: rgba(255,255,255,.04);
-      transition: transform .12s ease, border-color .12s ease, background .12s ease;
-      cursor:pointer;
-      position:relative;
-      overflow:hidden;
+      min-height: 92px;
+      display:flex; align-items:center; justify-content:space-between; gap:12px;
     }
-    .planet:hover{transform: translateY(-2px); border-color: rgba(255,255,255,.18); background: rgba(255,255,255,.055)}
-    .planetTop{display:flex; align-items:flex-start; justify-content:space-between; gap:10px}
-    .planetTitle{display:flex; gap:10px; align-items:flex-start}
-    .icon{
-      width:34px; height:34px; border-radius: 12px;
-      border:1px solid rgba(255,255,255,.14);
-      background: linear-gradient(135deg, rgba(255,255,255,.14), rgba(255,255,255,.04));
-      display:grid; place-items:center;
-      flex:0 0 auto;
-      font-size:14px;
+    .card b{font-size:13px; letter-spacing:.5px}
+    .card span{display:block; color:var(--muted); font-size:12px; margin-top:6px}
+    footer{
+      margin-top:18px;
+      color:var(--muted);
+      font-size:12px;
+      display:flex; gap:10px; flex-wrap:wrap;
     }
-    .planetTitle b{display:block; font-size:14px; letter-spacing:.6px}
-    .planetTitle span{display:block; color:var(--muted); font-size:12px; margin-top:6px; line-height:1.45}
-    .chips{display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end}
-    .chip{
-      font-size:11px; color:var(--muted);
-      border:1px solid var(--line);
-      background: rgba(0,0,0,.18);
-      padding:6px 9px;
-      border-radius: 999px;
-      white-space:nowrap;
-    }
-    .chip.live{color:#0A0D16; background: rgba(77,255,181,.85); border-color: rgba(77,255,181,.55)}
-    .chip.build{color:#0A0D16; background: rgba(255,212,90,.9); border-color: rgba(255,212,90,.55)}
-    .chip.idea{color:var(--text); background: rgba(255,90,122,.18); border-color: rgba(255,90,122,.28)}
-    .planetFooter{
-      display:flex; justify-content:space-between; gap:10px; align-items:center;
-      margin-top:12px;
-    }
-    .linkish{color:rgba(255,255,255,.78); font-size:12px}
-    .linkish:hover{color:rgba(255,255,255,.95)}
-    .bar{
-      height:8px; width:120px; border-radius:999px;
-      border:1px solid var(--line);
-      background: rgba(0,0,0,.22);
-      overflow:hidden;
-    }
-    .bar > i{
-      display:block; height:100%;
-      width: 40%;
-      background: rgba(255,255,255,.65);
-    }
-
-    /* Footer */
-    footer{padding:26px 0 40px; color:var(--muted); font-size:12px}
-    .footerGrid{
-      display:grid; gap:12px;
-      grid-template-columns: 1.3fr .7fr;
-      align-items:start;
-    }
-    .legal{
-      display:flex; gap:10px; flex-wrap:wrap; margin-top:10px;
-    }
-    .legal a{
+    footer a{
       padding:8px 10px;
       border:1px solid var(--line);
       border-radius:999px;
       background: rgba(255,255,255,.03);
-      color:var(--muted);
     }
-    .legal a:hover{color:var(--text); background: rgba(255,255,255,.05)}
-    .smallCard{
-      border:1px solid var(--line);
-      background: rgba(255,255,255,.03);
-      border-radius: var(--r2);
-      padding:14px;
-    }
-
-    /* Modal */
-    .modalBack{
-      position:fixed; inset:0; z-index:999;
-      background: rgba(0,0,0,.62);
-      display:none;
-      align-items:center; justify-content:center;
-      padding:18px;
-    }
-    .modal{
-      width:min(920px, 100%);
-      border:1px solid rgba(255,255,255,.16);
-      background: linear-gradient(180deg, rgba(13,18,32,.96), rgba(10,12,22,.92));
-      border-radius: 22px;
-      box-shadow: 0 30px 100px rgba(0,0,0,.75);
-      overflow:hidden;
-    }
-    .modalHead{
-      display:flex; align-items:flex-start; justify-content:space-between; gap:12px;
-      padding:16px 16px 12px;
-      border-bottom:1px solid var(--line);
-    }
-    .modalHead b{font-size:14px; letter-spacing:.6px}
-    .modalHead span{display:block; color:var(--muted); font-size:12px; margin-top:6px; line-height:1.5}
-    .modalBody{padding:14px 16px 16px}
-    .twoCol{
-      display:grid; gap:12px;
-      grid-template-columns: 1fr 1fr;
-    }
-    .list{
-      border:1px solid var(--line);
-      background: rgba(255,255,255,.03);
-      border-radius: var(--r2);
-      padding:12px;
-    }
-    .list h3{margin:0 0 8px; font-size:12px; color:rgba(255,255,255,.88); letter-spacing:.5px}
-    .list ul{margin:0; padding-left: 16px; color:var(--muted); font-size:12px; line-height:1.65}
-    .x{
-      border:1px solid var(--line2);
-      background: rgba(255,255,255,.06);
-      border-radius: 999px;
-      padding:10px 12px;
-      cursor:pointer;
-      font-weight:700;
-    }
-    .x:hover{background: rgba(255,255,255,.08)}
-    .kbd{
-      font-size:11px; color:var(--muted);
-      border:1px solid var(--line);
-      background: rgba(0,0,0,.25);
-      padding:4px 8px; border-radius: 10px;
-      margin-left:10px;
-    }
-
-    /* Responsive */
-    @media (max-width: 980px){
-      .heroGrid{grid-template-columns: 1fr}
-      nav{display:none}
-      .actions{min-width:auto}
-    }
-    @media (max-width: 740px){
-      h1{font-size:32px}
-      .planet{grid-column: span 12}
-      .footerGrid{grid-template-columns: 1fr}
-      .twoCol{grid-template-columns: 1fr}
+    @media (max-width: 760px){
+      canvas#cookieHero{height:360px}
+      .below{grid-template-columns: 1fr}
+      h1{font-size:24px}
     }
   </style>
 </head>
 
 <body>
-  <!-- TOPBAR -->
-  <header class="topbar">
+  <header>
     <div class="wrap">
-      <div class="row">
-        <a class="brand" href="#top" aria-label="Keksversum Start">
+      <div class="bar">
+        <a class="brand" href="./">
           <div class="logo" aria-hidden="true"></div>
-          <div>
-            <b>KEKSVERSUM</b>
-            <span>ruhig • premium • klar</span>
-          </div>
+          <div>ONLYKEKS</div>
         </a>
-
-        <nav aria-label="Navigation">
-          <a href="#planeten">Planeten</a>
-          <a href="#kern">Kern</a>
-          <a href="#roadmap">Roadmap</a>
-          <a href="#kontakt">Kontakt</a>
-        </nav>
-
         <div class="actions">
-          <div class="pill" title="Status">
-            <i class="dot warn"></i>
-            <span>Build-Phase</span>
-          </div>
-          <button class="btn" id="btnRandom">Überrasch mich</button>
-          <button class="btn primary" id="btnBuild">Keks bauen</button>
+          <a class="btn" href="konfigurator.html">Überrasch mich</a>
+          <a class="btn primary" href="konfigurator.html">Keks bauen</a>
         </div>
       </div>
     </div>
   </header>
 
-  <!-- HERO -->
-  <main id="top" class="wrap">
-    <div class="hero">
-      <div class="heroGrid">
-        <div class="card heroLeft">
-          <div class="kicker">
-            <div class="pill">
-              <i class="dot good"></i>
-              <span>ONLYKEKS = Kernplanet</span>
-            </div>
-            <div class="pill">
-              <span>Shortcut: <span class="kbd">ESC</span> schließt Details</span>
-            </div>
-          </div>
-
-          <h1>Keksversum.</h1>
-          <div class="sub">
-            Ein Universum aus klaren Modulen (Planeten). Einstieg über <b>ONLYKEKS</b>:
-            3D-Keks-Konfigurator, Bestellung, Überraschungsmodus — ohne Kitsch, ohne Chaos.
-            Premium-Look, Apple-ruhig, Manufaktur-Tech.
-          </div>
-
-          <div class="ctaRow">
-            <button class="btn primary" id="btnHeroBuild">Keks bauen</button>
-            <button class="btn" id="btnHeroPlanets">Planeten ansehen</button>
-            <a class="btn" href="#roadmap">Roadmap</a>
-          </div>
-
-          <div class="miniRow">
-            <div class="mini">
-              <b>Handgemacht.</b>
-              <span>Keine Chargen. Kein Massenkram. Klarer Fokus auf Qualität.</span>
-            </div>
-            <div class="mini">
-              <b>Einfach.</b>
-              <span>3 Basis-Cookies + 3 Toppings + Finish. Fertig. Kein Overload.</span>
-            </div>
-            <div class="mini">
-              <b>Story & System.</b>
-              <span>Planeten geben Struktur: Produkt, Content, Community, Tools, Regeln.</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="card heroRight">
-          <div class="mock" aria-label="3D Mockup Platzhalter">
-            <div class="mockInner">
-              <div>
-                <div class="title">3D HERO PLACEHOLDER</div>
-                <div class="hint">
-                  Hier kommt dein fotorealistisches Keks-Mockup rein (dunkler Background, Premium).<br/>
-                  Bis dahin: Platzhalter ist absichtlich clean — keine Ablenkung.
-                </div>
-              </div>
-            </div>
-            <div class="mockBadge">
-              <div class="pill"><i class="dot warn"></i><span>Konfigurator: Placeholder</span></div>
-              <div class="pill"><i class="dot"></i><span>Design: locked-in</span></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- PLANETS -->
-    <section id="planeten">
-      <div class="sectionHead">
+  <main class="wrap">
+    <section class="hero">
+      <div class="heroTop">
         <div>
-          <h2>Unterplaneten</h2>
-          <p>Der Kern ist ONLYKEKS. Alles andere dockt sauber an: keine Überforderung, keine „alles überall“-Mischung.</p>
+          <h1>Keksversum</h1>
+          <div class="tag">Premium • ruhig • 3D</div>
         </div>
-        <div class="pill"><i class="dot"></i><span>Klick auf einen Planeten = Details</span></div>
       </div>
 
-      <div class="grid" id="planetGrid"></div>
-    </section>
-
-    <!-- CORE -->
-    <section id="kern">
-      <div class="sectionHead">
-        <div>
-          <h2>Kernplanet: ONLYKEKS</h2>
-          <p>Minimalistischer Einstieg. Zwei Wege: <b>Keks bauen</b> oder <b>Überrasch mich</b>. Der Rest ist optional.</p>
-        </div>
-        <div class="pill"><i class="dot good"></i><span>Standard: ruhig & premium</span></div>
-      </div>
-
-      <div class="grid">
-        <div class="planet" style="grid-column:span 7; cursor:default;">
-          <div class="planetTop">
-            <div class="planetTitle">
-              <div class="icon">🍪</div>
-              <div>
-                <b>Konfigurator-Flow (simpel)</b>
-                <span>
-                  1) Basis wählen · 2) 1–3 Toppings · 3) Finish/Extras · 4) Zusammenfassung · 5) Bestellen.
-                </span>
-              </div>
-            </div>
-            <div class="chips">
-              <span class="chip build">MVP</span>
-              <span class="chip">Mobile-First</span>
-              <span class="chip">No-Clutter</span>
-            </div>
-          </div>
-          <div class="planetFooter">
-            <span class="linkish">UI: groß · Buttons klar · wenig Text · viel Luft</span>
-            <div class="bar" aria-hidden="true"><i style="width:55%"></i></div>
-          </div>
-        </div>
-
-        <div class="planet" style="grid-column:span 5; cursor:default;">
-          <div class="planetTop">
-            <div class="planetTitle">
-              <div class="icon">🎲</div>
-              <div>
-                <b>Überrasch mich</b>
-                <span>
-                  Zufalls-Preset aus Top-Kombos. Schnell, spaßig, keine Entscheidungslast.
-                </span>
-              </div>
-            </div>
-            <div class="chips">
-              <span class="chip build">Build</span>
-              <span class="chip">Preset-Library</span>
-            </div>
-          </div>
-          <div class="planetFooter">
-            <span class="linkish">„Posti schmeckt.“ = optionaler Micro-Easter-Egg-Text</span>
-            <div class="bar" aria-hidden="true"><i style="width:35%"></i></div>
-          </div>
-        </div>
+      <div class="heroCanvasWrap">
+        <canvas id="cookieHero" aria-label="3D Cookie Hero"></canvas>
       </div>
     </section>
 
-    <!-- ROADMAP -->
-    <section id="roadmap">
-      <div class="sectionHead">
+    <section class="below" aria-label="Planeten">
+      <a class="card" href="konfigurator.html">
         <div>
-          <h2>Struktur & Roadmap</h2>
-          <p>Wir starten mit ONLYKEKS + ONLYCOOKIES als direktes Duo. Danach definieren wir die restlichen Planeten glasklar.</p>
+          <b>ONLYKEKS</b>
+          <span>3D Konfigurator</span>
         </div>
-        <div class="pill"><i class="dot warn"></i><span>Jetzt: Definition & Build</span></div>
-      </div>
+        <div>→</div>
+      </a>
 
-      <div class="grid">
-        <div class="planet" style="grid-column:span 4; cursor:default;">
-          <div class="planetTop">
-            <div class="planetTitle">
-              <div class="icon">1</div>
-              <div>
-                <b>Heute: Planeten-Definition</b>
-                <span>Names + Purpose + CTA + Status. Dann steht das komplette Gerüst.</span>
-              </div>
-            </div>
-          </div>
-          <div class="planetFooter">
-            <span class="linkish">Output: SSOT-Liste (einfach editierbar)</span>
-            <div class="bar"><i style="width:65%"></i></div>
-          </div>
-        </div>
-
-        <div class="planet" style="grid-column:span 4; cursor:default;">
-          <div class="planetTop">
-            <div class="planetTitle">
-              <div class="icon">2</div>
-              <div>
-                <b>Danach: ONLYKEKS MVP</b>
-                <span>Konfigurator-Seite + Presets + Bestellung-CTA (Platzhalter ok).</span>
-              </div>
-            </div>
-          </div>
-          <div class="planetFooter">
-            <span class="linkish">Ziel: „funktioniert & wirkt premium“</span>
-            <div class="bar"><i style="width:40%"></i></div>
-          </div>
-        </div>
-
-        <div class="planet" style="grid-column:span 4; cursor:default;">
-          <div class="planetTop">
-            <div class="planetTitle">
-              <div class="icon">3</div>
-              <div>
-                <b>Dann: Restliche Planeten</b>
-                <span>Nur was wirklich Nutzen bringt. Kein Deko-Ballast.</span>
-              </div>
-            </div>
-          </div>
-          <div class="planetFooter">
-            <span class="linkish">Prinzip: Klarheit vor Features</span>
-            <div class="bar"><i style="width:20%"></i></div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- CONTACT -->
-    <section id="kontakt">
-      <div class="sectionHead">
+      <a class="card" href="#"
+         onclick="alert('ONLYCOOKIES kommt als nächster Planet rein (Content/Shorts/Updates).'); return false;">
         <div>
-          <h2>Kontakt / Links</h2>
-          <p>Hier kommen später die echten Links rein (Shop, Konfigurator, Socials). Erst Struktur sauber, dann verkabeln.</p>
+          <b>ONLYCOOKIES</b>
+          <span>Content-Planet</span>
         </div>
-      </div>
-
-      <div class="grid">
-        <div class="planet" style="grid-column:span 8; cursor:default;">
-          <div class="planetTop">
-            <div class="planetTitle">
-              <div class="icon">🔗</div>
-              <div>
-                <b>Link-Slots (Platzhalter)</b>
-                <span>Konfigurator · Shop · X · YouTube · TikTok · Impressum · Datenschutz</span>
-              </div>
-            </div>
-            <div class="chips">
-              <span class="chip">SSOT-fähig</span>
-              <span class="chip">Inkognito-Test</span>
-            </div>
-          </div>
-          <div class="planetFooter">
-            <span class="linkish">Regel: Keine Redirects/Shortener im ersten Rollout</span>
-            <div class="bar"><i style="width:30%"></i></div>
-          </div>
-        </div>
-
-        <div class="planet" style="grid-column:span 4; cursor:default;">
-          <div class="planetTop">
-            <div class="planetTitle">
-              <div class="icon">🛡️</div>
-              <div>
-                <b>Compliance-Bremse</b>
-                <span>Legal/Proof/Outside-Audit/W-W-W. Ohne das kein „live“.</span>
-              </div>
-            </div>
-          </div>
-          <div class="planetFooter">
-            <span class="linkish">So bleibt’s stressfrei.</span>
-            <div class="bar"><i style="width:50%"></i></div>
-          </div>
-        </div>
-      </div>
+        <div>→</div>
+      </a>
     </section>
 
     <footer>
-      <div class="footerGrid">
-        <div>
-          <div><b style="color:rgba(255,255,255,.85)">KEKSVERSUM</b> — Struktur zuerst. Dann Scale.</div>
-          <div class="legal">
-            <a href="impressum.html">Impressum</a>
-            <a href="datenschutz.html">Datenschutz</a>
-            <a href="#top">Nach oben</a>
-          </div>
-        </div>
-        <div class="smallCard">
-          <b style="color:rgba(255,255,255,.85)">Admin-Note</b>
-          <div style="margin-top:8px; line-height:1.6">
-            Diese Seite ist ein <b>Gerüst</b>. Planeten-Daten unten im Script ändern, fertig.
-            Kein Rumgefummel im HTML nötig. Ja, dit is Berlin-safe. 😄
-          </div>
-        </div>
-      </div>
+      <a href="impressum.html">Impressum</a>
+      <a href="datenschutz.html">Datenschutz</a>
+      <a href="kontakt.html">Kontakt</a>
+      <span style="opacity:.7">Created by: First Connect by Jan Christian Schmidt</span>
     </footer>
   </main>
 
-  <!-- MODAL -->
-  <div class="modalBack" id="modalBack" role="dialog" aria-modal="true" aria-label="Planet Details">
-    <div class="modal">
-      <div class="modalHead">
-        <div>
-          <b id="mTitle">Planet</b>
-          <span id="mSubtitle">Beschreibung</span>
-        </div>
-        <div style="display:flex; align-items:center; gap:10px;">
-          <span class="kbd">ESC</span>
-          <button class="x" id="mClose" aria-label="Schließen">✕</button>
-        </div>
-      </div>
-      <div class="modalBody">
-        <div class="twoCol">
-          <div class="list">
-            <h3>Was ist das?</h3>
-            <ul id="mBullets"></ul>
-          </div>
-          <div class="list">
-            <h3>Nächster Schritt</h3>
-            <ul id="mNext"></ul>
-          </div>
-        </div>
-        <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:12px;">
-          <a class="btn primary" id="mPrimary" href="#">Action</a>
-          <a class="btn" id="mSecondary" href="#">Details</a>
-        </div>
-      </div>
-    </div>
-  </div>
-
+  <!-- 3D Loader -->
+  <script src="cookie3d.js"></script>
   <script>
-    // =========================
-    // PLANETEN-SSOT (nur hier editieren)
-    // =========================
-    const PLANETS = [
-      {
-        id: "onlykeks",
-        icon: "🍪",
-        title: "ONLYKEKS",
-        subtitle: "3D Keks-Konfigurator (Kern). Kaufen, überraschen, repeat.",
-        status: "build", // live | build | idea
-        tags: ["Kern", "3D", "Checkout"],
-        progress: 55,
-        primary: { label: "Keks bauen", href: "konfigurator.html" },
-        secondary:{ label: "Überblick", href: "#kern" },
-        bullets: [
-          "Minimaler Flow: Basis → Toppings → Finish → Zusammenfassung → Bestellen",
-          "Premium Look: dunkel, ruhig, viel Luft, klare Buttons",
-          "3D Hero als fotorealistisches Mockup (Platzhalter ok, aber hochwertig)"
-        ],
-        next: [
-          "Konfigurator-Seite als MVP verbinden (Buttons/Presets sichtbar)",
-          "„Überrasch mich“ Preset-Library anlegen (10 Top-Combos)",
-          "Link-Slots SSOT-sauber machen (ohne Login/Redirect)"
-        ]
-      },
-      {
-        id: "onlycookies",
-        icon: "🪐",
-        title: "ONLYCOOKIES",
-        subtitle: "Story/Content-Planet: Shorts, Updates, Making-of, Trust.",
-        status: "build",
-        tags: ["Content", "Brand", "Trust"],
-        progress: 30,
-        primary: { label: "Plan öffnen", href: "#roadmap" },
-        secondary:{ label: "Kontakt", href: "#kontakt" },
-        bullets: [
-          "Content-Maschine rund um ONLYKEKS (kein Random-Spam)",
-          "Kurzformate: „Keks bauen in 10s“, „Überrasch mich“, „Handgemacht Proof“",
-          "Premium Ton: ruhig, klar, nicht schrill"
-        ],
-        next: [
-          "1-Satz Value-Prop finalisieren (für Banner/Bio/Pin)",
-          "Erstes 20–30s Invite-Short definieren (ruhiger CTA)",
-          "7-Tage Takt: 6 Shorts/Tag = Template-System bauen"
-        ]
-      },
+    (function(){
+      const canvas = document.getElementById("cookieHero");
+      // Sichtbarkeits-Fix: Canvas muss echte Pixelgröße bekommen
+      const rect = canvas.getBoundingClientRect();
+      const dpr = Math.max(1, window.devicePixelRatio || 1);
+      canvas.width  = Math.floor(rect.width * dpr);
+      canvas.height = Math.floor(rect.height * dpr);
 
-      // Platzhalter für die restlichen Planeten – die definieren wir als nächstes sauber.
-      {
-        id: "planet-03",
-        icon: "🛰️",
-        title: "PLANET 03 (Placeholder)",
-        subtitle: "Wird definiert: Zweck, CTA, Grenzen.",
-        status: "idea",
-        tags: ["TBD"],
-        progress: 10,
-        primary: { label: "Definieren", href: "#planeten" },
-        secondary:{ label: "Roadmap", href: "#roadmap" },
-        bullets: ["Name fehlt", "Mission fehlt", "CTA fehlt"],
-        next: ["Wir legen Name + Zweck + 1 CTA fest", "Dann Status & Progress setzen"]
-      },
-      {
-        id: "planet-04",
-        icon: "🌒",
-        title: "PLANET 04 (Placeholder)",
-        subtitle: "Wird definiert: Zweck, CTA, Grenzen.",
-        status: "idea",
-        tags: ["TBD"],
-        progress: 10,
-        primary: { label: "Definieren", href: "#planeten" },
-        secondary:{ label: "Roadmap", href: "#roadmap" },
-        bullets: ["Name fehlt", "Mission fehlt", "CTA fehlt"],
-        next: ["Wir legen Name + Zweck + 1 CTA fest", "Dann Status & Progress setzen"]
+      // Erwartung: cookie3d.js stellt window.Cookie3D.init(canvas) bereit
+      if (window.Cookie3D && typeof window.Cookie3D.init === "function") {
+        try {
+          window.Cookie3D.init(canvas);
+          return;
+        } catch (e) {
+          console.warn("Cookie3D init error:", e);
+        }
       }
-    ];
 
-    // =========================
-    // RENDER
-    // =========================
-    const grid = document.getElementById("planetGrid");
-    const modalBack = document.getElementById("modalBack");
-    const mTitle = document.getElementById("mTitle");
-    const mSubtitle = document.getElementById("mSubtitle");
-    const mBullets = document.getElementById("mBullets");
-    const mNext = document.getElementById("mNext");
-    const mPrimary = document.getElementById("mPrimary");
-    const mSecondary = document.getElementById("mSecondary");
-
-    function chipClass(status){
-      if(status==="live") return "chip live";
-      if(status==="build") return "chip build";
-      return "chip idea";
-    }
-    function statusLabel(status){
-      if(status==="live") return "LIVE";
-      if(status==="build") return "BUILD";
-      return "IDEA";
-    }
-    function dotClass(status){
-      if(status==="live") return "dot good";
-      if(status==="build") return "dot warn";
-      return "dot hot";
-    }
-
-    function planetCard(p){
-      const el = document.createElement("div");
-      el.className = "planet";
-      el.dataset.pid = p.id;
-
-      const tags = (p.tags||[]).slice(0,3).map(t=>`<span class="chip">${escapeHtml(t)}</span>`).join("");
-      const status = `<span class="${chipClass(p.status)}">${statusLabel(p.status)}</span>`;
-      const prog = Math.max(0, Math.min(100, p.progress||0));
-
-      el.innerHTML = `
-        <div class="planetTop">
-          <div class="planetTitle">
-            <div class="icon">${escapeHtml(p.icon||"🪐")}</div>
-            <div>
-              <b>${escapeHtml(p.title)}</b>
-              <span>${escapeHtml(p.subtitle||"")}</span>
-            </div>
-          </div>
-          <div class="chips">
-            ${status}
-            ${tags}
-          </div>
-        </div>
-        <div class="planetFooter">
-          <a class="linkish" href="${escapeAttr(p.primary?.href||"#")}" onclick="event.stopPropagation()">
-            ${escapeHtml(p.primary?.label||"Öffnen")} →
-          </a>
-          <div class="bar" aria-hidden="true"><i style="width:${prog}%"></i></div>
-        </div>
-      `;
-      el.addEventListener("click", ()=>openPlanet(p.id));
-      return el;
-    }
-
-    function render(){
-      grid.innerHTML = "";
-      PLANETS.forEach(p=>grid.appendChild(planetCard(p)));
-    }
-
-    function openPlanet(id){
-      const p = PLANETS.find(x=>x.id===id);
-      if(!p) return;
-      mTitle.textContent = p.title;
-      mSubtitle.textContent = p.subtitle || "";
-
-      mBullets.innerHTML = "";
-      (p.bullets||[]).forEach(t=>{
-        const li=document.createElement("li");
-        li.textContent=t;
-        mBullets.appendChild(li);
-      });
-
-      mNext.innerHTML = "";
-      (p.next||[]).forEach(t=>{
-        const li=document.createElement("li");
-        li.textContent=t;
-        mNext.appendChild(li);
-      });
-
-      mPrimary.textContent = p.primary?.label || "Action";
-      mPrimary.href = p.primary?.href || "#";
-      mSecondary.textContent = p.secondary?.label || "Details";
-      mSecondary.href = p.secondary?.href || "#";
-
-      modalBack.style.display = "flex";
-    }
-
-    function closeModal(){
-      modalBack.style.display = "none";
-    }
-
-    document.getElementById("mClose").addEventListener("click", closeModal);
-    modalBack.addEventListener("click", (e)=>{ if(e.target===modalBack) closeModal(); });
-    window.addEventListener("keydown", (e)=>{ if(e.key==="Escape") closeModal(); });
-
-    // HERO BUTTONS
-    function goBuild(){
-      // Wenn du schon eine konfigurator.html hast: perfekt. Sonst bleibt's als Link-Stub.
-      window.location.href = "konfigurator.html";
-    }
-    document.getElementById("btnBuild").addEventListener("click", goBuild);
-    document.getElementById("btnHeroBuild").addEventListener("click", goBuild);
-
-    document.getElementById("btnHeroPlanets").addEventListener("click", ()=>{
-      document.getElementById("planeten").scrollIntoView({behavior:"smooth"});
-    });
-
-    // Überrasch mich = random Planet + wenn ONLYKEKS dabei, dort hin
-    document.getElementById("btnRandom").addEventListener("click", ()=>{
-      const pick = PLANETS[Math.floor(Math.random()*PLANETS.length)];
-      openPlanet(pick.id);
-    });
-
-    // Helpers
-    function escapeHtml(str){
-      return String(str)
-        .replaceAll("&","&amp;")
-        .replaceAll("<","&lt;")
-        .replaceAll(">","&gt;")
-        .replaceAll('"',"&quot;")
-        .replaceAll("'","&#039;");
-    }
-    function escapeAttr(str){ return escapeHtml(str).replaceAll("`",""); }
-
-    render();
+      // Fallback: wenigstens NICHT leer. (Damit du sofort siehst: Bereich ist da.)
+      const ctx = canvas.getContext("2d");
+      if(ctx){
+        ctx.scale(dpr, dpr);
+        ctx.fillStyle = "rgba(255,255,255,.08)";
+        ctx.fillRect(0,0,rect.width,rect.height);
+        ctx.fillStyle = "rgba(255,255,255,.8)";
+        ctx.font = "700 14px system-ui";
+        ctx.fillText("3D HERO: cookie3d.js ist noch nicht verbunden.", 18, 28);
+        ctx.fillStyle = "rgba(255,255,255,.55)";
+        ctx.font = "12px system-ui";
+        ctx.fillText("Fix: window.Cookie3D.init(canvas) in cookie3d.js exportieren.", 18, 50);
+      }
+    })();
   </script>
 </body>
 </html>

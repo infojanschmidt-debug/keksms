@@ -1,22 +1,18 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
-/**
- * OnlyCakes 3D Cookie Configurator
- * - Mobile-ready (touch + pinch)
- * - Responsive canvas via ResizeObserver
- * - Performance: devicePixelRatio cap on mobile + instanced sprinkles
- */
 export function initCookie3D(containerEl, options = {}) {
   if (!containerEl) throw new Error("initCookie3D: containerEl fehlt.");
 
   const preset = options.preset ?? { base: "classic", topping: "chips", drizzle: "none" };
   const allowDoubleTapReset = !!options.allowDoubleTapReset;
 
+  const mobile = isMobile();
   const scene = new THREE.Scene();
+  scene.fog = new THREE.Fog(0x070A12, 6, 14);
 
   const camera = new THREE.PerspectiveCamera(38, 1, 0.1, 100);
-  camera.position.set(0.0, 1.1, 3.2);
+  camera.position.set(0.0, 1.05, 3.15);
 
   const renderer = new THREE.WebGLRenderer({
     antialias: true,
@@ -24,7 +20,6 @@ export function initCookie3D(containerEl, options = {}) {
     powerPreference: "high-performance"
   });
 
-  const mobile = isMobile();
   const dpr = Math.min(window.devicePixelRatio || 1, mobile ? 1.5 : 2.0);
   renderer.setPixelRatio(dpr);
   renderer.setSize(10, 10, false);
@@ -36,11 +31,11 @@ export function initCookie3D(containerEl, options = {}) {
   containerEl.innerHTML = "";
   containerEl.appendChild(renderer.domElement);
 
-  // Lights
-  scene.add(new THREE.HemisphereLight(0xbcd2ff, 0x1b1020, 0.85));
+  // Lights (slightly softer, more premium)
+  scene.add(new THREE.HemisphereLight(0xcfe0ff, 0x120c18, 0.85));
 
-  const key = new THREE.DirectionalLight(0xffffff, 1.2);
-  key.position.set(3, 4, 2);
+  const key = new THREE.DirectionalLight(0xffffff, 1.15);
+  key.position.set(3.2, 4.2, 2.2);
   key.castShadow = true;
   key.shadow.mapSize.set(1024, 1024);
   key.shadow.camera.near = 0.5;
@@ -52,16 +47,16 @@ export function initCookie3D(containerEl, options = {}) {
   scene.add(key);
 
   const rim = new THREE.DirectionalLight(0xffd5e6, 0.55);
-  rim.position.set(-3, 2, -2);
+  rim.position.set(-3.2, 2.2, -2.4);
   scene.add(rim);
 
-  // Ground shadow catcher
+  // Ground (shadow catcher)
   const ground = new THREE.Mesh(
     new THREE.PlaneGeometry(12, 12),
     new THREE.ShadowMaterial({ opacity: 0.22 })
   );
   ground.rotation.x = -Math.PI / 2;
-  ground.position.y = -0.8;
+  ground.position.y = -0.82;
   ground.receiveShadow = true;
   scene.add(ground);
 
@@ -79,19 +74,17 @@ export function initCookie3D(containerEl, options = {}) {
   group.add(toppingGroup);
   group.add(drizzleGroup);
 
-  // Controls
   const controls = new OrbitControls(camera, renderer.domElement);
   controls.enableDamping = true;
   controls.dampingFactor = 0.08;
   controls.enablePan = false;
-  controls.minDistance = 2.2;
+  controls.minDistance = 2.15;
   controls.maxDistance = 4.6;
   controls.maxPolarAngle = Math.PI * 0.58;
   controls.minPolarAngle = Math.PI * 0.28;
-  controls.target.set(0, 0.1, 0);
+  controls.target.set(0, 0.08, 0);
   controls.update();
 
-  // Double tap reset
   if (allowDoubleTapReset) {
     let lastTap = 0;
     renderer.domElement.addEventListener("touchend", () => {
@@ -101,7 +94,6 @@ export function initCookie3D(containerEl, options = {}) {
     }, { passive: true });
   }
 
-  // Resize observer
   const ro = new ResizeObserver(() => resize());
   ro.observe(containerEl);
   resize();
@@ -109,19 +101,15 @@ export function initCookie3D(containerEl, options = {}) {
   let state = { base: preset.base, topping: preset.topping, drizzle: preset.drizzle };
   applyConfig(state);
 
-  // Animation
   let running = true;
   const prefersReduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const clock = new THREE.Clock();
 
   function tick() {
     if (!running) return;
-
     const dt = Math.min(clock.getDelta(), 0.033);
-
     controls.update();
-    if (!prefersReduced) group.rotation.y += dt * 0.15;
-
+    if (!prefersReduced) group.rotation.y += dt * 0.14;
     renderer.render(scene, camera);
     requestAnimationFrame(tick);
   }
@@ -136,7 +124,6 @@ export function initCookie3D(containerEl, options = {}) {
       running = false;
       ro.disconnect();
       controls.dispose();
-
       scene.traverse((obj) => {
         if (obj.geometry) obj.geometry.dispose?.();
         if (obj.material) {
@@ -149,8 +136,6 @@ export function initCookie3D(containerEl, options = {}) {
     }
   };
 
-  // ---- helpers ----
-
   function resize() {
     const w = Math.max(1, containerEl.clientWidth);
     const h = Math.max(1, containerEl.clientHeight);
@@ -160,7 +145,6 @@ export function initCookie3D(containerEl, options = {}) {
   }
 
   function makeCookieMesh() {
-    // Lathe profile (x radius, y height)
     const pts = [
       new THREE.Vector2(0.00, -0.18),
       new THREE.Vector2(0.85, -0.18),
@@ -181,20 +165,19 @@ export function initCookie3D(containerEl, options = {}) {
       metalness: 0.02
     });
 
-    // Subtle surface bump (vertex jitter)
+    // subtle bump
     const pos = geo.attributes.position;
     for (let i = 0; i < pos.count; i++) {
       const x = pos.getX(i), z = pos.getZ(i), y = pos.getY(i);
       const r = Math.sqrt(x*x + z*z);
-      if (r > 0.25 && y > -0.16) {
-        const n = (hash(i) - 0.5) * 0.02;
-        pos.setY(i, y + n);
-      }
+      if (r > 0.25 && y > -0.16) pos.setY(i, y + (hash(i) - 0.5) * 0.02);
     }
     pos.needsUpdate = true;
     geo.computeVertexNormals();
 
-    return new THREE.Mesh(geo, mat);
+    const mesh = new THREE.Mesh(geo, mat);
+    mesh.position.y = 0.0;
+    return mesh;
   }
 
   function applyConfig(cfg) {
